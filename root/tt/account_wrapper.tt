@@ -1,0 +1,35 @@
+
+    <div id="headimg">
+      <img src="/grafik/area_einstellungen.jpg" width="869" height="69" alt="Ihre persönlichen Einstellungen." />
+    </div>
+
+    <div id="main">
+
+      <div id="topmsg">
+        <p> [% messages.topmsg %] </p>
+      </div>
+      <div id="toperr">
+        <p> [% messages.toperr %] </p>
+        <p> [% messages.prov_error %] </p>
+      </div>
+
+      <div id="spalten31">
+
+        <div class="spalte1">
+          <ul class="menueinstellungen">
+            <li [% 'class="on"' IF template.subtitle == "account_info" %]><a href="/account/info">Informationen</a></li>
+            <li [% 'class="on"' IF template.subtitle == "account_pass" %]><a href="/account/pass">Passwort</a></li>
+            [% IF Catalyst.session.user.admin %]
+            <li [% 'class="on"' IF template.subtitle == "account_balance" %]><a href="/account/balance">Kontostand</a></li>
+            [% END %]
+          </ul>
+
+[% content %]
+
+        </div>
+        <div class="spalte2">
+        </div>
+
+      </div>
+
+    </div><br clear="all" />

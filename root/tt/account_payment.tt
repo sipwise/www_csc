@@ -1,0 +1,6 @@
+[% META title = 'account' %]
+[% META subtitle = 'account_balance' %]
+
+[% PROCESS tt/payment.tt %]
+
+          <br clear="all" />

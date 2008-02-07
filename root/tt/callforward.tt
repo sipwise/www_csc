@@ -1,0 +1,116 @@
+[% META title = 'callforward' %]
+
+    <div id="headimg">
+      <img src="/grafik/area_rufumleitung.jpg" width="869" height="69" alt="Konfigurieren einer Rufumleitung" />
+    </div>
+
+    <div id="main">
+
+<!--      <div id="bigmessage">
+        <p>
+          Seit Ihrem letzten Login haben Sie <a href="voicemail" class="link"><strong>3 neue Voicemails</strong></a> erhalten und <a href="anrufe_verpasst" class="link"><strong>2 Anrufe verpasst</strong></a>.
+        </p>
+      </div>
+-->
+      <div id="topmsg">
+        <p> [% messages.topmsg %] </p>
+      </div>
+      <div id="toperr">
+        <p> [% messages.toperr %] </p>
+        <p> [% messages.prov_error %] </p>
+      </div>
+
+      <div class="sperrehead">
+        <h3>Rufumleitung</h3>
+<!--        <form action="">
+          <select>
+            <option>0043 / 1 / 244 56 78 - 10</option>
+            <option>0043 / 1 / 244 56 78 - 20</option>
+            <option>0043 / 1 / 244 56 78 - 30</option>
+            <option>0043 / 1 / 244 56 78 - 40</option>
+            <option>0043 / 1 / 244 56 78 - 50</option>
+          </select>
+        </form>
+-->        <h2 class="umleitungfuer">Einstellungen für [% subscriber.active_number %]</h2>
+      </div>
+      <div id="spalten31">
+
+        <div class="spalte1">
+
+          <form id="kontaktform" class="umleitung" action="/callforward/save" method="post">
+            <fieldset class="alt">
+              <h3>Ziel</h3>
+              <p class="wohinp">
+                <label for="fw_voicebox">
+                  <input type="radio" id="fw_voicebox" value="voicebox" name="fw_target" class="radio" [% subscriber.fw.voicebox_checked %] /> Voicebox
+                </label><br clear="all" />
+              </p>
+              <p class="wohinp">
+                <label for="fw_sipuri">
+                  <input type="radio" id="fw_sipuri" value="sipuri" name="fw_target" class="radio" [% subscriber.fw.sipuri_checked %] /> Telefonnummer oder SIP-URI
+                </label><input type="text" id="fw_sipuri" name="fw_sipuri" size="25" class="input25" value="[% subscriber.fw.sipuri %]" /><br clear="all" />
+              </p>
+              <div id="errormsg"><p>[% messages.target %]</p></div>
+            </fieldset>
+
+            <fieldset>
+              <h3>Wann</h3>
+              <p class="wannp">
+                <label for="fw_act_never">
+                  <input type="radio" id="fw_act_never" value="no" name="fw_active" class="radio" [% subscriber.fw.never_checked %] /> Anrufe nicht umleiten
+                </label><br clear="all" />
+              </p>
+
+              <p class="wannp">
+                <label for="fw_act_allways">
+                  <input type="radio" id="fw_act_allways" value="yes" name="fw_active" class="radio" [% subscriber.fw.allways_checked %] /> Anrufe immer umleiten
+                </label><br clear="all" />
+              </p>
+
+              <p class="wannp">
+                <label for="fw_act_condition">
+                  <input type="radio" id="fw_act_condition" value="conditional" name="fw_active" class="radio" [% subscriber.fw.condition_checked %] /> Anrufe umleiten ...
+                </label><br clear="all" />
+              </p>
+              <p class="wanncp">
+                <input type="checkbox" value="na" name="fw_condition" class="radio" [% subscriber.fw.na_checked %] /> ... bei Nicht-Erreichbarkeit.
+              </p>
+              <p class="wanncp">
+                <input type="checkbox" value="timeout" name="fw_condition" class="radio" [% subscriber.fw.timeout_checked %] /> ... nach <input type="text" size="3" id="sek" name="fw_ringtimeout" value="[% subscriber.fw.ringtimeout %]" /> Sekunden ohne Antwort.
+              </p>
+              [% IF messages.ringtimeout %]
+              <div id="errormsg"><p>[% messages.ringtimeout %]</p></div><br clear="all" />
+              [% END %]
+              <p class="wanncp">
+                <input type="checkbox" value="busy" name="fw_condition" class="radio" [% subscriber.fw.busy_checked %] /> ... bei laufendem Gespräch.
+              </p>
+              <div id="errormsg"><p>[% messages.condition %]</p></div>
+            </fieldset>
+
+<!--              <input type="submit" name="save" value="Einstellungen speichern"> -->
+            <p class="save">
+              <label for="save_settings">Einstellungen speichern</label><input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="save_settings">
+            </p>
+          </form><br clear="all" />
+
+        </div>
+        <div class="spalte2">
+
+          <p class="rufumleitung">
+            [% IF subscriber.fw.active %]
+              <img src="/grafik/umleitung_on.gif" width="42" height="43" alt="Symbol für Rufumleitung" /> 
+              Rufumleitung ist aktiv!
+            [% ELSE %]
+              <img src="/grafik/umleitung_off.gif" width="42" height="43" alt="Symbol für Rufumleitung" /> 
+              Rufumleitung ist deaktiviert!
+            [% END %]
+          </p>
+<!--          <p class="rufumleitunginfo">
+            Anrufe werden bei Nicht-Erreichbarkeit in die Voicebox umgeleitet.
+          </p>
+-->
+        </div>
+
+      </div>
+
+    </div><br clear="all" />

@@ -1,0 +1,39 @@
+[% # config/main
+   #
+   # This is the main configuration template which is processed before
+   # any other page, by virtue of it being defined as a PRE_PROCESS
+   # template.  This is the place to define any extra template variables,
+   # macros, load plugins, and perform any other template setup.
+
+   IF Catalyst.debug;
+     # define a debug() macro directed to Catalyst's log
+     MACRO debug(message) CALL Catalyst.log.debug(message);
+   END;
+
+   # define a data structure to hold sitewide data
+   site = {
+     title     => 'Libratel CSC',
+     company   => {
+                   name      => 'Libratel IP Communications GmbH',
+                   logo      => '/grafik/libratel.gif',
+                   hotline   => '0720 / 456 789',
+                   city      => '2700 Wiener Neustadt',
+                   street    => 'Prof. Dr. Stephan Koren Strasse 10',
+                   phone     => '+43 (0)720 456789-0',
+                   fax       => '+43 (0)720 456789-10',
+                   email     => 'office@libratel.at',
+                   webserver => 'www.libratel.at',
+                  },
+     language  => 'de',
+     css       => '/css/style.css',
+   };
+
+##   # load up any other configuration items
+##   PROCESS config/col
+##         + config/url;
+
+##   # set defaults for variables, etc.
+##   DEFAULT
+##     message = 'There is no message';
+
+-%]

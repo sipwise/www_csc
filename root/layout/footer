@@ -1,0 +1,18 @@
+<!-- BEGIN layout/footer -->
+    <div id="footer">
+      [% site.company.name %] <span>|</span> [% site.company.city %] <span>|</span> [% site.company.street %] <br />
+      Tel. [% site.company.phone %] <span>|</span> Fax [% site.company.fax %] <span>|</span> E-Mail <a href="mailto:[% site.company.email %]" class="link">[% site.company.email %]</a><br />
+		<a href="http://www.mstefan.com" target="_blank" class="ms"><img src="/grafik/ms.gif" width="136" height="9" alt="Design by Markus Stefan" /></a>
+		<a href="http://www.sipwise.com" target="_blank" class="sipwise"><img src="/grafik/sipwise-powered.png" width="131" height="29" alt="Powered by Sipwise" /></a>
+    </div>
+
+    <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+        var pageTracker = _gat._getTracker("UA-3549537-1");
+        pageTracker._initData();
+        pageTracker._trackPageview();
+    </script>
+<!-- END layout/footer -->

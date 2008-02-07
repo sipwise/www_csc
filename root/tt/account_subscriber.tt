@@ -1,0 +1,62 @@
+[% META title = 'account' %]
+[% META subtitle = 'account_subscriber' %]
+
+          <div class="anmelden feinstellungen">
+            <fieldset class="alt_sub">
+              <p class="subscribernew">
+                <label for="subscriber_new">Neuen Benutzer erstellen</label>
+                <form action="/account/addsubscriber" method="post">
+                  <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" class="noborder" id="subscriber_new" />
+                </form>
+              </p>
+            </fieldset>
+
+              <table class="anrufliste kontaktliste subscriberliste">
+                <tr class="subscriberlisteheader">
+                  <td colspan="5">
+                    <h3>Bestehende Benutzer:</h3>
+                  </td>
+                </tr>
+              [% tbli = 0 %]
+              [% FOREACH subscriber = subscribers %]
+                <tr class="[% 'alt' IF tbli % 2 %]">
+                [% tbli = tbli + 1 %]
+                  <td class="extensionadd"><img src="/grafik/spa9000_icon.png"></td>
+                  <td class="anrufperson">[% subscriber.username %]</td>
+                  <td class="anrufnummer">00[% subscriber.cc %][% subscriber.ac %][% subscriber.sn %]</td>
+                  <form action="/account/addextension" method="post">
+                    <input type="hidden" name="base_cli" value="[% subscriber.cc %][% subscriber.ac %][% subscriber.sn %]" />
+                    <td class="extensionadd">
+                      <input type="image" src="/grafik/spa922_addicon.png" class="noborder" title="Nebenstelle hinzufügen" alt="">
+                    </td>
+                  </form>
+                  [% IF subscriber.username == Catalyst.session.user.username %]
+                  <td />
+                  [% ELSE %]
+                  <form action="/account/delsubscriber" method="post">
+                    <input type="hidden" name="username" value="[% subscriber.username %]" />
+                    <td class="extensionadd">
+                      <input type="image" src="/grafik/delete.gif" class="noborder" title="Benutzer löschen" alt="">
+                    </td>
+                  </form>
+                  [% END %]
+                </tr>
+                [% FOREACH extension = subscriber.extensions %]
+                  <tr class="[% 'alt' IF tbli % 2 %]">
+                  [% tbli = tbli + 1 %]
+                    <td class="extensionadd"><img src="/grafik/spa922_icon.png"></td>
+                    <td class="anrufperson">[% extension.username %]</td>
+                    <td class="anrufnummer"><span class="info">00[% extension.preferences.base_cli %]</span> - [% extension.preferences.extension %]</td>
+                    <td />
+                    <form action="/account/delsubscriber" method="post">
+                      <input type="hidden" name="username" value="[% extension.username %]" />
+                      <td class="extensionadd">
+                        <input type="image" src="/grafik/delete.gif" class="noborder" title="Benutzer löschen" alt="">
+                      </td>
+                    </form>
+                  </tr>
+                [% END %]
+              [% END %]
+              </table>
+          </div><br clear="all" />
+

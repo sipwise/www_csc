@@ -1,0 +1,223 @@
+[% META title = 'desktop' %]
+
+    <div id="headimg">
+      <img src="/grafik/area_desktop.jpg" width="869" height="69" alt="Willkommen auf Ihrem persönlichen Desktop" />
+    </div>
+
+    <div id="main">
+
+<!--      <div id="bigmessage">
+        <p>
+          Seit Ihrem letzten Login haben Sie <a href="voicemail" class="link"><strong>3 neue Voicemails</strong></a> erhalten und <a href="anrufe_verpasst" class="link"><strong>2 Anrufe verpasst</strong></a>.
+        </p>
+      </div>
+-->
+      <div id="topmsg">
+        <p> [% messages.topmsg %] </p>
+      </div>
+      <div id="toperr">
+        <p> [% messages.toperr %] </p>
+        <p> [% messages.prov_error %] </p>
+      </div>
+
+      <div id="spalten211">
+
+        <div class="spalte1">
+
+          <h3>Letzte 10 Telefonate</h3>
+
+<!--          <form class="anruflistenummer" action="">
+            <select>
+              <option>Alle Telefonnummern</option>
+              <option>0043 / 1 / 244 56 78 - 10</option>
+              <option>0043 / 1 / 244 56 78 - 20</option>
+              <option>0043 / 1 / 244 56 78 - 30</option>
+              <option>0043 / 1 / 244 56 78 - 40</option>
+              <option>0043 / 1 / 244 56 78 - 50</option>
+            </select>
+          </form>
+-->
+<!--          <p class="anruflisteordnen">
+            <a href="#" class="on"><img src="/grafik/anruf_alle_small.gif" width="14" height="13" alt="alle Anrufe"> alle</a> 
+            <a href="#"><img src="/grafik/anruf_ein_small.gif" width="14" height="13" alt="eingehender Anruf"> eingehende</a> 
+            <a href="#"><img src="/grafik/anruf_aus_small.gif" width="14" height="13" alt="ausgehender Anruf"> ausgehende</a> 
+            <a href="#"><img src="/grafik/anruf_error_small.gif" width="14" height="13" alt="Anruf in Abwensenheit"> abwesend</a>
+          </p>
+-->
+          <p class="anruflistesymbole">
+            <img src="/grafik/anruf_ein_small.gif" width="14" height="13" alt="eingehender Anruf"> eingehend 
+            <img src="/grafik/anruf_ein_err_small.gif" width="14" height="13" alt="eingehender Anruf"> abwesend 
+            <img src="/grafik/anruf_aus_small.gif" width="14" height="13" alt="ausgehender Anruf"> ausgehend 
+            <img src="/grafik/anruf_aus_err_small.gif" width="14" height="13" alt="Anruf in Abwensenheit"> fehlgeschlagen 
+          </p>
+
+          <table class="anrufliste">
+<!--            <tr class="anruflisteheader">
+              <td colspan="5">
+                <h3>Heute</h3>
+              </td>
+            </tr>
+            <tr class="alt">
+              <td class="anruftyp"><img src="/grafik/anruf_ein_small.gif" width="14" height="13" alt="eingehender Anruf"></td>
+              <td class="anrufperson">Peter Alexander</td>
+              <td class="anrufnummer">0043 / 1 / 123 45 67</td>
+              <td class="anrufanruf">
+                <a href="#" title="Jetzt anrufen" class="call"><img src="/grafik/call.gif" width="12" height="14" alt="Jetzt anrufen" /></a>
+                <div class="functionpopup">
+                  <ul>
+                    <li><a href="#">anrufen</a></li>
+                    <li><a href="#">SMS senden</a></li>
+                    <li><a href="#">Fax senden</a></li>
+                    <li><a href="#">als Kontakt anlegen</a></li>
+                  </ul>
+                </div>
+              </td>
+              <td class="anrufzeit">Heute, 09:14</td>
+            </tr>
+-->
+
+            <tr class="anruflisteheader">
+              <td colspan="5" />
+            </tr>
+
+            [% IF ! subscriber.call_list %]
+            <tr class="alt">
+              <td colspan="5" class="anrufnummer">Es befinden sich keine Anrufe in der Liste.</td>
+            </tr>
+            [% END %]
+
+            [% c2di = 0 %]
+            [% FOREACH callentry = subscriber.call_list %]
+	    [% c2di = c2di + 1 %]
+            <tr class="[% callentry.background %]">
+              <td class="anruftyp"><img src="/grafik/[% callentry.direction_icon %]" width="14" height="13" alt=""></td>
+              <td class="anrufnummer">[% callentry.partner %]</td>
+	      <td class="anrufanruf">
+                <div class="yui-skin-sam" id="c[%c2di%]">
+                  <img src="/grafik/call.gif" width="12" height="14" onclick="cl_pop('c[%c2di%]','[%callentry.partner%]')"/>
+                </div>
+              </td>
+              <td class="anrufdauer">[% callentry.duration %]</td>
+              <td class="anrufzeit">[% callentry.date %]</td>
+            </tr>
+            [% END %]
+
+          </table>
+
+          <p>
+            <a href="/calllist" class="link">Alle Telefonate</a>
+          </p>
+
+        </div>
+        <div class="spalte2">
+
+          [% IF Catalyst.session.user.admin %]
+          <h3>Kontostatus</h3>
+          <div class="status">
+            <p>
+              <strong>&euro; [% subscriber.account.cash_balance %] Guthaben</strong><br />
+              <strong>[% subscriber.account.free_time_balance %] Freiminuten</strong><br />
+            </p>
+          </div>
+          [% END %]
+
+          <h3>Registrierungen</h3>
+          <p class="[% subscriber.contacts.size > 0 ? 'reginforeg' : 'reginfonoreg' %]">
+            [% subscriber.contacts.size == 0 ? 'Kein' :  subscriber.contacts.size %] Endgerät[% subscriber.contacts.size < 2 ? '' : 'e' %] registriert.
+          </p>
+          <br clear="all" />
+
+<!--
+          <h3>Wichtige Kontakte</h3>
+          <p class="rufumleitunginfo">Coming soon</p><br />
+-->
+          <div class="hplistsmall">
+            <h3>Shop</h3>
+            <h2><a href="#">Siemens Gigaset C450 IP</a></h2>
+            <p>
+              <a href="#"><img src="img/telefonshop.jpg" width="191" height="112" alt="Siemens Gigaset" /></a>
+            </p>
+            <p align="justify">
+                Siemens Gigaset IP kombiniert den Komfort herkömmlicher Telefone mit den Vorteilen der VoIP Technologie.
+            </p>
+            <p>
+              <a href="#" class="link">mehr Infos</a>
+            </p>
+          </div>
+
+        </div>
+        <div class="spalte3">
+
+          <h3>Rufumleitung</h3>
+
+          <p class="rufumleitung">
+            [% IF subscriber.fw.active %]
+              <img src="/grafik/umleitung_on.gif" width="42" height="43" alt="" />
+              Rufumleitung aktiv
+            [% ELSE %]
+              <img src="/grafik/umleitung_off.gif" width="42" height="43" alt="" />
+              Rufumleitung deaktiviert
+            [% END %]
+          </p>
+<!--
+          <p class="rufumleitunginfo">
+          </p>
+-->
+          <p style="clear:left">
+            <a href="/callforward" class="link">Einstellungen ändern</a>
+          </p>
+
+          <br clear="all" />
+
+          <h3>Neue Voicemails</h3>
+          [% IF subscriber.voicemail_list %]
+            <ul class="voicemailliste">
+            [% FOREACH voicemail = subscriber.voicemail_list %]
+                [% c2di = c2di + 1 %]
+                <li class="[% voicemail.background %]">
+                  <span class="voicemailnummer">
+                    <a href="/voicebox/listen?mailid=[% voicemail.id %]" title="Voicemail abhören">
+                      <img src="/grafik/voicemail.gif" width="20" height="20" alt="voicemail" /> 
+                      <strong>[% voicemail.partner %]</strong>
+                    </a>
+                    [% IF voicemail.partner_info %]
+                      <span>([% voicemail.partner_info %])</span>
+                    [% END %]
+                  </span>
+                  <span class="anrufanruf">
+                    <div class="yui-skin-sam" id="ca[%c2di%]">
+                      <img src="/grafik/call.gif" width="12" height="14"
+                           onclick="cl_pop('ca[%c2di%]','[% voicemail.partner_number %]')"
+                           title="Jetzt zurückrufen" />
+                    </div>
+                  </span>
+                </li>
+            [% END %]
+            </ul>
+          [% ELSE %]
+            <p class="rufumleitunginfo">Keine neuen Voicemails.</p>
+          [% END %]
+          <p>
+            <a href="/voicebox" class="link">Alle Voicemails</a>
+          </p>
+          <br clear="all" />
+
+          <div class="hplistsmall">
+            <h3>Shop</h3>
+            <h2><a href="#">Siemens Gigaset C450 IP</a></h2>
+            <p>
+              <a href="#"><img src="img/telefonshop.jpg" width="191" height="112" alt="Siemens Gigaset" /></a>
+            </p>
+            <p align="justify">
+              Siemens Gigaset IP kombiniert den Komfort herkömmlicher Telefone mit den Vorteilen der VoIP Technologie.
+            </p>
+            <p>
+              <a href="#" class="link">mehr Infos</a>
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div><br clear="all" />

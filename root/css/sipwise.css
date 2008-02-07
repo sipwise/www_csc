@@ -1,0 +1,599 @@
+/* call image with java script menu */
+#main .yui-skin-sam img {
+   margin: 3px 0 -3px 0;
+   cursor: pointer;
+}
+
+/* light gray information text */
+.info {
+   color: #8B949A;
+}
+
+/* display sipwise logo bottom right */
+#footer .sipwise {
+   position: absolute;
+   top: 75px;
+   right: 12px;
+}
+
+/* error and success messages at the top of the page */
+#topmsg {
+   width: auto;
+   float: left;
+   margin: 0;
+   padding: 0 0 10px 0;
+}
+#topmsg p {
+   font-size: 14px;
+   line-height: 15px;
+   font-weight: bold;
+   color: #10BB40;
+}
+#toperr {
+   width: auto;
+   float: left;
+   margin: 0;
+   padding: 0 0 10px 0;
+}
+#toperr p {
+   font-size: 14px;
+   line-height: 15px;
+   font-weight: bold;
+   color: #FF1010;
+}
+
+/* error messages around input fields */
+#errormsg {
+   width: auto;
+   float: left;
+   margin: 0;
+   padding: 0 0 10px 0;
+}
+#errormsg p {
+   font-size: 12px;
+   font-weight: bold;
+   color: #FF1010;
+}
+
+/* alignment for call list on desktop */
+#main .anruflistesymbole {
+   margin: 0px;
+   padding: 4px 0;
+   background: url(/grafik/bg_set.gif) left bottom repeat-x;
+}
+.anruflistesymbole img {
+   vertical-align: middle;
+   padding: 0 0 2px 0;
+}
+
+/* some more alignments for call lists */
+.anrufliste .anrufanruf {
+   text-align: center;
+}
+.anrufliste .anrufdauer {
+   text-align: right;
+}
+.anrufliste .anrufkosten {
+   text-align: right;
+   white-space: nowrap;
+}
+
+/* center alignment for contact list */
+.kontaktliste td {
+   vertical-align: middle;
+}
+
+/* caller detail text color in call lists */
+.voicemaillistebig .anrufperson span {
+   color: #B9CCD7;
+}
+
+/* device registration message on desktop */
+#main .reginfonoreg {
+   border: 1px solid #FFCCBB;
+   background: #FFEEEE;
+   padding: 5px 8px 6px 8px;
+   color: #EE6655;
+}
+
+#main .reginforeg {
+   border: 1px solid #AAEEBB;
+   background: #EEFFEE;
+   padding: 5px 8px 6px 8px;
+   color: #10BB40;
+}
+
+/* search fields for call list */
+#main .anrufsuchemonate .save label {
+   margin: 2px 10px;
+   padding: 0px 0px;
+}
+#main #anrufsuche .save label {
+   margin: 5px 0px 0px 10px;
+   padding: 0;
+}
+#main .anruffilter {
+   margin: 0 0 0 5px;
+   font-weight: bold;
+   color: #FF1010;
+}
+
+/* padding for contact list */
+#main .kontaktliste .anrufperson {
+   padding-left: 5px;
+}
+
+/* contact entry creation */
+#main .kontaktneu {
+   font-weight: bold;
+   margin: -10px 0 -28px 0;
+   padding: 8px 0;
+   text-align: right;
+}
+#main .kontaktneu label {
+   font-size: 12px;
+   font-weight: bold;
+   white-space: nowrap;
+   color: #2D91DF;
+   background: url(/grafik/dot_blue.gif) left bottom repeat-x;
+   text-decoration: none;
+   cursor: pointer;
+}
+#main .kontaktneu label:hover {
+   color: #FF8A00;
+   background: url(/grafik/dot_orange.gif) left bottom repeat-x;
+}
+
+/* href style post labels */
+#main .save label {
+   font-size: 12px;
+   font-weight: bold;
+   white-space: nowrap;
+   color: #2D91DF;
+   margin: 10px 10px;
+   padding: 0;
+   float: left;
+   background: url(/grafik/dot_blue.gif) left bottom repeat-x;
+   text-decoration: none;
+   cursor: pointer;
+}
+#main .save label:hover {
+   color: #FF8A00;
+   background: url(/grafik/dot_orange.gif) left bottom repeat-x;
+}
+
+/* alignment for contact entry save label */
+#main .kontaktlistebig .save {
+   text-align: right;
+}
+#main .kontaktlistebig .save label {
+   margin: 0;
+}
+
+/* call forward spec alignment */
+#main .umleitung .wohinp {
+   margin-bottom: 8px;
+   margin-left: 5px;
+   white-space: nowrap;
+}
+#main .umleitung .wanncp {
+   margin-bottom: 8px;
+   margin-left: 55px;
+   white-space: nowrap;
+}
+
+/* call block save alignment */
+.sperre .sperresave {
+   width: 90px;
+   text-align: right;
+}
+
+/* override padding for block{in|out}{del|act} */
+#main .fsperre .fieldblockmode .save label {
+   margin: 5px 0 20px 20px;
+   padding: 0px 0px;
+}
+/* override padding for block{in|out}{del|act} */
+#main .fsperre .sperresave .save label {
+   margin: 0px 0px;
+   padding: 0px 0px;
+}
+/* override padding for block{in|out}add error */
+#main .fsperre .sperreadd #errormsg {
+   padding: 5px 0 0 0;
+}
+/* suppress border around hidden image */
+#main .fsperre .sperreadd #save_blockinadd {
+   border: none;
+}
+#main .fsperre .sperreadd #save_blockoutadd {
+   border: none;
+}
+
+/* alignment and text color for sperre info text */
+#main .fsperre .sperreadd .info {
+   color: #8B949A;
+   margin: 0;
+   float: left;
+   line-height: 13px;
+}
+
+/* add line to white background fieldset at bottom */
+.anmelden fieldset.last {
+   border-bottom: 1px solid #D0DCDF;
+}
+
+/* alignment for newsletter checkbox text */
+#main .anmelden .newslettertext {
+   width: 480px;
+   text-align: left;
+   margin: 0 0 20px 0;
+}
+
+/* highlight required input fields */
+.anmelden .required {
+   border: 1px solid #EE6655;
+}
+
+/* small input textfield, used during registration */
+.anmelden .input5 {
+   padding-left: 3px;
+   padding-right: 0px;
+   float: left;
+   width: 35px; /* falsch für ie */
+   voice-family: "\"}\"";
+   voice-family:inherit;
+   width: 30px; /* richtig */
+}
+
+/* adjust width for save textbutton automatically */
+#main .anmelden .save label {
+   width: auto;
+   margin: 30px 0 0 10px;
+}
+/* suppress border around hidden image */
+#main .anmelden .save #create_account {
+   border: none;
+}
+
+/* suppress border around hidden image */
+#main .feinstellungen .save input {
+   border: none;
+}
+
+/* alignment and text color for demo info text */
+#main .feinstellungen .demoinfo {
+   color: #8B949A;
+   margin: 0 20px 20px 140px;
+   float: left;
+   line-height: 13px;
+}
+
+/* alt fieldset for subscriber list */
+#main .anmelden .alt_sub {
+   background: #F4FBFC;
+   border-top: 1px solid #D0DCDF;
+}
+
+/* subscriber list table */
+#main .feinstellungen .subscriberliste {
+   border-top: none;
+}
+#main .feinstellungen .subscriberlisteheader td {
+   padding: 7px 0 3px 0;
+   border-top: none;
+   border-bottom: 3px solid #D0DCDF;
+   background: #F4FBFC;
+   background: url(/grafik/bg_set_inv.gif) left bottom repeat-x;
+}
+#main .feinstellungen .subscriberlisteheader h3 {
+   margin: 0px;
+   padding: 0px;
+   letter-spacing: 1px;
+}
+
+
+
+
+/* subscriber creation form */
+#main .feinstellungen .subscribernew {
+   margin: -10px 0 10px 0;
+   padding: 0 5px 0 0;
+   text-align: right;
+   width: 625px;
+}
+#main .feinstellungen .subscribernew label {
+   margin: 0;
+   padding: 0;
+   width: auto;
+   font-size: 12px;
+   font-weight: bold;
+   white-space: nowrap;
+   color: #2D91DF;
+   background: url(/grafik/dot_blue.gif) left bottom repeat-x;
+   text-decoration: none;
+   cursor: pointer;
+   float: right;
+}
+#main .feinstellungen .subscribernew label:hover {
+   color: #FF8A00;
+   background: url(/grafik/dot_orange.gif) left bottom repeat-x;
+}
+#main .feinstellungen .extensionadd {
+   width: 40px;
+   text-align: center;
+}
+#main .feinstellungen .extensionadd input {
+   margin: 0 0 -2px 0;
+}
+
+/* autoconf pseudo links */
+#main .aconflink label {
+   margin: 0;
+   padding: 0;
+   width: auto;
+   white-space: nowrap;
+   color: #2D91DF;
+   background: url(/grafik/dot_blue.gif) left bottom repeat-x;
+   text-decoration: none;
+   cursor: pointer;
+}
+#main .aconflink label:hover {
+   color: #FF8A00;
+   background: url(/grafik/dot_orange.gif) left bottom repeat-x;
+}
+
+#main .aconflinkright label {
+   margin: 0;
+   padding: 0;
+   float: right;
+   width: auto;
+   white-space: nowrap;
+   color: #2D91DF;
+   background: url(/grafik/dot_blue.gif) left bottom repeat-x;
+   text-decoration: none;
+   cursor: pointer;
+}
+#main .aconflinkright label:hover {
+   color: #FF8A00;
+   background: url(/grafik/dot_orange.gif) left bottom repeat-x;
+}
+
+#main .aconflinkbold label {
+   margin: 0;
+   padding: 0;
+   width: auto;
+   white-space: nowrap;
+   color: #2D91DF;
+   background: url(/grafik/dot_blue.gif) left bottom repeat-x;
+   text-decoration: none;
+   font-weight: bold;
+   cursor: pointer;
+}
+#main .aconflinkbold label:hover {
+   color: #FF8A00;
+   background: url(/grafik/dot_orange.gif) left bottom repeat-x;
+}
+
+/* device configuration forms */
+.devlist li { display:inline; }
+#main .devimg {
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+#main .devnext {
+   font-weight: bold;
+   /* margin: -10px 0 -28px 0; */
+   margin: 0 0 0 0;
+   padding: 8px 0;
+   text-align: right;
+}
+#main .devnext label {
+   font-size: 12px;
+   font-weight: bold;
+   white-space: nowrap;
+   color: #2D91DF;
+   background: url(/grafik/dot_blue.gif) left bottom repeat-x;
+   text-decoration: none;
+   cursor: pointer;
+}
+#main .devwin_active {
+   width: 100%;
+   background-color: #cfcfcf;
+   margin: 0;
+   margin-top: 15px;
+   margin-bottom: 15px;
+   padding: 5px;
+}
+#main .devwin_inactive {
+   width: 100%;
+   background-color: #efefef;
+   margin: 0;
+   margin-bottom: 5px;
+   padding: 5px;
+}
+
+/* payment form */
+#main .xdslcheck {
+   width: 100%;
+   height: 600px;
+   border: none;
+}
+#main .selectpayment {
+   width: auto;
+   font-weight: bold;
+   margin-bottom: 10px;
+}
+#main .agb_ack {
+   width: auto;
+}
+#main .agb_ack input {
+   margin-bottom: 0px;
+}
+#main .agb_text {
+   margin: 8px 0 8px 10px;
+   padding: 2px 4px;
+   background: #EEEEEE;
+}
+#main .payment .save label {
+   margin: 0px 10px;
+}
+
+/* override spacing for order link */
+#main .prodtable .save label {
+   margin: 0 -20px 0 20px;
+   padding: 0;
+}
+
+/* hide or show business data form elements per default */
+#main .data_business_hidden {
+   display: none;
+   margin: 20px 0 -18px 0;
+}
+#main .contact_business_hidden {
+   display: none;
+}
+#main .data_business_show {
+   display: block;
+   margin: 20px 0 -18px 0;
+}
+#main .contact_business_show {
+   display: block;
+}
+
+/* suppress border around checkboxes */
+#main .no_border input {
+   border: none;
+}
+
+/* override label width and spacing from default "anmelden" labels */
+#main .anmelden label.as_above {
+   width: auto;
+   margin: 0 0 5px 0;
+}
+/* override border and margin for "as above" checkboxes */
+#main .anmelden .as_above input {
+   border: none;
+   margin: 0 3px 1px 0;
+}
+
+#main .anmelden .gender_space {
+   margin: 20px 0 0 0;
+}
+
+#spalten31 #anmelden .benutzer,
+#spalten31 #anmelden .passwort {
+  width: 120px;
+  float: left;
+  margin: 0 0 5px 5px;
+  padding: 0px;
+  border: 1px solid #C5CDD2;
+}
+
+/* left align order link and draw line below it */
+#main .order_now {
+  float: left;
+  margin: -30px 0 0 0;
+}
+#main .order_border {
+  border-bottom: 1px solid #D0DCDF;
+}
+
+/* no padding for tarif buttons */
+#main .anmelden .tarifbuttons .save label {
+  float: right;
+  margin: 0;
+  padding: 0;
+}
+
+#main .showhide_hide {
+  display: none;
+}
+
+#main .showhide_explanation {
+  width: 250px;
+}
+
+#main .intro_image {
+  float: right;
+  padding: 5px 10px;
+}
+
+/* display function info layer */
+.prodinfo_left {
+  position: relative !important;
+  top: -360px !important;
+  left: 50px !important;
+  margin-bottom: -312px;
+  margin-right: -611px;
+}
+.prodinfo_center {
+  position: relative !important;
+  top: -360px !important;
+  left: -150px !important;
+  margin-bottom: -312px;
+  margin-right: -611px;
+}
+.prodinfo_right {
+  position: relative !important;
+  top: -360px !important;
+  left: -350px !important;
+  margin-bottom: -312px;
+  margin-right: -611px;
+}
+
+.anrufnummer {
+   white-space: nowrap;
+}
+
+.devlist {
+  border-collapse: collapse; 
+  border: 0px;
+}
+
+.devlist td {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 5px;
+}
+
+.devlist tr {
+    border-bottom: 1px dotted #999999;
+}
+
+.devlist tr.active {
+   border: 1px solid #A4DBF3;
+   background: #CDF0FC;
+}
+
+/* FAQ */
+.freqfragen h4 {
+   margin-bottom: 5px;
+}
+.freqfragen .vorteile {
+   float: left;
+   padding: 0 0 15px 0;
+}
+.freqfragen .vorteile li {
+   float: left;
+   background: url(../grafik/vorteile.gif) 0px 3px no-repeat;
+   margin: 0 0 5px 0;
+   padding: 0 0 0 20px;
+   width: 630px;
+   voice-family: "\"}\"";
+   voice-family:inherit;
+   width: 570px;
+}
+.freqfragen {
+   margin: 0px;
+   padding: 0px;
+}
+
+/* text fields for voicebox config */
+#voicesettings input,
+#voicesettings textarea,
+#voicesettings select {
+   margin: 3px 0 0px 0;
+   border: 1px solid #8D9FAA;
+}

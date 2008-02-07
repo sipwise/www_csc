@@ -1,0 +1,11 @@
+[% META title = 'default view' %]
+
+<br><br><br><br><br><br><br><br>
+<p>
+  This is the default page, as the functionality "[% funktion %]" hasn't been implemented by now.
+</p>
+<p>
+  There's not much here yet, but hopefully this will change soon.
+</p>
+<br><br><br><br><br><br><br><br>
+

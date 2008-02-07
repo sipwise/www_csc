@@ -1,0 +1,52 @@
+[% META title = 'account' %]
+[% META subtitle = 'account_subscriber' %]
+
+          <form class="anmelden feinstellungen" action="/account/doaddsubscriber" method="post">
+          <fieldset class="alt">
+            <h3>Telefonnummer</h3>
+            <label for="fnummer">Ihre gewünschte Telefonnummer</label>
+            <select class="fnummer required" name="fnummer" id="fnummer" size="8">
+              [% FOREACH select_number = available_numbers %]
+                <option value="[% select_number.cc %]-[% select_number.ac %]-[% select_number.sn %]" [% select_number.active %]>
+                  0[% select_number.ac %] [% select_number.sn %]
+                </option>
+              [% END %]
+            </select>
+            <p class="wahlnummerinfo">
+              Hier können Sie die Telefonnummer auswählen, unter der der Benutzer erreichbar sein wird.
+            </p><br clear="all" />
+            <div id="errormsg"><p>[% messages.msgnumber %]</p></div>
+          </fieldset><br clear="all" />
+
+          <fieldset>
+            <h3>SIP-URI</h3>
+            <label for="fsipuri">SIP-URI</label>
+            <input type="text" class="input20 sipuri required" size="20" id="fsipuri" name="fsipuri" value="[% refill.sipuri %]" />
+            <span class="sipuri">@[% Catalyst.session.user.domain %]</span><br clear="all" />
+            <p class="anmeldeninfo">
+              Ein SIP-URI ist eine weltweit eindeutige ID, ähnlich einer E-Mail Adresse. Sie wird für den Login in den Kundenbereich der Libratel Webseite verwendet und identifiziert auch Ihre VoIP fähigen Endgeräte.
+            </p>
+            <div id="errormsg"><p>[% messages.msgsipuri %]</p></div>
+          </fieldset><br clear="all" />
+
+          <fieldset class="alt">
+            <h3>Ihr Passwort</h3>
+            <p class="left">
+              <label for="fpasswort1">Passwort</label>
+              <input type="password" size="20" class="input20 required" id="fpasswort1" name="fpasswort1" /><br />
+            </p>
+            <p class="right">
+              <label for="fpasswort2">wiederholen</label>
+              <input type="password" size="20" class="input20 required" id="fpasswort2" name="fpasswort2" /><br />
+            </p>
+            <br clear="all" />
+            <p class="anmeldeninfo">
+              Das Passwort wird für den Login in den Kundenbereich der Libratel Webseite und um VoIP fähige Endgeräte zu authentifizieren benötigt.
+            </p>
+            <div id="errormsg"><p>[% messages.msgpasswd %]</p></div>
+          </fieldset><br clear="all" />
+
+          <p class="save">
+            <label for="create_account">Benutzer erstellen</label><input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="create_account">
+          </p>
+          </form><br clear="all" />

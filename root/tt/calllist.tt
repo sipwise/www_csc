@@ -1,0 +1,200 @@
+[% META title = 'calllist' %]
+
+  <div id="headimg">
+    <img src="grafik/area_anrufe.jpg" width="869" height="69" alt="Eingehende, ausgehende und verpasste Anrufe" />
+  </div>
+
+  <div id="main">
+
+    <div id="topmsg">
+      <p> [% messages.topmsg %] </p>
+    </div>
+    <div id="toperr">
+      <p> [% messages.toperr %] </p>
+      <p> [% messages.prov_error %] </p>
+    </div>
+
+    <div class="sperrehead">
+      <h3>Anrufliste</h3>
+      <h2 class="umleitungfuer">Anrufliste für [% subscriber.active_number %]</h2>
+    </div>
+
+    <div id="spalten31">
+
+      <div class="spalte1">
+
+        <h3>
+          [% subscriber.call_range %]
+          [% IF subscriber.call_filter %]
+            , <span class="anruffilter">Filter: [% subscriber.call_filter %]</span>
+          [% END %]
+        </h3>
+
+<!--        <form class="anruflistenummer" action="">
+          <select>
+            <option>Alle Telefonnummern</option>
+            <option>0043 / 1 / 244 56 78 - 10</option>
+            <option>0043 / 1 / 244 56 78 - 20</option>
+            <option>0043 / 1 / 244 56 78 - 30</option>
+            <option>0043 / 1 / 244 56 78 - 40</option>
+            <option>0043 / 1 / 244 56 78 - 50</option>
+          </select>
+        </form>
+-->
+<!--        <p class="anruflisteordnen">
+          Set: &nbsp;
+          <a href="#" class="on">1</a> 
+          <a href="#">2</a> 
+          <a href="#">3</a> 
+          <a href="#">4</a> 
+          <a href="#">5</a>
+          &nbsp;
+          <nobr>
+            <a href="#" class="on"><img src="grafik/anruf_alle_small.gif" width="14" height="13" alt="alle Anrufe"> alle</a> 
+            <a href="#"><img src="grafik/anruf_ein_small.gif" width="14" height="13" alt="eingehender Anruf"> eingehende</a> 
+            <a href="#"><img src="grafik/anruf_aus_small.gif" width="14" height="13" alt="ausgehender Anruf"> ausgehende</a> 
+            <a href="#"><img src="grafik/anruf_error_small.gif" width="14" height="13" alt="Anruf in Abwensenheit"> abwesend</a>
+          </nobr>
+        </p>
+-->
+        <p class="anruflisteordnen">
+          <img src="/grafik/anruf_ein_small.gif" width="14" height="13" alt="eingehender Anruf"> eingehend
+          <img src="/grafik/anruf_ein_err_small.gif" width="14" height="13" alt="eingehender Anruf"> abwesend
+          <img src="/grafik/anruf_aus_small.gif" width="14" height="13" alt="ausgehender Anruf"> ausgehend
+          <img src="/grafik/anruf_aus_err_small.gif" width="14" height="13" alt="Anruf in Abwensenheit"> fehlgeschlagen
+        </p>
+          
+        <table class="anrufliste">
+
+          [% IF ! subscriber.call_list %]
+          <tr class="anruflisteheader"><td colspan="6" /></tr>
+          <tr class="alt">
+            <td colspan="6" class="anrufnummer">Es befinden sich keine Anrufe in der Liste.</td>
+          </tr>
+          [% ELSE %]
+          <tr class="anruflisteheader">
+            <td />
+            <td class="anrufnummer">Gesprächspartner</td>
+            <td />
+            <td class="anrufdauer">Dauer</td>
+            <td class="anrufkosten">Kosten</td>
+            <td class="anrufzeit">Zeitpunkt</td>
+          </tr>
+          [% END %]
+
+          [% c2di = 0 %]
+          [% cli = 0 %]
+          [% FOREACH call_list = [ subscriber.call_list.today,
+                                   subscriber.call_list.yesterday,
+                                   subscriber.call_list.lastweek,
+                                   subscriber.call_list.previous ]
+          %]
+            [% cli = cli + 1 %]
+            [% IF call_list %]
+              <tr class="anruflisteheader">
+                <td colspan="6">
+                  [% IF cli == 1 %]
+                    <h3>Heute</h3>
+                  [% END %]
+                  [% IF cli == 2 %]
+                    <h3>Gestern</h3>
+                  [% END %]
+                  [% IF cli == 3 %]
+                    <h3>Letzte Woche</h3>
+                  [% END %]
+                  [% IF cli == 4 %]
+                    [% IF subscriber.call_list.today OR subscriber.call_list.yesterday OR subscriber.call_list.lastweek %]
+                      <h3>Frühere</h3>
+                    [% END %]
+                  [% END %]
+                </td>
+              </tr>
+
+              [% FOREACH callentry = call_list %]
+                [% c2di = c2di + 1 %]
+                <tr class="[% callentry.background %]">
+                  <td class="anruftyp"><img src="/grafik/[% callentry.direction_icon %]" width="14" height="13" alt=""></td>
+                  <td class="anrufnummer">[% callentry.partner %]
+                                          [% IF callentry.partner_info %]
+                                            <span>([% callentry.partner_info %])</span>
+                                          [% END %]
+                  </td>
+                  <td class="anrufanruf">
+                    <div class="yui-skin-sam" id="ca[%c2di%]">
+                      <img src="/grafik/call.gif" width="12" height="14" onclick="cl_pop('ca[%c2di%]','[%callentry.partner_number%]')"/>
+                    </div>
+                  </td>
+                  <td class="anrufdauer">[% callentry.duration %]</td>
+                  <td class="anrufkosten">[% callentry.call_fee %]</td>
+                  <td class="anrufzeit">[% callentry.date %]</td>
+                </tr>
+              [% END %]
+            [% END %]
+          [% END %]
+
+        </table>
+
+      </div>
+      <div class="spalte2">
+
+        <div class="container">
+
+          <h3>Suche</h3>
+
+          <form id="anrufsuche" action="/calllist" method="post">
+            <label for="fzeitraumvon">Zeitraum (TT.MM.JJJJ)</label><br clear="all" />
+            <input type="text" id="fzeitraumvon" name="list_start" size="8" class="input8" value="[% subscriber.list_start %]"/>
+            <label for="fzeitraumbis" class="bis">bis</label>
+            <input type="text" id="fzeitraumbis" name="list_end" size="8" class="input8" value="[% subscriber.list_end %]"/>
+            <br clear="all" />
+            <div id="errormsg"><p>[% messages.msgdate %]</p></div>
+
+            <label for="fsuchbegriff">Suchbegriff</label><br />
+            <input type="text" id="fsuchbegriff" name="list_filter" size="21" class="input21" value="[% subscriber.list_filter %]"/>
+            <br clear="all" />
+
+            <div class="save">
+              <label for="calllist_apply_filter">Filter anwenden</label>
+              <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="calllist_apply_filter" />
+
+              <label for="calllist_reset_filter">Filter zurücksetzen</label>
+            </div>
+            <input type="hidden" name="listmonth" value="[% subscriber.list_month %]" />
+          </form>
+
+          <form id="anrufsuchereset" action="/calllist" method="post">
+            <input type="hidden" name="list_start" value="" />
+            <input type="hidden" name="list_end" value="" />
+            <input type="hidden" name="list_filter" value="" />
+            <input type="hidden" name="listmonth" value="[% subscriber.list_month %]" />
+            <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="calllist_reset_filter">
+          </form>
+
+          <br clear="all" />
+        </div>
+
+        <h3>Anrufe nach Monaten</h3>
+
+        <ul class="anrufsuchemonate">
+          [% FOREACH selectyear = subscriber.selectmonths %]
+          <li>
+            <strong>[% selectyear.year %]</strong>
+            [% FOREACH selectmonth = selectyear.months %]
+            <form action="/calllist" method="post">
+              <div class="save">
+              <label for="selmon_[% selectmonth.link %]">[% selectmonth.display %]</label>
+              <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="selmon_[% selectmonth.link %]" />
+              </div>
+              <input type="hidden" name="listmonth" value="[% selectmonth.link %]" />
+            </form>
+            [% END %]
+          </li>
+          [% END %]
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div><br clear="all" />
+

@@ -1,0 +1,31 @@
+<!-- BEGIN layout/fp_header -->
+
+    <div id="head">
+
+      <h1><a href="http://[% site.company.webserver %]/" title="zur Startseite"><img src="[% site.company.logo %]" width="192" height="44" alt="[% site.company.name %]" /></a></h1>
+
+      <ul id="menusmall">
+        <li><a href="http://[% site.company.webserver %]/impressum.html">Impressum</a></li>
+        <li><a href="http://[% site.company.webserver %]/agb.html">AGB</a></li>
+        <li><a href="http://[% site.company.webserver %]/kontakt.html">Kontakt</a></li>
+        <li class="kundenbereich"><a href="https://csc.libratel.at/login">Kundenbereich</a></li>
+      </ul>
+
+      <p id="hotline">
+        HOTLINE: <strong>[% site.company.hotline %]</strong>
+      </p>
+    
+      <ul id="menu">
+        <li><a href="http://[% site.company.webserver %]/">Startseite</a></li>
+        [% UNLESS template.title == 'Libratel CSC Login' %]
+          <li><a href="http://[% site.company.webserver %]/einfuehrung.html">Einführung</a></li>
+
+          <li><a href="http://[% site.company.webserver %]/tarife.html">Tarife</a></li>
+          <li><a href="http://[% site.company.webserver %]/rufnummern.html">Rufnummern</a></li>
+          <li class="on"><a href="http://[% site.company.webserver %]/prod_bus_single.html">Lösungen</a></li> 
+          <li><a href="http://[% site.company.webserver %]/faq.html">FAQ</a></li>
+        [% END %]
+      </ul>
+    </div>
+      
+<!-- END layout/fp_header -->

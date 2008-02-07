@@ -1,0 +1,27 @@
+[% META title = 'account' %]
+[% META subtitle = 'account_pass' %]
+
+          <form class="anmelden feinstellungen" action="/account/savepass" method="post">
+            <fieldset class="alt">
+              <p>Hier können Sie das Passwort für den CSC Weblogin ändern.</p><br />
+              <label for="fusername">Benutzername</label>
+              <p><strong>[% subscriber.username %]</strong></p>
+              <label for="foldpass">Altes Passwort</label>
+              <input type="password" size="20" class="input20" id="foldpass" name="oldpass" value="[% refill.oldpass %]"><br />
+              [% IF messages.msgoldpass %]<div id="errormsg"><p>[% messages.msgoldpass %]</p></div><br clear="all"/>[% END %]
+              <p class="left">
+                <label for="fnewpass1">Neues Passwort</label>
+                <input type="password" size="20" class="input20" id="fnewpass1" name="newpass1" value="[% refill.passwd1 %]"><br />
+              </p>
+              <p class="right">
+                <label for="fnewpass2">wiederholen</label>
+                <input type="password" size="20" class="input20" id="fnewpass2" name="newpass2" value="[% refill.passwd2 %]"><br />
+              </p>
+              <div id="errormsg"><p>[% messages.msgpasswd %]</p></div>
+            </fieldset><br clear="all" />
+
+            <p class="save">
+              <label for="save_settings">Passwort speichern</label><input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="save_settings">
+            </p>
+
+          </form><br clear="all" />

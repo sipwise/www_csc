@@ -1,0 +1,226 @@
+[% META title = 'voicebox' %]
+
+  <div id="headimg">
+    <img src="/grafik/area_voicebox.jpg" width="869" height="69" alt="Erhaltene Voicemails" />
+  </div>
+
+  <div id="main">
+
+    <div id="topmsg">
+      <p> [% messages.topmsg %] </p>
+    </div>
+    <div id="toperr">
+      <p> [% messages.toperr %] </p>
+      <p> [% messages.prov_error %] </p>
+    </div>
+
+    <div class="sperrehead">
+      <h3>Erhaltene Voicemails</h3>
+      <h2 class="umleitungfuer">Sprachnachrichten für [% subscriber.active_number %]</h2>
+    </div>
+
+    <div id="spalten211">
+
+      <div class="spalte1">
+
+        <h3>
+          [% subscriber.call_range %]
+          [% IF subscriber.call_filter %]
+            , <span class="anruffilter">Filter: [% subscriber.call_filter %]</span>
+          [% END %]
+        </h3>
+
+<!--        <form class="anruflistenummer" action="">
+          <select>
+            <option>Alle Telefonnummern</option>
+            <option>0043 / 1 / 244 56 78 - 10</option>
+            <option>0043 / 1 / 244 56 78 - 20</option>
+            <option>0043 / 1 / 244 56 78 - 30</option>
+            <option>0043 / 1 / 244 56 78 - 40</option>
+            <option>0043 / 1 / 244 56 78 - 50</option>
+          </select>
+        </form>
+-->
+<!--        <p class="anruflisteordnen">
+          Set: &nbsp;
+          <a href="#" class="on">1</a> 
+          <a href="#">2</a> 
+          <a href="#">3</a> 
+          <a href="#">4</a> 
+          <a href="#">5</a>
+        </p>
+-->
+
+        <table class="anrufliste voicemaillistebig">
+
+          [% IF ! subscriber.voicemail_list %]
+          <tr class="anruflisteheader"><td colspan="6" /></tr>
+          <tr class="alt">
+            <td colspan="6" class="anrufnummer">Es befinden sich keine Nachrichten in der Liste.</td>
+          </tr>
+          [% ELSE %]
+          <tr class="anruflisteheader">
+            <td class="anrufperson">Anrufer</td>
+            <td />
+            <td class="anrufdauer">Dauer</td>
+            <td class="anrufzeit">Zeitpunkt</td>
+            <td />
+          </tr>
+          [% END %]
+
+          [% c2di = 0 %]
+          [% cli = 0 %]
+          [% FOREACH voicemail_list = [ subscriber.voicemail_list.today,
+                                        subscriber.voicemail_list.yesterday,
+                                        subscriber.voicemail_list.lastweek,
+                                        subscriber.voicemail_list.previous ]
+          %]
+            [% cli = cli + 1 %]
+            [% IF voicemail_list %]
+              <tr class="anruflisteheader">
+                <td colspan="6">
+                  [% IF cli == 1 %]
+                    <h3>Heute</h3>
+                  [% END %]
+                  [% IF cli == 2 %]
+                    <h3>Gestern</h3>
+                  [% END %]
+                  [% IF cli == 3 %]
+                    <h3>Letzte Woche</h3>
+                  [% END %]
+                  [% IF cli == 4 %]
+                    [% IF subscriber.voicemail_list.today OR subscriber.voicemail_list.yesterday OR subscriber.voicemail_list.lastweek %]
+                      <h3>Frühere</h3>
+                    [% END %]
+                  [% END %]
+                </td>
+              </tr>
+
+              [% FOREACH voicemail = voicemail_list %]
+                [% c2di = c2di + 1 %]
+                <tr class="[% voicemail.background %]">
+                  <td class="anrufperson">
+                    <a href="/voicebox/listen?mailid=[% voicemail.id %]" title="Voicemail abhören">
+                      <img src="/grafik/voicemail.gif" width="20" height="20" alt="voicemail" />
+                      <strong>[% voicemail.partner %]</strong>
+                    </a>
+                    [% IF voicemail.partner_info %]
+                      <span>([% voicemail.partner_info %])</span>
+                    [% END %]
+                  </td>
+                  <td class="anrufanruf">
+                    <div class="yui-skin-sam" id="ca[%c2di%]">
+                      <img src="/grafik/call.gif" width="12" height="14" onclick="cl_pop('ca[%c2di%]','[%voicemail.partner_number%]')"/>
+                    </div>
+                  </td>
+                  <td class="anrufdauer">[% voicemail.duration %]</td>
+                  <td class="anrufzeit">[% voicemail.date %]</td>
+                  <td class="anrufloeschen">
+                    <form id="voicedelete" action="/voicebox/delete" method="post">
+                      <input type="hidden" name="voicemail_id" value="[% voicemail.id %]" />
+                      <input type="image" src="/grafik/delete.gif" alt="Voicemail löschen" title="Voicemail löschen" id="voice_delete_[% voicemail.id %]">
+                    </form>
+                  </td>
+                </tr>
+              [% END %]
+            [% END %]
+          [% END %]
+
+        </table>
+
+      </div>
+      <div class="spalte2">
+
+        <div class="container">
+
+          <h3>Suche</h3>
+
+          <form id="anrufsuche" action="/voicebox" method="post">
+            <label for="fzeitraumvon">Zeitraum (TT.MM.JJJJ)</label><br clear="all" />
+            <input type="text" id="fzeitraumvon" name="list_start" size="8" class="input8" value="[% subscriber.list_start %]"/>
+            <label for="fzeitraumbis" class="bis">bis</label>
+            <input type="text" id="fzeitraumbis" name="list_end" size="8" class="input8" value="[% subscriber.list_end %]"/>
+            <br clear="all" />
+            <div id="errormsg"><p>[% messages.msgdate %]</p></div>
+
+            <label for="fsuchbegriff">Suchbegriff</label><br />
+            <input type="text" id="fsuchbegriff" name="list_filter" size="21" class="input21" value="[% subscriber.list_filter %]"/>
+            <br clear="all" />
+
+            <div class="save">
+              <label for="voicebox_apply_filter">Filter anwenden</label>
+              <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="voicebox_apply_filter" />
+
+              <label for="voicebox_reset_filter">Filter zurücksetzen</label>
+            </div>
+            <input type="hidden" name="listmonth" value="[% subscriber.list_month %]" />
+          </form>
+
+          <form id="anrufsuchereset" action="/voicebox" method="post">
+            <input type="hidden" name="list_start" value="" />
+            <input type="hidden" name="list_end" value="" />
+            <input type="hidden" name="list_filter" value="" />
+            <input type="hidden" name="listmonth" value="[% subscriber.list_month %]" />
+            <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="voicebox_reset_filter">
+          </form>
+
+        </div>
+
+        <h3>Nachrichten nach Monaten</h3>
+
+        <ul class="anrufsuchemonate">
+          [% FOREACH selectyear = subscriber.selectmonths %]
+          <li>
+            <strong>[% selectyear.year %]</strong>
+            [% FOREACH selectmonth = selectyear.months %]
+            <form action="/voicebox" method="post">
+              <div class="save">
+              <label for="selmon_[% selectmonth.link %]">[% selectmonth.display %]</label>
+              <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="selmon_[% selectmonth.link %]" />
+              </div>
+              <input type="hidden" name="listmonth" value="[% selectmonth.link %]" />
+            </form>
+            [% END %]
+          </li>
+          [% END %]
+        </ul>
+
+      </div>
+      <div class="spalte3">
+
+        <h3>Einstellungen</h3>
+
+        <form id="voicesettings" action="/voicebox/settings" method="post">
+
+            <p>
+              <label for="femail">
+                Verständigung bei neuen Nachrichten an folgende E-Mail Adresse:<br />
+              </label>
+              <input type="text" size="20" class="input20" id="femail" name="email" value="[% subscriber.vbox.email %]" />
+            </p>
+            [% IF messages.msgemail %]<div id="errormsg"><p>[% messages.msgemail %]</p></div><br clear="all"/>[% END %]
+
+            <p>
+              <input type="checkbox" id="fwav" name="attach" class="noborder" [% IF subscriber.vbox.attach %]checked="checked"[% END %] /> WAV-File mitschicken.
+            </p><br clear="all" />
+
+            <label for="fpincode">Pin-Code</label>
+            <input type="text" size="4" class="input10" id="fpincode" name="password" value="[% subscriber.vbox.password %]" />
+            <br clear="all" />
+            [% IF messages.msgpassword %]<div id="errormsg"><p>[% messages.msgpassword %]</p></div><br clear="all"/>[% END %]
+            <p class="info">
+              Mit der PIN (4 Ziffern) können Sie Ihre Voicemails von ihrem Telefon aus abrufen.
+            </p>
+
+          <div class="save no_border">
+          <label for="voicebox_save_settings">Einstellungen speichern</label>
+          <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="voicebox_save_settings">
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+
+  </div><br clear="all" />
+

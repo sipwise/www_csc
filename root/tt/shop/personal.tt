@@ -1,0 +1,331 @@
+[% META title = 'Libratel Webshop' %]
+
+  <div id="headimg">
+    <a href=""><img src="/grafik/area_anmeldung.jpg" width="869" height="69" alt="Jetzt Kunde werden und alle Vorteile genießen!" /></a>
+  </div>
+  
+  <div id="main">
+    
+    <div id="spalten31">
+
+      <div id="topmsg">
+        <p> [% messages.topmsg %] </p>
+      </div>
+      <div id="toperr">
+        <p> [% messages.toperr %] </p>
+        <p> [% messages.prov_error %] </p>
+      </div>
+      
+      <h2>Bitte geben Sie Ihre persönlichen Daten an</h2>
+      
+      <div class="spalte1">
+        
+        <form class="anmelden" method="post" action="/shop/set_personal">
+          <input type="hidden" name="sk" value="[% sk %]" />
+
+          <script language="JavaScript" src="/js/privbus.js" type="text/javascript"></script>
+          <script language="JavaScript" src="/js/showhide.js" type="text/javascript"></script>
+
+          <fieldset class="alt">
+
+            <h3>Ihre Daten</h3>
+            <p class="zp">
+              <span class="zspacer1"></span>
+              <input class="zradio" type="radio" name="customer_type" value="private"
+                     onclick="javascript:privbus('private');" [% refill.private_checked %] /> Privat
+              <span class="zspacer2"></span>
+              <input class="zradio" type="radio" name="customer_type" value="business"
+                     onclick="javascript:privbus('business');" [% refill.business_checked %]/> Firma<br />
+            </p>
+
+            <div id="data_business" class="[% refill.data_business_class %]">
+              <p class="left">
+                <label for="fcomregnum">Firmenbuchnummer</label>
+                <input type="text" size="20" class="input20" id="fcomregnum" name="comregnum" value="[% refill.comregnum %]" /><br />
+              </p><br clear="all" />
+              <label for="ffirma">Firma</label>
+              <input type="text" size="60" class="input60" id="ffirma" name="company" value="[% refill.company %]" /><br />
+            </div>
+
+            <div class="gender_space">
+              <label for="fgender">Anrede</label>
+              <select size="1" id="fgender" name="gender" />
+                <option value="male"[% IF refill.gender == "male" %]selected="selected" [% END %]>Herr</option>
+                <option value="female"[% IF refill.gender == "female" %]selected="selected" [% END %]>Frau</option>
+              </select>
+            </div>
+            <p class="left">
+              <label for="fvorname">Vorname</label>
+              <input type="text" size="20" class="input20" id="fvorname" name="firstname" value="[% refill.firstname %]" /><br />
+            </p>
+            <p class="right">
+              <label for="fnachname">Nachname</label>
+              <input type="text" size="20" class="input20" id="fnachname" name="lastname" value="[% refill.lastname %]" /><br />
+            </p>
+
+            <label for="fadresse">Adresse</label>
+            <input type="text" size="60" class="input60" id="fadresse" name="street" value="[% refill.street %]" /><br />
+            <p class="leftplz">
+              <label for="fplz">PLZ</label>
+              <input type="text" size="10" class="input10" id="fplz" name="postcode" value="[% refill.postcode %]" /><br />
+            </p>
+            <p class="rightplz">
+              <label for="fort">Ort</label>
+              <input type="text" size="40" class="input40" id="fort" name="city" value="[% refill.city %]" /><br />
+            </p>
+            <p class="left">
+              <label for="ftelefon">Telefon</label>
+              <input type="text" size="20" class="input20" id="ftelefon" name="phonenumber" value="[% refill.phonenumber %]" /><br />
+            </p>
+            <p class="right">
+              <label for="femail">E-Mail</label>
+              <input type="text" size="20" class="input20" id="femail" name="email" value="[% refill.email %]" /><br />
+            </p><br clear="all" />
+            <label class="no_border"><input type="checkbox" id="fnewsletter" name="newsletter" [% refill.newsletter %] /></label>
+            <label class="newslettertext" for="fnewsletter">Ich möchte den Libratel-Newsletter erhalten.</label>
+            <div id="errormsg"><p>[% messages.msgpersonal %]</p></div>
+
+          </fieldset><br clear="all" />
+
+          <div id="contact_business" class="[% refill.contact_business_class %]">
+
+            <fieldset>
+              <h3>Zeichnungsberechtigter</h3>
+              <span class="zspacer1"></span>
+              <label for="fzeichnungwieoben" class="as_above">
+                <input type="checkbox" id="fzeichnungwieoben" name="sign_like_contact"
+                       [% IF refill.sign_like_contact %]checked="checked"[% END %]
+                       onclick="javascript:showhide('showhide_sign')" />
+                Wie oben (Punkt "Ihre Daten")
+              </label><br clear="all" />
+              <div id="showhide_sign"
+              [% IF refill.sign_like_contact %]
+                   style="display:none;"
+              [% ELSE %]
+                   style="display:block;"
+              [% END %]
+              >
+                <div class="anmeldeninfo">
+                  Bitte füllen Sie alle Eingabefelder aus.
+                </div>
+                <div>
+                  <label for="fsigngender">Anrede</label>
+                  <select size="1" id="fsigngender" name="sign_gender" />
+                    <option value="male" [% IF refill.sign_contact.gender == "male" %]selected="selected" [% END %]>Herr</option>
+                    <option value="female" [% IF refill.sign_contact.gender == "female" %]selected="selected" [% END %]>Frau</option>
+                  </select>
+                </div>
+                <p class="left">
+                  <label for="fsignvorname">Vorname</label>
+                  <input type="text" size="20" class="input20" id="fsignvorname"
+                         name="sign_firstname" value="[% refill.sign_contact.firstname %]" /><br />
+                </p>
+                <p class="right">
+                  <label for="fsignnachname">Nachname</label>
+                  <input type="text" size="20" class="input20" id="fsignnachname"
+                         name="sign_lastname" value="[% refill.sign_contact.firstname %]" /><br />
+                </p>
+                <p class="left">
+                  <label for="fsigntelefon">Telefon</label>
+                  <input type="text" size="20" class="input20" id="fsigntelefon"
+                         name="sign_phonenumber" value="[% refill.sign_contact.phonenumber %]" /><br />
+                </p>
+                <p class="right">
+                <label for="fsignemail">E-Mail</label>
+                <input type="text" size="20" class="input20" id="fsignemail"
+                       name="sign_email" value="[% refill.sign_contact.email %]" /><br />
+                </p><br clear="all" />
+                <div id="errormsg"><p>[% messages.msgsign %]</p></div>
+              </div>
+            </fieldset><br clear="all" />
+
+            <fieldset class="alt">
+              <h3>Technischer Ansprechpartner</h3>
+              <span class="zspacer1"></span>
+              <label for="ftechnwieoben" class="as_above">
+                <input type="checkbox" id="ftechnwieoben" name="tech_like_contact"
+                       [% IF refill.tech_like_contact %]checked="checked"[% END %]
+                       onclick="javascript:showhide('showhide_tech')" />
+                Wie oben (Punkt "Ihre Daten")
+              </label><br clear="all" />
+              <div id="showhide_tech"
+              [% IF refill.tech_like_contact %]
+                   style="display:none;"
+              [% ELSE %]
+                   style="display:block;"
+              [% END %]
+              >
+                <div class="anmeldeninfo">
+                  Bitte füllen Sie alle Eingabefelder aus.
+                </div>
+                <div>
+                  <label for="ftechgender">Anrede</label>
+                  <select size="1" id="ftechgender" name="tech_gender" />
+                    <option value="male" [% IF refill.tech_contact.gender == "male" %]selected="selected" [% END %]>Herr</option>
+                    <option value="female" [% IF refill.tech_contact.gender == "female" %]selected="selected" [% END %]>Frau</option>
+                  </select>
+                </div>
+                <p class="left">
+                  <label for="ftechvorname">Vorname</label>
+                  <input type="text" size="20" class="input20" id="ftechvorname"
+                         name="tech_firstname" value="[% refill.tech_contact.firstname %]" /><br />
+                </p>
+                <p class="right">
+                  <label for="ftechnachname">Nachname</label>
+                  <input type="text" size="20" class="input20" id="ftechnachname"
+                         name="tech_lastname" value="[% refill.tech_contact.lastname %]" /><br />
+                </p>
+                <p class="left">
+                  <label for="ftechtelefon">Telefon</label>
+                  <input type="text" size="20" class="input20" id="ftechtelefon"
+                         name="tech_phonenumber" value="[% refill.tech_contact.phonenumber %]" /><br />
+                </p>
+                <p class="right">
+                  <label for="ftechemail">E-Mail</label>
+                  <input type="text" size="20" class="input20" id="ftechemail"
+                         name="tech_email" value="[% refill.tech_contact.email %]" /><br />
+                </p><br clear="all" />
+                <div id="errormsg"><p>[% messages.msgtech %]</p></div>
+              </div>
+            </fieldset><br clear="all" />
+          </div>
+
+          <fieldset>
+            <h3>Lieferadresse</h3>
+            <span class="zspacer1"></span>
+            <label for="deliverasabove" class="as_above">
+              <input type="checkbox" id="deliverasabove" name="deliver_to_contact"
+                     [% IF refill.deliver_to_contact %]checked="checked"[% END %]
+                     onclick="javascript:showhide('showhide_deliver')" />
+              Wie oben (Punkt "Ihre Daten")
+            </label><br clear="all" />
+            <div id="showhide_deliver"
+            [% IF refill.deliver_to_contact %]
+                 style="display:none;"
+            [% ELSE %]
+                 style="display:block;"
+            [% END %]
+            >
+              <div class="anmeldeninfo">
+                Bitte füllen Sie die Eingabefelder aus, lediglich das Feld "Firma" ist optional.
+              </div>
+              <div>
+                <label for="deli_gender">Anrede</label>
+                <select size="1" id="deli_gender" name="deli_gender" />
+                  <option value="male"[% IF refill.delivery.gender == "male" %]selected="selected" [% END %]>Herr</option>
+                  <option value="female"[% IF refill.delivery.gender == "female" %]selected="selected" [% END %]>Frau</option>
+                </select>
+              </div>
+              <p class="left">
+                <label for="deli_firstname">Vorname</label>
+                <input type="text" size="20" class="input20" id="deli_firstname"
+                       name="deli_firstname" value="[% refill.delivery.firstname %]" /><br />
+              </p>
+              <p class="right">
+                <label for="deli_lastname">Nachname</label>
+                <input type="text" size="20" class="input20" id="deli_lastname"
+                       name="deli_lastname" value="[% refill.delivery.lastname %]" /><br />
+              </p>
+              <label for="deli_company">Firma</label>
+              <input type="text" size="60" class="input60" id="deli_company"
+                     name="deli_company" value="[% refill.delivery.company %]" /><br />
+              <label for="deli_street">Adresse</label>
+              <input type="text" size="60" class="input60" id="deli_street"
+                     name="deli_street" value="[% refill.delivery.street %]" /><br />
+              <p class="leftplz">
+                <label for="deli_postcode">PLZ</label>
+                <input type="text" size="10" class="input10" id="deli_postcode"
+                       name="deli_postcode" value="[% refill.delivery.postcode %]" /><br />
+              </p>
+              <p class="rightplz">
+                <label for="deli_city">Ort</label>
+                <input type="text" size="40" class="input40" id="deli_city"
+                       name="deli_city" value="[% refill.delivery.city %]" /><br />
+              </p>
+              <div id="errormsg"><p>[% messages.msgdelivery %]</p></div>
+            </div>
+          </fieldset>
+
+          <fieldset class="alt">
+            <h3>Webseiten Login</h3>
+            <p class="left">
+              <label for="fusername">Username</label>
+              <input type="text" class="input20 sipuri" size="20" id="fusername" name="username" value="[% refill.username %]" />
+            </p><br clear="all" />
+            [% IF messages.msgusername %]<div id="errormsg"><p>[% messages.msgusername %]</p></div><br clear="all" />[% END %]
+            <p class="left">
+              <label for="fpasswort1">Passwort</label>
+              <input type="password" size="20" class="input20" id="fpasswort1" name="fpasswort1" /><br />
+            </p>
+            <p class="right">
+              <label for="fpasswort2">wiederholen</label>
+              <input type="password" size="20" class="input20" id="fpasswort2" name="fpasswort2" /><br />
+            </p>
+            <div id="errormsg"><p>[% messages.msgpasswd %]</p></div>
+            <br clear="all" />
+            <p class="anmeldeninfo">
+              Den Usernamen und das Passwort benötigen Sie für den Login in den Kundenbereich der Libratel Webseite.
+            </p><br clear="all" />
+          </fieldset><br clear="all" />
+
+          <p class="button">
+            <span class="back">
+              <a href="javascript:history.back();" class="link">Zurück</a>
+            </span>
+            <div class="save">
+              <label for="savenext">Weiter</label>
+              <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="savenext" />
+            </div>
+          </p>
+        </form><br clear="all" />
+      
+      </div>
+      <div class="spalte2">
+        
+        <p class="prodsumme">
+          EURO <strong>[% price_sum %]</strong>
+        </p>
+        
+        <ul class="schritte">
+          <li class="ok">
+            <strong>Schritt 1:</strong><br />
+            Tarifauswahl<br />
+            <span class="okprodtext">[% tarif.name %]</span>
+            <br clear="all" />
+          </li>
+          <li class="ok">
+            <strong>Schritt 2:</strong><br />
+            System und Endgeräte<br />
+            [% IF system.name %]
+            <strong class="okprodcount">1x</strong>
+            <img class="okprodimg" src="/grafik/ok_system.gif" width="22" height="" alt="25" />
+            <span class="okprodtext">[% system.name %]</span>
+            <br clear="all" />
+            [% END %]
+            [% FOREACH phone = phones %]
+              <strong class="okprodcount">[% phone.count %]x</strong>
+              <img class="okprodimg" src="/grafik/ok_phone.gif" width="22" height="" alt="25" />
+              <span class="okprodtext">[% phone.name %]</span>
+              <br clear="all" />
+            [% END %]
+          </li>
+          <li class="on">
+            <strong>Schritt 3:</strong><br />
+            Persönliche Daten
+          </li>
+          <li>
+            <strong>Schritt 4:</strong><br />
+            Runfnummer wählen
+          </li>
+          <li>
+            <strong>Schritt 5:</strong><br />
+            Bestellung abschließen
+          </li>
+        </ul>
+        
+      </div>
+      
+    </div>
+    
+  </div><br clear="all" />
+

@@ -1,0 +1,39 @@
+[% META title = 'Libratel CSC Login' %]
+
+  <div id="headimg">
+    <img src="/grafik/area_login.jpg" width="869" height="69" alt="Bitte melden Sie sich an." />
+  </div>
+
+  <div id="main">
+
+    <div id="toperr">
+      <p> [% messages.toperr %] </p>
+      <p> [% messages.prov_error %] </p>
+    </div>
+
+    <div id="spalten31">
+
+      <h2>CSC Login</h2>
+
+      <div class="spalte1">
+
+         <form id="anmelden" action="/login/do_login">
+           <fieldset>
+             <label for="benutzer">Benutzer</label>
+             <input type="text" id="benutzer" name="benutzer" class="benutzer" size="20" /><br clear="all" />
+             <label for="passwort">Passwort</label>
+             <input type="password" id="passwort" name="passwort" class="passwort" size="20" /><br clear="all" />
+<!--         <span><a href="#" class="link">Passwort vergessen?</a></span> -->
+             <br clear="all" />
+           </fieldset>
+           <input type="image" src="grafik/anmelden.gif" alt="Anmelden" />
+         </form>
+
+      </div>
+
+      <div class="spalte2">
+      </div>
+
+    </div>
+
+  </div><br clear="all" />

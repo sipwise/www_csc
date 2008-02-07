@@ -1,0 +1,166 @@
+[% META title = 'callblock' %]
+
+  <div id="headimg">
+    <img src="/grafik/area_rufnummernsperre.jpg" width="869" height="69" alt="Rufnummernsperre für eingehende und ausgehende Telefonate." />
+  </div>
+  
+  <div id="main">
+    
+    <div id="topmsg">
+      <p> [% messages.topmsg %] </p>
+    </div>
+    <div id="toperr">
+      <p> [% messages.toperr %] </p>
+      <p> [% messages.prov_error %] </p>
+    </div>
+
+    <div class="sperrehead">
+      <h3>Rufnummernsperre</h3>
+      <h2 class="umleitungfuer">Einstellungen für [% subscriber.active_number %]</h2>
+    </div>
+    
+    <div id="spalten11">
+      
+      <div class="spalte1">
+        
+        <h3 class="blueh3">Eingehende Anrufe</h3>
+        <div class="fsperre">
+          <fieldset class="fieldblockmode">
+            <form action="/callblock/save" method="post">
+              <input type="radio" id="block_in_mode0" name="block_in_mode" value="0" [% subscriber.blk.inmode0_checked %] />
+              <label for="block_in_mode0">Alles erlauben ausser ...</label><br />
+              <input type="radio" id="block_in_mode1" name="block_in_mode" value="1" [% subscriber.blk.inmode1_checked %] />
+              <label for="block_in_mode1">Alles sperren ausser ...</label>
+              <p class="save">
+                <label for="save_blockinmode">Einstellung speichern</label><input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="save_blockinmode">
+              </p>
+            </form>
+          </fieldset>
+
+          <table class="anrufliste sperre">
+            [% FOREACH blockentry = subscriber.block_in_list %]
+              <tr class="[% blockentry.background %]">
+                <td class="sperrenummer"> [% blockentry.number %] </td>
+                <td class="sperresave">
+                  <form action="/callblock/save" method="post">
+                    <div class="save">
+                      <input type="hidden" name="block_in_del" value="[% blockentry.number %]" />
+                      <input type="hidden" name="block_in_stat" value="[% blockentry.active %]" />
+                      <label for="save_blockindel[% blockentry.id %]">löschen</label>
+                      <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="save_blockindel[% blockentry.id %]">
+                    </div>
+                  </form>
+                </td>
+                <td class="sperresave">
+                  <form action="/callblock/save" method="post">
+                    <div class="save">
+                      [% IF    blockentry.active  == 1 %]
+                        <input type="hidden" name="block_in_act" value="[% blockentry.number %]" />
+                        <input type="hidden" name="block_in_stat" value="1" />
+                        <label for="save_blockinact[% blockentry.id %]">deaktivieren</label>
+                        <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="save_blockinact[% blockentry.id %]">
+                      [% ELSIF blockentry.active  == 0 %]
+                        <input type="hidden" name="block_in_act" value="[% blockentry.number %]" />
+                        <input type="hidden" name="block_in_stat" value="0" />
+                        <label for="save_blockinact[% blockentry.id %]">aktivieren</label>
+                        <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="save_blockinact[% blockentry.id %]">
+                      [% END %]
+                    </div>
+                  </form>
+                </td>
+              </tr>
+            [% END %]
+          </table>
+
+          <fieldset class="sperreadd">
+            <form action="/callblock/save" method="post">
+              <label for="save_blockinaddtxt">Neuer Eintrag:</label>
+              <input type="text" size="20" name="block_in_add" id="save_blockinaddtxt" value="[% refill.blockinaddtxt %]" />
+              <div id="errormsg"><p>[% messages.msginadd %]</p></div>
+              <p class="save">
+                <label for="save_blockinadd">Nummer hinzufügen</label><input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="save_blockinadd">
+              </p><br clear="all" />
+              <p class="info">
+                Bitte verwenden Sie nur Ziffern und "?" als Platzhalter für eine, bzw. "*" für mehrere beliebige Ziffer(n) in der Rufnummer. Um Anrufe mit unterdrückter Rufnummer hinzuzufügen, müssen Sie das Eingabefeld einfach leer lassen.
+              </p>
+            </form>
+          </fieldset>
+        </div>
+        
+      </div>
+
+      <div class="spalte2">
+        
+        <h3 class="blueh3">Ausgehende Anrufe</h3>
+        <div class="fsperre">
+          <fieldset class="fieldblockmode">
+            <form action="/callblock/save" method="post">
+              <p><label class="no_border"><input type="checkbox" id="clir" name="clir"
+                                            [% IF subscriber.clir %]
+                                              checked="checked"
+                                            [% END %]
+                                          /> eigene Rufnummer unterdrücken</label></p>
+              <input type="radio" id="block_out_mode0" name="block_out_mode" value="0" [% subscriber.blk.outmode0_checked %] />
+              <label for="block_out_mode0">Alles erlauben ausser ...</label><br />
+              <input type="radio" id="block_out_mode1" name="block_out_mode" value="1" [% subscriber.blk.outmode1_checked %] />
+              <label for="block_out_mode1">Alles sperren ausser ...</label>
+              <p class="save">
+                <label for="save_blockoutmode">Einstellung speichern</label><input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="save_blockoutmode">
+              </p>
+            </form>
+          </fieldset>
+
+          <table class="anrufliste sperre">
+            [% FOREACH blockentry = subscriber.block_out_list %]
+              <tr class="[% blockentry.background %]">
+                <td class="sperrenummer"> [% blockentry.number %] </td>
+                <td class="sperresave">
+                  <form action="/callblock/save" method="post">
+                    <div class="save">
+                      <input type="hidden" name="block_out_del" value="[% blockentry.number %]" />
+                      <input type="hidden" name="block_out_stat" value="[% blockentry.active %]" />
+                      <label for="save_blockoutdel[% blockentry.id %]">löschen</label>
+                      <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="save_blockoutdel[% blockentry.id %]">
+                    </div>
+                  </form>
+                </td>
+                <td class="sperresave">
+                  <form action="/callblock/save" method="post">
+                    <div class="save">
+                      [% IF    blockentry.active  == 1 %]
+                        <input type="hidden" name="block_out_act" value="[% blockentry.number %]" />
+                        <input type="hidden" name="block_out_stat" value="1" />
+                        <label for="save_blockoutact[% blockentry.id %]">deaktivieren</label>
+                        <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="save_blockoutact[% blockentry.id %]">
+                      [% ELSIF blockentry.active  == 0 %]
+                        <input type="hidden" name="block_out_act" value="[% blockentry.number %]" />
+                        <input type="hidden" name="block_out_stat" value="0" />
+                        <label for="save_blockoutact[% blockentry.id %]">aktivieren</label>
+                        <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="save_blockoutact[% blockentry.id %]">
+                      [% END %]
+                    </div>
+                  </form>
+                </td>
+              </tr>
+            [% END %]
+          </table>
+          <fieldset class="sperreadd">
+            <form action="/callblock/save" method="post">
+              <label for="save_blockoutaddtxt">Neuer Eintrag:</label>
+              <input type="text" size="20" name="block_out_add" id="save_blockoutaddtxt" value="[% refill.blockoutaddtxt %]" />
+              <div id="errormsg"><p>[% messages.msgoutadd %]</p></div>
+              <p class="save">
+                <label for="save_blockoutadd">Nummer hinzufügen</label><input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="save_blockoutadd">
+              </p><br clear="all" />
+              <p class="info">
+                Bitte verwenden Sie nur Ziffern und "?" als Platzhalter für eine, bzw. "*" für mehrere beliebige Ziffer(n) in der Rufnummer.
+              </p>
+            </form>
+          </fieldset>
+        </div><br clear="all" />
+        
+      </div>
+      
+    </div>
+    
+  </div><br clear="all" />

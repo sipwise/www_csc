@@ -1,0 +1,15 @@
+[% META title = 'internal error' %]
+
+  <div id="headimg">
+    <img src="/grafik/area_error.jpg" width="869" height="69" alt="Ein Fehler ist aufgetreten." />
+  </div>
+
+  <div id="main">
+
+    <br><br>
+    Ein interner Fehler ist aufgetreten.
+    Bitte versuchen Sie es später noch einmal,
+    oder kontaktieren Sie den <a href="#">Libratel Support</a>.
+    <br><br><br>
+
+  </div><br clear="all" />

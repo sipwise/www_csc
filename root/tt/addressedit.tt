@@ -1,0 +1,94 @@
+[% META title = 'addressbook' %]
+
+  <div id="headimg">
+    <img src="/grafik/area_kontakte.jpg" width="869" height="69" alt="Ihre persönlichen Kontakte" />
+  </div>
+
+  <div id="main">
+
+    <div id="topmsg">
+      <p> [% messages.topmsg %] </p>
+    </div>
+    <div id="toperr">
+      <p> [% messages.toperr %] </p>
+      <p> [% messages.prov_error %] </p>
+    </div>
+
+    <div class="sperrehead">
+      <h3>Kontakte</h3>
+      <h2 class="umleitungfuer">Kontakte für [% subscriber.active_number %]</h2>
+    </div>
+
+    <div id="spalten31">
+
+      <div class="spalte1">
+
+        <h3>Neuer Kontakt</h3>
+
+        <p class="kontaktcancel">
+          <a href="/addressbook" class="link">Abbrechen</a>
+        </p>
+
+        <form id="kontaktform" action="/addressbook/save" method="post">
+          <fieldset class="alt">
+            <h3>Person</h3>
+            <p>
+              <label for="ffirstname">Vorname</label>
+              <input type="text" id="ffirstname" name="firstname" size="25" class="input25" value="[% contact.firstname %]" />
+              <label for="flastname">Nachname</label>
+              <input type="text" id="flastname" name="lastname" size="25" class="input25" value="[% contact.lastname %]" /><br clear="all" />
+              [% IF messages.name %]<div id="errormsg"><p>[% messages.name %]</p></div><br clear="all"/>[% END %]
+              <label for="fcompany">Firma</label>
+              <input type="text" id="fcompany" name="company" size="25" class="input25" value="[% contact.company %]" /><br clear="all" />
+            </p>
+          </fieldset>
+          <fieldset>
+            <h3>Rufnummern</h3>
+            <p>
+              <label for="fhomephone">Privat</label>
+              <input type="text" id="fhomephone" name="homephonenumber" size="25" class="input25" value="[% contact.homephonenumber %]" /><br clear="all" />
+              [% IF messages.homephonenumber %]<div id="errormsg"><p>[% messages.homephonenumber %]</p></div><br clear="all"/>[% END %]
+              <label for="fphone">Büro</label>
+              <input type="text" id="fphone" name="phonenumber" size="25" class="input25" value="[% contact.phonenumber %]" /><br clear="all" />
+              [% IF messages.phonenumber %]<div id="errormsg"><p>[% messages.phonenumber %]</p></div><br clear="all"/>[% END %]
+              <label for="fmobile">Mobil</label>
+              <input type="text" id="fmobile" name="mobilenumber" size="25" class="input25" value="[% contact.mobilenumber %]" /><br clear="all" />
+              [% IF messages.mobilenumber %]<div id="errormsg"><p>[% messages.mobilenumber %]</p></div><br clear="all"/>[% END %]
+              <label for="ffax">Fax</label>
+              <input type="text" id="ffax" name="faxnumber" size="25" class="input25" value="[% contact.faxnumber %]" /><br clear="all" />
+              [% IF messages.faxnumber %]<div id="errormsg"><p>[% messages.faxnumber %]</p></div><br clear="all"/>[% END %]
+            </p>
+          </fieldset>
+          <fieldset>
+            <h3>Web</h3>
+            <p>
+              <label for="femail">E-Mail</label>
+              <input type="text" id="femail" name="email" size="25" class="input25" value="[% contact.email %]" /><br clear="all" />
+              <label for="fhomepage">Webseite</label>
+              <input type="text" id="fhomepage" name="homepage" size="25" class="input25" value="[% contact.homepage %]" /><br clear="all" />
+            </p>
+          </fieldset>
+
+          <input type="hidden" name="id" value="[% contact.id %]" />
+
+          <p class="save umleitung">
+            <label for="save_contact">Kontakt speichern</label><input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="save_contact">
+          </p>
+        </form><br clear="all" />
+
+      </div>
+      <div class="spalte2">
+
+        <h3>Suche</h3>
+
+        <form id="anrufsuche" action="">
+          <label for="fsuchbegriff">Suchbegriff</label><br />
+          <input type="text" id="fsuchbegriff" name="fsuchbegriff" size="21" class="input21" /><br clear="all" />
+          <a href="#" class="link">Suche starten</a>
+        </form>
+
+      </div>
+
+    </div>
+
+  </div><br clear="all" />

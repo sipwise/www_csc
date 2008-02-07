@@ -1,0 +1,989 @@
+package csc::Controller::account;
+
+use strict;
+use warnings;
+use base 'Catalyst::Controller';
+
+=head1 NAME
+
+csc::Controller::account - Catalyst Controller
+
+=head1 DESCRIPTION
+
+Catalyst Controller for account administration.
+
+=head1 METHODS
+
+=head2 index 
+
+=cut
+
+sub index : Private {
+    my ( $self, $c ) = @_;
+
+    $c->log->debug('***account::index called');
+
+    $c->response->redirect('/account/info');
+}
+
+sub info : Local {
+    my ( $self, $c ) = @_;
+
+    $c->log->debug('***account::settings called');
+
+    if($c->session->{user}{username} eq 'demonstration') {
+        $c->response->redirect($c->uri_for('/desktop'));
+        return;
+    }
+
+    unless($c->model('Provisioning')->get_usr_preferences($c)) {
+        $c->stash->{template} = 'tt/account_info.tt';
+        return 1;
+    }
+
+    $c->stash->{subscriber}{active_number} = '00'. $c->session->{user}{data}{cc} .
+                                             ' (0)'. $c->session->{user}{data}{ac} .
+                                             ' '. $c->session->{user}{data}{sn};
+    if($c->session->{user}{extension}) {
+        my $ext = $c->session->{user}{preferences}{extension};
+        $c->stash->{subscriber}{active_number} =~ s/$ext$/ - $ext/;
+    }
+
+    $c->stash->{sip_domain} = $c->config->{site_domain};
+    $c->stash->{sip_server} = $c->config->{sip_server};
+    $c->stash->{tftp_server} = $c->config->{tftp_server};
+
+    $c->stash->{template} = 'tt/account_info.tt';
+}
+
+sub pass : Local {
+    my ( $self, $c ) = @_;
+
+    $c->log->debug('***account::pass called');
+
+    if($c->session->{user}{username} eq 'demonstration') {
+        $c->response->redirect($c->uri_for('/desktop'));
+        return;
+    }
+
+    $c->stash->{template} = 'tt/account_pass.tt';
+}
+
+sub savepass : Local {
+    my ( $self, $c ) = @_;
+
+    $c->log->debug('***account::savepass called');
+
+    if($c->session->{user}{username} eq 'demonstration') {
+        $c->response->redirect($c->uri_for('/desktop'));
+        return;
+    }
+
+    unless($c->model('Provisioning')->get_usr_preferences($c)) {
+        $c->response->redirect('/account/pass');
+        return;
+    }
+
+    my %messages;
+
+    my $oldpass = $c->request->params->{oldpass};
+    my $passwd1 = $c->request->params->{newpass1};
+    my $passwd2 = $c->request->params->{newpass2};
+
+#    $c->stash->{refill}{oldpass} = $oldpass;
+#    $c->stash->{refill}{passwd1} = $passwd1;
+#    $c->stash->{refill}{passwd2} = $passwd2;
+
+    if(!defined $oldpass or length $oldpass == 0) {
+        $messages{msgoldpass} = 'Client.Voip.MissingOldPass';
+    }
+    if(!defined $passwd1 or length $passwd1 == 0) {
+        $messages{msgpasswd} = 'Client.Voip.MissingPass';
+    } elsif(length $passwd1 < 6) {
+        $messages{msgpasswd} = 'Client.Voip.PassLength';
+    } elsif(!defined $passwd2 or length $passwd2 == 0) {
+        $messages{msgpasswd} = 'Client.Voip.MissingPass2';
+    } elsif($passwd1 ne $passwd2) {
+        $messages{msgpasswd} = 'Client.Voip.PassNoMatch';
+    }
+
+    unless(keys %messages) {
+        unless($c->model('Provisioning')->call_prov($c, 'voip', 'authenticate_webuser',
+                                                    { webusername => $c->session->{user}{username},
+                                                      domain      => $c->session->{user}{domain},
+                                                      webpassword => $oldpass,
+                                                    },
+                                                   ))
+        {
+            $c->session->{prov_error} = 'Client.Voip.IncorrectPass';
+            $c->response->redirect('/account/pass');
+            return;
+        }
+
+        my $account;
+        unless($c->model('Provisioning')->call_prov($c, 'billing', 'get_voip_account_by_id',
+                                                    { id => $c->session->{user}{data}{account_id} },
+                                                    \$account,
+                                                   ))
+        {
+            $c->response->redirect('/account/pass');
+            return;
+        }
+
+        if($c->model('Provisioning')->call_prov($c, 'billing', 'update_customer',
+                                                { id   => $$account{customer_id},
+                                                  data => { shoppass => $passwd1 },
+                                                }
+                                               ))
+        {
+            if($c->model('Provisioning')->call_prov($c, 'voip', 'update_webuser_password',
+                                                    { webusername => $c->session->{user}{username},
+                                                      domain      => $c->session->{user}{domain},
+                                                      webpassword => $passwd1
+                                                    }
+                                                   ))
+            {
+                $messages{topmsg} = 'Server.Voip.SavedPass';
+                $c->session->{user}{password} = $passwd1;
+            } else {
+                $c->model('Provisioning')->call_prov($c, 'billing', 'update_customer',
+                                                     { id   => $$account{customer_id},
+                                                       data => { shoppass => $c->session->{user}{password} }
+                                                     });
+            }
+        }
+    }
+
+    $c->session->{messages} = \%messages;
+    $c->response->redirect('/account/pass');
+}
+
+sub balance : Local {
+    my ( $self, $c ) = @_;
+
+    $c->log->debug('***account::balance called');
+
+    unless($c->session->{user}{admin}) {
+        $c->response->redirect($c->uri_for('/account/info'));
+        return;
+    }
+
+    unless($c->model('Provisioning')->get_account_balance($c)) {
+        $c->stash->{template} = 'tt/account_balance.tt';
+        return 1;
+    }
+
+    $c->stash->{refill}{amount} = $c->request->params->{amount} || '';
+
+    $c->stash->{subscriber}{account}{cash_balance} = sprintf "%.2f", $c->session->{user}{account}{cash_balance} / 100;
+    $c->stash->{template} = 'tt/account_balance.tt';
+}
+
+sub setpay : Local {
+    my ( $self, $c ) = @_;
+
+    my %messages;
+
+    $c->log->debug('***account::setpay called');
+
+    unless($c->session->{user}{admin}) {
+        $c->response->redirect($c->uri_for('/account/info'));
+        return;
+    }
+
+    delete $c->session->{payment}{order_id} if exists $c->session->{payment}{order_id};
+    delete $c->session->{mpay24} if exists $c->session->{mpay24};
+    delete $c->session->{paypal} if exists $c->session->{paypal};
+
+    my $amount = $c->request->params->{amount};
+    if($amount !~ /^\d+$/) {
+        $c->session->{messages}{msgamount} = 'Client.Billing.MalformedAmount';
+        $c->response->redirect($c->uri_for('/account/balance'));
+        return;
+    }
+
+    unless($c->model('Provisioning')->get_usr_preferences($c)) {
+        $c->response->redirect($c->uri_for('/account/balance'));
+        return;
+    }
+    my $account;
+    unless($c->model('Provisioning')->call_prov($c, 'billing', 'get_voip_account_by_id',
+                                                { id => $c->session->{user}{data}{account_id} },
+                                                \$account
+                                               ))
+    {
+        return;
+    }
+
+    $c->session->{payment}{customer_id} = $$account{customer_id};
+    $c->session->{payment}{amount} = $amount * 100;
+    $c->response->redirect('/account/dopay');
+}
+
+sub dopay : Local {
+    my ( $self, $c ) = @_;
+
+    $c->log->debug('***account::dopay called');
+
+    unless($c->session->{user}{admin}) {
+        $c->response->redirect($c->uri_for('/account/info'));
+        return;
+    }
+
+    unless($c->session->{payment}{amount}) {
+        $c->response->redirect($c->uri_for('/account/balance'));
+        return;
+    }
+
+    if(exists $c->session->{mpay24_errors}) {
+        $c->stash->{mpay24_errors} = $c->session->{mpay24_errors};
+        delete $c->session->{mpay24_errors};
+    }
+
+    if(exists $c->session->{refill}) {
+        $c->stash->{refill} = $c->session->{refill};
+        delete $c->session->{refill};
+    }
+
+    $c->stash->{backend} = 'account';
+    $c->stash->{template} = 'tt/account_payment.tt';
+}
+
+sub dopay_eps : Local {
+    my ( $self, $c ) = @_;
+
+    $c->log->debug('***account::dopay_eps called');
+
+    my $amount = $c->session->{payment}{amount};
+
+    my $bankname = $c->request->params->{bankname};
+    my ($bank, $bankid);
+    $bank = $bankname;
+
+    if($bankname =~ /^ARZ_/) {
+        ($bank, $bankid) = split /_/, $bankname;
+    }
+
+    my $tid = $self->_start_transaction($c, 'eps', $amount);
+    unless($tid) {
+        $c->response->redirect('/account/dopay');
+        return;
+    }
+
+    if($c->model('Mpay24')->accept_eps_payment($c, $tid, $amount, $bank, $bankid)) {
+        unless($c->model('Provisioning')->call_prov($c, 'billing', 'update_payment',
+                                                    { id   => $tid,
+                                                      data => { state => 'transact' },
+                                                    },
+                                                    undef
+                                                   ))
+        {
+            return;
+        }
+        $c->response->redirect($c->session->{mpay24}{LOCATION});
+        $c->log->info("redirected customer to ". $c->session->{mpay24}{LOCATION});
+    } elsif(defined $c->session->{mpay24}) { # application error
+        $self->_fail_transaction($c, $tid);
+        $c->session->{mpay24_errors}{eps} = $c->session->{mpay24}{EXTERNALSTATUS}
+                                            || $c->model('Provisioning')->localize('Web.Payment.UnknownError');
+        $c->session->{refill}{eps}{bankname} = $bankname;
+        $c->response->redirect('/account/dopay#eps');
+    } else { # transport error
+        $self->_fail_transaction($c, $tid);
+        $c->session->{mpay24_errors}{eps} = $c->model('Provisioning')->localize('Web.Payment.HttpFailed');
+        $c->session->{refill}{eps}{bankname} = $bankname;
+        $c->response->redirect('/account/dopay#eps');
+    }
+
+    return 1;
+}
+
+sub dopay_elv : Local {
+    my ( $self, $c ) = @_;
+
+    $c->log->debug('***account::dopay_elv called');
+
+    my $amount = $c->session->{payment}{amount};
+
+    my $agb_ack = $c->request->params->{agb_ack};
+    my $accountnumber = $c->request->params->{accountnumber};
+    my $bankid = $c->request->params->{bankid};
+
+    my $tid = $self->_start_transaction($c, 'elv', $amount);
+    unless($tid) {
+        $c->response->redirect('/account/dopay');
+        return;
+    }
+
+    if($c->model('Mpay24')->accept_elv_payment($c, $tid, $amount, $accountnumber, $bankid)) {
+        unless($c->model('Provisioning')->update_account_balance($c, $amount)) {
+            $self->_fail_transaction($c, $tid);
+            $c->response->redirect('/account/balance');
+            return;
+        }
+        unless($self->_finish_transaction($c, $tid)) {
+            # hmm, what? some logging, at least.
+        }
+        $c->session->{messages}{topmsg} = 'Server.Billing.Success';
+        $c->response->redirect('/account/balance');
+    } elsif(defined $c->session->{mpay24}) {
+        $self->_fail_transaction($c, $tid);
+        $c->session->{mpay24_errors}{elv} = $c->session->{mpay24}{EXTERNALSTATUS}
+                                            || $c->model('Provisioning')->localize('Web.Payment.UnknownError');
+        $c->session->{refill}{elv}{accountnumber} = $accountnumber;
+        $c->session->{refill}{elv}{bankid} = $bankid;
+        $c->response->redirect('/account/dopay#elv');
+    } else {
+        $self->_fail_transaction($c, $tid);
+        $c->session->{mpay24_errors}{elv} = $c->model('Provisioning')->localize('Web.Payment.HttpFailed');
+        $c->session->{refill}{elv}{accountnumber} = $accountnumber;
+        $c->session->{refill}{elv}{bankid} = $bankid;
+        $c->response->redirect('/account/dopay#elv');
+    }
+
+    return 1;
+}
+
+sub dopay_cc : Local {
+    my ( $self, $c ) = @_;
+
+    $c->log->debug('***account::dopay_cc called');
+
+    my $amount = $c->session->{payment}{amount};
+
+    my $cctype = $c->request->params->{cctype};
+    my $cardnum = $c->request->params->{cardnum};
+    my $cvc = $c->request->params->{cvc};
+    my $cc_month = $c->request->params->{cc_month};
+    my $cc_year = $c->request->params->{cc_year};
+    $cc_year =~ s/^\d\d//;
+    my $expiry = sprintf("%02d%02d", $cc_year, $cc_month);
+
+    my $tid = $self->_start_transaction($c, 'cc', $amount);
+    unless($tid) {
+        $c->response->redirect('/account/dopay');
+        return;
+    }
+
+    my $rc = $c->model('Mpay24')->accept_cc_payment($c, $tid, $amount, $cctype, $cardnum, $expiry, $cvc);
+    if($rc == 1) {
+        unless($c->model('Provisioning')->update_account_balance($c, $amount)) {
+            $self->_fail_transaction($c, $tid);
+            $c->response->redirect('/account/balance');
+            return;
+        }
+        unless($self->_finish_transaction($c, $tid)) {
+            # hmm, what? some logging, at least.
+        }
+        $c->session->{messages}{topmsg} = 'Server.Billing.Success';
+        $c->response->redirect('/account/balance');
+    } elsif($rc == 2) {
+        unless($c->model('Provisioning')->call_prov($c, 'billing', 'update_payment',
+                                                    { id   => $tid,
+                                                      data => { state => 'transact' },
+                                                    },
+                                                    undef
+                                                   ))
+        {
+            return;
+        }
+        $c->response->redirect($c->session->{mpay24}{LOCATION});
+        $c->log->info("redirected customer to ". $c->session->{mpay24}{LOCATION});
+    } elsif(defined $c->session->{mpay24}) {
+        $self->_fail_transaction($c, $tid);
+        $c->session->{mpay24_errors}{cc} = $c->session->{mpay24}{EXTERNALSTATUS}
+                                           || $c->model('Provisioning')->localize('Web.Payment.UnknownError');
+        $c->session->{refill}{cc}{cctype} = $cctype;
+        $c->session->{refill}{cc}{cardnum} = $cardnum;
+        $c->session->{refill}{cc}{cvc} = $cvc;
+        $c->session->{refill}{cc}{cc_month} = $cc_month;
+        $c->session->{refill}{cc}{cc_year} = $cc_year;
+        $c->response->redirect('/account/dopay#cc');
+    } else {
+        $self->_fail_transaction($c, $tid);
+        $c->session->{mpay24_errors}{cc} = $c->model('Provisioning')->localize('Web.Payment.HttpFailed');
+        $c->session->{refill}{cc}{cctype} = $cctype;
+        $c->session->{refill}{cc}{cardnum} = $cardnum;
+        $c->session->{refill}{cc}{cvc} = $cvc;
+        $c->session->{refill}{cc}{cc_month} = $cc_month;
+        $c->session->{refill}{cc}{cc_year} = $cc_year;
+        $c->response->redirect('/account/dopay#cc');
+    }
+
+    return 1;
+}
+
+sub dopay_maestro : Local {
+    my ( $self, $c ) = @_;
+
+    $c->log->debug('***account::dopay_maestro called');
+
+    my $amount = $c->session->{payment}{amount};
+
+    my $cardnum = $c->request->params->{cardnum};
+    my $maestro_month = $c->request->params->{maestro_month};
+    my $maestro_year = $c->request->params->{maestro_year};
+    $maestro_year =~ s/^\d\d//;
+    my $expiry = sprintf("%02d%02d", $maestro_year, $maestro_month);
+
+    my $tid = $self->_start_transaction($c, 'maestro', $amount);
+    unless($tid) {
+        $c->response->redirect('/account/dopay');
+        return;
+    }
+
+    if($c->model('Mpay24')->accept_maestro_payment($c, $tid, $amount, $cardnum, $expiry)) {
+        unless($c->model('Provisioning')->call_prov($c, 'billing', 'update_payment',
+                                                    { id   => $tid,
+                                                      data => { state => 'transact' },
+                                                    },
+                                                    undef
+                                                   ))
+        {
+            return;
+        }
+        $c->response->redirect($c->session->{mpay24}{LOCATION});
+        $c->log->info("redirected customer to ". $c->session->{mpay24}{LOCATION});
+    } elsif(defined $c->session->{mpay24}) {
+        $self->_fail_transaction($c, $tid);
+        $c->session->{mpay24_errors}{maestro} = $c->session->{mpay24}{EXTERNALSTATUS}
+                                                || $c->model('Provisioning')->localize('Web.Payment.UnknownError');
+        $c->session->{refill}{maestro}{cardnum} = $cardnum;
+        $c->session->{refill}{maestro}{maestro_month} = $maestro_month;
+        $c->session->{refill}{maestro}{maestro_year} = $maestro_year;
+        $c->response->redirect('/account/dopay#maestro');
+    } else {
+        $self->_fail_transaction($c, $tid);
+        $c->session->{mpay24_errors}{maestro} = $c->model('Provisioning')->localize('Web.Payment.HttpFailed');
+        $c->session->{refill}{maestro}{cardnum} = $cardnum;
+        $c->session->{refill}{maestro}{maestro_month} = $maestro_month;
+        $c->session->{refill}{maestro}{maestro_year} = $maestro_year;
+        $c->response->redirect('/account/dopay#maestro');
+    }
+
+    return 1;
+}
+
+sub dopay_paypal : Local {
+    my ( $self, $c ) = @_;
+
+    $c->log->debug('***account::dopay_paypal called');
+
+    my $amount = $c->session->{payment}{amount};
+
+    my $tid = $self->_start_transaction($c, 'paypal', $amount);
+    unless($tid) {
+        $c->response->redirect('/account/dopay');
+        return;
+    }
+    $c->session->{paypal}{tid} = $tid;
+
+    # TODO: specify PayPal return and error url
+    unless($c->model('Paypal')->set_express_checkout($c, $amount, 'csc')) {
+        $c->response->redirect('/account/dopay');
+        return;
+    }
+    $c->response->redirect($c->config->{paypal_redirecturl} . $c->session->{paypal}{Token});
+}
+
+sub paidack : Local {
+    my ( $self, $c ) = @_;
+
+    $c->log->debug('***account::paidack called');
+
+    unless($c->session->{user}{admin}) {
+        $c->response->redirect($c->uri_for('/account/info'));
+        return;
+    }
+
+    my $token = $c->request->params->{token};
+    my $payerid = $c->request->params->{PayerID};
+    if($c->session->{paypal}{Token} eq $token and length $payerid) {
+        $c->session->{paypal}{PayerID} = $payerid;
+    } else {
+        $c->session->{prov_error} = 'Server.Paypal.Invalid';
+        $c->response->redirect('/account/dopay');
+        return;
+    }
+
+    unless($c->model('Provisioning')->update_account_balance($c, $c->session->{paypal}{Amount})) {
+        $self->_fail_transaction($c, $c->session->{paypal}{tid});
+        $c->response->redirect('/account/dopay');
+        return;
+    }
+
+    unless($c->model('Paypal')->do_express_checkout($c)) {
+        $self->_fail_transaction($c, $c->session->{paypal}{tid});
+        $c->model('Provisioning')->update_account_balance($c, (0 - $c->session->{paypal}{Amount}));
+        $c->response->redirect('/account/dopay');
+        return;
+    }
+
+    $self->_finish_transaction($c, $c->session->{paypal}{tid});
+    $c->session->{messages}{topmsg} = 'Server.Billing.Success';
+
+    $c->response->redirect('/account/balance');
+}
+
+sub paiderr : Local {
+    my ( $self, $c ) = @_;
+
+    $c->log->debug('***account::paiderr called');
+
+    unless($c->session->{user}{admin}) {
+        $c->response->redirect($c->uri_for('/account/info'));
+        return;
+    }
+
+    $self->_fail_transaction($c, $c->session->{paypal}{tid});
+    $c->session->{prov_error} = 'Server.Paypal.Error';
+
+    $c->response->redirect('/account/dopay');
+}
+
+sub success : Local {
+    my ( $self, $c ) = @_;
+
+    use Data::Dumper;
+    $c->log->info("***account::success called!");
+    $c->log->info(Dumper $c->request->params);
+
+    unless($c->request->params->{tid} == $c->session->{payment}{tid}) {
+        $c->session->{mpay24_errors}{top} = $c->model('Provisioning')->localize('Web.Payment.HttpFailed');
+        $c->response->redirect('/account/dopay');
+    }
+
+    my $payment;
+    unless($c->model('Provisioning')->call_prov($c, 'billing', 'get_payment',
+                                                { id   => $c->request->params->{tid} },
+                                                \$payment
+                                               ))
+    {
+        $c->response->redirect('/account/dopay');
+        return;
+    }
+
+    if($$payment{status} eq 'RESERVED' or $$payment{status} eq 'BILLED') {
+        unless($c->model('Provisioning')->update_account_balance($c, $$payment{amount})) {
+            $self->_fail_transaction($c, $c->request->params->{tid});
+            $c->response->redirect('/account/dopay');
+            return;
+        }
+
+        $self->_finish_transaction($c, $c->request->params->{tid});
+        $c->session->{messages}{topmsg} = 'Server.Billing.Success';
+
+    } else {
+        $self->_fail_transaction($c, $$payment{id});
+        $c->session->{messages}{toperr} = 'Server.Billing.Failed';
+    }
+
+    $c->response->redirect('/account/balance');
+}
+
+sub error : Local {
+    my ( $self, $c ) = @_;
+
+    use Data::Dumper;
+    $c->log->info("***account::error called!");
+    $c->log->info(Dumper $c->request->params);
+
+    $c->session->{mpay24_errors}{top} = $c->model('Provisioning')->localize('Web.Payment.ExternalError');
+
+    unless($c->request->params->{tid} == $c->session->{payment}{tid}) {
+        $c->response->redirect('/account/dopay');
+        return;
+    }
+
+    $self->_fail_transaction($c, $c->request->params->{tid});
+    $c->response->redirect('/account/dopay');
+}
+
+sub _start_transaction : Private {
+    my ($self, $c, $type, $amount) = @_;
+
+    unless($c->session->{payment}{order_id}
+           or $c->model('Provisioning')->call_prov($c, 'billing', 'create_order',
+                                                   { customer_id => $c->session->{payment}{customer_id},
+                                                     type        => 'charge',
+                                                     value       => $amount,
+                                                   },
+                                                   \$c->session->{payment}{order_id}
+                                                  ))
+    {
+        return;
+    }
+
+    my $payment_id;
+    unless($c->model('Provisioning')->call_prov($c, 'billing', 'create_payment',
+                                                { order_id => $c->session->{payment}{order_id},
+                                                  type     => $type,
+                                                  amount   => $amount,
+                                                },
+                                                \$payment_id
+                                               ))
+    {
+        return;
+    }
+
+    $c->session->{payment}{tid} = $payment_id;
+    return $payment_id;
+}
+
+sub _finish_transaction : Private {
+    my ($self, $c, $tid) = @_;
+
+    unless($c->model('Provisioning')->call_prov($c, 'billing', 'update_payment',
+                                                { id   => $tid,
+                                                  data => { state          => 'success',
+                                                            mpaytid        => $c->session->{mpay24}{MPAYTID},
+                                                            status         => $c->session->{mpay24}{STATUS},
+                                                          },
+                                                },
+                                                undef
+                                               ))
+    {
+        return;
+    }
+
+    unless($c->model('Provisioning')->call_prov($c, 'billing', 'update_order',
+                                                { id   => $c->session->{payment}{order_id},
+                                                  data => { state => 'success' },
+                                                },
+                                                undef
+                                               ))
+    {
+        return;
+    }
+
+    delete $c->session->{payment}{order_id};
+
+    return 1;
+}
+
+sub _fail_transaction : Private {
+    my ($self, $c, $tid) = @_;
+
+    unless($c->model('Provisioning')->call_prov($c, 'billing', 'update_payment',
+                                                { id   => $tid,
+                                                  data => { state          => 'failed',
+                                                            mpaytid        => $c->session->{mpay24}{MPAYTID},
+                                                            status         => $c->session->{mpay24}{STATUS},
+                                                            errno          => $c->session->{mpay24}{ERRNO},
+                                                            returncode     => $c->session->{mpay24}{RETURNCODE},
+                                                            externalstatus => $c->session->{mpay24}{EXTERNALSTATUS},
+                                                          },
+                                                },
+                                                undef
+                                               ))
+    {
+        return;
+    }
+
+    return 1;
+}
+
+sub subscriber : Local {
+    my ( $self, $c ) = @_;
+
+    $c->log->debug('***account::subscriber called');
+
+    unless($c->session->{user}{admin}) {
+        $c->response->redirect($c->uri_for('/account/info'));
+        return;
+    }
+
+    $c->stash->{template} = 'tt/account_subscriber.tt';
+
+    return 1 unless $c->model('Provisioning')->get_voip_account_subscribers($c);
+
+    my %subscribers;
+
+    foreach my $subscriber (@{$c->session->{user}{subscribers}}) {
+        if($$subscriber{preferences}{base_cli}) {
+            push @{$subscribers{$$subscriber{preferences}{base_cli}}{extensions}}, $subscriber;
+            #TODO: fixme, this is terrible inefficient
+            @{$subscribers{$$subscriber{preferences}{base_cli}}{extensions}} =
+                sort {$a->{preferences}{extension} cmp $b->{preferences}{extension}}
+                     @{$subscribers{$$subscriber{preferences}{base_cli}}{extensions}};
+        } elsif($$subscriber{sn}) {
+            my $tmp_num = $$subscriber{cc}.$$subscriber{ac}.$$subscriber{sn};
+            $$subscriber{extensions} = $subscribers{$tmp_num}{extensions}
+                if exists $subscribers{$tmp_num};
+            $subscribers{$tmp_num} = $subscriber;
+        } else {
+            #TODO: subscribers without number?
+            $c->log->error('***account::subscriber: subscriber without E.164 number found: '.
+                           $$subscriber{username} .'@'. $$subscriber{domain});
+        }
+    }
+
+    $c->stash->{subscribers} = [sort {$a->{username} cmp $b->{username}} values %subscribers];
+}
+
+sub addsubscriber : Local {
+    my ( $self, $c, $settings ) = @_;
+
+    $c->log->debug('***account::addsubscriber called');
+
+    unless($c->session->{user}{admin}) {
+        $c->response->redirect($c->uri_for('/account/info'));
+        return;
+    }
+
+    $c->stash->{template} = 'tt/account_addsubscriber.tt';
+
+    if(defined $settings and ref $settings eq 'HASH') {
+        $c->stash->{refill} = $settings;
+    }
+
+    $c->stash->{available_numbers} = $c->model('Provisioning')->get_free_numbers($c);
+    if(defined $c->stash->{available_numbers} and ref $c->stash->{available_numbers} eq 'ARRAY') {
+        foreach my $free_number (@{$c->stash->{available_numbers}}) {
+            # try to reselect selected number. (if it's still available...)
+            if($$settings{cc} and $$free_number{cc} eq $$settings{cc} and
+               $$settings{ac} and $$free_number{ac} eq $$settings{ac} and
+               $$settings{sn} and $$free_number{sn} eq $$settings{sn})
+            {
+                $$free_number{active} = 'selected="selected"';
+            }
+        }
+    }
+}
+
+sub doaddsubscriber : Local {
+    my ( $self, $c ) = @_;
+
+    $c->log->debug('***account::doaddsubscriber called');
+
+    unless($c->session->{user}{admin}) {
+        $c->response->redirect($c->uri_for('/account/info'));
+        return;
+    }
+
+    my (%settings, %messages);
+
+    my $number = $c->request->params->{fnummer};
+    if(defined $number) {
+        @settings{'cc','ac','sn'} = split /-/, $number;
+    } else {
+        $messages{msgnumber} = 'Client.Voip.ChooseNumber';
+    }
+
+    my $sipuri = lc($c->request->params->{fsipuri});
+    if(!defined $sipuri or length $sipuri == 0) {
+        $messages{msgsipuri} = 'Client.Syntax.MissingUsername';
+    } elsif($sipuri !~ /^[a-z0-9_.-]+$/) {
+        $messages{msgsipuri} = 'Client.Syntax.MalformedUsername';
+    }
+    $settings{sipuri} = $sipuri;
+
+    my $passwd1 = $c->request->params->{fpasswort1};
+    my $passwd2 = $c->request->params->{fpasswort2};
+    if(!defined $passwd1 or length $passwd1 == 0) {
+        $messages{msgpasswd} = 'Client.Voip.MissingPass';
+    } elsif(length $passwd1 < 6) {
+        $messages{msgpasswd} = 'Client.Voip.PassLength';
+    } elsif(!defined $passwd2) {
+        $messages{msgpasswd} = 'Client.Voip.MissingPass2';
+    } elsif($passwd1 ne $passwd2) {
+        $messages{msgpasswd} = 'Client.Voip.PassNoMatch';
+    }
+
+    unless(keys %messages) {
+        my %create_settings = %settings;
+        delete $create_settings{sipuri};
+
+        $create_settings{webusername} = $settings{sipuri};
+        $create_settings{username} = $settings{sipuri};
+        $create_settings{domain} = $c->session->{user}{domain};
+        $create_settings{webpassword} = $passwd1;
+        # TODO: sip password should be auto-generated
+        $create_settings{password} = $passwd1;
+
+        $c->model('Provisioning')->call_prov($c, 'billing', 'add_voip_account_subscriber',
+                                             { id         => $c->session->{user}{account_id},
+                                               subscriber => \%create_settings,
+                                             },
+                                            );
+        if($c->session->{prov_error}) {
+            if($c->session->{prov_error} eq 'Client.Voip.ExistingSubscriber') {
+                $c->session->{messages}{msgsipuri} = $c->session->{prov_error};
+                $c->session->{prov_error} = 'Client.Voip.InputErrorFound';
+            } elsif($c->session->{prov_error} eq 'Client.Voip.AssignedNumber') {
+                $c->session->{messages}{msgnumber} = $c->session->{prov_error};
+                $c->session->{prov_error} = 'Client.Voip.InputErrorFound';
+            }
+            $self->addsubscriber($c, \%settings);
+        } else {
+            $messages{topmsg} = 'Server.Voip.SubscriberCreated';
+            $c->session->{messages} = \%messages;
+            $c->response->redirect($c->uri_for('/account/subscriber'));
+        }
+    } else {
+        $messages{toperr} = "Client.Voip.InputErrorFound";
+        $c->session->{messages} = \%messages;
+        $self->addsubscriber($c, \%settings);
+    }
+
+}
+
+sub addextension : Local {
+    my ( $self, $c, $settings ) = @_;
+
+    $c->log->debug('***account::addextension called');
+
+    unless($c->session->{user}{admin}) {
+        $c->response->redirect($c->uri_for('/account/info'));
+        return;
+    }
+
+    $c->stash->{template} = 'tt/account_addextension.tt';
+
+    if(defined $settings and ref $settings eq 'HASH') {
+        $c->stash->{refill} = $settings;
+        $c->stash->{refill}{extension} = $c->request->params->{fextension};
+    }
+    $c->stash->{base_cli} = $c->request->params->{base_cli};
+}
+
+sub doaddextension : Local {
+    my ( $self, $c ) = @_;
+
+    $c->log->debug('***account::doaddextension called');
+
+    unless($c->session->{user}{admin}) {
+        $c->response->redirect($c->uri_for('/account/info'));
+        return;
+    }
+
+    my (%settings, %messages);
+
+    my $base_cli = $c->request->params->{base_cli};
+    my $extension = $c->request->params->{fextension};
+    if(defined $extension) {
+        $messages{msgnumber} = 'Web.Syntax.Numeric'
+            unless $extension =~ /^\d+$/;
+    } else {
+        $messages{msgnumber} = 'Client.Voip.ChooseNumber';
+    }
+
+    my $sipuri = lc($c->request->params->{fsipuri});
+    if(!defined $sipuri or length $sipuri == 0) {
+        $messages{msgsipuri} = 'Client.Syntax.MissingUsername';
+    } elsif($sipuri !~ /^[a-z0-9_.-]+$/) {
+        $messages{msgsipuri} = 'Client.Syntax.MalformedUsername';
+    }
+    $settings{sipuri} = $sipuri;
+
+    my $passwd1 = $c->request->params->{fpasswort1};
+    my $passwd2 = $c->request->params->{fpasswort2};
+    if(!defined $passwd1 or length $passwd1 == 0) {
+        $messages{msgpasswd} = 'Client.Voip.MissingPass';
+    } elsif(length $passwd1 < 6) {
+        $messages{msgpasswd} = 'Client.Voip.PassLength';
+    } elsif(!defined $passwd2) {
+        $messages{msgpasswd} = 'Client.Voip.MissingPass2';
+    } elsif($passwd1 ne $passwd2) {
+        $messages{msgpasswd} = 'Client.Voip.PassNoMatch';
+    }
+
+    unless(keys %messages) {
+        my %create_settings = %settings;
+        delete $create_settings{sipuri};
+
+        $create_settings{webusername} = $settings{sipuri};
+        $create_settings{username} = $settings{sipuri};
+        $create_settings{domain} = $c->session->{user}{domain};
+        $create_settings{webpassword} = $passwd1;
+        # TODO: sip password should be auto-generated
+        $create_settings{password} = $passwd1;
+
+        if($c->model('Provisioning')->call_prov($c, 'billing', 'add_voip_account_subscriber',
+                                                { id         => $c->session->{user}{account_id},
+                                                  subscriber => \%create_settings,
+                                                },
+                                               ))
+        {
+            if($c->model('Provisioning')->call_prov($c, 'voip', 'set_subscriber_preferences',
+                                                    { username    => $settings{sipuri},
+                                                      domain      => $c->session->{user}{domain},
+                                                      preferences => { base_cli  => $base_cli,
+                                                                       extension => $extension
+                                                                     },
+                                                    },
+                                                   ))
+            {
+                $messages{topmsg} = 'Server.Voip.SubscriberCreated';
+                $c->session->{messages} = \%messages;
+                $c->response->redirect($c->uri_for('/account/subscriber'));
+            } else {
+                if($c->session->{prov_error} eq 'Client.Voip.ExistingAlias') {
+                    $messages{msgnumber} = 'Client.Voip.AssignedExtension';
+                    $c->session->{prov_error} = 'Client.Voip.InputErrorFound';
+                }
+                $c->model('Provisioning')->delete_subscriber($c, $settings{sipuri}, $c->session->{user}{domain});
+            }
+        } else {
+            if($c->session->{prov_error} eq 'Client.Voip.ExistingSubscriber') {
+                $messages{msgsipuri} = $c->session->{prov_error};
+                $c->session->{prov_error} = 'Client.Voip.InputErrorFound';
+            } elsif($c->session->{prov_error} eq 'Client.Voip.AssignedNumber') {
+                $messages{msgnumber} = $c->session->{prov_error};
+                $c->session->{prov_error} = 'Client.Voip.InputErrorFound';
+            }
+        }
+    } else {
+        $messages{toperr} = "Client.Voip.InputErrorFound";
+    }
+
+    $c->session->{messages} = \%messages;
+    $self->addextension($c, \%settings);
+
+}
+
+sub delsubscriber : Local {
+    my ( $self, $c ) = @_;
+
+    $c->log->debug('***account::delsubscriber called');
+
+    unless($c->session->{user}{admin}) {
+        $c->response->redirect($c->uri_for('/account/info'));
+        return;
+    }
+
+    my $username = lc($c->request->params->{username});
+
+    if($c->model('Provisioning')->terminate_subscriber($c, $username, $c->session->{user}{domain})) {
+        $c->session->{messages}{topmsg} = 'Server.Voip.SubscriberDeleted';
+    }
+
+    $c->response->redirect($c->uri_for('/account/subscriber'));
+}
+
+
+=head1 BUGS AND LIMITATIONS
+
+=over
+
+=item - currently none
+
+=back
+
+=head1 SEE ALSO
+
+Provisioning model, Paypal model, Catalyst
+
+=head1 AUTHORS
+
+Daniel Tiefnig <dtiefnig@sipwise.com>
+
+=head1 COPYRIGHT
+
+The account controller is Copyright (c) 2007 Sipwise GmbH, Austria. All
+rights reserved.
+
+=cut
+
+# over and out
+1;

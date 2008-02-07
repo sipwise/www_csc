@@ -1,0 +1,75 @@
+[% META title = 'payment' %]
+[% META subtitle = 'payment_select' %]
+
+  <div id="headimg">
+    <img src="/grafik/area_anmeldung.jpg" width="869" height="69" alt="Jetzt Kunde werden und alle Vorteile genießen!" />
+  </div>
+
+  <div id="main">
+
+    <div id="spalten31">
+
+      <div id="topmsg">
+        <p> [% messages.topmsg %] </p>
+      </div>
+      <div id="toperr">
+        <p> [% messages.toperr %] </p>
+        <p> [% messages.prov_error %] </p>
+      </div>
+
+      <h2>Bitte wählen Sie eine Zahlmethode aus</h2>
+
+      <div class="spalte1">
+
+[% PROCESS tt/payment.tt %]
+
+      </div>
+
+      <div class="spalte2">
+
+        <p class="prodsumme">
+          EURO <strong>[% price_sum %]</strong>
+        </p>
+
+        <ul class="schritte">
+          <li class="ok">
+            <strong>Schritt 1:</strong><br />
+            Tarifauswahl<br />
+            <span class="okprodtext">[% tarif.name %]</span>
+            <br clear="all" />
+          </li>
+          <li class="ok">
+            <strong>Schritt 2:</strong><br />
+            System und Endgeräte<br />
+            [% IF system.name %]
+            <strong class="okprodcount">1x</strong>
+            <img class="okprodimg" src="/grafik/ok_system.gif" width="22" height="" alt="25" />
+            <span class="okprodtext">[% system.name %]</span>
+            <br clear="all" />
+            [% END %]
+            [% FOREACH phone = phones %]
+              <strong class="okprodcount">[% phone.count %]x</strong>
+              <img class="okprodimg" src="/grafik/ok_phone.gif" width="22" height="" alt="25" />
+              <span class="okprodtext">[% phone.name %]</span>
+              <br clear="all" />
+            [% END %]
+          </li>
+          <li class="ok">
+            <strong>Schritt 3:</strong><br />
+            Persönliche Daten
+          </li>
+          <li class="ok">
+            <strong>Schritt 4:</strong><br />
+            Runfnummer wählen
+          </li>
+          <li class="on">
+            <strong>Schritt 5:</strong><br />
+            Bestellung abschließen
+          </li>
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div><br clear="all" />

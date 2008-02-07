@@ -1,0 +1,20 @@
+[% META title = 'account' %]
+[% META subtitle = 'account_balance' %]
+
+          <form class="anmelden feinstellungen" action="/account/setpay" method="post">
+            <fieldset class="alt">
+              <h3>Konto aufladen</h3>
+
+              <label for="famount"><strong>aktuelles Guthaben</strong></label>
+              <p><strong>&euro; [% subscriber.account.cash_balance %]</strong></p>
+
+              <label for="famount">Betrag in &euro;</label>
+              <input type="text" size="10" class="input10" id="foldpass" name="amount"><br clear="all" />
+              [% IF messages.msgamount %]<div id="errormsg"><p>[% messages.msgamount %]</p></div><br clear="all" />[% END %]
+
+              <p class="save">
+                <label for="save_settings">weiter</label>
+                <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="save_settings">
+              </p>
+           </fieldset>
+          </form><br clear="all" />

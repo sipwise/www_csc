@@ -1,0 +1,289 @@
+[% META title = 'Libratel Webshop' %]
+
+  <div id="headimg">
+    <a href=""><img src="/grafik/area_anmeldung.jpg" width="869" height="69" alt="Jetzt Kunde werden und alle Vorteile genießen!" /></a>
+  </div>
+  
+  <div id="main">
+    
+    <div id="spalten31">
+
+      <div id="topmsg">
+        <p> [% messages.topmsg %] </p>
+      </div>
+      <div id="toperr">
+        <p> [% messages.toperr %] </p>
+        <p> [% messages.prov_error %] </p>
+      </div>
+      
+      <h2>Bestellung erfolgreich abgeschlossen</h2>
+      
+      <div class="spalte1">
+        
+        <div class="anmelden">
+
+          Die Bestellung wurde im System gespeichert, und wird falls nötig von einem unserer Mitarbeiter
+          bearbeitet werden. Sie können sich aber auf jeden Fall bereits jetzt mit Ihrem Usernamen und
+          Ihrem Passwort in unser <a href="https://csc.libratel.at/login">Webinterface</a> einloggen und
+          Ihre Einstellungen vornehmen.<br /><br />
+          Unten stehend finden Sie nochmals die Details Ihrer Bestellung. Wir bedanken uns für Ihr
+          Vertrauen, und freuen uns Sie als Kunde begrüßen zu dürfen!<br /><br /><br />
+          
+          <table class="bestelltable">
+            <tr>
+              <td class="tdright"></td>
+              <td></td>
+              <td class="headright">Einmalig</td>
+              <td class="headright">Monatlich</td>
+            </tr>
+            <tr>
+              <td colspan="4" class="bestelltablehead">
+                &nbsp;
+              </td>
+            </tr>
+            <tr>
+              <td class="tdright">
+                <h3>Tarif</h3>
+              </td>
+              <td>
+                [% tarif.name %]
+              </td>
+              <td><strong class="smallpreis">&euro;&nbsp;[% tarif.price %]</strong></td>
+              <td><strong class="smallpreis">&euro;&nbsp;[% tarif.monthly %]</strong></td>
+            </tr>
+            <tr>
+              <td class="tdright" />
+              <td>
+                Startguthaben
+              </td>
+              <td><strong class="smallpreis">&euro;&nbsp;[% tarif.initial_charge %]</strong></td>
+              <td><strong class="smallpreis">&euro;&nbsp;0.00</strong></td>
+            </tr>
+
+            <tr>
+              <td colspan="4" class="bestelltablehead">
+                &nbsp;
+              </td>
+            </tr>
+            <tr>
+              <td class="tdright">
+                <h3>Telefonanlage</h3>
+              </td>
+            [% IF system.name %]
+              <td>
+                <strong class="okprodcount">1x</strong>
+                <img class="okprodimg" src="/grafik/ok_system.gif" width="22" height="" alt="25" />
+                <span class="okprodtext">[% system.name %]</span>
+              </td>
+              <td>
+                <strong class="smallpreis">&euro; [% system.price %]</strong><br clear="all" />
+              </td>
+              <td><strong class="smallpreis">&euro; 0.00</strong></td>
+            </tr>
+            [% END %]
+
+            [% notfirst = 0 %]
+            [% FOREACH phone = phones %]
+            [% IF system.name || notfirst %]
+            <tr>
+              <td class="tdright" />
+            [% END %]
+            [% notfirst = notfirst + 1 %]
+              <td>
+                <strong class="okprodcount">[% phone.count %]x</strong>
+                <img class="okprodimg" src="/grafik/ok_phone.gif" width="22" height="" alt="25" />
+                <span class="okprodtext">[% phone.name %]</span>
+              </td>
+              <td>
+                <strong class="smallpreis">&euro; [% phone.price_sum %]</strong><br clear="all" />
+              </td>
+              <td><strong class="smallpreis">&euro; 0.00</strong></td>
+            </tr>
+            [% END %]
+
+            <tr class="mysumme">
+              <td class="tdright">
+                <h3>Zwischensumme</h3>
+              </td>
+              <td>exklusive Steuern und Versand</td>
+              <td><strong class="smallpreis">&euro;&nbsp;[% price_sum %]</strong></td>
+              <td><strong class="smallpreis">&euro;&nbsp;[% month_sum %]</strong></td>
+            </tr>
+
+            <tr>
+              <td colspan="4" class="bestelltablehead">
+                &nbsp;
+              </td>
+            </tr>
+            <tr>
+              <td class="tdright">
+                <h3>Versandkosten</h3>
+              </td>
+              <td>Standardpaket, versicherter Versand</td>
+              <td><strong class="smallpreis">&euro;&nbsp;[% shipping_fee %]</strong></td>
+              <td><strong class="smallpreis">&euro;&nbsp;0.00</strong></td>
+            </tr>
+            <tr>
+              <td colspan="4" class="bestelltablehead">
+                &nbsp;
+              </td>
+            </tr>
+            <tr>
+              <td class="tdright">
+                <h3>Mehrwertsteuer</h3>
+              </td>
+              <td>20%</td>
+              <td><strong class="smallpreis">&euro;&nbsp;[% price_tax %]</strong></td>
+              <td><strong class="smallpreis">&euro;&nbsp;[% month_tax %]</strong></td>
+            </tr>
+
+            <tr class="mysumme">
+              <td class="tdright">
+                <h3>Summe</h3>
+              </td>
+              <td>inklusive Steuern und Versand</td>
+              <td><strong class="smallpreis">&euro;&nbsp;[% price_sum3 %]</strong></td>
+              <td><strong class="smallpreis">&euro;&nbsp;[% month_sum2 %]</strong></td>
+            </tr>
+
+            <tr>
+              <td colspan="4" class="bestelltablehead">
+                &nbsp;<br />&nbsp;
+              </td>
+            </tr>
+            <tr>
+              <td class="tdright">
+                <h3>Persönliche Daten</h3>
+              </td>
+              <td colspan="3">
+                [% IF personal.comregnum %]FBNr.: [% personal.comregnum %]<br />[% END %]
+                [% IF personal.company %][% personal.company %]<br />[% END %]
+                [% personal.firstname %] [% personal.lastname %]<br />
+                [% personal.street %]<br />
+                [% personal.postcode %] [% personal.city %]<br />
+                Telefon: [% personal.phonenumber %]<br />
+                E-Mail: [% personal.email %]
+              </td>
+            </tr>
+            [% IF personal.sign_contact %]
+            <tr>
+              <td class="tdright">
+                <h3>Zeichnungsberechtigter</h3>
+              </td>
+              <td colspan="3">
+                [% personal.sign_contact.firstname %] [% personal.sign_contact.lastname %]<br />
+                Telefon: [% personal.sign_contact.phonenumber %]<br />
+                E-Mail: [% personal.sign_contact.email %]
+              </td>
+            </tr>
+            [% END %]
+            [% IF personal.tech_contact %]
+            <tr>
+              <td class="tdright">
+                <h3>Technischer Kontakt</h3>
+              </td>
+              <td colspan="3">
+                [% personal.tech_contact.firstname %] [% personal.tech_contact.lastname %]<br />
+                Telefon: [% personal.tech_contact.phonenumber %]<br />
+                E-Mail: [% personal.tech_contact.email %]
+              </td>
+            </tr>
+            [% END %]
+            [% IF personal.delivery %]
+            <tr>
+              <td class="tdright">
+                <h3>Lieferadresse</h3>
+              </td>
+              <td colspan="3">
+                [% personal.delivery.firstname %] [% personal.delivery.lastname %]<br />
+                [% personal.delivery.company %]<br />
+                [% personal.delivery.street %]<br />
+                [% personal.delivery.postcode %] [% personal.delivery.city %]
+              </td>
+            </tr>
+            [% END %]
+            <tr>
+              <td class="tdright">
+                <h3>Web Login</h3>
+              </td>
+              <td colspan="3">
+                [% personal.username %]
+              </td>
+            </tr>
+            <tr>
+              <td class="tdright">
+                <h3>Telefonnummer</h3>
+              </td>
+              <td colspan="3">
+                <strong>[% number %] </strong>
+                (Telefonbuch: [% IF phonebook %]ja[% ELSE %]nein[% END %])
+              </td>
+            </tr>
+
+            <tr>
+              <td colspan="4" class="bestelltablehead">
+                &nbsp;<br /><br />
+              </td>
+            </tr>
+            <tr>
+              <td class="tdright">
+              </td>
+              <td colspan="3" class="anmeldeninfo">
+                Ihre Daten wurden gespeichert.<br />
+                Für Änderungen, Anregungen und weitere Hilfe wenden Sie sich bitte an unseren
+                <a href="http://[% site.company.webserver %]/kontakt.html">Support</a>.
+              </td>
+            </tr>
+          </table>
+
+        </div><br clear="all" />
+      
+      </div>
+      <div class="spalte2">
+        
+        <p class="prodsumme">
+          EURO <strong>[% price_sum3 %]</strong>
+        </p>
+
+        <ul class="schritte">
+          <li class="ok">
+            <strong>Schritt 1:</strong><br />
+            Tarifauswahl<br />
+            <span class="okprodtext">[% tarif.name %]</span>
+            <br clear="all" />
+          </li>
+          <li class="ok">
+            <strong>Schritt 2:</strong><br />
+            System und Endgeräte<br />
+            [% IF system.name %]
+            <strong class="okprodcount">1x</strong>
+            <img class="okprodimg" src="/grafik/ok_system.gif" width="22" height="" alt="25" />
+            <span class="okprodtext">[% system.name %]</span>
+            <br clear="all" />
+            [% END %]
+            [% FOREACH phone = phones %]
+              <strong class="okprodcount">[% phone.count %]x</strong>
+              <img class="okprodimg" src="/grafik/ok_phone.gif" width="22" height="" alt="25" />
+              <span class="okprodtext">[% phone.name %]</span>
+              <br clear="all" />
+            [% END %]
+          </li>
+          <li class="ok">
+            <strong>Schritt 3:</strong><br />
+            Persönliche Daten
+          </li>
+          <li class="ok">
+            <strong>Schritt 4:</strong><br />
+            Runfnummer wählen
+          </li>
+          <li class="ok">
+            <strong>Schritt 5:</strong><br />
+            Bestellung abschließen
+          </li>
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div><br clear="all" />
