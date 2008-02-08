@@ -59,13 +59,11 @@
                   <strong class="smallpreis">&euro; [% price.PAP2T %]</strong>
                 </h4>
                 <ul>
-                  <li><strong>1 Anschluss</strong></li>
+                  <li><strong>max. 2 Anschlüsse</strong></li>
                   <li>Einfache Installation</li>
-                  <li>WAN und LAN Ports</li>
-                  <li>Ein weiterer Vorteil</li>
                 </ul>
                 <p>
-                  <a href="javascript:;" onclick="javascript:openclose();" onkeypress="javascript:openclose();">Mehr Infos ...</a>
+                  <!-- <a href="javascript:;" onclick="javascript:openclose();" onkeypress="javascript:openclose();">Mehr Infos ...</a> -->
                 </p>
               </li>
               <li id="showhide_spa9k4"
@@ -84,11 +82,9 @@
                 <ul>
                   <li><strong>Bis zu 4 Anschlüsse</strong></li>
                   <li>Einfache Installation</li>
-                  <li>WAN und LAN Ports</li>
-                  <li>Ein weiterer Vorteil</li>
                 </ul>
                 <p>
-                  <a href="javascript:;" onclick="javascript:openclose();" onkeypress="javascript:openclose();">Mehr Infos ...</a>
+                  <!-- <a href="javascript:;" onclick="javascript:openclose();" onkeypress="javascript:openclose();">Mehr Infos ...</a> -->
                 </p>
               </li>
               <li id="showhide_spa9k16" class="last"
@@ -107,11 +103,9 @@
                 <ul>
                   <li><strong>Bis zu 16 Anschlüsse</strong></li>
                   <li>Einfache Installation</li>
-                  <li>WAN und LAN Ports</li>
-                  <li>Ein weiterer Vorteil</li>
                 </ul>
                 <p>
-                  <a href="javascript:;" onclick="javascript:openclose();" onkeypress="javascript:openclose();">Mehr Infos ...</a>
+                  <!-- <a href="javascript:;" onclick="javascript:openclose();" onkeypress="javascript:openclose();">Mehr Infos ...</a> -->
                 </p>
               </li>
               <li id="showhide_system_explanation" class="showhide_explanation"
@@ -130,24 +124,17 @@
                     in diesem Fall <strong>nicht</strong>. Wenn Sie jetzt schon eine
                     Nebenstellenanlage für bis zu 4 oder 16 Nebenstellen kaufen möchten,
                     klicken Sie bitte
-                    <a href="javascript:;"
-                       onclick="javascript:showhide('showhide_spa9k4');
-                                           showhide('showhide_spa9k16');
-                                           showhide('showhide_system_explanation');"
-                       onkeypress="javascript:showhide('showhide_spa9k4');
-                                              showhide('showhide_spa9k16');
-                                              showhide('showhide_system_explanation');">hier</a>
+                    <a href="javascript:showhide('showhide_spa9k4');
+                                        showhide('showhide_spa9k16');
+                                        showhide('showhide_system_explanation');" >hier</a>
                     und wählen Sie unterhalb die derzeit benötigte Anzahl von Telefonen.
                   [% ELSIF extensions == 4 %]
                     Dies ist unsere Empfehlung zu Ihrem Produkt, Sie können damit bis zu
                     vier Nebenstellen betreiben. Wenn Sie jetzt schon eine Nebenstellenanlage
                     für bis zu 16 Nebenstellen kaufen möchten,
                     klicken Sie bitte
-                    <a href="javascript:;"
-                       onclick="javascript:showhide('showhide_spa9k16');
-                                           showhide('showhide_system_explanation');"
-                       onkeypress="javascript:showhide('showhide_spa9k16');
-                                              showhide('showhide_system_explanation');">hier</a>
+                    <a href="javascript:showhide('showhide_spa9k16');
+                                        showhide('showhide_system_explanation');" >hier</a>
                     und wählen Sie unterhalb einfach die derzeit benötigte Anzahl von Telefonen.
                   [% END %]
                 [% END %]
@@ -172,7 +159,7 @@
                   <li>Hi-Res Display</li>
                 </ul>
                 <p>
-                  <a href="javascript:;" onclick="javascript:openclose();" onkeypress="javascript:openclose();">Mehr Infos ...</a>
+                  <!-- <a href="javascript:;" onclick="javascript:openclose();" onkeypress="javascript:openclose();">Mehr Infos ...</a> -->
                 </p>
               </li>
               <li id="showhide_spa922"
@@ -194,7 +181,7 @@
                   <li>Hi-Res Display</li>
                 </ul>
                 <p>
-                  <a href="javascript:;" onclick="javascript:openclose();" onkeypress="javascript:openclose();">Mehr Infos ...</a>
+                  <!-- <a href="javascript:;" onclick="javascript:openclose();" onkeypress="javascript:openclose();">Mehr Infos ...</a> -->
                 </p>
               </li>
               <li id="showhide_spa941"
@@ -215,7 +202,7 @@
                   <li>Hi-Res Display</li>
                 </ul>
                 <p>
-                  <a href="javascript:;" onclick="javascript:openclose();" onkeypress="javascript:openclose();">Mehr Infos ...</a>
+                  <!-- <a href="javascript:;" onclick="javascript:openclose();" onkeypress="javascript:openclose();">Mehr Infos ...</a> -->
                 </p>
               </li>
               <li id="showhide_spa942" class="last"
@@ -237,7 +224,7 @@
                   <li>Hi-Res Display</li>
                 </ul>
                 <p>
-                  <a href="javascript:;" onclick="javascript:openclose();" onkeypress="javascript:openclose();">Mehr Infos ...</a>
+                  <!-- <a href="javascript:;" onclick="javascript:openclose();" onkeypress="javascript:openclose();">Mehr Infos ...</a> -->
                 </p>
               </li>
               <li id="showhide_phone_explanation" class="showhide_explanation"
@@ -249,15 +236,10 @@
               >
                 Dies ist unsere Empfehlung zu Ihrem Produkt. Wenn Sie gerne noch
                 andere Telefone zur Auswahl hätten, klicken Sie bitte
-                <a href="javascript:;"
-                   onclick="javascript:showhide('showhide_spa922');
-                                       showhide('showhide_spa941');
-                                       showhide('showhide_spa942');
-                                       showhide('showhide_phone_explanation');"
-                   onkeypress="javascript:showhide('showhide_spa922');
-                                          showhide('showhide_spa941');
-                                          showhide('showhide_spa942');
-                                          showhide('showhide_phone_explanation');">hier</a>.
+                <a href="javascript:showhide('showhide_spa922');
+                                    showhide('showhide_spa941');
+                                    showhide('showhide_spa942');
+                                    showhide('showhide_phone_explanation');" >hier</a>.
               </li>
             </ul>
             <div id="errormsg"><p>[% messages.count %]</p></div>
