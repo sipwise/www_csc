@@ -24,6 +24,7 @@
                           selected="selected"[% END %]>BAWAG P.S.K. Gruppe</option>
                   <option value="HYPO"[% IF refill.eps.bankname == "HYPO" %]
                           selected="selected"[% END %]>Hypo Oberösterreich</option>
+<!--
                   <option value="ARZ_101"[% IF refill.eps.bankname == "ARZ_101" %]
                           selected="selected"[% END %]>österr. Volksbanken, Immo-Bank und Gärtnerbank</option>
                   <option value="ARZ_093"[% IF refill.eps.bankname == "ARZ_093" %]
@@ -40,6 +41,7 @@
                           selected="selected"[% END %]>Hypo-Alpe-Adria-Bank AGs</option>
                   <option value="ARZ_109"[% IF refill.eps.bankname == "ARZ_109" %]
                           selected="selected"[% END %]>Investkredit Bank AG</option>
+-->
                 </select>
               </p>
 
