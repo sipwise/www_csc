@@ -201,6 +201,7 @@ sub set_hardware : Local {
             $c->session->{shop}{system}{price} = sprintf "%.2f", $$product{price} / 100;
         }
     } elsif($c->request->params->{system} eq 'none') {
+        delete $c->session->{shop}{system} if exists $c->session->{shop}{system};
     } else {
         $messages{system} = 'Web.MissingSystem';
     }

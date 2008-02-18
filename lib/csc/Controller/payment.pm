@@ -599,7 +599,9 @@ sub _start_transaction : Private {
                                             ) or return;
     }
 
-    unless($c->session->{shop}{system}{contract_id}) {
+    unless( ! $c->session->{shop}{system}
+           or $c->session->{shop}{system}{contract_id})
+    {
         $c->model('Provisioning')->call_prov($c, 'billing', 'create_hardware_contract',
                                              { product     => $c->session->{shop}{system}{name},
                                                customer_id => $c->session->{shop}{customer_id},
