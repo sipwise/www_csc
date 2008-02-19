@@ -619,7 +619,7 @@ sub cart : Local {
     $c->session->{shop}{price_sum} = $self->_calculate_price_sum($c);
     $c->stash->{price_sum} = $c->session->{shop}{price_sum};
     $c->stash->{month_sum} = $c->stash->{tarif}{monthly};
-    $c->stash->{shipping_fee} = '9.50';
+    $c->stash->{shipping_fee} = $c->session->{shop}{shipping_fee} = '9.50';
     $c->stash->{price_sum2} = sprintf "%.2f", $c->session->{shop}{price_sum} + $c->stash->{shipping_fee};
     $c->stash->{price_tax} = sprintf "%.2f", $c->stash->{price_sum2} * .2;
     $c->stash->{month_tax} = sprintf "%.2f", $c->stash->{month_sum} * .2;
@@ -629,12 +629,6 @@ sub cart : Local {
     $c->stash->{personal} = $c->session->{shop}{personal};
     $c->stash->{number} = '0'. $c->session->{shop}{number}{ac} .' '. $c->session->{shop}{number}{sn};
     $c->stash->{phonebook} = $c->session->{shop}{phonebook};
-
-    if($c->session->{shop}{paid_ok}) {
-        unless($self->_send_mail($c)) {
-            $c->log->error('***shop::cart failed to send e-mail');
-        }
-    }
 
     return 1;
 }
@@ -660,7 +654,12 @@ sub topayment : Local {
         $c->session->{messages} = \%messages;
         $c->response->redirect('/shop/cart?sk='. $c->session->{shop}{session_key});
     } else {
-        $c->response->redirect('/payment?sk='. $c->session->{shop}{session_key});
+        unless($self->_create_contracts($c)) {
+            $c->session->{messages} = \%messages;
+            $c->response->redirect('/shop/cart?sk='. $c->session->{shop}{session_key});
+        } else {
+            $c->response->redirect('/payment?sk='. $c->session->{shop}{session_key});
+        }
     }
 
     return;
@@ -678,13 +677,6 @@ sub finish : Local {
                $c->request->params->{sk} eq $c->session->{shop}{session_key};
 
     $c->session->{shop}{paid_ok} = 1;
-
-    my $ts = $c->session->{shop}{order}{create_timestamp};
-    my ($year, $month) = $ts =~ /^\d\d(\d\d)-(\d\d)/;
-    return unless $c->model('Provisioning')->call_prov( $c, 'billing', 'create_invoice',
-                                                        { month => $month, year => $year },
-                                                        \$c->session->{shop}{dbinvoice}
-                                                      );
     $c->response->redirect('/shop/cart?sk='. $c->session->{shop}{session_key});
     return;
 }
@@ -712,14 +704,164 @@ sub _calculate_price_sum : Private {
     return sprintf "%.2f", $price;
 }
 
-sub _send_mail : Private {
+sub _create_contracts : Private {
+    my ($self, $c) = @_;
+
+    my $pi = $c->session->{shop}{personal};
+
+    unless($c->session->{shop}{customer_id}) {
+        $c->model('Provisioning')->call_prov($c, 'billing', 'create_customer',
+                                             { data => {
+                                                         shopuser => $$pi{username},
+                                                         shoppass => $$pi{password},
+                                                         contact  => { comregnum   => $$pi{comregnum},
+                                                                       company     => $$pi{company},
+                                                                       gender      => $$pi{gender},
+                                                                       firstname   => $$pi{firstname},
+                                                                       lastname    => $$pi{lastname},
+                                                                       street      => $$pi{street},
+                                                                       postcode    => $$pi{postcode},
+                                                                       city        => $$pi{city},
+                                                                       phonenumber => $$pi{phonenumber},
+                                                                       email       => $$pi{email},
+                                                                       newsletter  => $$pi{newsletter},
+                                                                     },
+                                                         ($$pi{customer_type} eq 'business' ?
+                                                           (($$pi{sign_like_contact} ? () :
+                                                             (comm_contact => { gender      => $$pi{sign_contact}{gender},
+                                                                                firstname   => $$pi{sign_contact}{firstname},
+                                                                                lastname    => $$pi{sign_contact}{lastname},
+                                                                                phonenumber => $$pi{sign_contact}{phonenumber},
+                                                                                email       => $$pi{sign_contact}{email},
+                                                                              })
+                                                            ),
+                                                            ($$pi{tech_like_contact} ? () :
+                                                             (tech_contact => { gender      => $$pi{tech_contact}{gender},
+                                                                                firstname   => $$pi{tech_contact}{firstname},
+                                                                                lastname    => $$pi{tech_contact}{lastname},
+                                                                                phonenumber => $$pi{tech_contact}{phonenumber},
+                                                                                email       => $$pi{tech_contact}{email},
+                                                                              })
+                                                            ),
+                                                           ) : ()
+                                                         ),
+                                                       },
+                                             },
+                                             \$c->session->{shop}{customer_id}
+                                            ) or return;
+    }
+
+    unless($c->session->{shop}{dbinvoice}) {
+        my @nowts = localtime time;
+        return unless $c->model('Provisioning')->call_prov( $c, 'billing', 'create_invoice',
+                                                            { month => $nowts[4] + 1, year => $nowts[5] - 100 },
+                                                            \$c->session->{shop}{dbinvoice}
+                                                          );
+    }
+
+    unless($c->session->{shop}{order_id}
+           or $c->model('Provisioning')->call_prov($c, 'billing', 'create_order',
+                                                   { customer_id => $c->session->{shop}{customer_id},
+                                                     type        => 'web',
+                                                     value       => $c->session->{shop}{price_sum} * 100,
+                                                     ($$pi{deliver_to_contact} ? () :
+                                                      (delivery_contact => { gender    => $$pi{delivery}{gender},
+                                                                             firstname => $$pi{delivery}{firstname},
+                                                                             lastname  => $$pi{delivery}{lastname},
+                                                                             company   => $$pi{delivery}{company},
+                                                                             street    => $$pi{delivery}{street},
+                                                                             postcode  => $$pi{delivery}{postcode},
+                                                                             city      => $$pi{delivery}{city},
+                                                                           })
+                                                     ),
+                                                     invoice     => $c->session->{shop}{dbinvoice},
+                                                   },
+                                                   \$c->session->{shop}{order_id}
+                                                  ))
+    {
+        return;
+    }
+
+    unless($c->session->{shop}{account_id}) {
+        $c->model('Provisioning')->call_prov($c, 'billing', 'create_voip_account',
+                                             { product     => ($c->session->{shop}{tarif} eq 'free'
+                                                               ? 'Libratel VoIP Free'
+                                                               : 'Libratel VoIP Premium'),
+                                               customer_id => $c->session->{shop}{customer_id},
+                                               status      => 'pending',
+                                               order_id    => $c->session->{shop}{order_id},
+                                               subscribers => [{ username    => $c->session->{shop}{personal}{username},
+                                                                 domain      => $c->config->{site_domain},
+                                                                 password    => $self->_generate_sip_password($c),
+                                                                 admin       => 1,
+                                                                 cc          => $c->session->{shop}{number}{cc},
+                                                                 ac          => $c->session->{shop}{number}{ac},
+                                                                 sn          => $c->session->{shop}{number}{sn},
+                                                                 webusername => $c->session->{shop}{personal}{username},
+                                                                 webpassword => $c->session->{shop}{personal}{password},
+                                                                 #TODO: phonebook attribute in BSS
+                                                                 # phonebook   => $c->session->{shop}{phonebook},
+                                                              }],
+                                             },
+                                             \$c->session->{shop}{account_id}
+                                            ) or return;
+    }
+
+    unless( ! $c->session->{shop}{system}{name}
+           or $c->session->{shop}{system}{contract_id})
+    {
+        $c->model('Provisioning')->call_prov($c, 'billing', 'create_hardware_contract',
+                                             { product     => $c->session->{shop}{system}{name},
+                                               customer_id => $c->session->{shop}{customer_id},
+                                               status      => 'pending',
+                                               order_id    => $c->session->{shop}{order_id},
+                                             },
+                                             \$c->session->{shop}{system}{contract_id}
+                                            ) or return;
+    }
+
+    if(ref $c->session->{shop}{phones} eq 'ARRAY') {
+        foreach my $phone (@{$c->session->{shop}{phones}}) {
+            next if ref $$phone{contract_ids} eq 'ARRAY' and scalar @{ $$phone{contract_ids} } == $$phone{count};
+            my $start = ref $$phone{contract_ids} eq 'ARRAY' ? scalar @{ $$phone{contract_ids} } : 1;
+            for($start .. $$phone{count}) {
+                my $contract_id;
+                $c->model('Provisioning')->call_prov($c, 'billing', 'create_hardware_contract',
+                                                     { product     => $$phone{name},
+                                                       customer_id => $c->session->{shop}{customer_id},
+                                                       status      => 'pending',
+                                                       order_id    => $c->session->{shop}{order_id},
+                                                     },
+                                                     \$contract_id
+                                                    ) or return;
+                push @{ $$phone{contract_ids} }, $contract_id;
+            }
+        }
+    }
+
+    unless($self->_send_ack_mail($c)) {
+        $c->log->error('***shop::topayment failed to send e-mail for customer '. $c->session->{shop}{customer_id});
+    }
+
+    return 1;
+}
+
+sub _generate_sip_password : Private {
+    my ($self,$c) = @_;
+
+    return substr crypt($c->session->{shop}{session_key}, $c->session->{shop}{session_key}), 2;
+}
+
+sub _send_ack_mail : Private {
     my ($self, $c) = @_;
 
     my $smtp = Net::SMTP->new('localhost') or return;
     $smtp->mail('shop@libratel.at') or return;
-    $smtp->recipient($c->session->{shop}{personal}{email}) or return;
+    unless($c->config->{development}) {
+        $smtp->recipient($c->session->{shop}{personal}{email}) or return;
+        $smtp->recipient('office@libratel.at') or return;
+    }
     $smtp->recipient('dtiefnig@sipwise.com') or return;
-    $smtp->recipient('office@libratel.at') or return;
     $smtp->data() or return;
     $smtp->datasend("From: shop\@libratel.at\n");
     $smtp->datasend('To: '. $c->session->{shop}{personal}{email} ."\n");
@@ -738,29 +880,30 @@ Sehr geehrte Damen und Herren,
 vielen Dank für Ihren Einkauf bei Libratel. Wir freuen uns, Sie als
 Kunden begrüßen zu dürfen und haben Ihre Bestellung wie folgt
 aufgenommen:
+
 ");
     $smtp->datasend("AUFTRAGSNUMMER: ". $c->session->{shop}{dbinvoice} ."\n");
     $smtp->datasend("
                                         Einmalig           Monatlich
 --------------------------------------------------------------------
 ");
-    $smtp->datasend("1 x Tarif ". $c->stash->{tarif}{name} .
-                    " " x (30 - length $c->stash->{tarif}{name}) .
-                    "EUR ". $c->stash->{tarif}{price} .
-                    " " x (15 - length $c->stash->{tarif}{price}) .
-                    "EUR ". $c->stash->{tarif}{monthly} ."\n");
+    $smtp->datasend("1 x Tarif ". $c->session->{shop}{tarif}{name} .
+                    " " x (30 - length $c->session->{shop}{tarif}{name}) .
+                    "EUR ". $c->session->{shop}{tarif}{price} .
+                    " " x (15 - length $c->session->{shop}{tarif}{price}) .
+                    "EUR ". $c->session->{shop}{tarif}{monthly} ."\n");
    $smtp->datasend("1 x Startguthaben ". " " x 22 .
-                   "EUR ". $c->stash->{tarif}{initial_charge} .
-                   " " x (15 - length $c->stash->{tarif}{initial_charge}) .
+                   "EUR ". $c->session->{shop}{tarif}{initial_charge} .
+                   " " x (15 - length $c->session->{shop}{tarif}{initial_charge}) .
                    "EUR 0.00\n");
-   $smtp->datasend("1 x ". $c->stash->{system}{name} .
-                   " " x (36 - length $c->stash->{system}{name}) .
-                   "EUR ". $c->stash->{system}{price} .
-                   " " x (15 - length $c->stash->{system}{price}) .
+   $smtp->datasend("1 x ". $c->session->{shop}{system}{name} .
+                   " " x (36 - length $c->session->{shop}{system}{name}) .
+                   "EUR ". $c->session->{shop}{system}{price} .
+                   " " x (15 - length $c->session->{shop}{system}{price}) .
                    "EUR 0.00\n")
-       if $c->stash->{system};
-   if(ref $c->stash->{phones} eq 'ARRAY') {
-       foreach my $phone (@{$c->stash->{phones}}) {
+       if $c->session->{shop}{system};
+   if(ref $c->session->{shop}{phones} eq 'ARRAY') {
+       foreach my $phone (@{$c->session->{shop}{phones}}) {
            $smtp->datasend($$phone{count} ." x ". $$phone{name} .
                            " " x (32 - length $$phone{count} - length $$phone{name}) .
                            "EUR ". $$phone{price_sum} .
@@ -769,61 +912,55 @@ aufgenommen:
        }
    }
    $smtp->datasend("--------------------------------------------------------------------\n");
+   my $price_sum1 = $self->_calculate_price_sum($c);
    $smtp->datasend("Zwischensumme" . " " x 27 .
-                   "EUR ". $c->stash->{price_sum} .
-                   " " x (15 - length $c->stash->{price_sum}) .
-                   "EUR ". $c->stash->{month_sum} ."\n");
-   $smtp->datasend("+20% USt". " " x 32 .
-                   "EUR ". $c->stash->{price_tax} .
-                   " " x (15 - length $c->stash->{price_tax}) .
-                   "EUR ". $c->stash->{month_tax} ."\n");
+                   "EUR ". $price_sum1 .
+                   " " x (15 - length $price_sum1) .
+                   "EUR ". $c->session->{shop}{tarif}{monthly} ."\n");
    $smtp->datasend("+Versandkosten". " " x 26 .
-                   "EUR ". $c->stash->{shipping_fee} .
-                   " " x (15 - length $c->stash->{shipping_fee}) .
+                   "EUR ". $c->session->{shop}{shipping_fee} .
+                   " " x (15 - length $c->session->{shop}{shipping_fee}) .
                    "EUR 0.00\n");
+   my $price_tax = sprintf "%.2f", ($price_sum1 + $c->session->{shop}{shipping_fee}) * .2;
+   my $month_tax = sprintf "%.2f", $c->session->{shop}{tarif}{monthly} * .2;
+   $smtp->datasend("+20% USt". " " x 32 .
+                   "EUR ". $price_tax .
+                   " " x (15 - length $price_tax) .
+                   "EUR ". $month_tax ."\n");
    $smtp->datasend("--------------------------------------------------------------------\n");
    $smtp->datasend("\n");
+   my $month_sum = sprintf "%.2f", $c->session->{shop}{tarif}{monthly} + $month_tax;
    $smtp->datasend("Summe" . " " x 35 .
-                   "EUR ". $c->stash->{price_sum3} .
-                   " " x (15 - length $c->stash->{price_sum3}) .
-                   "EUR ". $c->stash->{month_sum2} ."\n");
+                   "EUR ". $c->session->{shop}{price_sum} .
+                   " " x (15 - length $c->session->{shop}{price_sum}) .
+                   "EUR ". $month_sum ."\n");
    $smtp->datasend("\n\n");
 
-   $smtp->datasend("GESAMTBETRAG:". " " x 5 . "EUR ". $c->stash->{price_sum3} ." inkl. USt\n");
-   $smtp->datasend("\n");
-
-   if($c->session->{shop}{payment_details}{type} eq 'eps') {
-       $smtp->datasend("ZAHLUNGSMITTEL:". " " x 3 . "Onlineüberweisung\n");
-   } elsif($c->session->{shop}{payment_details}{type} eq 'elv') {
-       $smtp->datasend("ZAHLUNGSMITTEL:". " " x 3 . "Lastschriftverfahren\n");
-       $smtp->datasend(" " x 18 . "Bankleitzahl: " . $c->session->{shop}{payment_details}{bankid} ."\n");
-       $smtp->datasend(" " x 18 . "Kontonummer:  " . $c->session->{shop}{payment_details}{account} ."\n");
-   } elsif($c->session->{shop}{payment_details}{type} eq 'cc') {
-       $smtp->datasend("ZAHLUNGSMITTEL:". " " x 3 . "Kreditkarte\n");
-       $smtp->datasend(" " x 18 . $c->session->{shop}{payment_details}{cctype} ."\n");
-       $smtp->datasend(" " x 18 . $c->session->{shop}{payment_details}{cardnum} ."\n");
-   } elsif($c->session->{shop}{payment_details}{type} eq 'maestro') {
-       $smtp->datasend("ZAHLUNGSMITTEL:". " " x 3 . "Maestro SecureCode\n");
-       $smtp->datasend(" " x 18 . $c->session->{shop}{payment_details}{cardnum} ."\n");
-   }
+   $smtp->datasend("GESAMTBETRAG:". " " x 5 . "EUR ". $c->session->{shop}{price_sum} ." inkl. USt\n");
    $smtp->datasend("\n");
 
    $smtp->datasend("VERSANDART:". " " x 7 . "Hermes Paketversand\n");
    $smtp->datasend("\n");
 
-   $smtp->datasend("RECHNUNGSADRESSE: " . $c->stash->{personal}{firstname} ." ". $c->stash->{personal}{lastname} ."\n");
-   $smtp->datasend(" " x 18 . $c->stash->{personal}{company} ."\n") if $c->stash->{personal}{company};
-   $smtp->datasend(" " x 18 . $c->stash->{personal}{street} ."\n");
-   $smtp->datasend(" " x 18 . $c->stash->{personal}{postcode} ." ". $c->stash->{personal}{city} ."\n");
+   $smtp->datasend("RECHNUNGSADRESSE: " . $c->session->{shop}{personal}{firstname} ." ".
+                                          $c->session->{shop}{personal}{lastname} ."\n");
+   $smtp->datasend(" " x 18 . $c->session->{shop}{personal}{company} ."\n") if $c->session->{shop}{personal}{company};
+   $smtp->datasend(" " x 18 . $c->session->{shop}{personal}{street} ."\n");
+   $smtp->datasend(" " x 18 . $c->session->{shop}{personal}{postcode} ." ". $c->session->{shop}{personal}{city} ."\n");
    $smtp->datasend("\n");
 
-   if(ref $c->stash->{personal}{delivery} eq 'HASH') {
+   if(ref $c->session->{shop}{personal}{delivery} eq 'HASH') {
        $smtp->datasend("VERSANDADRESSE:". " " x 3 .
-                       $c->stash->{personal}{delivery}{firstname} ." ". $c->stash->{personal}{delivery}{lastname} ."\n");
-       $smtp->datasend(" " x 18 . $c->stash->{personal}{delivery}{company} ."\n") if $c->stash->{personal}{delivery}{company};
-       $smtp->datasend(" " x 18 . $c->stash->{personal}{delivery}{street} ."\n");
-       $smtp->datasend(" " x 18 . $c->stash->{personal}{delivery}{postcode} ." ". $c->stash->{personal}{delivery}{city} ."\n");
+                       $c->session->{shop}{personal}{delivery}{firstname} ." ".
+                       $c->session->{shop}{personal}{delivery}{lastname} ."\n");
+       $smtp->datasend(" " x 18 . $c->session->{shop}{personal}{delivery}{company} ."\n")
+           if $c->session->{shop}{personal}{delivery}{company};
+       $smtp->datasend(" " x 18 . $c->session->{shop}{personal}{delivery}{street} ."\n");
+       $smtp->datasend(" " x 18 . $c->session->{shop}{personal}{delivery}{postcode} ." ".
+                       $c->session->{shop}{personal}{delivery}{city} ."\n");
        $smtp->datasend("\n");
+   } else {
+       $smtp->datasend("VERSANDADRESSE:". " " x 3 . "Wie Rechnungsadresse.\n\n");
    }
 
    $smtp->datasend('

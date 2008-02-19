@@ -508,129 +508,6 @@ sub error : Local {
 sub _start_transaction : Private {
     my ($self, $c, $type, $amount) = @_;
 
-    my $pi = $c->session->{shop}{personal};
-
-    unless($c->session->{shop}{customer_id}) {
-        $c->model('Provisioning')->call_prov($c, 'billing', 'create_customer',
-                                             { data => {
-                                                         shopuser => $$pi{username},
-                                                         shoppass => $$pi{password},
-                                                         contact  => { comregnum   => $$pi{comregnum},
-                                                                       company     => $$pi{company},
-                                                                       gender      => $$pi{gender},
-                                                                       firstname   => $$pi{firstname},
-                                                                       lastname    => $$pi{lastname},
-                                                                       street      => $$pi{street},
-                                                                       postcode    => $$pi{postcode},
-                                                                       city        => $$pi{city},
-                                                                       phonenumber => $$pi{phonenumber},
-                                                                       email       => $$pi{email},
-                                                                       newsletter  => $$pi{newsletter},
-                                                                     },
-                                                         ($$pi{customer_type} eq 'business' ?
-                                                           (($$pi{sign_like_contact} ? () :
-                                                             (comm_contact => { gender      => $$pi{sign_contact}{gender},
-                                                                                firstname   => $$pi{sign_contact}{firstname},
-                                                                                lastname    => $$pi{sign_contact}{lastname},
-                                                                                phonenumber => $$pi{sign_contact}{phonenumber},
-                                                                                email       => $$pi{sign_contact}{email},
-                                                                              })
-                                                            ),
-                                                            ($$pi{tech_like_contact} ? () :
-                                                             (tech_contact => { gender      => $$pi{tech_contact}{gender},
-                                                                                firstname   => $$pi{tech_contact}{firstname},
-                                                                                lastname    => $$pi{tech_contact}{lastname},
-                                                                                phonenumber => $$pi{tech_contact}{phonenumber},
-                                                                                email       => $$pi{tech_contact}{email},
-                                                                              })
-                                                            ),
-                                                           ) : ()
-                                                         ),
-                                                       },
-                                             },
-                                             \$c->session->{shop}{customer_id}
-                                            ) or return;
-    }
-
-    unless($c->session->{shop}{order_id}
-           or $c->model('Provisioning')->call_prov($c, 'billing', 'create_order',
-                                                   { customer_id => $c->session->{shop}{customer_id},
-                                                     type        => 'web',
-                                                     value       => $amount,
-                                                     ($$pi{deliver_to_contact} ? () :
-                                                      (delivery_contact => { gender    => $$pi{delivery}{gender},
-                                                                             firstname => $$pi{delivery}{firstname},
-                                                                             lastname  => $$pi{delivery}{lastname},
-                                                                             company   => $$pi{delivery}{company},
-                                                                             street    => $$pi{delivery}{street},
-                                                                             postcode  => $$pi{delivery}{postcode},
-                                                                             city      => $$pi{delivery}{city},
-                                                                           })
-                                                     ),
-                                                   },
-                                                   \$c->session->{shop}{order_id}
-                                                  ))
-    {
-        return;
-    }
-
-    unless($c->session->{shop}{account_id}) {
-        $c->model('Provisioning')->call_prov($c, 'billing', 'create_voip_account',
-                                             { product     => ($c->session->{shop}{tarif} eq 'free'
-                                                               ? 'Libratel VoIP Free'
-                                                               : 'Libratel VoIP Premium'),
-                                               customer_id => $c->session->{shop}{customer_id},
-                                               status      => 'pending',
-                                               order_id    => $c->session->{shop}{order_id},
-                                               subscribers => [{ username    => $c->session->{shop}{personal}{username},
-                                                                 domain      => $c->config->{site_domain},
-                                                                 password    => $self->_generate_sip_password($c),
-                                                                 admin       => 1,
-                                                                 cc          => $c->session->{shop}{number}{cc},
-                                                                 ac          => $c->session->{shop}{number}{ac},
-                                                                 sn          => $c->session->{shop}{number}{sn},
-                                                                 webusername => $c->session->{shop}{personal}{username},
-                                                                 webpassword => $c->session->{shop}{personal}{password},
-                                                                 #TODO: phonebook attribute in BSS
-                                                                 # phonebook   => $c->session->{shop}{phonebook},
-                                                              }],
-                                             },
-                                             \$c->session->{shop}{account_id}
-                                            ) or return;
-    }
-
-    unless( ! $c->session->{shop}{system}{name}
-           or $c->session->{shop}{system}{contract_id})
-    {
-        $c->model('Provisioning')->call_prov($c, 'billing', 'create_hardware_contract',
-                                             { product     => $c->session->{shop}{system}{name},
-                                               customer_id => $c->session->{shop}{customer_id},
-                                               status      => 'pending',
-                                               order_id    => $c->session->{shop}{order_id},
-                                             },
-                                             \$c->session->{shop}{system}{contract_id}
-                                            ) or return;
-    }
-
-    if(ref $c->session->{shop}{phones} eq 'ARRAY') {
-        foreach my $phone (@{$c->session->{shop}{phones}}) {
-            next if ref $$phone{contract_ids} eq 'ARRAY' and scalar @{ $$phone{contract_ids} } == $$phone{count};
-            my $start = ref $$phone{contract_ids} eq 'ARRAY' ? scalar @{ $$phone{contract_ids} } : 1;
-            for($start .. $$phone{count}) {
-                my $contract_id;
-                $c->model('Provisioning')->call_prov($c, 'billing', 'create_hardware_contract',
-                                                     { product     => $$phone{name},
-                                                       customer_id => $c->session->{shop}{customer_id},
-                                                       status      => 'pending',
-                                                       order_id    => $c->session->{shop}{order_id},
-                                                     },
-                                                     \$contract_id
-                                                    ) or return;
-                push @{ $$phone{contract_ids} }, $contract_id;
-            }
-        }
-    }
-
     my $payment_id;
     unless($c->model('Provisioning')->call_prov($c, 'billing', 'create_payment',
                                                 { order_id => $c->session->{shop}{order_id},
@@ -667,14 +544,6 @@ sub _finish_transaction : Private {
                                                   data => { state => 'transact' },
                                                 },
                                                 undef
-                                               ))
-    {
-        return;
-    }
-
-    unless($c->model('Provisioning')->call_prov($c, 'billing', 'get_order',
-                                                { id   => $c->session->{shop}{order_id} },
-                                                \$c->session->{shop}{order}
                                                ))
     {
         return;
@@ -722,12 +591,6 @@ sub _fail_transaction : Private {
     }
 
     return 1;
-}
-
-sub _generate_sip_password : Private {
-    my ($self,$c) = @_;
-
-    return substr crypt($c->session->{shop}{session_key}, $c->session->{shop}{session_key}), 2;
 }
 
 sub end : ActionClass('RenderView') {
