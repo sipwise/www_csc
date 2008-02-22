@@ -77,7 +77,8 @@ sub accept_cc_payment {
 
     my $data = 'OPERATION=ACCEPTPAYMENT' .
                '&MERCHANTID='. $c->config->{mpay24_merchantid} .
-               '&TID='. $tid .
+               '&TID='. ($c->config->{development} ? 't' : '') . $tid .
+               '&CUSTOMER='. ($c->config->{development} ? 't' : '') . $c->session->{shop}{customer_id} .
                '&P_TYPE=CC' .
                '&BRAND='. $brand .
                '&CURRENCY=EUR' .
@@ -126,7 +127,8 @@ sub accept_elv_payment {
 
     my $data = 'OPERATION=ACCEPTPAYMENT' .
                '&MERCHANTID='. $c->config->{mpay24_merchantid} .
-               '&TID='. $tid .
+               '&TID='. ($c->config->{development} ? 't' : '') . $tid .
+               '&CUSTOMER='. ($c->config->{development} ? 't' : '') . $c->session->{shop}{customer_id} .
                '&P_TYPE=ELV' .
                '&BRAND=HOBEX-AT' .
                '&CURRENCY=EUR' .
@@ -237,7 +239,8 @@ sub accept_eps_payment {
 
     my $data = 'OPERATION=ACCEPTPAYMENT' .
                '&MERCHANTID='. $c->config->{mpay24_merchantid} .
-               '&TID='. $tid .
+               '&TID='. ($c->config->{development} ? 't' : '') . $tid .
+               '&CUSTOMER='. ($c->config->{development} ? 't' : '') . $c->session->{shop}{customer_id} .
                '&P_TYPE=EPS' .
                '&CURRENCY=EUR' .
                '&PRICE='. $amount .
@@ -284,7 +287,8 @@ sub accept_maestro_payment {
 
     my $data = 'OPERATION=ACCEPTPAYMENT' .
                '&MERCHANTID='. $c->config->{mpay24_merchantid} .
-               '&TID='. $tid .
+               '&TID='. ($c->config->{development} ? 't' : '') . $tid .
+               '&CUSTOMER='. ($c->config->{development} ? 't' : '') . $c->session->{shop}{customer_id} .
                '&P_TYPE=MAESTRO' .
                '&CURRENCY=EUR' .
                '&PRICE='. $amount .
