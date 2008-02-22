@@ -133,9 +133,6 @@ sub dopay_elv : Local {
                                            };
 
     if($c->model('Mpay24')->accept_elv_payment($c, $tid, $amount, $accountnumber, $bankid)) {
-        unless($self->_finish_transaction($c, $tid)) {
-            # hmm, what? some logging, at least.
-        }
         $c->response->redirect('/shop/finish?sk='. $c->session->{shop}{session_key});
         return;
     } elsif(defined $c->session->{mpay24}) {
@@ -191,9 +188,6 @@ sub dopay_cc : Local {
 
     my $rc = $c->model('Mpay24')->accept_cc_payment($c, $tid, $amount, $cctype, $cardnum, $expiry, $cvc);
     if($rc == 1) {
-        unless($self->_finish_transaction($c, $tid)) {
-            # hmm, what? some logging, at least.
-        }
         $c->response->redirect('/shop/finish?sk='. $c->session->{shop}{session_key});
         return;
     } elsif($rc == 2) {
@@ -368,23 +362,21 @@ sub confirm : Local {
     $c->log->info("***payment::confirm called!");
     $c->log->info(Dumper $c->request->params);
 
-    if($c->request->params->{P_TYPE} eq 'MAESTRO'
-       or $c->request->params->{P_TYPE} eq 'EPS'
-       or $c->request->params->{P_TYPE} eq 'CC')
+    unless($c->model('Provisioning')->call_prov($c, 'billing', 'update_payment',
+                                                { id   => $c->request->params->{TID},
+                                                  data => { mpaytid => $c->request->params->{MPAYTID},
+                                                            status  => $c->request->params->{STATUS},
+                                                          },
+                                                },
+                                                undef
+                                               ))
     {
-        unless($c->model('Provisioning')->call_prov($c, 'billing', 'update_payment',
-                                                    { id   => $c->request->params->{TID},
-                                                      data => { mpaytid        => $c->request->params->{MPAYTID},
-                                                                status         => $c->request->params->{STATUS},
-                                                              },
-                                                    },
-                                                    undef
-                                                   ))
-        {
-            return;
-        }
-    } else {
-        $c->log->info("***payment::confirm IGNORING confirm call for paytype '". $c->request->params->{P_TYPE} ."'");
+        return;
+    }
+    if($c->request->params->{STATUS} eq 'BILLED') {
+        $self->_finish_transaction($c, $c->request->params->{TID});
+    } elsif($c->request->params->{STATUS} eq 'ERROR') {
+        $self->_fail_transaction($c, $c->request->params->{TID});
     }
 
     $c->response->body('OK');
@@ -424,25 +416,10 @@ sub success : Local {
         return;
     }
 
-    if($$payment{status} eq 'RESERVED' or $$payment{status} eq 'BILLED') {
-        if($$order{type} eq 'charge') {
-            unless($c->model('Provisioning')->call_prov($c, 'billing', 'update_voip_account_balance',
-                                                        { id     => $c->session->{user}{account_id},
-                                                          data => { cash => $$payment{amount} },
-                                                        }))
-            {
-                $self->_fail_transaction($c, $$payment{id});
-            } else {
-                $self->_finish_transaction($c, $$payment{id});
-            }
-            $c->response->redirect('/account/balance');
-        } else {
-            $self->_finish_transaction($c, $$payment{id});
-            $c->response->redirect('/shop/finish?sk='. $c->session->{shop}{session_key});
-        }
+    if($$payment{status} eq 'RESERVED' or $$payment{status} eq 'BILLED' or $$payment{status} eq 'CREDITED') {
+        $c->response->redirect('/shop/finish?sk='. $c->session->{shop}{session_key});
         return;
     } else {
-        $self->_fail_transaction($c, $$payment{id});
         $c->response->redirect('/payment?sk='. $c->session->{shop}{session_key});
         return;
     }
@@ -497,8 +474,6 @@ sub error : Local {
         return;
     }
 
-    $self->_fail_transaction($c, $$payment{id});
-
     $c->session->{mpay24_errors}{$$payment{type}} = $$payment{externalstatus}
                                                     || $c->model('Provisioning')->localize('Web.Payment.ExternalError');
     $c->response->redirect('/payment?sk='. $c->session->{shop}{session_key} .'#'. $$payment{type});
@@ -528,10 +503,7 @@ sub _finish_transaction : Private {
 
     unless($c->model('Provisioning')->call_prov($c, 'billing', 'update_payment',
                                                 { id   => $tid,
-                                                  data => { state          => 'success',
-                                                            mpaytid        => $c->session->{mpay24}{MPAYTID},
-                                                            status         => $c->session->{mpay24}{STATUS},
-                                                          },
+                                                  data => { state => 'success' },
                                                 },
                                                 undef
                                                ))
@@ -539,8 +511,17 @@ sub _finish_transaction : Private {
         return;
     }
 
+    my $payment;
+    unless($c->model('Provisioning')->call_prov($c, 'billing', 'get_payment',
+                                                { id   => $tid },
+                                                \$payment
+                                               ))
+    {
+        return;
+    }
+
     unless($c->model('Provisioning')->call_prov($c, 'billing', 'update_order',
-                                                { id   => $c->session->{shop}{order_id},
+                                                { id   => $$payment{order_id},
                                                   data => { state => 'transact' },
                                                 },
                                                 undef
@@ -549,23 +530,25 @@ sub _finish_transaction : Private {
         return;
     }
 
-    unless($c->model('Provisioning')->call_prov($c, 'billing', 'activate_voip_account',
-                                                { id   => $c->session->{shop}{account_id} },
-                                                undef
+    my $order;
+    unless($c->model('Provisioning')->call_prov($c, 'billing', 'get_order',
+                                                { id => $$payment{order_id} },
+                                                \$order
                                                ))
     {
         return;
     }
 
-    unless(!$c->session->{shop}{tarif}{initial_charge}
-           or $c->model('Provisioning')->call_prov( $c, 'billing', 'update_voip_account_balance',
-                                                    { id   => $c->session->{shop}{account_id},
-                                                      data => { cash => $c->session->{shop}{tarif}{initial_charge} * 100 }
-                                                    },
+    foreach my $contract (@{$$order{contracts}}) {
+        next unless $$contract{class} eq 'voip';
+
+        unless($c->model('Provisioning')->call_prov($c, 'billing', 'activate_voip_account',
+                                                    { id => $$contract{id} },
                                                     undef
-                                                  ))
-    {
-        return;
+                                                   ))
+        {
+            return;
+        }
     }
 
     return 1;
@@ -574,15 +557,16 @@ sub _finish_transaction : Private {
 sub _fail_transaction : Private {
     my ($self, $c, $tid) = @_;
 
+    my %mpay;
+    $mpay{mpaytid} = $c->session->{mpay24}{MPAYTID} if defined $c->session->{mpay24}{MPAYTID};
+    $mpay{status} = $c->session->{mpay24}{STATUS} if defined $c->session->{mpay24}{STATUS};
+    $mpay{errno} = $c->session->{mpay24}{ERRNO} if defined $c->session->{mpay24}{ERRNO};
+    $mpay{returncode} = $c->session->{mpay24}{RETURNCODE} if defined $c->session->{mpay24}{RETURNCODE};
+    $mpay{externalstatus} = $c->session->{mpay24}{EXTERNALSTATUS} if defined $c->session->{mpay24}{EXTERNALSTATUS};
+
     unless($c->model('Provisioning')->call_prov($c, 'billing', 'update_payment',
                                                 { id   => $tid,
-                                                  data => { state          => 'failed',
-                                                            mpaytid        => $c->session->{mpay24}{MPAYTID},
-                                                            status         => $c->session->{mpay24}{STATUS},
-                                                            errno          => $c->session->{mpay24}{ERRNO},
-                                                            returncode     => $c->session->{mpay24}{RETURNCODE},
-                                                            externalstatus => $c->session->{mpay24}{EXTERNALSTATUS},
-                                                          },
+                                                  data => { state => 'failed', %mpay },
                                                 },
                                                 undef
                                                ))

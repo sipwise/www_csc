@@ -807,6 +807,15 @@ sub _create_contracts : Private {
                                             ) or return;
     }
 
+    if($c->session->{shop}{tarif}{initial_charge}) {
+        $c->model('Provisioning')->call_prov( $c, 'billing', 'update_voip_account_balance',
+                                              { id   => $c->session->{shop}{account_id},
+                                                data => { cash => $c->session->{shop}{tarif}{initial_charge} * 100 }
+                                              },
+                                              undef
+                                            ) or return;
+    }
+
     unless( ! $c->session->{shop}{system}{name}
            or $c->session->{shop}{system}{contract_id})
     {
