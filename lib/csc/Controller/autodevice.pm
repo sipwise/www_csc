@@ -127,7 +127,7 @@ sub savespa : Local
     {
         $messages{topmsg} = 'Server.Voip.SavedSettings';
         $c->session->{messages} = \%messages;
-        $c->response->redirect($c->uri_for('/autosubscriber'));
+        $c->response->redirect($c->uri_for('/autodevice'));
         return;
     }
 
@@ -204,7 +204,7 @@ sub savespa : Local
     {
         $messages{topmsg} = 'Server.Voip.SavedSettings';
         $c->session->{messages} = \%messages;
-        $c->response->redirect($c->uri_for('/autosubscriber'));
+        $c->response->redirect($c->uri_for('/autodevice'));
         return;
     }    
 
@@ -285,7 +285,7 @@ sub savephone: Local
 
     if(defined $c->request->params->{'fdone.x'})
     {
-        $c->response->redirect($c->uri_for('/autosubscriber'));
+        $c->response->redirect($c->uri_for('/autodevice'));
         return;
     }
     
