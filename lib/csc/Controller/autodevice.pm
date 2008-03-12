@@ -79,10 +79,11 @@ sub savespa : Local
     $spa{ip} = $c->request->params->{ip};
     $c->log->debug('***device::spa ip='.$spa{ip});
 
-    $spa{fxs1_subscriber_id} = int($c->request->params->{fxs1})
-        if($c->request->params->{fxs1} && $c->request->params->{fxs1} =~ /^\d+$/);
-    $spa{fxs2_subscriber_id} = int($c->request->params->{fxs2})
-        if($c->request->params->{fxs2} && $c->request->params->{fxs2} =~ /^\d+$/);
+    print($c->request->params->{fieldset} . "\n");
+    my $num1 = $c->request->params->{fieldset} eq "small" ? $c->request->params->{fxs1} : $c->request->params->{fullnum1};
+    my $num2 = $c->request->params->{fieldset} eq "small" ? $c->request->params->{fxs2} : $c->request->params->{fullnum2};
+    $spa{fxs1_subscriber_id} = int($num1) if($num1 && $num1 =~ /^\d+$/);
+    $spa{fxs2_subscriber_id} = int($num2) if($num2 && $num2 =~ /^\d+$/);
     if(defined $spa{fxs1_subscriber_id} && defined $spa{fxs2_subscriber_id} &&
             $spa{fxs1_subscriber_id} == $spa{fxs2_subscriber_id})
     {

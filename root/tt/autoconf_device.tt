@@ -1,5 +1,56 @@
 [% META title = 'device' %]
 
+<script type="text/javascript" language="javascript">
+<!--
+	var htmlprops = new Array("titletext", "subtext");
+	var visibleprops = new Array("fxs1fieldset", "fxs2fieldset", "fullnum1fieldset", "fullnum2fieldset");
+	var valueprops = new Array("fieldset");
+
+	var types = new Object();
+
+	types["SPA9000"] = new Object();
+	types["SPA9000"]["titletext"] = "Bitte tragen Sie die Mac-Adresse Ihrer Telefonanlage ein und weisen Sie bei Bedarf den analogen Anschlüssen eine Durchwahl zu";
+	types["SPA9000"]["subtext"] = "Die Mac-Adresse ist eine Nummer und befindet sich auf der Unterseite Ihres Geräts.";
+	types["SPA9000"]["fxs1fieldset"] = 1;
+	types["SPA9000"]["fxs2fieldset"] = 1;
+	types["SPA9000"]["fullnum1fieldset"] = 0;
+	types["SPA9000"]["fullnum2fieldset"] = 0;
+	types["SPA9000"]["fieldset"] = "small";
+
+	types["PAP2T-EU"] = new Object();
+	types["PAP2T-EU"]["titletext"] = "Bitte tragen Sie die Mac-Adresse Ihrer PAP ein und weisen Sie bei Bedarf den analogen Anschlüssen eine Durchwahl zu";
+	types["PAP2T-EU"]["subtext"] = "Die Mac-Adresse ist eine Nummer und befindet sich auf der Unterseite Ihres Geräts.";
+	types["PAP2T-EU"]["fxs1fieldset"] = 0;
+	types["PAP2T-EU"]["fxs2fieldset"] = 0;
+	types["PAP2T-EU"]["fullnum1fieldset"] = 1;
+	types["PAP2T-EU"]["fullnum2fieldset"] = 1;
+	types["PAP2T-EU"]["fieldset"] = "full";
+
+	function ftyp_change() {
+		var sel = document.forms["mainform"].elements["ftyp"].value;
+		var type = types[sel];
+
+		var i;
+		for (i = 0; i < valueprops.length; i++) {
+			var prop = valueprops[i];
+			var ele = document.getElementById(prop);
+			ele.value = type[prop];
+		}
+		for (i = 0; i < htmlprops.length; i++) {
+			var prop = htmlprops[i];
+			var ele = document.getElementById(prop);
+			ele.innerHTML = type[prop];
+		}
+		for (i = 0; i < visibleprops.length; i++) {
+			var prop = visibleprops[i];
+			var ele = document.getElementById(prop);
+			ele.style.visibility = type[prop] ? "visible" : "hidden";
+			ele.style.display = type[prop] ? "block" : "none";
+		}
+	}
+// -->
+</script>
+
   <div id="headimg">
     <img src="/grafik/area_device.jpg" width="869" height="69" alt="Test" />
   </div>
@@ -37,20 +88,18 @@
                 </fieldset>
             </form>
 
-            <h2>SPA9000 einrichten</h2>
+            <h2>Endgerät einrichten</h2>
 
                 
             <div class="einrichtunghw">
                 <img src="/grafik/spa9000.jpg" width="260" height="224" alt="" class="imgleft" />
                 <div class="right">
-                    <h4>Bitte tragen Sie die Mac-Adresse Ihrer Telefonanlage ein und weisen Sie bei Bedarf den analogen Anschlüssen eine Durchwahl zu</h4>
-                    <p>
-                        Die Mac-Adresse ist eine Nummer und befindet sich auf der Unterseite Ihres Geräts.
-                    </p>
-                    <form method="post" action="/autodevice/savespa">
+                    <h4 id="titletext"><!-- will be overwritten -->Bitte tragen Sie die Mac-Adresse Ihrer Telefonanlage ein und weisen Sie bei Bedarf den analogen Anschlüssen eine Durchwahl zu</h4>
+                    <p id="subtext"><!-- will be overwritten -->Die Mac-Adresse ist eine Nummer und befindet sich auf der Unterseite Ihres Geräts.</p>
+                    <form method="post" action="/autodevice/savespa" id="mainform">
                         <fieldset>
                             <label for="ftyp">Modell</label>
-                            <select id="ftyp" name="fmodel" class="input20">
+                            <select id="ftyp" name="fmodel" class="input20" onchange="ftyp_change(); return true;">
                                 <option value="SPA9000"[% " selected" IF unit.model == "SPA9000" %]>Linksys SPA9000</option>
                                 <option value="PAP2T-EU"[% " selected" IF unit.model == "PAP2T-EU" %]>Linksys PAP2</option>
                             </select>
@@ -69,7 +118,9 @@
                             <br />
                         </fieldset>
 
-                        <fieldset>
+			<input type="hidden" name="fieldset" id="fieldset" value="" />
+
+                        <fieldset id="fxs1fieldset">
                             <label for="fxs1">DW Port 1</label>
                             <select id="fxs1" name="fxs1" class="input20">
                                 <option selected="selected" value="0"></option>
@@ -88,7 +139,7 @@
                             <br />
                         </fieldset>
                         
-                        <fieldset>
+                        <fieldset id="fxs2fieldset">
                             <label for="fxs2">DW Port 2</label>
                             <select id="fxs2" name="fxs2" class="input20">
                                 <option selected="selected" value="0"></option>
@@ -107,6 +158,46 @@
                             <br />
                         </fieldset>
 
+                        <fieldset id="fullnum1fieldset">
+                            <label for="fullnum1">Nummer Port 1</label>
+                            <select id="fullnum1" name="fullnum1" class="input20">
+                                <option selected="selected" value="0"></option>
+                                [% FOREACH subscriber IN subscribers %]
+                                            <option value="[% subscriber.subscriber_id %]">Kopfnummer ([% "0" _ subscriber.ac _ " " _ subscriber.sn %])[% " (" _ subscriber.autoconf_displayname _ ")" IF subscriber.autoconf_displayname %]</option>
+                                    [% FOREACH extension = subscriber.extensions %]
+                                        [% IF !extension.unit %]
+                                            <option value="[% extension.subscriber_id %]">DW [% extension.preferences.extension %][% " (" _ extension.autoconf_displayname _ ")" IF extension.autoconf_displayname %]</option>
+                                        [% ELSIF unit.fxs1_subscriber_id == extension.subscriber_id %]
+                                            <option value="[% extension.subscriber_id %]" selected>DW [% extension.preferences.extension %][% " (" _ extension.autoconf_displayname _ ")" IF extension.autoconf_displayname %]</option>
+                                        [% ELSIF unit.fxs2_subscriber_id == extension.subscriber_id %]
+                                            <option value="[% extension.subscriber_id %]">DW [% extension.preferences.extension %][% " (" _ extension.autoconf_displayname _ ")" IF extension.autoconf_displayname %]</option>
+                                        [% END %]
+                                    [% END %]
+                                [% END %]
+                            </select>
+                            <br />
+                        </fieldset>
+ 
+                        <fieldset id="fullnum2fieldset">
+                            <label for="fullnum2">Nummer Port 2</label>
+                            <select id="fullnum2" name="fullnum2" class="input20">
+                                <option selected="selected" value="0"></option>
+                                [% FOREACH subscriber IN subscribers %]
+                                            <option value="[% subscriber.subscriber_id %]">Kopfnummer ([% "0" _ subscriber.ac _ " " _ subscriber.sn %])[% " (" _ subscriber.autoconf_displayname _ ")" IF subscriber.autoconf_displayname %]</option>
+                                    [% FOREACH extension = subscriber.extensions %]
+                                        [% IF !extension.unit %]
+                                            <option value="[% extension.subscriber_id %]">DW [% extension.preferences.extension %][% " (" _ extension.autoconf_displayname _ ")" IF extension.autoconf_displayname %]</option>
+                                        [% ELSIF unit.fxs2_subscriber_id == extension.subscriber_id %]
+                                            <option value="[% extension.subscriber_id %]" selected>DW [% extension.preferences.extension %][% " (" _ extension.autoconf_displayname _ ")" IF extension.autoconf_displayname %]</option>
+                                        [% ELSIF unit.fxs1_subscriber_id == extension.subscriber_id %]
+                                            <option value="[% extension.subscriber_id %]">DW [% extension.preferences.extension %][% " (" _ extension.autoconf_displayname _ ")" IF extension.autoconf_displayname %]</option>
+                                        [% END %]
+                                    [% END %]
+                                [% END %]
+                            </select>
+                            <br />
+                        </fieldset>
+ 
                         <div class="aconflinkbold">
                             <label for="fsave">Konfiguration speichern</label>
                             <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" class="noborder" id="fsave" name="fsave"/>
@@ -191,3 +282,8 @@
 </div>
 <br clear="all" />
 
+<script type="text/javascript" language="javascript">
+<!--
+	ftyp_change();
+// -->
+</script>
