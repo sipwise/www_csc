@@ -26,6 +26,15 @@
 	types["PAP2T-EU"]["fullnum2fieldset"] = 1;
 	types["PAP2T-EU"]["fieldset"] = "full";
 
+	types["SPA9xx"] = new Object();
+	types["SPA9xx"]["titletext"] = "Bitte tragen Sie die Mac-Adresse Ihres SPA9xx-Telefons ein.";
+	types["SPA9xx"]["subtext"] = "Die Mac-Adresse ist eine Nummer und befindet sich auf der Unterseite Ihres Geräts.";
+	types["SPA9xx"]["fxs1fieldset"] = 0;
+	types["SPA9xx"]["fxs2fieldset"] = 0;
+	types["SPA9xx"]["fullnum1fieldset"] = 0;
+	types["SPA9xx"]["fullnum2fieldset"] = 0;
+	types["SPA9xx"]["fieldset"] = "head";
+
 	function ftyp_change() {
 		var sel = document.forms["mainform"].elements["ftyp"].value;
 		var type = types[sel];
@@ -102,6 +111,7 @@
                             <select id="ftyp" name="fmodel" class="input20" onchange="ftyp_change(); return true;">
                                 <option value="SPA9000"[% " selected" IF unit.model == "SPA9000" %]>Linksys SPA9000</option>
                                 <option value="PAP2T-EU"[% " selected" IF unit.model == "PAP2T-EU" %]>Linksys PAP2</option>
+                                <option value="SPA9xx"[% " selected" IF unit.model == "SPA9xx" %]>Linksys SPA9xx</option>
                             </select>
                             <br />
                         </fieldset>
