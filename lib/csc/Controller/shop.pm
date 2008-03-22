@@ -24,7 +24,7 @@ Catalyst Controller.
 
 =cut
 
-sub index : Private {
+sub index : Local {
     my ( $self, $c ) = @_;
 
     $c->response->redirect('http://www.libratel.at/');
@@ -109,21 +109,21 @@ sub set_tarif : Local {
         $c->session->{shop}{tarif}{initial_charge} = sprintf "%.2f", 10;
     }
 
-    $c->response->redirect('/shop/hardware?sk='. $c->session->{shop}{session_key});
+    $c->response->redirect('/shop/system?sk='. $c->session->{shop}{session_key});
 }
 
-=head2 hardware 
+=head2 system 
 
 =cut
 
-sub hardware : Local {
+sub system : Local {
     my ( $self, $c ) = @_;
 
     $c->response->redirect('http://www.libratel.at/')
         unless defined $c->request->params->{sk} and
                $c->request->params->{sk} eq $c->session->{shop}{session_key};
 
-    $c->stash->{template} = 'tt/shop/hardware.tt';
+    $c->stash->{template} = 'tt/shop/system.tt';
     $c->stash->{sk} = $c->session->{shop}{session_key};
     $c->stash->{tarif} = $c->session->{shop}{tarif};
     $c->stash->{extensions} = $c->session->{shop}{extensions};
@@ -167,11 +167,11 @@ sub hardware : Local {
     return 1;
 }
 
-=head2 set_hardware
+=head2 set_system
 
 =cut
 
-sub set_hardware : Local {
+sub set_system : Local {
     my ( $self, $c ) = @_;
 
     $c->response->redirect('http://www.libratel.at/')
@@ -273,7 +273,7 @@ sub set_hardware : Local {
 
     if(keys %messages) {
         $c->session->{messages} = \%messages;
-        $c->response->redirect('/shop/hardware?sk='. $c->session->{shop}{session_key});
+        $c->response->redirect('/shop/system?sk='. $c->session->{shop}{session_key});
     } else {
         $c->response->redirect('/shop/personal?sk='. $c->session->{shop}{session_key});
     }
