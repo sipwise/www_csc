@@ -1,0 +1,670 @@
+[% META title = 'Libratel hardware shop' %]
+
+  <div id="headimg">
+    <img src="/grafik/area_anmeldung.jpg" width="869" height="69" alt="Jetzt Kunde werden und alle Vorteile genießen!" />
+  </div>
+
+  <div id="main">
+
+    <div id="spalten31">
+
+      <h2>Bitte wählen Sie ein oder mehrere Endgeräte</h2>
+
+      <div class="spalte1">
+
+        <form class="anmelden produktwahlshop">
+
+          <script language="JavaScript" src="/js/showhide.js" type="text/javascript"></script>
+
+          <fieldset class="alt">
+            <h3>Telefonanlagen</h3>
+            <ul class="produktwahl">
+              <li>
+                <img src="/grafik_shop/pap2.gif" width="146" height="135" alt="PAP2T" />
+                <h4>PAP2 für einen Einzelanschluß<br />
+                <strong class="smallpreis">&euro; [% product_hash.PAP2T.price %]</strong></h4>
+                <p>
+                  <form method="post" action="/shop/add_to_cart">
+                    <input type="text" size="3" /><label for="add_PAP2T" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="hidden" name="product" value="PAP2T">
+                    <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_PAP2T" />
+                  </form>
+                </p>
+                <ul>
+                  <li>1-Line IP Telefon</li>
+                  <li>1 Ethernet Port</li>
+                  <li>Hi-Res Display</li>
+                  <li>Hi-Res Display</li>
+                </ul>
+                <p>
+                  <a href="javascript:showhide('pi_pap2','show');">Mehr Infos ...</a>
+                </p>
+              </li>
+              <li>
+                <img src="/grafik_shop/spa90004.gif" width="146" height="135" alt="SPA9000" />
+                <h4>SPA9000 für<br/>
+                4 Nebenstellen<br />
+                <strong class="smallpreis">&euro; [% product_hash.SPA9000_4_Port.price %]</strong></h4>
+                <p>
+                  <form method="post" action="/shop/add_to_cart">
+                    <input type="text" size="3" /><label for="add_SPA9000_4_Port" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="hidden" name="product" value="SPA9000 4 Port">
+                    <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_SPA9000_4_Port" />
+                  </form>
+                </p>
+                <ul>
+                  <li>1-Line IP Telefon</li>
+                  <li>2-Port Ethernet Switch</li>
+                  <li>PoE</i>
+                  <li>Hi-Res Display</li>
+                </ul>
+                <p>
+                  <a href="javascript:showhide('pi_spa90004','show');">Mehr Infos ...</a>
+                </p>
+              </li>
+              <li>
+                <img src="/grafik_shop/spa900016.gif" width="146" height="135" alt="SPA941" />
+                <h4>SPA9000 für<br/>
+                16 Nebenstellen<br />
+                <strong class="smallpreis">&euro; [% product_hash.SPA9000_16_Port.price %]</strong></h4>
+                <p>
+                  <form method="post" action="/shop/add_to_cart">
+                    <input type="text" size="3" /><label for="add_SPA9000_16_Port" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="hidden" name="product" value="SPA9000 16 Port">
+                    <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_SPA9000_16_Port" />
+                  </form>
+                </p>
+                <ul>
+                  <li>2 oder 4-Line IP Telefon</li>
+                  <li>1 Ethernet Port</li>
+                  <li>Hi-Res Display</li>
+                </ul>
+                <p>
+                  <a href="javascript:showhide('pi_spa900016','show');">Mehr Infos ...</a>
+                </p>
+              </li>
+              <li class="last">
+                <img src="/grafik_shop/spa9000upgrade.gif" width="146" height="135" alt="SPA942" />
+                <h4>SPA9000 Upgrade<br/>
+                von 4 auf 16 Nebenst.<br />
+                <strong class="smallpreis">&euro; [% product_hash.SPA9000_upgrade.price %]</strong></h4>
+                <p>
+                  <form method="post" action="/shop/add_to_cart">
+                    <input type="text" size="3" /><label for="add_SPA9000_upgrade" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="hidden" name="product" value="SPA9000 upgrade">
+                    <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_SPA9000_upgrade" />
+                  </form>
+                </p>
+                <ul>
+                  <li>2 oder 4-Line IP Telefon</li>
+                  <li>2-Port Ethernet Switch</li>
+                  <li>PoE</i>
+                  <li>Hi-Res Display</li>
+                </ul>
+                <p>
+                  <a href="javascript:showhide('pi_spa9000upgrade','show');">Mehr Infos ...</a>
+                </p>
+              </li>
+            </ul>
+
+            <div id="pi_pap2" class="prodinfo">
+              <img src="/grafik/prodinfo.gif" width="611" height="312" alt="" />
+              <div class="close">
+                <a href="javascript:showhide('pi_pap2','hide');">Fenster schließen</a>
+              </div>
+              <div class="frame">
+                <h2>PAP2</h2>
+                <h4>Wann sollte ich PAP2 wählen?</h4>
+                <ul class="vorteile">
+                  <li>Hier steht ein kurzer Text, der erklärt, wann diese Produkt die richtige Wahl ist</li>
+                  <li>IP PBX system with high-end features comparable to traditional large business voice services</li>
+                </ul>
+                <p>
+                  The SPA9000 marries the rich feature set of high-end PBX telephone systems with the convenience and cost advantages of Voice over IP. It has common voice system features such as an auto-attendant, shared line appearances, three way call conferencing, intercom, music on hold, call-forwarding and much more. The SPA9000 opens up access to the benefits of VoIP, including low cost long distance service, telephone number portability, and one network for both voice and data.
+                </p>
+              </div>
+            </div>
+            <div id="pi_spa90004" class="prodinfo">
+              <img src="/grafik/prodinfo.gif" width="611" height="312" alt="" />
+              <div class="close">
+                <a href="javascript:showhide('pi_spa90004','hide');">Fenster schließen</a>
+              </div>
+              <div class="frame">
+                <h2>SPA9000 4</h2>
+                <h4>Wann sollte ich SPA9000 4 wählen?</h4>
+                <ul class="vorteile">
+                  <li>Hier steht ein kurzer Text, der erklärt, wann diese Produkt die richtige Wahl ist</li>
+                  <li>IP PBX system with high-end features comparable to traditional large business voice services</li>
+                </ul>
+                <p>
+                  The SPA9000 marries the rich feature set of high-end PBX telephone systems with the convenience and cost advantages of Voice over IP. It has common voice system features such as an auto-attendant, shared line appearances, three way call conferencing, intercom, music on hold, call-forwarding and much more. The SPA9000 opens up access to the benefits of VoIP, including low cost long distance service, telephone number portability, and one network for both voice and data.
+                </p>
+              </div>
+            </div>
+            <div id="pi_spa900016" class="prodinfo">
+              <img src="/grafik/prodinfo.gif" width="611" height="312" alt="" />
+              <div class="close">
+                <a href="javascript:showhide('pi_spa900016','hide');">Fenster schließen</a>
+              </div>
+              <div class="frame">
+                <h2>SPA9000 16</h2>
+                <h4>Wann sollte ich SPA9000 16 wählen?</h4>
+                <ul class="vorteile">
+                  <li>Hier steht ein kurzer Text, der erklärt, wann diese Produkt die richtige Wahl ist</li>
+                  <li>IP PBX system with high-end features comparable to traditional large business voice services</li>
+                </ul>
+                <p>
+                  The SPA9000 marries the rich feature set of high-end PBX telephone systems with the convenience and cost advantages of Voice over IP. It has common voice system features such as an auto-attendant, shared line appearances, three way call conferencing, intercom, music on hold, call-forwarding and much more. The SPA9000 opens up access to the benefits of VoIP, including low cost long distance service, telephone number portability, and one network for both voice and data.
+                </p>
+              </div>
+            </div>
+            <div id="pi_spa9000upgrade" class="prodinfo">
+              <img src="/grafik/prodinfo.gif" width="611" height="312" alt="" />
+              <div class="close">
+                <a href="javascript:showhide('pi_spa9000upgrade','hide');">Fenster schließen</a>
+              </div>
+              <div class="frame">
+                <h2>SPA9000 upgrade</h2>
+                <h4>Wann sollte ich das SPA9000 upgrade wählen?</h4>
+                <ul class="vorteile">
+                  <li>Hier steht ein kurzer Text, der erklärt, wann diese Produkt die richtige Wahl ist</li>
+                  <li>IP PBX system with high-end features comparable to traditional large business voice services</li>
+                </ul>
+                <p>
+                  The SPA9000 marries the rich feature set of high-end PBX telephone systems with the convenience and cost advantages of Voice over IP. It has common voice system features such as an auto-attendant, shared line appearances, three way call conferencing, intercom, music on hold, call-forwarding and much more. The SPA9000 opens up access to the benefits of VoIP, including low cost long distance service, telephone number portability, and one network for both voice and data.
+                </p>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <h3>Telefone</h3>
+            <ul class="produktwahl">
+              <li>
+                <img src="/grafik_shop/spa921.gif" width="146" height="108" alt="SPA921" />
+                <h4>SPA921<br />
+                <strong class="smallpreis">&euro; [% product_hash.SPA921.price %]</strong></h4>
+                <p>
+                  <form method="post" action="/shop/add_to_cart">
+                    <input type="text" size="3" /><label for="add_SPA921" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="hidden" name="product" value="SPA921">
+                    <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_SPA921" />
+                  </form>
+                </p>
+                <ul>
+                  <li>1-Line IP Telefon</li>
+                  <li>1 Ethernet Port</li>
+                  <li>Hi-Res Display</li>
+                  <li>Hi-Res Display</li>
+                </ul>
+                <p>
+                  <a href="javascript:showhide('pi_spa921','show');">Mehr Infos ...</a>
+                </p>
+              </li>
+              <li>
+                <img src="/grafik_shop/spa922.gif" width="146" height="108" alt="SPA922" />
+                <h4>SPA922<br />
+                <strong class="smallpreis">&euro; [% product_hash.SPA922.price %]</strong></h4>
+                <p>
+                  <form method="post" action="/shop/add_to_cart">
+                    <input type="text" size="3" /><label for="add_SPA922" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="hidden" name="product" value="SPA922">
+                    <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_SPA922" />
+                  </form>
+                </p>
+                <ul>
+                  <li>1-Line IP Telefon</li>
+                  <li>2-Port Ethernet Switch</li>
+                  <li>PoE</i>
+                  <li>Hi-Res Display</li>
+                </ul>
+                <p>
+                  <a href="javascript:showhide('pi_spa922','show');">Mehr Infos ...</a>
+                </p>
+              </li>
+              <li>
+                <img src="/grafik_shop/spa941.gif" width="146" height="108" alt="SPA941" />
+                <h4>SPA941<br />
+                <strong class="smallpreis">&euro; [% product_hash.SPA941.price %]</strong></h4>
+                <p>
+                  <form method="post" action="/shop/add_to_cart">
+                    <input type="text" size="3" /><label for="add_SPA941" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="hidden" name="product" value="SPA941">
+                    <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_SPA941" />
+                  </form>
+                </p>
+                <ul>
+                  <li>2 oder 4-Line IP Telefon</li>
+                  <li>1 Ethernet Port</li>
+                  <li>Hi-Res Display</li>
+                </ul>
+                <p>
+                  <a href="javascript:showhide('pi_spa941','show');">Mehr Infos ...</a>
+                </p>
+              </li>
+              <li class="last">
+                <img src="/grafik_shop/spa942.gif" width="146" height="108" alt="SPA942" />
+                <h4>SPA942<br />
+                <strong class="smallpreis">&euro; [% product_hash.SPA942.price %]</strong></h4>
+                <p>
+                  <form method="post" action="/shop/add_to_cart">
+                    <input type="text" size="3" /><label for="add_SPA942" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="hidden" name="product" value="SPA942">
+                    <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_SPA942" />
+                  </form>
+                </p>
+                <ul>
+                  <li>2 oder 4-Line IP Telefon</li>
+                  <li>2-Port Ethernet Switch</li>
+                  <li>PoE</i>
+                  <li>Hi-Res Display</li>
+                </ul>
+                <p>
+                  <a href="javascript:showhide('pi_spa942','show');">Mehr Infos ...</a>
+                </p>
+              </li>
+            </ul>
+
+            <div id="pi_spa921" class="prodinfo">
+              <img src="/grafik/prodinfo.gif" width="611" height="312" alt="" />
+              <div class="close">
+                <a href="javascript:showhide('pi_spa921','hide');">Fenster schließen</a>
+              </div>
+              <div class="frame">
+                <h2>SPA921</h2>
+                <h4>Wann sollte ich SPA921 wählen?</h4>
+                <ul class="vorteile">
+                  <li>Hier steht ein kurzer Text, der erklärt, wann diese Produkt die richtige Wahl ist</li>
+                  <li>IP PBX system with high-end features comparable to traditional large business voice services</li>
+                </ul>
+                <p>
+                  The SPA9000 marries the rich feature set of high-end PBX telephone systems with the convenience and cost advantages of Voice over IP. It has common voice system features such as an auto-attendant, shared line appearances, three way call conferencing, intercom, music on hold, call-forwarding and much more. The SPA9000 opens up access to the benefits of VoIP, including low cost long distance service, telephone number portability, and one network for both voice and data.
+                </p>
+              </div>
+            </div>
+            <div id="pi_spa922" class="prodinfo">
+              <img src="/grafik/prodinfo.gif" width="611" height="312" alt="" />
+              <div class="close">
+                <a href="javascript:showhide('pi_spa922','hide');">Fenster schließen</a>
+              </div>
+              <div class="frame">
+                <h2>SPA922</h2>
+                <h4>Wann sollte ich SPA922 wählen?</h4>
+                <ul class="vorteile">
+                  <li>Hier steht ein kurzer Text, der erklärt, wann diese Produkt die richtige Wahl ist</li>
+                  <li>IP PBX system with high-end features comparable to traditional large business voice services</li>
+                </ul>
+                <p>
+                  The SPA9000 marries the rich feature set of high-end PBX telephone systems with the convenience and cost advantages of Voice over IP. It has common voice system features such as an auto-attendant, shared line appearances, three way call conferencing, intercom, music on hold, call-forwarding and much more. The SPA9000 opens up access to the benefits of VoIP, including low cost long distance service, telephone number portability, and one network for both voice and data.
+                </p>
+              </div>
+            </div>
+            <div id="pi_spa941" class="prodinfo">
+              <img src="/grafik/prodinfo.gif" width="611" height="312" alt="" />
+              <div class="close">
+                <a href="javascript:showhide('pi_spa941','hide');">Fenster schließen</a>
+              </div>
+              <div class="frame">
+                <h2>SPA941</h2>
+                <h4>Wann sollte ich SPA941 wählen?</h4>
+                <ul class="vorteile">
+                  <li>Hier steht ein kurzer Text, der erklärt, wann diese Produkt die richtige Wahl ist</li>
+                  <li>IP PBX system with high-end features comparable to traditional large business voice services</li>
+                </ul>
+                <p>
+                  The SPA9000 marries the rich feature set of high-end PBX telephone systems with the convenience and cost advantages of Voice over IP. It has common voice system features such as an auto-attendant, shared line appearances, three way call conferencing, intercom, music on hold, call-forwarding and much more. The SPA9000 opens up access to the benefits of VoIP, including low cost long distance service, telephone number portability, and one network for both voice and data.
+                </p>
+              </div>
+            </div>
+            <div id="pi_spa942" class="prodinfo">
+              <img src="/grafik/prodinfo.gif" width="611" height="312" alt="" />
+              <div class="close">
+                <a href="javascript:showhide('pi_spa942','hide');">Fenster schließen</a>
+              </div>
+              <div class="frame">
+                <h2>SPA942</h2>
+                <h4>Wann sollte ich SPA942 wählen?</h4>
+                <ul class="vorteile">
+                  <li>Hier steht ein kurzer Text, der erklärt, wann diese Produkt die richtige Wahl ist</li>
+                  <li>IP PBX system with high-end features comparable to traditional large business voice services</li>
+                </ul>
+                <p>
+                  The SPA9000 marries the rich feature set of high-end PBX telephone systems with the convenience and cost advantages of Voice over IP. It has common voice system features such as an auto-attendant, shared line appearances, three way call conferencing, intercom, music on hold, call-forwarding and much more. The SPA9000 opens up access to the benefits of VoIP, including low cost long distance service, telephone number portability, and one network for both voice and data.
+                </p>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="alt">
+            <h3>Zubehör</h3>
+            <ul class="produktwahl">
+              <li>
+                <img src="/grafik_shop/POES5.jpg" width="146" height="135" alt="POES5" />
+                <h4>POES5 <strong> Power Over Ethernet PoE 5 Volt Splitter</strong><br />
+                <strong class="smallpreis">&euro; [% product_hash.POES5.price %]</strong></h4>
+                <p>
+                  <form method="post" action="/shop/add_to_cart">
+                    <input type="text" size="3" /><label for="add_POES5" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="hidden" name="product" value="POES5">
+                    <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_POES5" />
+                  </form>
+                </p>
+                <ul>
+                  <li>1-Line IP Telefon</li>
+                  <li>1 Ethernet Port</li>
+                  <li>Hi-Res Display</li>
+                  <li>Hi-Res Display</li>
+                </ul>
+                <p>
+                  <a href="javascript:showhide('pi_poes5','show');">Mehr Infos ...</a>
+                </p>
+              </li>
+              <li>
+                <img src="/grafik_shop/WBP54G.jpg" width="146" height="135" alt="WBP54G" />
+                <h4>WBP54G <strong>Wireless-G Bridge für Linksys SPA9XX Telefone</strong><br />
+                <strong class="smallpreis">&euro; [% product_hash.WBP54G.price %]</strong></h4>
+                <p>
+                  <form method="post" action="/shop/add_to_cart">
+                    <input type="text" size="3" /><label for="add_WBP54G" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="hidden" name="product" value="WBP54G">
+                    <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_WBP54G" />
+                  </form>
+                </p>
+                <ul>
+                  <li>1-Line IP Telefon</li>
+                  <li>2-Port Ethernet Switch</li>
+                  <li>PoE</i>
+                  <li>Hi-Res Display</li>
+                </ul>
+                <p>
+                  <a href="javascript:showhide('pi_wbp54g','show');">Mehr Infos ...</a>
+                </p>
+              </li>
+              <li>
+                <img src="/grafik_shop/PA100-EU.jpg" width="146" height="135" alt="PA100-EU" />
+                <h4>PA100-EU Netzteil für Linksys Telefone<br /><br />
+                <strong class="smallpreis">&euro; [% product_hash.PA100.price %]</strong></h4>
+                <p>
+                  <form method="post" action="/shop/add_to_cart">
+                    <input type="text" size="3" /><label for="add_PA100" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="hidden" name="product" value="PA100">
+                    <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_PA100" />
+                  </form>
+                </p>
+                <ul>
+                  <li>2 oder 4-Line IP Telefon</li>
+                  <li>1 Ethernet Port</li>
+                  <li>Hi-Res Display</li>
+                </ul>
+                <p>
+                  <a href="javascript:showhide('pi_pa100','show');">Mehr Infos ...</a>
+                </p>
+              </li>
+              <li class="last">
+                <img src="/grafik_shop/MB100.jpg" width="146" height="135" alt="MB100" />
+                <h4>MB100 zur Wandmontage von Linksys Telefonen<br/><br />
+                <strong class="smallpreis">&euro; [% product_hash.MB100.price %]</strong></h4>
+                <p>
+                  <form method="post" action="/shop/add_to_cart">
+                    <input type="text" size="3" /><label for="add_MB100" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="hidden" name="product" value="MB100">
+                    <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_MB100" />
+                  </form>
+                </p>
+                <ul>
+                  <li>2 oder 4-Line IP Telefon</li>
+                  <li>2-Port Ethernet Switch</li>
+                  <li>PoE</i>
+                  <li>Hi-Res Display</li>
+                </ul>
+                <p>
+                  <a href="javascript:showhide('pi_mb100','show');">Mehr Infos ...</a>
+                </p>
+              </li>
+            </ul>
+
+            <div id="pi_poes5" class="prodinfo">
+              <img src="/grafik/prodinfo.gif" width="611" height="312" alt="" />
+              <div class="close">
+                <a href="javascript:showhide('pi_poes5','hide');">Fenster schließen</a>
+              </div>
+              <div class="frame">
+                <h2>POES5</h2>
+                <h4>Wann sollte ich den Power Over Ethernet Splitter wählen?</h4>
+                <ul class="vorteile">
+                  <li>Hier steht ein kurzer Text, der erklärt, wann diese Produkt die richtige Wahl ist</li>
+                  <li>IP PBX system with high-end features comparable to traditional large business voice services</li>
+                </ul>
+                <p>
+                  The SPA9000 marries the rich feature set of high-end PBX telephone systems with the convenience and cost advantages of Voice over IP. It has common voice system features such as an auto-attendant, shared line appearances, three way call conferencing, intercom, music on hold, call-forwarding and much more. The SPA9000 opens up access to the benefits of VoIP, including low cost long distance service, telephone number portability, and one network for both voice and data.
+                </p>
+              </div>
+            </div>
+            <div id="pi_wbp54g" class="prodinfo">
+              <img src="/grafik/prodinfo.gif" width="611" height="312" alt="" />
+              <div class="close">
+                <a href="javascript:showhide('pi_wbp54g','hide');">Fenster schließen</a>
+              </div>
+              <div class="frame">
+                <h2></h2>
+                <h4>Wann sollte ich die Wireless-G Bridge wählen?</h4>
+                <ul class="vorteile">
+                  <li>Hier steht ein kurzer Text, der erklärt, wann diese Produkt die richtige Wahl ist</li>
+                  <li>IP PBX system with high-end features comparable to traditional large business voice services</li>
+                </ul>
+                <p>
+                  The SPA9000 marries the rich feature set of high-end PBX telephone systems with the convenience and cost advantages of Voice over IP. It has common voice system features such as an auto-attendant, shared line appearances, three way call conferencing, intercom, music on hold, call-forwarding and much more. The SPA9000 opens up access to the benefits of VoIP, including low cost long distance service, telephone number portability, and one network for both voice and data.
+                </p>
+              </div>
+            </div>
+            <div id="pi_pa100" class="prodinfo">
+              <img src="/grafik/prodinfo.gif" width="611" height="312" alt="" />
+              <div class="close">
+                <a href="javascript:showhide('pi_pa100','hide');">Fenster schließen</a>
+              </div>
+              <div class="frame">
+                <h2>PA100</h2>
+                <h4>Wann sollte ich das PA100-EU Netzteil wählen?</h4>
+                <ul class="vorteile">
+                  <li>Hier steht ein kurzer Text, der erklärt, wann diese Produkt die richtige Wahl ist</li>
+                  <li>IP PBX system with high-end features comparable to traditional large business voice services</li>
+                </ul>
+                <p>
+                  The SPA9000 marries the rich feature set of high-end PBX telephone systems with the convenience and cost advantages of Voice over IP. It has common voice system features such as an auto-attendant, shared line appearances, three way call conferencing, intercom, music on hold, call-forwarding and much more. The SPA9000 opens up access to the benefits of VoIP, including low cost long distance service, telephone number portability, and one network for both voice and data.
+                </p>
+              </div>
+            </div>
+            <div id="pi_mb100" class="prodinfo">
+              <img src="/grafik/prodinfo.gif" width="611" height="312" alt="" />
+              <div class="close">
+                <a href="javascript:showhide('pi_mb100','hide');">Fenster schließen</a>
+              </div>
+              <div class="frame">
+                <h2>MB100</h2>
+                <h4>Wann sollte ich die MB100 Wandhalterung wählen?</h4>
+                <ul class="vorteile">
+                  <li>Hier steht ein kurzer Text, der erklärt, wann diese Produkt die richtige Wahl ist</li>
+                  <li>IP PBX system with high-end features comparable to traditional large business voice services</li>
+                </ul>
+                <p>
+                  The SPA9000 marries the rich feature set of high-end PBX telephone systems with the convenience and cost advantages of Voice over IP. It has common voice system features such as an auto-attendant, shared line appearances, three way call conferencing, intercom, music on hold, call-forwarding and much more. The SPA9000 opens up access to the benefits of VoIP, including low cost long distance service, telephone number portability, and one network for both voice and data.
+                </p>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <h3>Switches</h3>
+            <ul class="produktwahl">
+              <li>
+                <img src="/grafik_shop/SD208.jpg" width="146" height="108" alt="SD208" />
+                <h4>SD208 <strong>8-Port 10/100 Switch</strong><br />
+                <strong class="smallpreis">&euro; [% product_hash.SD208.price %]</strong></h4>
+                <p>
+                  <form method="post" action="/shop/add_to_cart">
+                    <input type="text" size="3" /><label for="add_SD208" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="hidden" name="product" value="SD208">
+                    <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_SD208" />
+                  </form>
+                </p>
+                <ul>
+                  <li>1-Line IP Telefon</li>
+                  <li>1 Ethernet Port</li>
+                  <li>Hi-Res Display</li>
+                  <li>Hi-Res Display</li>
+                </ul>
+                <p>
+                  <a href="javascript:showhide('pi_sd208','show');">Mehr Infos ...</a>
+                </p>
+              </li>
+              <li>
+                <img src="/grafik_shop/SR224.jpg" width="146" height="108" alt="SR224" />
+                <h4>SR224 <strong>24-Port 10/100 Switch</strong><br />
+                <strong class="smallpreis">&euro; [% product_hash.SR224.price %]</strong></h4>
+                <p>
+                  <form method="post" action="/shop/add_to_cart">
+                    <input type="text" size="3" /><label for="add_SR224" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="hidden" name="product" value="SR224">
+                    <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_SR224" />
+                  </form>
+                </p>
+                <ul>
+                  <li>1-Line IP Telefon</li>
+                  <li>2-Port Ethernet Switch</li>
+                  <li>PoE</i>
+                  <li>Hi-Res Display</li>
+                </ul>
+                <p>
+                  <a href="javascript:showhide('pi_sr224','show');">Mehr Infos ...</a>
+                </p>
+              </li>
+              <li>
+                <img src="/grafik_shop/SRW208P.jpg" width="146" height="108" alt="SRW208P" />
+                <h4>SRW208P <strong>8-Port 10/100 Switch</strong> mit PoE<br />
+                <strong class="smallpreis">&euro; [% product_hash.SRW208P.price %]</strong></h4>
+                <p>
+                  <form method="post" action="/shop/add_to_cart">
+                    <input type="text" size="3" /><label for="add_SRW208P" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="hidden" name="product" value="SRW208P">
+                    <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_SRW208P" />
+                  </form>
+                </p>
+                <ul>
+                  <li>2 oder 4-Line IP Telefon</li>
+                  <li>1 Ethernet Port</li>
+                  <li>Hi-Res Display</li>
+                </ul>
+                <p>
+                  <a href="javascript:showhide('pi_srw208p','show');">Mehr Infos ...</a>
+                </p>
+              </li>
+              <li class="last">
+                <img src="/grafik_shop/SRW224P.jpg" width="146" height="108" alt="SRW224P" />
+                <h4>SRW224P <strong>24-Port 10/100 Switch</strong> mit PoE<br />
+                <strong class="smallpreis">&euro; [% product_hash.SRW224P.price %]</strong></h4>
+                <p>
+                  <form method="post" action="/shop/add_to_cart">
+                    <input type="text" size="3" /><label for="add_SRW224P" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="hidden" name="product" value="SRW224P">
+                    <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_SRW224P" />
+                  </form>
+                </p>
+                <ul>
+                  <li>2 oder 4-Line IP Telefon</li>
+                  <li>2-Port Ethernet Switch</li>
+                  <li>PoE</i>
+                  <li>Hi-Res Display</li>
+                </ul>
+                <p>
+                  <a href="javascript:showhide('pi_srw224p','show');">Mehr Infos ...</a>
+                </p>
+              </li>
+            </ul>
+
+            <div id="pi_sd208" class="prodinfo">
+              <img src="/grafik/prodinfo.gif" width="611" height="312" alt="" />
+              <div class="close">
+                <a href="javascript:showhide('pi_sd208','hide');">Fenster schließen</a>
+              </div>
+              <div class="frame">
+                <h2>SD208</h2>
+                <h4>Wann sollte ich den SD208 8-Port 10/100 Switch wählen?</h4>
+                <ul class="vorteile">
+                  <li>Hier steht ein kurzer Text, der erklärt, wann diese Produkt die richtige Wahl ist</li>
+                  <li>IP PBX system with high-end features comparable to traditional large business voice services</li>
+                </ul>
+                <p>
+                  The SPA9000 marries the rich feature set of high-end PBX telephone systems with the convenience and cost advantages of Voice over IP. It has common voice system features such as an auto-attendant, shared line appearances, three way call conferencing, intercom, music on hold, call-forwarding and much more. The SPA9000 opens up access to the benefits of VoIP, including low cost long distance service, telephone number portability, and one network for both voice and data.
+                </p>
+              </div>
+            </div>
+            <div id="pi_sr224" class="prodinfo">
+              <img src="/grafik/prodinfo.gif" width="611" height="312" alt="" />
+              <div class="close">
+                <a href="javascript:showhide('pi_sr224','hide');">Fenster schließen</a>
+              </div>
+              <div class="frame">
+                <h2>SR224</h2>
+                <h4>Wann sollte ich den SR224 24-Port 10/100 Switch wählen?</h4>
+                <ul class="vorteile">
+                  <li>Hier steht ein kurzer Text, der erklärt, wann diese Produkt die richtige Wahl ist</li>
+                  <li>IP PBX system with high-end features comparable to traditional large business voice services</li>
+                </ul>
+                <p>
+                  The SPA9000 marries the rich feature set of high-end PBX telephone systems with the convenience and cost advantages of Voice over IP. It has common voice system features such as an auto-attendant, shared line appearances, three way call conferencing, intercom, music on hold, call-forwarding and much more. The SPA9000 opens up access to the benefits of VoIP, including low cost long distance service, telephone number portability, and one network for both voice and data.
+                </p>
+              </div>
+            </div>
+            <div id="pi_srw208p" class="prodinfo">
+              <img src="/grafik/prodinfo.gif" width="611" height="312" alt="" />
+              <div class="close">
+                <a href="javascript:showhide('pi_srw208p','hide');">Fenster schließen</a>
+              </div>
+              <div class="frame">
+                <h2>SRW208P</h2>
+                <h4>Wann sollte ich den SRW208P 8-Port 10/100 Switch wählen?</h4>
+                <ul class="vorteile">
+                  <li>Hier steht ein kurzer Text, der erklärt, wann diese Produkt die richtige Wahl ist</li>
+                  <li>IP PBX system with high-end features comparable to traditional large business voice services</li>
+                </ul>
+                <p>
+                  The SPA9000 marries the rich feature set of high-end PBX telephone systems with the convenience and cost advantages of Voice over IP. It has common voice system features such as an auto-attendant, shared line appearances, three way call conferencing, intercom, music on hold, call-forwarding and much more. The SPA9000 opens up access to the benefits of VoIP, including low cost long distance service, telephone number portability, and one network for both voice and data.
+                </p>
+              </div>
+            </div>
+            <div id="pi_srw224p" class="prodinfo">
+              <img src="/grafik/prodinfo.gif" width="611" height="312" alt="" />
+              <div class="close">
+                <a href="javascript:showhide('pi_srw224p','hide');">Fenster schließen</a>
+              </div>
+              <div class="frame">
+                <h2>SRW224P</h2>
+                <h4>Wann sollte ich den SRW224P 24-Port 10/100 Switch wählen?</h4>
+                <ul class="vorteile">
+                  <li>Hier steht ein kurzer Text, der erklärt, wann diese Produkt die richtige Wahl ist</li>
+                  <li>IP PBX system with high-end features comparable to traditional large business voice services</li>
+                </ul>
+                <p>
+                  The SPA9000 marries the rich feature set of high-end PBX telephone systems with the convenience and cost advantages of Voice over IP. It has common voice system features such as an auto-attendant, shared line appearances, three way call conferencing, intercom, music on hold, call-forwarding and much more. The SPA9000 opens up access to the benefits of VoIP, including low cost long distance service, telephone number portability, and one network for both voice and data.
+                </p>
+              </div>
+            </div>
+          </fieldset>
+
+        </form><br clear="all" />
+
+      </div>
+
+      <div class="spalte2">
+
+        <p class="prodsumme">
+          <strong>Warenkorb</strong><br /><br />
+          EURO <strong>249,90</strong>
+        </p>
+
+      </div>
+
+    </div>
+
+  </div><br clear="all" />
+

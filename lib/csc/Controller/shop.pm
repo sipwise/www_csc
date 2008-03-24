@@ -30,6 +30,48 @@ sub index : Local {
     $c->response->redirect('http://www.libratel.at/');
 }
 
+=head2 hardware
+
+=cut
+
+sub hardware : Local {
+    my ( $self, $c ) = @_;
+
+    $c->session->{shop}{session_key} = $self->_generate_session_key()
+        unless $c->session->{shop}{session_key};
+
+    $c->stash->{template} = 'tt/shop/hardware.tt';
+    $c->stash->{sk} = $c->session->{shop}{session_key};
+
+    unless($c->session->{shop}{dbproducts}) {
+        my $products;
+        return unless $c->model('Provisioning')->call_prov( $c, 'billing', 'get_products',
+                                                            undef,
+                                                            \$products,
+                                                          );
+        $c->session->{shop}{dbproducts} = $$products{result};
+    }
+    foreach my $product (@{$c->session->{shop}{dbproducts}}) {
+        my $name = $$product{name};
+        $name =~ s/ /_/g;
+        $c->stash->{product_hash}{$name}{price} = sprintf "%.2f", $$product{price} / 100;
+        # TODO: calculate price in EUR
+    }
+
+    return 1;
+}
+
+=head2 add_to_cart
+
+=cut
+
+sub add_to_cart : Local {
+    my ( $self, $c ) = @_;
+
+    $c->response->redirect('/shop/hardware?sk='. $c->session->{shop}{session_key});
+    return;
+}
+
 =head2 set_extensions
 
 =cut
@@ -94,7 +136,6 @@ sub set_tarif : Local {
         next unless $$product{name} eq $c->request->params->{tarif};
         delete $c->session->{shop}{tarif} if exists $c->session->{shop}{tarif};
         $c->session->{shop}{tarif}{name} = $c->request->params->{tarif};
-        $c->session->{shop}{tarif}{price} = $$product{price};
         $c->session->{shop}{tarif}{price} = sprintf "%.2f", $$product{price} / 100;
         if(defined $$product{billing_profile}) {
             my $bilprof;

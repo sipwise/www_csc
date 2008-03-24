@@ -99,8 +99,7 @@ select {
 	font-size: 11px;
 }
 .invisible {
-	position: absolute;
-	top: -90000px;
+	position: relative;
 	left: -90000px;
 }
 body {

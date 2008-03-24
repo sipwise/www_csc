@@ -13,6 +13,7 @@ __PACKAGE__->config(
     WRAPPER      => 'layout/fp_wrapper',
     ERROR        => 'tt/error.tt',
 #    TEMPLATE_EXTENSION => '.tt',
+    CATALYST_VAR => 'Catalyst',
     VARIABLES    => {
        site_config  => {
           css => [ '/css/sipwise.css', '/css/style.css' ],
