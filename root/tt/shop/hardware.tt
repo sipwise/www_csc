@@ -37,7 +37,7 @@
                   <li>Hi-Res Display</li>
                 </ul>
                 <p>
-                  <a href="javascript:showhide('pi_pap2','show');">Mehr Infos ...</a>
+                  <a href="javascript:showhide('pi_pap2','show');" class="link">Mehr Infos ...</a>
                 </p>
               </li>
               <li>
@@ -59,7 +59,7 @@
                   <li>Hi-Res Display</li>
                 </ul>
                 <p>
-                  <a href="javascript:showhide('pi_spa90004','show');">Mehr Infos ...</a>
+                  <a href="javascript:showhide('pi_spa90004','show');" class="link">Mehr Infos ...</a>
                 </p>
               </li>
               <li>
@@ -80,7 +80,7 @@
                   <li>Hi-Res Display</li>
                 </ul>
                 <p>
-                  <a href="javascript:showhide('pi_spa900016','show');">Mehr Infos ...</a>
+                  <a href="javascript:showhide('pi_spa900016','show');" class="link">Mehr Infos ...</a>
                 </p>
               </li>
               <li class="last">
@@ -102,7 +102,7 @@
                   <li>Hi-Res Display</li>
                 </ul>
                 <p>
-                  <a href="javascript:showhide('pi_spa9000upgrade','show');">Mehr Infos ...</a>
+                  <a href="javascript:showhide('pi_spa9000upgrade','show');" class="link">Mehr Infos ...</a>
                 </p>
               </li>
             </ul>
@@ -198,7 +198,7 @@
                   <li>Hi-Res Display</li>
                 </ul>
                 <p>
-                  <a href="javascript:showhide('pi_spa921','show');">Mehr Infos ...</a>
+                  <a href="javascript:showhide('pi_spa921','show');" class="link">Mehr Infos ...</a>
                 </p>
               </li>
               <li>
@@ -219,7 +219,7 @@
                   <li>Hi-Res Display</li>
                 </ul>
                 <p>
-                  <a href="javascript:showhide('pi_spa922','show');">Mehr Infos ...</a>
+                  <a href="javascript:showhide('pi_spa922','show');" class="link">Mehr Infos ...</a>
                 </p>
               </li>
               <li>
@@ -239,7 +239,7 @@
                   <li>Hi-Res Display</li>
                 </ul>
                 <p>
-                  <a href="javascript:showhide('pi_spa941','show');">Mehr Infos ...</a>
+                  <a href="javascript:showhide('pi_spa941','show');" class="link">Mehr Infos ...</a>
                 </p>
               </li>
               <li class="last">
@@ -260,7 +260,7 @@
                   <li>Hi-Res Display</li>
                 </ul>
                 <p>
-                  <a href="javascript:showhide('pi_spa942','show');">Mehr Infos ...</a>
+                  <a href="javascript:showhide('pi_spa942','show');" class="link">Mehr Infos ...</a>
                 </p>
               </li>
             </ul>
@@ -356,7 +356,7 @@
                   <li>Hi-Res Display</li>
                 </ul>
                 <p>
-                  <a href="javascript:showhide('pi_poes5','show');">Mehr Infos ...</a>
+                  <a href="javascript:showhide('pi_poes5','show');" class="link">Mehr Infos ...</a>
                 </p>
               </li>
               <li>
@@ -377,7 +377,7 @@
                   <li>Hi-Res Display</li>
                 </ul>
                 <p>
-                  <a href="javascript:showhide('pi_wbp54g','show');">Mehr Infos ...</a>
+                  <a href="javascript:showhide('pi_wbp54g','show');" class="link">Mehr Infos ...</a>
                 </p>
               </li>
               <li>
@@ -397,7 +397,7 @@
                   <li>Hi-Res Display</li>
                 </ul>
                 <p>
-                  <a href="javascript:showhide('pi_pa100','show');">Mehr Infos ...</a>
+                  <a href="javascript:showhide('pi_pa100','show');" class="link">Mehr Infos ...</a>
                 </p>
               </li>
               <li class="last">
@@ -418,7 +418,7 @@
                   <li>Hi-Res Display</li>
                 </ul>
                 <p>
-                  <a href="javascript:showhide('pi_mb100','show');">Mehr Infos ...</a>
+                  <a href="javascript:showhide('pi_mb100','show');" class="link">Mehr Infos ...</a>
                 </p>
               </li>
             </ul>
@@ -514,7 +514,7 @@
                   <li>Hi-Res Display</li>
                 </ul>
                 <p>
-                  <a href="javascript:showhide('pi_sd208','show');">Mehr Infos ...</a>
+                  <a href="javascript:showhide('pi_sd208','show');" class="link">Mehr Infos ...</a>
                 </p>
               </li>
               <li>
@@ -535,7 +535,7 @@
                   <li>Hi-Res Display</li>
                 </ul>
                 <p>
-                  <a href="javascript:showhide('pi_sr224','show');">Mehr Infos ...</a>
+                  <a href="javascript:showhide('pi_sr224','show');" class="link">Mehr Infos ...</a>
                 </p>
               </li>
               <li>
@@ -555,7 +555,7 @@
                   <li>Hi-Res Display</li>
                 </ul>
                 <p>
-                  <a href="javascript:showhide('pi_srw208p','show');">Mehr Infos ...</a>
+                  <a href="javascript:showhide('pi_srw208p','show');" class="link">Mehr Infos ...</a>
                 </p>
               </li>
               <li class="last">
@@ -576,7 +576,7 @@
                   <li>Hi-Res Display</li>
                 </ul>
                 <p>
-                  <a href="javascript:showhide('pi_srw224p','show');">Mehr Infos ...</a>
+                  <a href="javascript:showhide('pi_srw224p','show');" class="link">Mehr Infos ...</a>
                 </p>
               </li>
             </ul>

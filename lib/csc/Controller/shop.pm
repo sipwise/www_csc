@@ -51,7 +51,7 @@ sub hardware : Local {
         $c->stash->{product_hash}{$name}{price} = sprintf "%.2f", $$product{price} / 100;
     }
 
-    if(ref $c->session->{shop}{cart} eq 'HASH') {
+    if(ref $c->session->{shop}{cart} eq 'HASH' and keys %{$c->session->{shop}{cart}}) {
         my (@cart, $price_sum);
         foreach my $ci (sort keys %{$c->session->{shop}{cart}}) {
             push @cart, { count => $c->session->{shop}{cart}{$ci},

@@ -599,7 +599,7 @@
 }
 
 /* add to cart link next to product images */
-#main .produktwahlshop .produktwahl .add_to_cart {
+#main .produktwahlshop .produktwahl label.add_to_cart {
    width: auto;
    text-align: left;
    margin: -37px 0 5px 43px;
@@ -609,6 +609,10 @@
    background: url(/grafik/dot_blue.gif) left bottom repeat-x;
    text-decoration: none;
    cursor: pointer;
+}
+#main .produktwahlshop .produktwahl label.add_to_cart:hover {
+   color: #FF8A00;
+   background: url(/grafik/dot_orange.gif) left bottom repeat-x;
 }
 
 /* settings for small cart table on top in right column */
@@ -622,6 +626,7 @@
 #main table.cart_small {
    width: 100%;
    border-spacing: 0;
+   border-collapse: collapse;
    margin: 20px 0 15px 0;
    border-top: 1px solid #D0DCDF;
 }
@@ -656,6 +661,7 @@
 #main table.carttable {
    width: 100%;
    border-spacing: 0;
+   border-collapse: collapse;
    margin-bottom: 30px;
 }
 #main .carttable th {
