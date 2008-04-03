@@ -20,7 +20,7 @@
       
       <div class="spalte1">
         
-        <form class="anmelden" method="post" action="/shop/set_hardware">
+        <form class="anmelden" method="post" action="/shop/set_system">
           <input type="hidden" name="sk" value="[% sk %]" />
           
           <script language="JavaScript" src="/js/openclose.js" type="text/javascript"></script>

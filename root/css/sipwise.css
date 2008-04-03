@@ -609,3 +609,33 @@
    text-decoration: none;
    cursor: pointer;
 }
+
+#main table.cart_small {
+   width: 100%;
+   border-spacing: 0;
+   margin: 20px 0 15px 0;
+   border-top: 1px solid #D0DCDF;
+}
+#main .cart_small .tr_alt {
+   background: url(../grafik/cartsmalltdalt.gif) left top repeat-y #fff;
+}
+#main .cart_small td {
+   padding: 1px 4px;
+   border-bottom: 1px solid #D0DCDF;
+}
+#main td.money {
+   white-space: nowrap;
+   text-align: right;
+}
+
+.cart_small_container {
+   margin-left: -3px;
+   width: 185px;
+   padding: 4px;
+   border: 1px solid #D0DCDF;
+   background: url(../grafik/cartsmallbg.gif) left top repeat-y #fff;
+}
+#main #delete_cart {
+   float: right;
+   margin-top: 2px;
+}

@@ -43,19 +43,26 @@ sub hardware : Local {
     $c->stash->{template} = 'tt/shop/hardware.tt';
     $c->stash->{sk} = $c->session->{shop}{session_key};
 
-    unless($c->session->{shop}{dbproducts}) {
-        my $products;
-        return unless $c->model('Provisioning')->call_prov( $c, 'billing', 'get_products',
-                                                            undef,
-                                                            \$products,
-                                                          );
-        $c->session->{shop}{dbproducts} = $$products{result};
-    }
-    foreach my $product (@{$c->session->{shop}{dbproducts}}) {
+    $self->_load_products($c) or return;
+
+    foreach my $product (@{$c->session->{shop}{dbprodarray}}) {
         my $name = $$product{name};
         $name =~ s/ /_/g;
         $c->stash->{product_hash}{$name}{price} = sprintf "%.2f", $$product{price} / 100;
-        # TODO: calculate price in EUR
+    }
+
+    if(ref $c->session->{shop}{cart} eq 'HASH') {
+        my (@cart, $price_sum);
+        foreach my $ci (sort keys %{$c->session->{shop}{cart}}) {
+            push @cart, { count => $c->session->{shop}{cart}{$ci},
+                          product => $ci,
+                          price => sprintf "%.2f", $c->session->{shop}{cart}{$ci} * $c->session->{shop}{dbprodhash}{$ci}{price} / 100 };
+            $price_sum += $c->session->{shop}{cart}{$ci} * $c->session->{shop}{dbprodhash}{$ci}{price};
+        }
+        $c->stash->{price_sum} = sprintf "%.2f", $price_sum / 100;
+        $c->stash->{cart} = \@cart;
+    } else {
+        $c->stash->{price_sum} = '0.00';
     }
 
     return 1;
@@ -67,6 +74,57 @@ sub hardware : Local {
 
 sub add_to_cart : Local {
     my ( $self, $c ) = @_;
+
+    $c->response->redirect('http://www.libratel.at/')
+        unless defined $c->request->params->{sk} and
+               $c->request->params->{sk} eq $c->session->{shop}{session_key};
+
+    # dump session from "solutions" area, is this really what we want?
+    if(exists $c->session->{shop}{extensions}) {
+        delete $c->session->{shop};
+        delete $c->session->{refill};
+        $c->session->{shop}{session_key} = $self->_generate_session_key();
+    }
+
+    unless(defined $c->request->params->{product} and length $c->request->params->{product}) {
+        $c->log->error('***shop::add_to_cart no product specified');
+        $c->session->{messages}{toperr} = 'Server.Internal';
+        return;
+    }
+    my $product = $c->request->params->{product};
+
+    my $count = $c->request->params->{count};
+    $count = 1 unless $count;  # hmm, or shouldn't we?
+
+    $self->_load_products($c) or return;
+    unless(exists $c->session->{shop}{dbprodhash}{$product}) {
+        $c->log->error("***shop::add_to_cart product '$product' not found in product hash");
+        $c->session->{messages}{toperr} = 'Server.Internal';
+        return;
+    }
+
+    $c->log->info("***shop::add_to_cart adding $count '$product' to cart");
+    $c->session->{shop}{cart}{$product} += $count;
+
+    $c->response->redirect('/shop/hardware?sk='. $c->session->{shop}{session_key});
+    return;
+}
+
+=head2 clear_cart
+
+=cut
+
+sub clear_cart : Local {
+    my ( $self, $c ) = @_;
+
+    $c->response->redirect('http://www.libratel.at/')
+        unless defined $c->request->params->{sk} and
+               $c->request->params->{sk} eq $c->session->{shop}{session_key};
+
+    delete $c->session->{shop};
+    delete $c->session->{refill};
+
+    $c->session->{shop}{session_key} = $self->_generate_session_key();
 
     $c->response->redirect('/shop/hardware?sk='. $c->session->{shop}{session_key});
     return;
@@ -132,7 +190,7 @@ sub set_tarif : Local {
         unless defined $c->request->params->{sk} and
                $c->request->params->{sk} eq $c->session->{shop}{session_key};
 
-    foreach my $product (@{$c->session->{shop}{dbproducts}}) {
+    foreach my $product (@{$c->session->{shop}{dbprodarray}}) {
         next unless $$product{name} eq $c->request->params->{tarif};
         delete $c->session->{shop}{tarif} if exists $c->session->{shop}{tarif};
         $c->session->{shop}{tarif}{name} = $c->request->params->{tarif};
@@ -168,7 +226,7 @@ sub system : Local {
     $c->stash->{sk} = $c->session->{shop}{session_key};
     $c->stash->{tarif} = $c->session->{shop}{tarif};
     $c->stash->{extensions} = $c->session->{shop}{extensions};
-    foreach my $product (@{$c->session->{shop}{dbproducts}}) {
+    foreach my $product (@{$c->session->{shop}{dbprodarray}}) {
         next unless $$product{class} eq 'hardware';
         my $name = $$product{name};
         $name =~ s/ /_/g;
@@ -224,19 +282,19 @@ sub set_system : Local {
     if(!defined $c->request->params->{system}) {
         $messages{system} = 'Web.MissingSystem';
     } elsif($c->request->params->{system} eq 'pap2t') {
-        foreach my $product (@{$c->session->{shop}{dbproducts}}) {
+        foreach my $product (@{$c->session->{shop}{dbprodarray}}) {
             next unless $$product{name} eq 'PAP2T';
             $c->session->{shop}{system}{name} = $$product{name};
             $c->session->{shop}{system}{price} = sprintf "%.2f", $$product{price} / 100;
         }
     } elsif($c->request->params->{system} eq 'spa9000_4') {
-        foreach my $product (@{$c->session->{shop}{dbproducts}}) {
+        foreach my $product (@{$c->session->{shop}{dbprodarray}}) {
             next unless $$product{name} eq 'SPA9000 4 Port';
             $c->session->{shop}{system}{name} = $$product{name};
             $c->session->{shop}{system}{price} = sprintf "%.2f", $$product{price} / 100;
         }
     } elsif($c->request->params->{system} eq 'spa9000_16') {
-        foreach my $product (@{$c->session->{shop}{dbproducts}}) {
+        foreach my $product (@{$c->session->{shop}{dbprodarray}}) {
             next unless $$product{name} eq 'SPA9000 16 Port';
             $c->session->{shop}{system}{name} = $$product{name};
             $c->session->{shop}{system}{price} = sprintf "%.2f", $$product{price} / 100;
@@ -253,7 +311,7 @@ sub set_system : Local {
     if($spa921) {
         if($spa921 =~ /^\d+$/) {
             my $price;
-            foreach my $product (@{$c->session->{shop}{dbproducts}}) {
+            foreach my $product (@{$c->session->{shop}{dbprodarray}}) {
                 next unless $$product{name} eq 'SPA921';
                 $price = $$product{price};
             }
@@ -268,7 +326,7 @@ sub set_system : Local {
     if($spa922) {
         if($spa922 =~ /^\d+$/) {
             my $price;
-            foreach my $product (@{$c->session->{shop}{dbproducts}}) {
+            foreach my $product (@{$c->session->{shop}{dbprodarray}}) {
                 next unless $$product{name} eq 'SPA922';
                 $price = $$product{price};
             }
@@ -283,7 +341,7 @@ sub set_system : Local {
     if($spa941) {
         if($spa941 =~ /^\d+$/) {
             my $price;
-            foreach my $product (@{$c->session->{shop}{dbproducts}}) {
+            foreach my $product (@{$c->session->{shop}{dbprodarray}}) {
                 next unless $$product{name} eq 'SPA941';
                 $price = $$product{price};
             }
@@ -298,7 +356,7 @@ sub set_system : Local {
     if($spa942) {
         if($spa942 =~ /^\d+$/) {
             my $price;
-            foreach my $product (@{$c->session->{shop}{dbproducts}}) {
+            foreach my $product (@{$c->session->{shop}{dbprodarray}}) {
                 next unless $$product{name} eq 'SPA942';
                 $price = $$product{price};
             }
@@ -634,24 +692,24 @@ sub set_number : Local {
         $c->session->{messages} = \%messages;
         $c->response->redirect('/shop/number?sk='. $c->session->{shop}{session_key});
     } else {
-        $c->response->redirect('/shop/cart?sk='. $c->session->{shop}{session_key});
+        $c->response->redirect('/shop/overview?sk='. $c->session->{shop}{session_key});
     }
 
     return 0;
 }
 
-=head2 cart 
+=head2 overview 
 
 =cut
 
-sub cart : Local {
+sub overview : Local {
     my ( $self, $c ) = @_;
 
     $c->response->redirect('http://www.libratel.at/')
         unless defined $c->request->params->{sk} and
                $c->request->params->{sk} eq $c->session->{shop}{session_key};
 
-    $c->stash->{template} = $c->session->{shop}{paid_ok} ? 'tt/shop/finish.tt' : 'tt/shop/cart.tt';
+    $c->stash->{template} = $c->session->{shop}{paid_ok} ? 'tt/shop/finish.tt' : 'tt/shop/overview.tt';
     $c->stash->{sk} = $c->session->{shop}{session_key};
     $c->stash->{tarif} = $c->session->{shop}{tarif};
     $c->stash->{system} = $c->session->{shop}{system};
@@ -693,11 +751,11 @@ sub topayment : Local {
 
     if(keys %messages) {
         $c->session->{messages} = \%messages;
-        $c->response->redirect('/shop/cart?sk='. $c->session->{shop}{session_key});
+        $c->response->redirect('/shop/overview?sk='. $c->session->{shop}{session_key});
     } else {
         unless($self->_create_contracts($c)) {
             $c->session->{messages} = \%messages;
-            $c->response->redirect('/shop/cart?sk='. $c->session->{shop}{session_key});
+            $c->response->redirect('/shop/overview?sk='. $c->session->{shop}{session_key});
         } else {
             $c->response->redirect('/payment?sk='. $c->session->{shop}{session_key});
         }
@@ -718,7 +776,7 @@ sub finish : Local {
                $c->request->params->{sk} eq $c->session->{shop}{session_key};
 
     $c->session->{shop}{paid_ok} = 1;
-    $c->response->redirect('/shop/cart?sk='. $c->session->{shop}{session_key});
+    $c->response->redirect('/shop/overview?sk='. $c->session->{shop}{session_key});
     return;
 }
 
@@ -1065,6 +1123,31 @@ Handelsgericht Wr. Neustadt          FN:293575d - UID Nr:ATU63410213
 ');
 
     $smtp->dataend() or return;
+
+    return 1;
+}
+
+sub _load_products : Private {
+    my ( $self, $c, $force_reload ) = @_;
+
+    if($force_reload or ! $c->session->{shop}{dbprodarray}) {
+
+        delete $c->session->{shop}{dbprodarray};
+        delete $c->session->{shop}{dbprodhash};
+
+        my $products;
+        return unless $c->model('Provisioning')->call_prov( $c, 'billing', 'get_products',
+                                                            undef,
+                                                            \$products,
+                                                          );
+        $c->session->{shop}{dbprodarray} = $$products{result};
+
+        $products = {};
+        for(@{$c->session->{shop}{dbprodarray}}) {
+            $$products{$$_{name}} = $_;
+        }
+        $c->session->{shop}{dbprodhash} = $products;
+    }
 
     return 1;
 }
