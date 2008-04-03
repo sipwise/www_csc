@@ -700,6 +700,11 @@ sub get_voicemail {
         return;
     }
 
+    # TODO: hack. this should be covered by the provisioning library
+    if(ref $$vm{recording} eq 'SOAP::Data') {
+        $$vm{recording} = $$vm{recording}->value();
+    }
+
     return $vm;
 }
 
