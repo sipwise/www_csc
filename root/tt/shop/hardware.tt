@@ -658,8 +658,7 @@
       <div class="spalte2">
 
         <div class="prodsumme cart_small_container">
-          <a href="/shop/clear_cart" class="link" id="delete_cart">löschen</a>
-          <strong><a href="#" class="link">Warenkorb</a></strong>
+          <strong><a href="/shop/show_cart?sk=[% sk %]" class="link" id="cart_header">Warenkorb</a></strong>
           [% IF cart %]
             <table class="cart_small">
               [% bgflip = 0 %]
@@ -678,6 +677,8 @@
               [% END %]
             </table>
             Warenwert: <strong>&euro; [% price_sum %]</strong>
+            <a href="/shop/clear_cart?sk=[% sk %]" class="link" id="delete_cart">leeren</a>
+            <a href="/shop/show_cart?sk=[% sk %]" class="link" id="show_cart">bestellen</a>
           [% ELSE %]
             <table class="cart_small">
               <tr><td>Ihr Warenkorb ist leer.</td></tr>

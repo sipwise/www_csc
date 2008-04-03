@@ -598,6 +598,7 @@
    border: 1px solid #8D9FAA;
 }
 
+/* add to cart link next to product images */
 #main .produktwahlshop .produktwahl .add_to_cart {
    width: auto;
    text-align: left;
@@ -610,6 +611,14 @@
    cursor: pointer;
 }
 
+/* settings for small cart table on top in right column */
+#main .cart_small_container {
+   margin-left: -3px;
+   width: 185px;
+   padding: 4px;
+   border: 1px solid #D0DCDF;
+   background: url(../grafik/cartsmallbg.gif) left top repeat-y #fff;
+}
 #main table.cart_small {
    width: 100%;
    border-spacing: 0;
@@ -623,19 +632,66 @@
    padding: 1px 4px;
    border-bottom: 1px solid #D0DCDF;
 }
-#main td.money {
+#main #cart_header {
+   margin-left: 5px;
+   margin-top: 3px;
+}
+#main #delete_cart {
+   float: left;
+   margin: 10px 0 5px 5px;
+}
+#main #show_cart {
+   float: right;
+   margin: 10px 5px 5px 0;
+}
+
+/* also used for cart template */
+#main td.money,
+#main th.money {
    white-space: nowrap;
    text-align: right;
 }
 
-.cart_small_container {
-   margin-left: -3px;
-   width: 185px;
-   padding: 4px;
-   border: 1px solid #D0DCDF;
-   background: url(../grafik/cartsmallbg.gif) left top repeat-y #fff;
+/* settings for cart template */
+#main table.carttable {
+   width: 100%;
+   border-spacing: 0;
+   margin-bottom: 30px;
 }
-#main #delete_cart {
-   float: right;
+#main .carttable th {
+   padding: 1px 4px;
+   border-bottom: 1px solid #D0DCDF;
+   background: url(/grafik/bg_set.gif) left bottom repeat-x;
+}
+#main .carttable th.cart_image {
+   width: 20px;
+}
+#main .carttable th.cart_price {
+   width: 70px;
+   padding-right: 34px;
+}
+#main .carttable th.cart_update {
+   width: 80px;
+}
+#main .carttable th.cart_price_sum {
+   width: 100px;
+}
+#main .carttable td {
+   padding: 1px 4px;
+   border-bottom: 1px solid #D0DCDF;
+}
+#main .carttable td.cart_price {
+   padding-right: 40px;
+}
+#main .carttable td.cart_price_sum {
+   padding-right: 10px;
+}
+#main .carttable input {
    margin-top: 2px;
+   margin-bottom: 2px;
 }
+#main .carttable input.ci_reload {
+   margin-top: 4px;
+   margin-left: 5px;
+}
+

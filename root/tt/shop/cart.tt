@@ -1,0 +1,149 @@
+[% META title = 'Libratel hardware shop' %]
+
+  <div id="headimg">
+    <a href=""><img src="/grafik/area_anmeldung.jpg" width="869" height="69" alt="Jetzt Kunde werden und alle Vorteile genießen!" /></a>
+  </div>
+  
+  <div id="main">
+    
+    <div id="spalten31">
+
+      <div id="topmsg">
+        <p> [% messages.topmsg %] </p>
+      </div>
+      <div id="toperr">
+        <p> [% messages.toperr %] </p>
+        <p> [% messages.prov_error %] </p>
+      </div>
+      
+      <h2>Folgende Artikel befinden sich in Ihrem Warenkorb</h2>
+      
+      <div class="spalte1">
+        
+        <div class="anmelden">
+          <input type="hidden" name="sk" value="[% sk %]" />
+          
+          <table class="carttable">
+            <tr>
+              <th class="cart_image"></th>
+              <th class="cart_product">Artikel</th>
+              <th class="cart_price money">Einzelpreis</th>
+              <th class="cart_update">Anzahl</th>
+              <th class="cart_price_sum money" >Gesamtpreis</th>
+            </tr>
+            [% IF cart %]
+              [% FOREACH ci = cart %]
+              <tr>
+                <td class="cart_image"></td>
+                <td class="cart_product">[% ci.product %]</td>
+                <td class="cart_price money">&euro;&nbsp;[% ci.price %]</td>
+                <td class="cart_update">
+                  <form method="post" action="/shop/update_cart">
+                    <input type="hidden" name="sk" value="[% sk %]" />
+                    <input type="hidden" name="product" value="[% ci.product %]" />
+                    <input type="text" name="count" value="[% ci.count %]" class="input5" />
+                    <input type="image" src="/grafik_shop/reload.gif" alt="aktualisieren" class="noborder ci_reload" />
+                  </form>
+                </td>
+                <td class="cart_price_sum money"><strong class="smallpreis">&euro;&nbsp;[% ci.price_sum %]</strong></td>
+              </tr>
+              [% END %]
+
+              <tr class="mysumme">
+                <td colspan="4" class="tdright">
+                  Zwischensumme exklusive Umsatzsteuer und Versand
+                </td>
+                <td class="money"><strong class="smallpreis">&euro;&nbsp;[% price_sum %]</strong></td>
+              </tr>
+
+<!--
+              <tr>
+                <td colspan="4" class="tdright">
+                  Umsatzsteuer 20%
+                </td>
+                <td class="money"><strong class="smallpreis">&euro;&nbsp;[% tax_sum %]</strong></td>
+              </tr>
+
+              <tr class="mysumme">
+                <td colspan="4" class="tdright">
+                  Summe inklusive Steuern, zuzüglich Versandkosten
+                </td>
+                <td class="money"><strong class="smallpreis">&euro;&nbsp;[% price_with_tax %]</strong></td>
+              </tr>
+-->
+
+            [% ELSE %]
+              <tr class="mysumme">
+                <td colspan="5">
+                  Ihr Warenkorb ist leer.
+                </td>
+              </tr>
+            [% END %]
+
+          </table>
+
+          <div class="einrichtung">
+            <div class="einrichtungleft">
+              <h4>Melden Sie sich kostenlos bei Libratel an!</h4>
+              <p>
+                Ihre Anmeldung bei Libratel ist
+                vollkommen kostenlos. Libratel ist Ihr
+                Internet-Telefonanschluss ohne
+                Anmeldegebühr und ohne Mindestumsatz.
+              </p>
+              <p class="next">
+                <a href="#" class="link">Jetzt kostenlos Registrieren</a>
+              </p>
+            </div>
+            <div class="einrichtungright">
+              <h4 style="padding-left: 20px;">Sie sind bereits bei Libratel angemeldet?</h4>
+              <p style="padding-left: 30px;">
+                Um mit der Bestellung Ihrer Endgeräte
+                fortzufahren loggen Sie sich bitte mit
+                Ihrem Usernamen und Passwort ein.
+              </p>
+              <form id="anmelden">
+                <fieldset>
+                  <label for="benutzer">Benutzer</label>
+                  <input type="text" id="benutzer" name="benutzer" class="benutzer" size="20" /><br clear="all" />
+                  <label for="passwort">Passwort</label>
+                  <input type="text" id="passwort" name="passwort" class="passwort" size="20" /><br clear="all" />
+                </fieldset>
+                <p class="next">
+                  <a href="#" class="link">Jetzt einloggen</a>
+                </p>
+              </form>
+            </div>
+          </div>
+          <div class="einrichtungstop"></div>
+
+        </div><br clear="all" />
+
+      </div>
+
+      <div class="spalte2">
+
+        <div class="prodsumme">
+          <strong><a href="/shop/hardware" class="link">weiter einkaufen</a></strong>
+        </div>
+        
+        <ul class="schritte">
+          <li class="on">
+            <strong>Schritt 1:</strong><br />
+            Hardwareauswahl<br />
+          </li>
+          <li>
+            <strong>Schritt 2:</strong><br />
+            Registrierung oder Login<br />
+          </li>
+          <li>
+            <strong>Schritt 3:</strong><br />
+            Bestellung abschließen
+          </li>
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div><br clear="all" />

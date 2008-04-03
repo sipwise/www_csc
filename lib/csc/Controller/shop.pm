@@ -130,6 +130,82 @@ sub clear_cart : Local {
     return;
 }
 
+=head2 show_cart
+
+=cut
+
+sub show_cart : Local {
+    my ( $self, $c ) = @_;
+
+    $c->response->redirect('http://www.libratel.at/')
+        unless defined $c->request->params->{sk} and
+            $c->request->params->{sk} eq $c->session->{shop}{session_key};
+
+    $c->stash->{template} = 'tt/shop/cart.tt';
+    $c->stash->{sk} = $c->session->{shop}{session_key};
+
+    $self->_load_products($c) or return;
+
+    if(ref $c->session->{shop}{cart} eq 'HASH' and keys %{$c->session->{shop}{cart}}) {
+        my (@cart, $price_sum);
+        foreach my $ci (sort keys %{$c->session->{shop}{cart}}) {
+            push @cart, { count     => $c->session->{shop}{cart}{$ci},
+                          product   => $ci,
+                          price     => sprintf("%.2f", $c->session->{shop}{dbprodhash}{$ci}{price} / 100),
+                          price_sum => sprintf("%.2f", $c->session->{shop}{cart}{$ci} * $c->session->{shop}{dbprodhash}{$ci}{price} / 100),
+                        };
+            $price_sum += $c->session->{shop}{cart}{$ci} * $c->session->{shop}{dbprodhash}{$ci}{price};
+        }
+        $c->stash->{price_sum} = sprintf "%.2f", $price_sum / 100;
+        $c->stash->{tax_sum} = sprintf "%.2f", $price_sum * 0.002;
+        $c->stash->{price_with_tax} = sprintf "%.2f", $c->stash->{price_sum} + $c->stash->{tax_sum};
+        $c->stash->{cart} = \@cart;
+    } else {
+        $c->stash->{price_sum} = '0.00';
+    }
+
+}
+
+=head2 update_cart
+
+=cut
+
+sub update_cart : Local {
+    my ( $self, $c ) = @_;
+
+    $c->response->redirect('http://www.libratel.at/')
+        unless defined $c->request->params->{sk} and
+            $c->request->params->{sk} eq $c->session->{shop}{session_key};
+
+    unless(defined $c->request->params->{product} and length $c->request->params->{product}) {
+        $c->log->error('***shop::update_cart no product specified');
+        $c->session->{messages}{toperr} = 'Server.Internal';
+        return;
+    }
+    my $product = $c->request->params->{product};
+
+    my $count = $c->request->params->{count};
+    $count = 0 unless $count;  # hmm, or shouldn't we?
+
+    $self->_load_products($c) or return;
+    unless(exists $c->session->{shop}{dbprodhash}{$product}) {
+        $c->log->error("***shop::update_cart product '$product' not found in product hash");
+        $c->session->{messages}{toperr} = 'Server.Internal';
+        return;
+    }
+
+    if($count) {
+        $c->log->info("***shop::update_cart setting '$product' count to '$count'");
+        $c->session->{shop}{cart}{$product} = $count;
+    } else {
+        $c->log->info("***shop::update_cart removing '$product' from cart");
+        delete $c->session->{shop}{cart}{$product};
+    }
+
+    $c->response->redirect('/shop/show_cart?sk='. $c->session->{shop}{session_key});
+    return;
+}
+
 =head2 set_extensions
 
 =cut
