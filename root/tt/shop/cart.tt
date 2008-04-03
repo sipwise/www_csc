@@ -85,7 +85,7 @@
           <div class="einrichtung">
             <div class="einrichtungleft">
               <h4>Melden Sie sich kostenlos bei Libratel an!</h4>
-              <p>
+              <p style="padding-right: 20px;">
                 Ihre Anmeldung bei Libratel ist
                 vollkommen kostenlos. Libratel ist Ihr
                 Internet-Telefonanschluss ohne
@@ -102,13 +102,11 @@
                 fortzufahren loggen Sie sich bitte mit
                 Ihrem Usernamen und Passwort ein.
               </p>
-              <form id="anmelden">
-                <fieldset>
-                  <label for="benutzer">Benutzer</label>
-                  <input type="text" id="benutzer" name="benutzer" class="benutzer" size="20" /><br clear="all" />
-                  <label for="passwort">Passwort</label>
-                  <input type="text" id="passwort" name="passwort" class="passwort" size="20" /><br clear="all" />
-                </fieldset>
+              <form id="anmelden" action="#" method="post">
+                <label for="benutzer">Benutzer</label>
+                <input type="text" id="benutzer" name="benutzer" class="benutzer" size="20" /><br clear="all" />
+                <label for="passwort">Passwort</label>
+                <input type="text" id="passwort" name="passwort" class="passwort" size="20" /><br clear="all" />
                 <p class="next">
                   <a href="#" class="link">Jetzt einloggen</a>
                 </p>
