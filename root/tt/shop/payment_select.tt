@@ -35,12 +35,6 @@
         <ul class="schritte">
           <li class="ok">
             <strong>Schritt 1:</strong><br />
-            Tarifauswahl<br />
-            <span class="okprodtext">[% tarif.name %]</span>
-            <br clear="all" />
-          </li>
-          <li class="ok">
-            <strong>Schritt 2:</strong><br />
             System und Endgeräte<br />
             [% IF system.name %]
             <strong class="okprodcount">1x</strong>
@@ -56,12 +50,20 @@
             [% END %]
           </li>
           <li class="ok">
+            <strong>Schritt 2:</strong><br />
+            Tarifauswahl
+            <span class="okprodtext">[% tarif.name %]</span>
+            <br clear="all" />
+          </li>
+          <li class="ok">
             <strong>Schritt 3:</strong><br />
             Persönliche Daten
           </li>
           <li class="ok">
             <strong>Schritt 4:</strong><br />
             Runfnummer wählen
+            <span class="okprodtext">[% number %]</span>
+            <br clear="all" />
           </li>
           <li class="on">
             <strong>Schritt 5:</strong><br />

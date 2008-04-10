@@ -224,66 +224,6 @@ sub set_extensions : Local {
 
     $c->session->{shop}{extensions} = $c->request->params->{extensions};
 
-    $c->response->redirect('/shop/tarif?sk='. $c->session->{shop}{session_key});
-}
-
-=head2 tarif
-
-=cut
-
-sub tarif : Local {
-    my ( $self, $c ) = @_;
-
-    $c->response->redirect('http://www.libratel.at/')
-        unless defined $c->request->params->{sk} and
-               $c->request->params->{sk} eq $c->session->{shop}{session_key};
-
-    $c->stash->{template} = 'tt/shop/tarif.tt';
-    $c->stash->{sk} = $c->session->{shop}{session_key};
-
-    my $products;
-    return unless $c->model('Provisioning')->call_prov( $c, 'billing', 'get_products',
-                                                        undef,
-                                                        \$products,
-                                                      );
-    $c->session->{shop}{dbproducts} = $$products{result};
-#    foreach my $product (@{$c->session->{shop}{dbproducts}}) {
-#        next unless $$product{class} eq 'voip';
-#        $c->stash->{products}{$$product{name}} = $product;
-#    }
-
-    return 1;
-}
-
-=head2 set_tarif
-
-=cut
-
-sub set_tarif : Local {
-    my ( $self, $c ) = @_;
-
-    $c->response->redirect('http://www.libratel.at/')
-        unless defined $c->request->params->{sk} and
-               $c->request->params->{sk} eq $c->session->{shop}{session_key};
-
-    foreach my $product (@{$c->session->{shop}{dbprodarray}}) {
-        next unless $$product{name} eq $c->request->params->{tarif};
-        delete $c->session->{shop}{tarif} if exists $c->session->{shop}{tarif};
-        $c->session->{shop}{tarif}{name} = $c->request->params->{tarif};
-        $c->session->{shop}{tarif}{price} = sprintf "%.2f", $$product{price} / 100;
-        if(defined $$product{billing_profile}) {
-            my $bilprof;
-            return unless $c->model('Provisioning')->call_prov( $c, 'billing', 'get_billing_profile',
-                                                                { billing_profile => $$product{billing_profile} },
-                                                                \$bilprof,
-                                                              );
-            $c->session->{shop}{tarif}{monthly} = sprintf "%.2f", $$bilprof{interval_charge} / 100;
-        } else {
-            $c->session->{shop}{tarif}{monthly} = 0;
-        }
-        $c->session->{shop}{tarif}{initial_charge} = sprintf "%.2f", 10;
-    }
-
     $c->response->redirect('/shop/system?sk='. $c->session->{shop}{session_key});
 }
 
@@ -302,6 +242,9 @@ sub system : Local {
     $c->stash->{sk} = $c->session->{shop}{session_key};
     $c->stash->{tarif} = $c->session->{shop}{tarif};
     $c->stash->{extensions} = $c->session->{shop}{extensions};
+
+    $self->_load_products($c) or return;
+
     foreach my $product (@{$c->session->{shop}{dbprodarray}}) {
         next unless $$product{class} eq 'hardware';
         my $name = $$product{name};
@@ -450,10 +393,70 @@ sub set_system : Local {
         $c->session->{messages} = \%messages;
         $c->response->redirect('/shop/system?sk='. $c->session->{shop}{session_key});
     } else {
-        $c->response->redirect('/shop/personal?sk='. $c->session->{shop}{session_key});
+        $c->response->redirect('/shop/tarif?sk='. $c->session->{shop}{session_key});
     }
 
     return 0;
+}
+
+=head2 tarif
+
+=cut
+
+sub tarif : Local {
+    my ( $self, $c ) = @_;
+
+    $c->response->redirect('http://www.libratel.at/')
+        unless defined $c->request->params->{sk} and
+               $c->request->params->{sk} eq $c->session->{shop}{session_key};
+
+    $c->stash->{template} = 'tt/shop/tarif.tt';
+    $c->stash->{sk} = $c->session->{shop}{session_key};
+
+    my $products;
+    return unless $c->model('Provisioning')->call_prov( $c, 'billing', 'get_products',
+                                                        undef,
+                                                        \$products,
+                                                      );
+    $c->session->{shop}{dbproducts} = $$products{result};
+#    foreach my $product (@{$c->session->{shop}{dbproducts}}) {
+#        next unless $$product{class} eq 'voip';
+#        $c->stash->{products}{$$product{name}} = $product;
+#    }
+
+    return 1;
+}
+
+=head2 set_tarif
+
+=cut
+
+sub set_tarif : Local {
+    my ( $self, $c ) = @_;
+
+    $c->response->redirect('http://www.libratel.at/')
+        unless defined $c->request->params->{sk} and
+               $c->request->params->{sk} eq $c->session->{shop}{session_key};
+
+    foreach my $product (@{$c->session->{shop}{dbprodarray}}) {
+        next unless $$product{name} eq $c->request->params->{tarif};
+        delete $c->session->{shop}{tarif} if exists $c->session->{shop}{tarif};
+        $c->session->{shop}{tarif}{name} = $c->request->params->{tarif};
+        $c->session->{shop}{tarif}{price} = sprintf "%.2f", $$product{price} / 100;
+        if(defined $$product{billing_profile}) {
+            my $bilprof;
+            return unless $c->model('Provisioning')->call_prov( $c, 'billing', 'get_billing_profile',
+                                                                { billing_profile => $$product{billing_profile} },
+                                                                \$bilprof,
+                                                              );
+            $c->session->{shop}{tarif}{monthly} = sprintf "%.2f", $$bilprof{interval_charge} / 100;
+        } else {
+            $c->session->{shop}{tarif}{monthly} = 0;
+        }
+        $c->session->{shop}{tarif}{initial_charge} = sprintf "%.2f", 10;
+    }
+
+    $c->response->redirect('/shop/personal?sk='. $c->session->{shop}{session_key});
 }
 
 =head2 personal 
@@ -641,21 +644,23 @@ sub set_personal : Local {
     if(!defined $settings{username} or length $settings{username} == 0) {
         $messages{msgusername} = 'Client.Syntax.MissingUsername';
     }
-    my $checkresult;
-    return unless $c->model('Provisioning')->call_prov($c, 'voip', 'check_username',
-                                                       $settings{username}, \$checkresult);
-    $messages{msgusername} = 'Client.Syntax.MalformedUsername'
-        unless $checkresult;
-    if($c->model('Provisioning')->call_prov($c, 'voip', 'get_subscriber',
-                                            { username => $settings{username},
-                                              domain   => $c->config->{site_domain},
-                                            }))
-    {
-        $messages{msgusername} = 'Client.Voip.ExistingSubscriber';
-    } elsif($c->session->{prov_error} eq 'Client.Voip.NoSuchSubscriber') {
-        delete $c->session->{prov_error};
-    } else {
-        return;
+    unless($messages{msgusername}) {
+        my $checkresult;
+        return unless $c->model('Provisioning')->call_prov($c, 'voip', 'check_username',
+                                                           $settings{username}, \$checkresult);
+        $messages{msgusername} = 'Client.Syntax.MalformedUsername'
+            unless $checkresult;
+        if($c->model('Provisioning')->call_prov($c, 'voip', 'get_subscriber',
+                                                { username => $settings{username},
+                                                  domain   => $c->config->{site_domain},
+                                                }))
+        {
+            $messages{msgusername} = 'Client.Voip.ExistingSubscriber';
+        } elsif($c->session->{prov_error} eq 'Client.Voip.NoSuchSubscriber') {
+            delete $c->session->{prov_error};
+        } else {
+            return;
+        }
     }
 
     my $passwd1 = $c->request->params->{fpasswort1};

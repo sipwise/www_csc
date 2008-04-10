@@ -289,12 +289,6 @@
         <ul class="schritte">
           <li class="ok">
             <strong>Schritt 1:</strong><br />
-            Tarifauswahl<br />
-            <span class="okprodtext">[% tarif.name %]</span>
-            <br clear="all" />
-          </li>
-          <li class="ok">
-            <strong>Schritt 2:</strong><br />
             System und Endgeräte<br />
             [% IF system.name %]
             <strong class="okprodcount">1x</strong>
@@ -308,6 +302,12 @@
               <span class="okprodtext">[% phone.name %]</span>
               <br clear="all" />
             [% END %]
+          </li>
+          <li class="ok">
+            <strong>Schritt 2:</strong><br />
+            Tarifauswahl<br />
+            <span class="okprodtext">[% tarif.name %]</span>
+            <br clear="all" />
           </li>
           <li class="on">
             <strong>Schritt 3:</strong><br />

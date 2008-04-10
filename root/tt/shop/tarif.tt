@@ -92,15 +92,17 @@
         </p>
 
         <ul class="schritte">
-          <li class="on">
+          <li class="ok">
             <strong>Schritt 1:</strong><br />
-            Tarifauswahl<br />
-            <span class="okprodtext">[% tarif.name %]</span>
-            <br clear="all" />
-          </li>
-          <li>
-            <strong>Schritt 2:</strong><br />
             System und Endgeräte<br />
+          </li>
+          <li class="on">
+            <strong>Schritt 2:</strong><br />
+            Tarifauswahl<br />
+            [% IF tarif.name %]
+              <span class="okprodtext">[% tarif.name %]</span>
+              <br clear="all" />
+            [% END %]
           </li>
           <li>
             <strong>Schritt 3:</strong><br />

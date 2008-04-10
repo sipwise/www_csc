@@ -41,6 +41,9 @@ sub index : Private {
     $c->stash->{phones} = $c->session->{shop}{phones};
     $c->stash->{price_sum} = $c->session->{shop}{price_sum};
 
+    $c->stash->{tarif} = $c->session->{shop}{tarif};
+    $c->stash->{number} = '0'. $c->session->{shop}{number}{ac} .' '. $c->session->{shop}{number}{sn};
+
     return 1;
 }
 
