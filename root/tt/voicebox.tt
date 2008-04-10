@@ -177,7 +177,7 @@
               <div class="save">
               <label for="selmon_[% selectmonth.link %]">[% selectmonth.display %]</label>
               <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="selmon_[% selectmonth.link %]" />
-              </div>
+              </div><br clear="all" />
               <input type="hidden" name="listmonth" value="[% selectmonth.link %]" />
             </form>
             [% END %]
