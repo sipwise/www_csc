@@ -23,224 +23,17 @@
         <form class="anmelden" method="post" action="/shop/topayment" >
           <input type="hidden" name="sk" value="[% sk %]" />
           
-          <table class="bestelltable">
-            <tr>
-              <td class="tdright"></td>
-              <td></td>
-              <td class="headright">Einmalig</td>
-              <td class="headright">Monatlich</td>
-            </tr>
-            <tr>
-              <td colspan="4" class="bestelltablehead">
-                &nbsp;
-              </td>
-            </tr>
-            <tr>
-              <td class="tdright">
-                <h3>Tarif</h3>
-              </td>
-              <td>
-                [% tarif.name %]
-              </td>
-              <td><strong class="smallpreis">&euro;&nbsp;[% tarif.price %]</strong></td>
-              <td><strong class="smallpreis">&euro;&nbsp;[% tarif.monthly %]</strong></td>
-            </tr>
-            <tr>
-              <td class="tdright" />
-              <td>
-                Startguthaben
-              </td>
-              <td><strong class="smallpreis">&euro;&nbsp;[% tarif.initial_charge %]</strong></td>
-              <td><strong class="smallpreis">&euro;&nbsp;0.00</strong></td>
-            </tr>
+[% INCLUDE tt/shop/overview_table.tt %]
 
-            <tr>
-              <td colspan="4" class="bestelltablehead">
-                &nbsp;
-              </td>
-            </tr>
-            <tr>
-              <td class="tdright">
-                <h3>Telefonanlage</h3>
-              </td>
-            [% IF system.name %]
-              <td>
-                <strong class="okprodcount">1x</strong>
-                <img class="okprodimg" src="/grafik/ok_system.gif" width="22" height="" alt="25" />
-                <span class="okprodtext">[% system.name %]</span>
-              </td>
-              <td>
-                <strong class="smallpreis">&euro; [% system.price %]</strong><br clear="all" />
-              </td>
-              <td><strong class="smallpreis">&euro; 0.00</strong></td>
-            </tr>
-            [% END %]
-
-            [% notfirst = 0 %]
-            [% FOREACH phone = phones %]
-            [% IF system.name || notfirst %]
-            <tr>
-              <td class="tdright" />
-            [% END %]
-            [% notfirst = notfirst + 1 %]
-              <td>
-                <strong class="okprodcount">[% phone.count %]x</strong>
-                <img class="okprodimg" src="/grafik/ok_phone.gif" width="22" height="" alt="25" />
-                <span class="okprodtext">[% phone.name %]</span>
-              </td>
-              <td>
-                <strong class="smallpreis">&euro; [% phone.price_sum %]</strong><br clear="all" />
-              </td>
-              <td><strong class="smallpreis">&euro; 0.00</strong></td>
-            </tr>
-            [% END %]
-
-            <tr class="mysumme">
-              <td class="tdright">
-                <h3>Zwischensumme</h3>
-              </td>
-              <td>exklusive Steuern und Versand</td>
-              <td><strong class="smallpreis">&euro;&nbsp;[% price_sum %]</strong></td>
-              <td><strong class="smallpreis">&euro;&nbsp;[% month_sum %]</strong></td>
-            </tr>
-
-            <tr>
-              <td colspan="4" class="bestelltablehead">
-                &nbsp;
-              </td>
-            </tr>
-            <tr>
-              <td class="tdright">
-                <h3>Versandkosten</h3>
-              </td>
-              <td>Standardpaket, versicherter Versand</td>
-              <td><strong class="smallpreis">&euro;&nbsp;[% shipping_fee %]</strong></td>
-              <td><strong class="smallpreis">&euro;&nbsp;0.00</strong></td>
-            </tr>
-            <tr>
-              <td colspan="4" class="bestelltablehead">
-                &nbsp;
-              </td>
-            </tr>
-            <tr>
-              <td class="tdright">
-                <h3>Mehrwertsteuer</h3>
-              </td>
-              <td>20%</td>
-              <td><strong class="smallpreis">&euro;&nbsp;[% price_tax %]</strong></td>
-              <td><strong class="smallpreis">&euro;&nbsp;[% month_tax %]</strong></td>
-            </tr>
-
-            <tr class="mysumme">
-              <td class="tdright">
-                <h3>Summe</h3>
-              </td>
-              <td>
-                inklusive Steuern und Versand
-              </td>
-              <td><strong class="smallpreis">&euro;&nbsp;[% price_sum3 %]</strong></td>
-              <td><strong class="smallpreis">&euro;&nbsp;[% month_sum2 %]</strong></td>
-            </tr>
-
-            <tr>
-              <td colspan="4" class="bestelltablehead">
-                &nbsp;<br />&nbsp;
-              </td>
-            </tr>
-            <tr>
-              <td class="tdright">
-                <h3>Persönliche Daten</h3>
-              </td>
-              <td colspan="3">
-                [% IF personal.comregnum %]FBNr.: [% personal.comregnum %]<br />[% END %]
-                [% IF personal.company %][% personal.company %]<br />[% END %]
-                [% personal.firstname %] [% personal.lastname %]<br />
-                [% personal.street %]<br />
-                [% personal.postcode %] [% personal.city %]<br />
-                Telefon: [% personal.phonenumber %]<br />
-                E-Mail: [% personal.email %]
-              </td>
-            </tr>
-            [% IF personal.sign_contact %]
-            <tr>
-              <td class="tdright">
-                <h3>Zeichnungsberechtigter</h3>
-              </td>
-              <td colspan="3">
-                [% personal.sign_contact.firstname %] [% personal.sign_contact.lastname %]<br />
-                Telefon: [% personal.sign_contact.phonenumber %]<br />
-                E-Mail: [% personal.sign_contact.email %]
-              </td>
-            </tr>
-            [% END %]
-            [% IF personal.tech_contact %]
-            <tr>
-              <td class="tdright">
-                <h3>Technischer Kontakt</h3>
-              </td>
-              <td colspan="3">
-                [% personal.tech_contact.firstname %] [% personal.tech_contact.lastname %]<br />
-                Telefon: [% personal.tech_contact.phonenumber %]<br />
-                E-Mail: [% personal.tech_contact.email %]
-              </td>
-            </tr>
-            [% END %]
-            [% IF personal.delivery %]
-            <tr>
-              <td class="tdright">
-                <h3>Lieferadresse</h3>
-              </td>
-              <td colspan="3">
-                [% personal.delivery.firstname %] [% personal.delivery.lastname %]<br />
-                [% personal.delivery.company %]<br />
-                [% personal.delivery.street %]<br />
-                [% personal.delivery.postcode %] [% personal.delivery.city %]
-              </td>
-            </tr>
-            [% END %]
-            <tr>
-              <td class="tdright">
-                <h3>Web Login</h3>
-              </td>
-              <td colspan="3">
-                [% personal.username %]
-              </td>
-            </tr>
-            <tr>
-              <td class="tdright">
-                <h3>Telefonnummer</h3>
-              </td>
-              <td colspan="3">
-                <strong>[% number %] </strong>
-                (Telefonbuch: [% IF phonebook %]ja[% ELSE %]nein[% END %])
-              </td>
-            </tr>
-
-            <tr>
-              <td colspan="4" class="bestelltablehead">
-                &nbsp;<br /><br />
-              </td>
-            </tr>
-            <tr>
-              <td class="tdright">
-              </td>
-              <td colspan="3">
-                <p>
-                <input type="checkbox" name="agb" style="border:none;margin:0 5px 0 0; padding:0px;" />
-                Ich habe die <a href="#" class="link">Allgemeinen Geschäftsbedingungen</a> gelesen und akzeptiert.<br />
-                </p>
-                <div id="errormsg"><p>[% messages.agb %]</p></div>
-              </td>
-            </tr>
-            <tr>
-              <td class="tdright">
-              </td>
-              <td colspan="3" class="anmeldeninfo">
-                Bitte überprüfen Sie Ihre Angaben.<br />
-                Wenn alles korrekt ist, klicken Sie bitte auf "Zur Bezahlung" um die Bestellung abzuschließen.
-              </td>
-            </tr>
-          </table>
+          <div class="agbconfirm">
+            <input type="checkbox" name="agb" style="border:none;margin:0 5px 0 0; padding:0px;" />
+            Ich habe die <a href="#" class="link">Allgemeinen Geschäftsbedingungen</a> gelesen und akzeptiert.<br />
+            <div id="errormsg"><p>[% messages.agb %]</p></div>
+          </div><br clear="all" />
+          <p class="anmeldeninfo">
+            Bitte überprüfen Sie Ihre Angaben.<br />
+            Wenn alles korrekt ist, klicken Sie bitte auf "Zur Bezahlung" um die Bestellung abzuschließen.
+          </p>
 
           <p class="button">
             <span class="back">
@@ -266,13 +59,13 @@
             System und Endgeräte<br />
             [% IF system.name %]
             <strong class="okprodcount">1x</strong>
-            <img class="okprodimg" src="/grafik/ok_system.gif" width="22" height="" alt="25" />
+            <img class="okprodimg" src="/grafik/ok_system.gif" width="22" height="25" alt="" />
             <span class="okprodtext">[% system.name %]</span>
             <br clear="all" />
             [% END %]
             [% FOREACH phone = phones %]
               <strong class="okprodcount">[% phone.count %]x</strong>
-              <img class="okprodimg" src="/grafik/ok_phone.gif" width="22" height="" alt="25" />
+              <img class="okprodimg" src="/grafik/ok_phone.gif" width="22" height="25" alt="" />
               <span class="okprodtext">[% phone.name %]</span>
               <br clear="all" />
             [% END %]

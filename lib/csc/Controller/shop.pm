@@ -793,9 +793,22 @@ sub overview : Local {
     $c->stash->{template} = $c->session->{shop}{paid_ok} ? 'tt/shop/finish.tt' : 'tt/shop/overview.tt';
     $c->stash->{sk} = $c->session->{shop}{session_key};
     $c->stash->{tarif} = $c->session->{shop}{tarif};
-    $c->stash->{system} = $c->session->{shop}{system};
-    $c->stash->{system}{price} = $c->stash->{system}{price};
-    $c->stash->{phones} = $c->session->{shop}{phones};
+
+    if(ref $c->session->{shop}{cart} eq 'HASH' and keys %{$c->session->{shop}{cart}}) {
+        my @cart;
+        foreach my $ci (sort keys %{$c->session->{shop}{cart}}) {
+            push @cart, { count     => $c->session->{shop}{cart}{$ci},
+                          product   => $ci,
+                          price     => sprintf("%.2f", $c->session->{shop}{dbprodhash}{$ci}{price} / 100),
+                          price_sum => sprintf("%.2f", $c->session->{shop}{cart}{$ci} * $c->session->{shop}{dbprodhash}{$ci}{price} / 100),
+                        };
+        }
+        $c->stash->{cart} = \@cart;
+    } elsif(ref $c->session->{shop}{system} eq 'HASH') {
+        $c->stash->{system} = $c->session->{shop}{system};
+        $c->stash->{phones} = $c->session->{shop}{phones};
+    }
+
     $c->session->{shop}{price_sum} = $self->_calculate_price_sum($c);
     $c->stash->{price_sum} = $c->session->{shop}{price_sum};
     $c->stash->{month_sum} = $c->stash->{tarif}{monthly};
@@ -874,10 +887,21 @@ sub _generate_session_key : Private {
 sub _calculate_price_sum : Private {
     my ($self, $c) = @_;
 
-    my $price = $c->session->{shop}{system}{price} || 0;
-    foreach my $phone (@{$c->session->{shop}{phones}}) {
-        $price += $$phone{price_sum};
+    my $price = 0;
+
+    if(ref $c->session->{shop}{cart} eq 'HASH' and keys %{$c->session->{shop}{cart}}) {
+        foreach my $ci (sort keys %{$c->session->{shop}{cart}}) {
+            $price += $c->session->{shop}{cart}{$ci} * $c->session->{shop}{dbprodhash}{$ci}{price} / 100;
+        }
+    } else {
+        $price = $c->session->{shop}{system}{price} || 0;
+        if(ref $c->session->{shop}{phones} eq 'ARRAY') {
+            foreach my $phone (@{$c->session->{shop}{phones}}) {
+                $price += $$phone{price_sum};
+            }
+        }
     }
+
     $price += $c->session->{shop}{tarif}{price} if $c->session->{shop}{tarif}{price};
     $price += $c->session->{shop}{tarif}{initial_charge} if $c->session->{shop}{tarif}{initial_charge};
 

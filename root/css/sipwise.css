@@ -520,6 +520,11 @@
   padding: 5px 10px;
 }
 
+/* indentation for AGB checkbox and text */
+#main .agbconfirm {
+  margin-left: 140px;
+}
+
 /* display function info layer */
 .prodinfo_left {
   position: relative !important;

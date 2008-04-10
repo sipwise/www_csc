@@ -86,20 +86,17 @@
             <div class="einrichtungleft">
               <h4>Melden Sie sich kostenlos bei Libratel an!</h4>
               <p style="padding-right: 20px;">
-                Ihre Anmeldung bei Libratel ist
-                vollkommen kostenlos. Libratel ist Ihr
-                Internet-Telefonanschluss ohne
-                Anmeldegebühr und ohne Mindestumsatz.
+                Ihre Anmeldung bei Libratel ist vollkommen kostenlos. Libratel ist Ihr
+                Internet-Telefonanschluss ohne Anmeldegebühr und ohne Mindestumsatz.
               </p>
               <p class="next">
-                <a href="#" class="link">Jetzt kostenlos Registrieren</a>
+                <a href="/shop/tarif?sk=[% sk %]" class="link">Jetzt kostenlos Registrieren</a>
               </p>
             </div>
             <div class="einrichtungright">
               <h4 style="padding-left: 20px;">Sie sind bereits bei Libratel angemeldet?</h4>
               <p style="padding-left: 30px;">
-                Um mit der Bestellung Ihrer Endgeräte
-                fortzufahren loggen Sie sich bitte mit
+                Um mit der Bestellung Ihrer Endgeräte fortzufahren loggen Sie sich bitte mit
                 Ihrem Usernamen und Passwort ein.
               </p>
               <form id="anmelden" action="#" method="post">

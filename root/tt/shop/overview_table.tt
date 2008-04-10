@@ -1,0 +1,229 @@
+
+          <table class="bestelltable">
+
+            <tr>
+              <td class="tdright"></td>
+              <td></td>
+              <td class="headright">Einmalig</td>
+              <td class="headright">Monatlich</td>
+            </tr>
+            <tr>
+              <td colspan="4" class="bestelltablehead">
+                &nbsp;
+              </td>
+            </tr>
+            <tr>
+              <td class="tdright">
+                <h3>Tarif</h3>
+              </td>
+              <td>
+                [% tarif.name %]
+              </td>
+              <td><strong class="smallpreis">&euro;&nbsp;[% tarif.price %]</strong></td>
+              <td><strong class="smallpreis">&euro;&nbsp;[% tarif.monthly %]</strong></td>
+            </tr>
+            <tr>
+              <td class="tdright" />
+              <td>
+                Startguthaben
+              </td>
+              <td><strong class="smallpreis">&euro;&nbsp;[% tarif.initial_charge %]</strong></td>
+              <td><strong class="smallpreis">&euro;&nbsp;0.00</strong></td>
+            </tr>
+
+            <tr>
+              <td colspan="4" class="bestelltablehead">
+                &nbsp;
+              </td>
+            </tr>
+
+            [% IF cart %] <!-- items from hardware shop -->
+
+              [% first = 1 %]
+              [% FOREACH ci = cart %]
+                <tr>
+                [% IF first %]
+                  [% first = 0 %]
+                  <td class="tdright">
+                    <h3>Hardware</h3>
+                  </td>
+                [% ELSE %]
+                  <td class="tdright" />
+                [% END %]
+                  <td>
+                    <strong class="okprodcount">[% ci.count %]x</strong>
+                    <img class="okprodimg" src="" width="22" height="25" alt="" />
+                    <span class="okprodtext">[% ci.product %]</span>
+                  </td>
+                  <td>
+                    <strong class="smallpreis">&euro; [% ci.price_sum %]</strong><br clear="all" />
+                  </td>
+                  <td><strong class="smallpreis">&euro; 0.00</strong></td>
+                </tr>
+              [% END %]
+                  
+            [% ELSE %] <!-- items from solutions workflow -->
+              <tr>
+                <td class="tdright">
+                  <h3>Telefonanlage</h3>
+                </td>
+              [% IF system.name %]
+                <td>
+                  <strong class="okprodcount">1x</strong>
+                  <img class="okprodimg" src="/grafik/ok_system.gif" width="22" height="25" alt="" />
+                  <span class="okprodtext">[% system.name %]</span>
+                </td>
+                <td>
+                  <strong class="smallpreis">&euro; [% system.price %]</strong><br clear="all" />
+                </td>
+                <td><strong class="smallpreis">&euro; 0.00</strong></td>
+              </tr>
+              [% END %]
+  
+              [% notfirst = 0 %]
+              [% FOREACH phone = phones %]
+                [% IF system.name || notfirst %]
+                <tr>
+                  <td class="tdright" />
+                [% END %]
+                [% notfirst = notfirst + 1 %]
+                  <td>
+                    <strong class="okprodcount">[% phone.count %]x</strong>
+                    <img class="okprodimg" src="/grafik/ok_phone.gif" width="22" height="25" alt="" />
+                    <span class="okprodtext">[% phone.name %]</span>
+                  </td>
+                  <td>
+                    <strong class="smallpreis">&euro; [% phone.price_sum %]</strong><br clear="all" />
+                  </td>
+                  <td><strong class="smallpreis">&euro; 0.00</strong></td>
+                </tr>
+              [% END %]
+
+            [% END %]
+
+            <tr class="mysumme">
+              <td class="tdright">
+                <h3>Zwischensumme</h3>
+              </td>
+              <td>exklusive Steuern und Versand</td>
+              <td><strong class="smallpreis">&euro;&nbsp;[% price_sum %]</strong></td>
+              <td><strong class="smallpreis">&euro;&nbsp;[% month_sum %]</strong></td>
+            </tr>
+
+            <tr>
+              <td colspan="4" class="bestelltablehead">
+                &nbsp;
+              </td>
+            </tr>
+            <tr>
+              <td class="tdright">
+                <h3>Versandkosten</h3>
+              </td>
+              <td>Hermes Paketversand, versicherte Sendung</td>
+              <td><strong class="smallpreis">&euro;&nbsp;[% shipping_fee %]</strong></td>
+              <td><strong class="smallpreis">&euro;&nbsp;0.00</strong></td>
+            </tr>
+            <tr>
+              <td colspan="4" class="bestelltablehead">
+                &nbsp;
+              </td>
+            </tr>
+            <tr>
+              <td class="tdright">
+                <h3>Mehrwertsteuer</h3>
+              </td>
+              <td>20%</td>
+              <td><strong class="smallpreis">&euro;&nbsp;[% price_tax %]</strong></td>
+              <td><strong class="smallpreis">&euro;&nbsp;[% month_tax %]</strong></td>
+            </tr>
+
+            <tr class="mysumme">
+              <td class="tdright">
+                <h3>Summe</h3>
+              </td>
+              <td>inklusive Steuern und Versand</td>
+              <td><strong class="smallpreis">&euro;&nbsp;[% price_sum3 %]</strong></td>
+              <td><strong class="smallpreis">&euro;&nbsp;[% month_sum2 %]</strong></td>
+            </tr>
+
+            <tr>
+              <td colspan="4" class="bestelltablehead">
+                &nbsp;<br />&nbsp;
+              </td>
+            </tr>
+            <tr>
+              <td class="tdright">
+                <h3>Persönliche Daten</h3>
+              </td>
+              <td colspan="3">
+                [% IF personal.comregnum %]FBNr.: [% personal.comregnum %]<br />[% END %]
+                [% IF personal.company %][% personal.company %]<br />[% END %]
+                [% personal.firstname %] [% personal.lastname %]<br />
+                [% personal.street %]<br />
+                [% personal.postcode %] [% personal.city %]<br />
+                Telefon: [% personal.phonenumber %]<br />
+                E-Mail: [% personal.email %]
+              </td>
+            </tr>
+            [% IF personal.sign_contact %]
+            <tr>
+              <td class="tdright">
+                <h3>Zeichnungsberechtigter</h3>
+              </td>
+              <td colspan="3">
+                [% personal.sign_contact.firstname %] [% personal.sign_contact.lastname %]<br />
+                Telefon: [% personal.sign_contact.phonenumber %]<br />
+                E-Mail: [% personal.sign_contact.email %]
+              </td>
+            </tr>
+            [% END %]
+            [% IF personal.tech_contact %]
+            <tr>
+              <td class="tdright">
+                <h3>Technischer Kontakt</h3>
+              </td>
+              <td colspan="3">
+                [% personal.tech_contact.firstname %] [% personal.tech_contact.lastname %]<br />
+                Telefon: [% personal.tech_contact.phonenumber %]<br />
+                E-Mail: [% personal.tech_contact.email %]
+              </td>
+            </tr>
+            [% END %]
+            [% IF personal.delivery %]
+            <tr>
+              <td class="tdright">
+                <h3>Lieferadresse</h3>
+              </td>
+              <td colspan="3">
+                [% personal.delivery.firstname %] [% personal.delivery.lastname %]<br />
+                [% personal.delivery.company %]<br />
+                [% personal.delivery.street %]<br />
+                [% personal.delivery.postcode %] [% personal.delivery.city %]
+              </td>
+            </tr>
+            [% END %]
+            <tr>
+              <td class="tdright">
+                <h3>Web Login</h3>
+              </td>
+              <td colspan="3">
+                [% personal.username %]
+              </td>
+            </tr>
+            <tr>
+              <td class="tdright">
+                <h3>Telefonnummer</h3>
+              </td>
+              <td colspan="3">
+                <strong>[% number %] </strong>
+                (Telefonbuch: [% IF phonebook %]ja[% ELSE %]nein[% END %])
+              </td>
+            </tr>
+
+            <tr>
+              <td colspan="4" class="bestelltablehead">
+                &nbsp;<br /><br />
+              </td>
+            </tr>
+
+          </table>
