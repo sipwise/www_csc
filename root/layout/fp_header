@@ -22,10 +22,11 @@
 
           <li><a href="http://[% Catalyst.config.www_server %]/tarife.html">Tarife</a></li>
           <li><a href="http://[% Catalyst.config.www_server %]/rufnummern.html">Rufnummern</a></li>
-          <li [% 'class="on"' IF template.title == "Libratel Webshop" %]>
+          <li>
             <a href="http://[% Catalyst.config.www_server %]/prod_bus_single.html">Lösungen</a>
           </li> 
-          <li [% 'class="on"' IF template.title == "Libratel hardware shop" %]>
+          <li [% 'class="on"' IF template.title == "Libratel Webshop" 
+                                 || template.title == "payment" %]>
             <a href="http://[% Catalyst.config.www_server %]/shop/hardware">Shop</a>
           </li> 
           <li><a href="http://[% Catalyst.config.www_server %]/faq.html">FAQ</a></li>

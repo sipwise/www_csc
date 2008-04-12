@@ -1,4 +1,4 @@
-[% META title = 'Libratel hardware shop' %]
+[% META title = 'Libratel Webshop' %]
 
   <div id="headimg">
     <img src="/grafik/area_anmeldung.jpg" width="869" height="69" alt="Jetzt Kunde werden und alle Vorteile genießen!" />
@@ -8,7 +8,7 @@
 
     <div id="spalten31">
 
-      <h2>Bitte wählen Sie ein oder mehrere Endgeräte</h2>
+      <h2>Bitte wählen Sie die gewünschten Produkte</h2>
 
       <div class="spalte1">
 

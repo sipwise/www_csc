@@ -8,6 +8,7 @@
     
     <div id="spalten31">
 
+    [% IF messages.topmsg || messages.toperr || messages.prov_error %]
       <div id="topmsg">
         <p> [% messages.topmsg %] </p>
       </div>
@@ -15,6 +16,8 @@
         <p> [% messages.toperr %] </p>
         <p> [% messages.prov_error %] </p>
       </div>
+      <br clear="all" />
+    [% END %]
       
       <h2>Bitte überprüfen Sie Ihre Angaben</h2>
       
@@ -54,6 +57,7 @@
         </p>
 
         <ul class="schritte">
+        [% UNLESS existing_customer %]
           <li class="ok">
             <strong>Schritt 1:</strong><br />
             System und Endgeräte<br />
@@ -90,6 +94,20 @@
             <strong>Schritt 5:</strong><br />
             Bestellung abschließen
           </li>
+        [% ELSE %]
+          <li class="ok">
+            <strong>Schritt 1:</strong><br />
+            Hardwareauswahl<br />
+          </li>
+          <li class="ok">
+            <strong>Schritt 2:</strong><br />
+            Registrierung oder Login<br />
+          </li>
+          <li class="on">
+            <strong>Schritt 3:</strong><br />
+            Bestellung abschließen
+          </li>
+        [% END %]
         </ul>
 
       </div>

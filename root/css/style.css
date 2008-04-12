@@ -2535,3 +2535,8 @@ h4 {
     voice-family:inherit;
     width: 142px; /* richtig */
 }
+
+/* login link on cart page */
+#main #cart_login {
+   margin: 5px 0 0 3px;
+}

@@ -54,12 +54,13 @@ sub hardware : Local {
     if(ref $c->session->{shop}{cart} eq 'HASH' and keys %{$c->session->{shop}{cart}}) {
         my (@cart, $price_sum);
         foreach my $ci (sort keys %{$c->session->{shop}{cart}}) {
-            push @cart, { count => $c->session->{shop}{cart}{$ci},
+            push @cart, { count => $c->session->{shop}{cart}{$ci}{count},
                           product => $ci,
-                          price => sprintf "%.2f", $c->session->{shop}{cart}{$ci} * $c->session->{shop}{dbprodhash}{$ci}{price} / 100 };
-            $price_sum += $c->session->{shop}{cart}{$ci} * $c->session->{shop}{dbprodhash}{$ci}{price};
+                          price => $c->session->{shop}{cart}{$ci}{price_sum}
+                        };
+            $price_sum += $c->session->{shop}{cart}{$ci}{price_sum};
         }
-        $c->stash->{price_sum} = sprintf "%.2f", $price_sum / 100;
+        $c->stash->{price_sum} = sprintf "%.2f", $price_sum;
         $c->stash->{cart} = \@cart;
     } else {
         $c->stash->{price_sum} = '0.00';
@@ -104,7 +105,11 @@ sub add_to_cart : Local {
     }
 
     $c->log->info("***shop::add_to_cart adding $count '$product' to cart");
-    $c->session->{shop}{cart}{$product} += $count;
+    $c->session->{shop}{cart}{$product}{count} += $count;
+    $c->session->{shop}{cart}{$product}{name} = $product;
+    $c->session->{shop}{cart}{$product}{price} = sprintf "%.2f", $c->session->{shop}{dbprodhash}{$product}{price} / 100;
+    $c->session->{shop}{cart}{$product}{price_sum} =
+        sprintf "%.2f", $c->session->{shop}{cart}{$product}{count} * $c->session->{shop}{cart}{$product}{price};
 
     $c->response->redirect('/shop/hardware?sk='. $c->session->{shop}{session_key});
     return;
@@ -149,15 +154,15 @@ sub show_cart : Local {
     if(ref $c->session->{shop}{cart} eq 'HASH' and keys %{$c->session->{shop}{cart}}) {
         my (@cart, $price_sum);
         foreach my $ci (sort keys %{$c->session->{shop}{cart}}) {
-            push @cart, { count     => $c->session->{shop}{cart}{$ci},
+            push @cart, { count     => $c->session->{shop}{cart}{$ci}{count},
                           product   => $ci,
-                          price     => sprintf("%.2f", $c->session->{shop}{dbprodhash}{$ci}{price} / 100),
-                          price_sum => sprintf("%.2f", $c->session->{shop}{cart}{$ci} * $c->session->{shop}{dbprodhash}{$ci}{price} / 100),
+                          price     => $c->session->{shop}{cart}{$ci}{price},
+                          price_sum => $c->session->{shop}{cart}{$ci}{price_sum},
                         };
-            $price_sum += $c->session->{shop}{cart}{$ci} * $c->session->{shop}{dbprodhash}{$ci}{price};
+            $price_sum += $c->session->{shop}{cart}{$ci}{price_sum};
         }
-        $c->stash->{price_sum} = sprintf "%.2f", $price_sum / 100;
-        $c->stash->{tax_sum} = sprintf "%.2f", $price_sum * 0.002;
+        $c->stash->{price_sum} = sprintf "%.2f", $price_sum;
+        $c->stash->{tax_sum} = sprintf "%.2f", $price_sum * 0.2;
         $c->stash->{price_with_tax} = sprintf "%.2f", $c->stash->{price_sum} + $c->stash->{tax_sum};
         $c->stash->{cart} = \@cart;
     } else {
@@ -196,13 +201,62 @@ sub update_cart : Local {
 
     if($count) {
         $c->log->info("***shop::update_cart setting '$product' count to '$count'");
-        $c->session->{shop}{cart}{$product} = $count;
+        $c->session->{shop}{cart}{$product}{count} = $count;
+        $c->session->{shop}{cart}{$product}{price_sum} =
+            sprintf "%.2f", $c->session->{shop}{cart}{$product}{count} * $c->session->{shop}{cart}{$product}{price};
     } else {
         $c->log->info("***shop::update_cart removing '$product' from cart");
         delete $c->session->{shop}{cart}{$product};
     }
 
     $c->response->redirect('/shop/show_cart?sk='. $c->session->{shop}{session_key});
+    return;
+}
+
+=head2 login
+
+=cut
+
+sub login : Local {
+    my ( $self, $c ) = @_;
+
+    $c->response->redirect('http://www.libratel.at/')
+        unless defined $c->request->params->{sk} and
+            $c->request->params->{sk} eq $c->session->{shop}{session_key};
+
+    my $username = $c->request->params->{benutzer} || "";
+    my $password = $c->request->params->{passwort} || "";
+
+    if ($username && $password) {
+        my $customer_id;
+        if($c->model('Provisioning')->call_prov( $c, 'billing', 'authenticate_customer',
+                                                 { username => $username, password => $password },
+                                                 \$customer_id
+                                               ))
+        {
+            $c->log->debug('***shop::login login successfull, redirecting to overview');
+            # TODO: a little bit hacky, isn't it?
+            $c->session->{shop}{existing_customer} = 1;
+            $c->session->{shop}{customer_id} = $customer_id;
+            my $customer;
+            return unless $c->model('Provisioning')->call_prov( $c, 'billing', 'get_customer',
+                                                                { id => $customer_id },
+                                                                \$customer
+                                                              );
+            $c->session->{shop}{personal} = $$customer{contact};
+            $c->session->{shop}{personal}{delivery} = $$customer{contact};
+            $c->session->{shop}{personal}{deliver_to_contact} = 0;
+            $c->response->redirect('/shop/overview?sk='.$c->session->{shop}{session_key});
+            return;
+        }
+    } else {
+        $c->session->{prov_error} = 'Client.Syntax.LoginMissingPass'
+            unless $password;
+        $c->session->{prov_error} = 'Client.Syntax.LoginMissingUsername'
+            unless $username;
+    }
+
+    $c->response->redirect('/shop/show_cart?sk='.$c->session->{shop}{session_key});
     return;
 }
 
@@ -797,10 +851,10 @@ sub overview : Local {
     if(ref $c->session->{shop}{cart} eq 'HASH' and keys %{$c->session->{shop}{cart}}) {
         my @cart;
         foreach my $ci (sort keys %{$c->session->{shop}{cart}}) {
-            push @cart, { count     => $c->session->{shop}{cart}{$ci},
+            push @cart, { count     => $c->session->{shop}{cart}{$ci}{count},
                           product   => $ci,
-                          price     => sprintf("%.2f", $c->session->{shop}{dbprodhash}{$ci}{price} / 100),
-                          price_sum => sprintf("%.2f", $c->session->{shop}{cart}{$ci} * $c->session->{shop}{dbprodhash}{$ci}{price} / 100),
+                          price     => $c->session->{shop}{cart}{$ci}{price},
+                          price_sum => $c->session->{shop}{cart}{$ci}{price_sum},
                         };
         }
         $c->stash->{cart} = \@cart;
@@ -811,7 +865,7 @@ sub overview : Local {
 
     $c->session->{shop}{price_sum} = $self->_calculate_price_sum($c);
     $c->stash->{price_sum} = $c->session->{shop}{price_sum};
-    $c->stash->{month_sum} = $c->stash->{tarif}{monthly};
+    $c->stash->{month_sum} = sprintf "%.2f", $c->stash->{tarif}{monthly} || 0;
     $c->stash->{shipping_fee} = $c->session->{shop}{shipping_fee} = '9.50';
     $c->stash->{price_sum2} = sprintf "%.2f", $c->session->{shop}{price_sum} + $c->stash->{shipping_fee};
     $c->stash->{price_tax} = sprintf "%.2f", $c->stash->{price_sum2} * .2;
@@ -820,9 +874,14 @@ sub overview : Local {
     $c->stash->{month_sum2} = sprintf "%.2f", $c->stash->{month_sum} + $c->stash->{month_tax};
 
     $c->stash->{personal} = $c->session->{shop}{personal};
-    $c->stash->{number} = '0'. $c->session->{shop}{number}{ac} .' '. $c->session->{shop}{number}{sn};
+    $c->stash->{number} = '0'. $c->session->{shop}{number}{ac} .' '. $c->session->{shop}{number}{sn}
+        if defined $c->session->{shop}{number}{sn};
     $c->stash->{phonebook} = $c->session->{shop}{phonebook};
 
+    $c->stash->{existing_customer} = $c->session->{shop}{existing_customer}
+        if $c->session->{shop}{existing_customer};
+
+    delete $c->session->{shop} if $c->session->{shop}{paid_ok};
     return 1;
 }
 
@@ -891,7 +950,7 @@ sub _calculate_price_sum : Private {
 
     if(ref $c->session->{shop}{cart} eq 'HASH' and keys %{$c->session->{shop}{cart}}) {
         foreach my $ci (sort keys %{$c->session->{shop}{cart}}) {
-            $price += $c->session->{shop}{cart}{$ci} * $c->session->{shop}{dbprodhash}{$ci}{price} / 100;
+            $price += $c->session->{shop}{cart}{$ci}{price_sum};
         }
     } else {
         $price = $c->session->{shop}{system}{price} || 0;
@@ -986,7 +1045,7 @@ sub _create_contracts : Private {
         return;
     }
 
-    unless($c->session->{shop}{account_id}) {
+    if($c->session->{shop}{personal}{username} and ! $c->session->{shop}{account_id}) {
         $c->model('Provisioning')->call_prov($c, 'billing', 'create_voip_account',
                                              { product     => ($c->session->{shop}{tarif} eq 'free'
                                                                ? 'Libratel VoIP Free'
@@ -1020,34 +1079,54 @@ sub _create_contracts : Private {
                                             ) or return;
     }
 
-    unless( ! $c->session->{shop}{system}{name}
-           or $c->session->{shop}{system}{contract_id})
-    {
-        $c->model('Provisioning')->call_prov($c, 'billing', 'create_hardware_contract',
-                                             { product     => $c->session->{shop}{system}{name},
-                                               customer_id => $c->session->{shop}{customer_id},
-                                               status      => 'pending',
-                                               order_id    => $c->session->{shop}{order_id},
-                                             },
-                                             \$c->session->{shop}{system}{contract_id}
-                                            ) or return;
-    }
-
-    if(ref $c->session->{shop}{phones} eq 'ARRAY') {
-        foreach my $phone (@{$c->session->{shop}{phones}}) {
-            next if ref $$phone{contract_ids} eq 'ARRAY' and scalar @{ $$phone{contract_ids} } == $$phone{count};
-            my $start = ref $$phone{contract_ids} eq 'ARRAY' ? scalar @{ $$phone{contract_ids} } : 1;
-            for($start .. $$phone{count}) {
+    if(ref $c->session->{shop}{cart} eq 'HASH' and keys %{$c->session->{shop}{cart}}) {
+        foreach my $ci (sort keys %{$c->session->{shop}{cart}}) {
+            $ci = $c->session->{shop}{cart}{$ci};
+            next if ref $$ci{contract_ids} eq 'ARRAY' and scalar @{ $$ci{contract_ids} } == $$ci{count};
+            my $start = ref $$ci{contract_ids} eq 'ARRAY' ? scalar @{ $$ci{contract_ids} } : 1;
+            for($start .. $$ci{count}) {
                 my $contract_id;
                 $c->model('Provisioning')->call_prov($c, 'billing', 'create_hardware_contract',
-                                                     { product     => $$phone{name},
+                                                     { product     => $$ci{name},
                                                        customer_id => $c->session->{shop}{customer_id},
                                                        status      => 'pending',
                                                        order_id    => $c->session->{shop}{order_id},
                                                      },
                                                      \$contract_id
-                                                    ) or return;
-                push @{ $$phone{contract_ids} }, $contract_id;
+                                                   ) or return;
+                push @{ $$ci{contract_ids} }, $contract_id;
+            }
+        }
+    } else {
+        unless( ! $c->session->{shop}{system}{name}
+               or $c->session->{shop}{system}{contract_id})
+        {
+            $c->model('Provisioning')->call_prov($c, 'billing', 'create_hardware_contract',
+                                                 { product     => $c->session->{shop}{system}{name},
+                                                   customer_id => $c->session->{shop}{customer_id},
+                                                   status      => 'pending',
+                                                   order_id    => $c->session->{shop}{order_id},
+                                                 },
+                                                 \$c->session->{shop}{system}{contract_id}
+                                                ) or return;
+        }
+    
+        if(ref $c->session->{shop}{phones} eq 'ARRAY') {
+            foreach my $phone (@{$c->session->{shop}{phones}}) {
+                next if ref $$phone{contract_ids} eq 'ARRAY' and scalar @{ $$phone{contract_ids} } == $$phone{count};
+                my $start = ref $$phone{contract_ids} eq 'ARRAY' ? scalar @{ $$phone{contract_ids} } : 1;
+                for($start .. $$phone{count}) {
+                    my $contract_id;
+                    $c->model('Provisioning')->call_prov($c, 'billing', 'create_hardware_contract',
+                                                         { product     => $$phone{name},
+                                                           customer_id => $c->session->{shop}{customer_id},
+                                                           status      => 'pending',
+                                                           order_id    => $c->session->{shop}{order_id},
+                                                         },
+                                                         \$contract_id
+                                                        ) or return;
+                    push @{ $$phone{contract_ids} }, $contract_id;
+                }
             }
         }
     }
@@ -1104,17 +1183,20 @@ aufgenommen:
                     " " x (30 - length $c->session->{shop}{tarif}{name}) .
                     "EUR ". $c->session->{shop}{tarif}{price} .
                     " " x (15 - length $c->session->{shop}{tarif}{price}) .
-                    "EUR ". $c->session->{shop}{tarif}{monthly} ."\n");
+                    "EUR ". $c->session->{shop}{tarif}{monthly} ."\n")
+        if $c->session->{shop}{tarif}{name};
     $smtp->datasend("1 x Startguthaben ". " " x 22 .
                     "EUR ". $c->session->{shop}{tarif}{initial_charge} .
                     " " x (15 - length $c->session->{shop}{tarif}{initial_charge}) .
-                    "EUR 0.00\n");
+                    "EUR 0.00\n")
+        if $c->session->{shop}{tarif}{initial_charge};
     if(ref $c->session->{shop}{cart} eq 'HASH' and keys %{$c->session->{shop}{cart}}) {
         foreach my $ci (sort keys %{$c->session->{shop}{cart}}) {
-            my $tprice = sprintf("%.2f", $c->session->{shop}{cart}{$ci} * $c->session->{shop}{dbprodhash}{$ci}{price} / 100);
-            $smtp->datasend($c->session->{shop}{cart}{$ci} ."x ". $ci .
-                            " " x ((38 - length $c->session->{shop}{cart}{$ci}) - length $ci) .
-                            "EUR ". $tprice . " " x (15 - length $tprice) . "EUR 0.00\n");
+            my $tprice = sprintf("%.2f", $c->session->{shop}{cart}{$ci}{count} * $c->session->{shop}{dbprodhash}{$ci}{price} / 100);
+            $smtp->datasend($c->session->{shop}{cart}{$ci}{count} ."x ". $ci .
+                            " " x ((38 - length $c->session->{shop}{cart}{$ci}{count}) - length $ci) .
+                            "EUR ". $c->session->{shop}{cart}{$ci}{price_sum} .
+                            " " x (15 - length $c->session->{shop}{cart}{$ci}{price_sum}) . "EUR 0.00\n");
         }
     } else {
         $smtp->datasend("1 x ". $c->session->{shop}{system}{name} .
@@ -1139,20 +1221,20 @@ aufgenommen:
     $smtp->datasend("Zwischensumme" . " " x 27 .
                     "EUR ". $price_sum1 .
                     " " x (15 - length $price_sum1) .
-                    "EUR ". $c->session->{shop}{tarif}{monthly} ."\n");
+                    "EUR ". ($c->session->{shop}{tarif}{monthly} || '0.00') ."\n");
     $smtp->datasend("+Versandkosten". " " x 26 .
                     "EUR ". $c->session->{shop}{shipping_fee} .
                     " " x (15 - length $c->session->{shop}{shipping_fee}) .
                     "EUR 0.00\n");
     my $price_tax = sprintf "%.2f", ($price_sum1 + $c->session->{shop}{shipping_fee}) * .2;
-    my $month_tax = sprintf "%.2f", $c->session->{shop}{tarif}{monthly} * .2;
+    my $month_tax = sprintf "%.2f", ($c->session->{shop}{tarif}{monthly} || 0) * .2;
     $smtp->datasend("+20% USt". " " x 32 .
                     "EUR ". $price_tax .
                     " " x (15 - length $price_tax) .
                     "EUR ". $month_tax ."\n");
     $smtp->datasend("--------------------------------------------------------------------\n");
     $smtp->datasend("\n");
-    my $month_sum = sprintf "%.2f", $c->session->{shop}{tarif}{monthly} + $month_tax;
+    my $month_sum = sprintf "%.2f", ($c->session->{shop}{tarif}{monthly} || 0) + $month_tax;
     $smtp->datasend("Summe" . " " x 35 .
                     "EUR ". $c->session->{shop}{price_sum} .
                     " " x (15 - length $c->session->{shop}{price_sum}) .
@@ -1188,34 +1270,41 @@ aufgenommen:
 
     $smtp->datasend('
 Ihre Rechnung wird Ihnen zusammen mit der Ware zugestellt.
+');
 
+    unless($c->session->{shop}{existing_customer}) {
+        $smtp->datasend('
 --------------------------------------------------------------------
 REGISTRIERUNGSDATEN                  LIBRATEL IP COMMUNICATIONS GMBH
 --------------------------------------------------------------------
 ');
-    $smtp->datasend('RUFNUMMER:'. ' ' x 4 .
-                    '0'. $c->session->{shop}{number}{ac} .
-                    ' '. $c->session->{shop}{number}{sn} ."\n");
-    $smtp->datasend('BENUTZERNAME: '. $c->session->{shop}{personal}{username} ."\n");
-    $smtp->datasend('PASSWORT:'. ' ' x 5 . $c->session->{shop}{personal}{password} ."\n"); 
-    $smtp->datasend('
+        $smtp->datasend('RUFNUMMER:'. ' ' x 4 .
+                        '0'. $c->session->{shop}{number}{ac} .
+                        ' '. $c->session->{shop}{number}{sn} ."\n");
+        $smtp->datasend('BENUTZERNAME: '. $c->session->{shop}{personal}{username} ."\n");
+        $smtp->datasend('PASSWORT:'. ' ' x 5 . $c->session->{shop}{personal}{password} ."\n"); 
+        $smtp->datasend('
 Wir empfehlen Ihnen, bei Ihrer ersten Anmeldung im Kundenbereich
 Ihr Passwort unter dem Menüpunkt KONTO aus Sicherheitsgründen zu
 ändern!
 
 ');
-    $smtp->datasend('EMAIL:'. ' ' x 8 . $c->session->{shop}{personal}{email} . "\n");
-    $smtp->datasend('
+        $smtp->datasend('EMAIL:'. ' ' x 8 . $c->session->{shop}{personal}{email} . "\n");
+        $smtp->datasend('
 Ihre Rechnungen werden Ihnen an diese Email Adresse im .pdf
 Format zugestellt!
 
 ');
-    $smtp->datasend('TARIF:'. ' ' x 8 . $c->session->{shop}{tarif}{name} ."\n");
-    $smtp->datasend('GUTHABEN:'. ' ' x 5 . $c->session->{shop}{tarif}{initial_charge} ."EUR\n");
-    $smtp->datasend('
+        $smtp->datasend('TARIF:'. ' ' x 8 . $c->session->{shop}{tarif}{name} ."\n");
+        $smtp->datasend('GUTHABEN:'. ' ' x 5 . $c->session->{shop}{tarif}{initial_charge} ."EUR\n");
+        $smtp->datasend('
 Sie können Ihr Guthaben jederzeit im Kundenbereich unter dem
 Menüpunkt KONTO einsehen und aufladen.
+');
 
+    }
+
+    $smtp->datasend('
 Bei Fragen stehen wir Ihnen gerne per Email unter office@libratel.at
 bzw. telefonisch unter 0720 456789 zur Verfügung.
 

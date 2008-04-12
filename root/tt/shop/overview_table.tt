@@ -7,6 +7,8 @@
               <td class="headright">Einmalig</td>
               <td class="headright">Monatlich</td>
             </tr>
+
+          [% IF tarif.name %]
             <tr>
               <td colspan="4" class="bestelltablehead">
                 &nbsp;
@@ -30,6 +32,7 @@
               <td><strong class="smallpreis">&euro;&nbsp;[% tarif.initial_charge %]</strong></td>
               <td><strong class="smallpreis">&euro;&nbsp;0.00</strong></td>
             </tr>
+          [% END %]
 
             <tr>
               <td colspan="4" class="bestelltablehead">
@@ -151,6 +154,8 @@
                 &nbsp;<br />&nbsp;
               </td>
             </tr>
+
+          [% UNLESS existing_customer %]
             <tr>
               <td class="tdright">
                 <h3>Persönliche Daten</h3>
@@ -189,6 +194,21 @@
               </td>
             </tr>
             [% END %]
+          [% ELSE %]
+            <tr>
+              <td class="tdright">
+                <h3>Rechnungsadresse</h3>
+              </td>
+              <td colspan="3">
+                [% IF personal.comregnum %]FBNr.: [% personal.comregnum %]<br />[% END %]
+                [% IF personal.company %][% personal.company %]<br />[% END %]
+                [% personal.firstname %] [% personal.lastname %]<br />
+                [% personal.street %]<br />
+                [% personal.postcode %] [% personal.city %]<br />
+              </td>
+            </tr>
+          [% END %]
+
             [% IF personal.delivery %]
             <tr>
               <td class="tdright">
@@ -196,12 +216,14 @@
               </td>
               <td colspan="3">
                 [% personal.delivery.firstname %] [% personal.delivery.lastname %]<br />
-                [% personal.delivery.company %]<br />
+                [% IF personal.delivery.company %][% personal.delivery.company %]<br />[% END %]
                 [% personal.delivery.street %]<br />
                 [% personal.delivery.postcode %] [% personal.delivery.city %]
               </td>
             </tr>
             [% END %]
+
+          [% UNLESS existing_customer %]
             <tr>
               <td class="tdright">
                 <h3>Web Login</h3>
@@ -219,6 +241,7 @@
                 (Telefonbuch: [% IF phonebook %]ja[% ELSE %]nein[% END %])
               </td>
             </tr>
+          [% END %]
 
             <tr>
               <td colspan="4" class="bestelltablehead">

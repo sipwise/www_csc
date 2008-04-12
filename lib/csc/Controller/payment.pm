@@ -42,7 +42,11 @@ sub index : Private {
     $c->stash->{price_sum} = $c->session->{shop}{price_sum};
 
     $c->stash->{tarif} = $c->session->{shop}{tarif};
-    $c->stash->{number} = '0'. $c->session->{shop}{number}{ac} .' '. $c->session->{shop}{number}{sn};
+    $c->stash->{number} = '0'. $c->session->{shop}{number}{ac} .' '. $c->session->{shop}{number}{sn}
+        if defined $c->session->{shop}{number}{sn};
+
+    $c->stash->{existing_customer} = $c->session->{shop}{existing_customer}
+        if $c->session->{shop}{existing_customer};
 
     return 1;
 }

@@ -8,6 +8,7 @@
     
     <div id="spalten31">
 
+    [% IF messages.topmsg || messages.toperr || messages.prov_error %]
       <div id="topmsg">
         <p> [% messages.topmsg %] </p>
       </div>
@@ -15,6 +16,8 @@
         <p> [% messages.toperr %] </p>
         <p> [% messages.prov_error %] </p>
       </div>
+      <br clear="all" />
+    [% END %]
       
       <h2>Bitte wählen Sie ein System und ihre Endgeräte</h2>
       

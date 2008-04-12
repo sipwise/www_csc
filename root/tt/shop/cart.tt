@@ -1,4 +1,4 @@
-[% META title = 'Libratel hardware shop' %]
+[% META title = 'Libratel Webshop' %]
 
   <div id="headimg">
     <a href=""><img src="/grafik/area_anmeldung.jpg" width="869" height="69" alt="Jetzt Kunde werden und alle Vorteile genießen!" /></a>
@@ -8,6 +8,7 @@
     
     <div id="spalten31">
 
+    [% IF messages.topmsg || messages.toperr || messages.prov_error %]
       <div id="topmsg">
         <p> [% messages.topmsg %] </p>
       </div>
@@ -15,6 +16,8 @@
         <p> [% messages.toperr %] </p>
         <p> [% messages.prov_error %] </p>
       </div>
+      <br clear="all" />
+    [% END %]
       
       <h2>Folgende Artikel befinden sich in Ihrem Warenkorb</h2>
       
@@ -99,14 +102,15 @@
                 Um mit der Bestellung Ihrer Endgeräte fortzufahren loggen Sie sich bitte mit
                 Ihrem Usernamen und Passwort ein.
               </p>
-              <form id="anmelden" action="#" method="post">
+              <form id="anmelden" action="/shop/login" method="post">
                 <label for="benutzer">Benutzer</label>
                 <input type="text" id="benutzer" name="benutzer" class="benutzer" size="20" /><br clear="all" />
                 <label for="passwort">Passwort</label>
                 <input type="text" id="passwort" name="passwort" class="passwort" size="20" /><br clear="all" />
-                <p class="next">
-                  <a href="#" class="link">Jetzt einloggen</a>
-                </p>
+                <div class="save">
+                  <label for="dologin" id="cart_login">Jetzt einloggen</label>
+                  <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="dologin" />
+                </div>
               </form>
             </div>
           </div>
@@ -123,11 +127,11 @@
         </div>
         
         <ul class="schritte">
-          <li class="on">
+          <li class="ok">
             <strong>Schritt 1:</strong><br />
             Hardwareauswahl<br />
           </li>
-          <li>
+          <li class="on">
             <strong>Schritt 2:</strong><br />
             Registrierung oder Login<br />
           </li>
