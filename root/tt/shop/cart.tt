@@ -106,7 +106,7 @@
                 <label for="benutzer">Benutzer</label>
                 <input type="text" id="benutzer" name="benutzer" class="benutzer" size="20" /><br clear="all" />
                 <label for="passwort">Passwort</label>
-                <input type="text" id="passwort" name="passwort" class="passwort" size="20" /><br clear="all" />
+                <input type="password" id="passwort" name="passwort" class="passwort" size="20" /><br clear="all" />
                 <div class="save">
                   <label for="dologin" id="cart_login">Jetzt einloggen</label>
                   <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="dologin" />
