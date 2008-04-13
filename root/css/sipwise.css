@@ -706,3 +706,12 @@
    margin-left: 5px;
 }
 
+/* display hardware info layer */
+.prodinfo_shop {
+   position: relative !important;
+   top: -360px !important;
+   left: 100px !important;
+   margin-bottom: -312px;
+   margin-right: -611px;
+}
+
