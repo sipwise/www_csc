@@ -5,12 +5,21 @@
             <fieldset class="alt">
               <h3>Konto aufladen</h3>
 
-              <label for="famount"><strong>aktuelles Guthaben</strong></label>
-              <p><strong>&euro; [% subscriber.account.cash_balance %]</strong></p>
+              <label><strong>aktuelles Guthaben</strong></label>
+              <strong>&euro; [% subscriber.account.cash_balance %]</strong><br clear="all" />
 
-              <label for="famount">Betrag in &euro;</label>
-              <input type="text" size="10" class="input10" id="foldpass" name="amount"><br clear="all" />
-              [% IF messages.msgamount %]<div id="errormsg"><p>[% messages.msgamount %]</p></div><br clear="all" />[% END %]
+              <div id="damount">
+                <label for="amount">Betrag aufladen: </label>&euro;
+                <input type="text" size="4" maxlength="4" class="input10 loose"
+                       id="amount" name="amount" value="[% refill.amount %]" /><br clear="all" />
+                [% IF messages.msgamount %]<div id="errormsg">[% messages.msgamount %]</div><br clear="all" />[% END %]
+              </div>
+
+              <input type="checkbox" name="auto_reload" id="auto_reload" class="noborder" />
+              <label for="auto_reload" class="loose">Diesen Betrag automatisch aufladen,</label>
+              <label for="auto_amount" class="loose">wenn das Guthaben &euro;</label>
+              <input type="text" size="4" maxlength="4" class="input10 loose"
+                     id="auto_amount" name="auto_amount" value="[% refill.auto_amount %]" /> unterschreitet.
 
               <p class="save">
                 <label for="save_settings">weiter</label>

@@ -47,9 +47,7 @@
    width: auto;
    float: left;
    margin: 0;
-   padding: 0 0 10px 0;
-}
-#errormsg p {
+   padding: 0;
    font-size: 12px;
    font-weight: bold;
    color: #FF1010;
@@ -259,6 +257,28 @@
 /* suppress border around hidden image */
 #main .feinstellungen .save input {
    border: none;
+}
+
+#main .feinstellungen label.loose {
+   width: auto;
+   float: none;
+   padding: 0;
+   margin: 0;
+}
+#main .feinstellungen input.loose {
+   width: 35px !important;
+   float: none;
+   margin: 0;
+}
+#main .feinstellungen #damount {
+   margin-top: 8px;
+}
+#main .feinstellungen #amount {
+   margin-top: -1px;
+}
+
+#main .feinstellungen #auto_reload {
+   margin: 12px 0 1px 23px;
 }
 
 /* alignment and text color for demo info text */

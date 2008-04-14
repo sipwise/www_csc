@@ -2,60 +2,39 @@
 
           [% IF mpay24_errors.top %]<br><div id="errormsg"><p>[% mpay24_errors.top %]</p></div>[% END %]
 
-          <fieldset class="alt" id="eps">
-            <form action="/[% backend %]/dopay_eps" method="post">
+          <fieldset class="alt" id="elv">
+            <form action="/[% backend %]/dopay_elv" method="POST">
               <input type="hidden" name="sk" value="[% sk %]" />
               <p>
-                <span class="selectpayment">Zahlen per Onlineüberweisung</span>
+                <span class="selectpayment">Zahlen via Bankeinzug</span>
                 <div class="info">
-                  Sie werden nach Auswahl Ihrer Bank auf Ihre gewohnte Onlinebanking Webseite
-                  weitergeleitet, wo sie sich mit Ihren Benutzerdaten einloggen und die
-                  Überweisung vornehmen können. Folgende Banken stehen dafür zur Verfügung:
-                </div><br />
+                  Wir buchen den Betrag von Ihrem Konto ab, Sie brauchen nur dieses
+                  Formular auszufüllen.
+                </div>
+              </p><br />
 
-                <select name="bankname">
-                  <option value="BA"[% IF refill.eps.bankname == "BA" %]
-                          selected="selected"[% END %]>Bank Austria Credit Anstalt</option>
-                  <option value="ERSTE"[% IF refill.eps.bankname == "ERSTE" %]
-                          selected="selected"[% END %]>Erste Bank & Sparkassen Gruppe</option>
-                  <option value="RZB"[% IF refill.eps.bankname == "RZB" %]
-                          selected="selected"[% END %]>Raiffeisenbanken Gruppe</option>
-                  <option value="BAWAG"[% IF refill.eps.bankname == "BAWAG" %]
-                          selected="selected"[% END %]>BAWAG P.S.K. Gruppe</option>
-                  <option value="HYPO"[% IF refill.eps.bankname == "HYPO" %]
-                          selected="selected"[% END %]>Hypo Oberösterreich</option>
-<!--
-                  <option value="ARZ_101"[% IF refill.eps.bankname == "ARZ_101" %]
-                          selected="selected"[% END %]>österr. Volksbanken, Immo-Bank und Gärtnerbank</option>
-                  <option value="ARZ_093"[% IF refill.eps.bankname == "ARZ_093" %]
-                          selected="selected"[% END %]>Bank fuer Ärzte und Freie Berufe</option>
-                  <option value="ARZ_029"[% IF refill.eps.bankname == "ARZ_029" %]
-                          selected="selected"[% END %]>NÖ Landesbank-Hypothekenbank AG</option>
-                  <option value="ARZ_019"[% IF refill.eps.bankname == "ARZ_019" %]
-                          selected="selected"[% END %]>Vorarlberger Landes- und Hypothekenbank AG</option>
-                  <option value="ARZ_011"[% IF refill.eps.bankname == "ARZ_011" %]
-                          selected="selected"[% END %]>Bankhaus Carl Spängler & Co. AG</option>
-                  <option value="ARZ_002"[% IF refill.eps.bankname == "ARZ_002" %]
-                          selected="selected"[% END %]>Hypo Tirol Bank AG</option>
-                  <option value="ARZ_015"[% IF refill.eps.bankname == "ARZ_015" %]
-                          selected="selected"[% END %]>Hypo-Alpe-Adria-Bank AGs</option>
-                  <option value="ARZ_109"[% IF refill.eps.bankname == "ARZ_109" %]
-                          selected="selected"[% END %]>Investkredit Bank AG</option>
--->
-                </select>
+              <p class="left">
+                <label for="faccountnumber">Kontonummer</label>
+                <input type="text" size="20" class="input20" id="faccountnumber"
+                       name="accountnumber" value="[% refill.elv.accountnumber %]" /><br />
+              </p>
+              <p class="right">
+                <label for="fbankid">Bankleitzahl</label>
+                <input type="text" size="10" class="input20" id="fbankid"
+                       name="bankid" value="[% refill.elv.bankid %]" /><br />
               </p>
 
               <p class="save">
-                <label for="go_eps">Mit E-Banking forfahren</label>
-                <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="go_eps">
+                <label for="go_elv">Bankeinzug veranlassen</label>
+                <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="go_elv">
               </p>
 
-              [% IF mpay24_errors.eps %]<br><div id="errormsg"><p>[% mpay24_errors.eps %]</p></div>[% END %]
+              [% IF elv_error %]<br clear="all" /><div id="errormsg">[% elv_error %]</div><br clear="all" />[% END %]
 
             </form>
           </fieldset><br clear="all" />
 
-          <fieldset id="cc">
+          <fieldset id="cc" [% IF payment.auto_reload %]class="last"[% END %]>
             <form action="/[% backend %]/dopay_cc" method="post">
               <input type="hidden" name="sk" value="[% sk %]" />
               <p>
@@ -126,7 +105,62 @@
             </form>
           </fieldset><br clear="all" />
 
-          <fieldset class="alt" id="maestro">
+        [% UNLESS payment.auto_reload %]
+
+          <fieldset class="alt" id="eps">
+            <form action="/[% backend %]/dopay_eps" method="post">
+              <input type="hidden" name="sk" value="[% sk %]" />
+              <p>
+                <span class="selectpayment">Zahlen per Onlineüberweisung</span>
+                <div class="info">
+                  Sie werden nach Auswahl Ihrer Bank auf Ihre gewohnte Onlinebanking Webseite
+                  weitergeleitet, wo sie sich mit Ihren Benutzerdaten einloggen und die
+                  Überweisung vornehmen können. Folgende Banken stehen dafür zur Verfügung:
+                </div><br />
+
+                <select name="bankname">
+                  <option value="BA"[% IF refill.eps.bankname == "BA" %]
+                          selected="selected"[% END %]>Bank Austria Credit Anstalt</option>
+                  <option value="ERSTE"[% IF refill.eps.bankname == "ERSTE" %]
+                          selected="selected"[% END %]>Erste Bank & Sparkassen Gruppe</option>
+                  <option value="RZB"[% IF refill.eps.bankname == "RZB" %]
+                          selected="selected"[% END %]>Raiffeisenbanken Gruppe</option>
+                  <option value="BAWAG"[% IF refill.eps.bankname == "BAWAG" %]
+                          selected="selected"[% END %]>BAWAG P.S.K. Gruppe</option>
+                  <option value="HYPO"[% IF refill.eps.bankname == "HYPO" %]
+                          selected="selected"[% END %]>Hypo Oberösterreich</option>
+<!--
+                  <option value="ARZ_101"[% IF refill.eps.bankname == "ARZ_101" %]
+                          selected="selected"[% END %]>österr. Volksbanken, Immo-Bank und Gärtnerbank</option>
+                  <option value="ARZ_093"[% IF refill.eps.bankname == "ARZ_093" %]
+                          selected="selected"[% END %]>Bank fuer Ärzte und Freie Berufe</option>
+                  <option value="ARZ_029"[% IF refill.eps.bankname == "ARZ_029" %]
+                          selected="selected"[% END %]>NÖ Landesbank-Hypothekenbank AG</option>
+                  <option value="ARZ_019"[% IF refill.eps.bankname == "ARZ_019" %]
+                          selected="selected"[% END %]>Vorarlberger Landes- und Hypothekenbank AG</option>
+                  <option value="ARZ_011"[% IF refill.eps.bankname == "ARZ_011" %]
+                          selected="selected"[% END %]>Bankhaus Carl Spängler & Co. AG</option>
+                  <option value="ARZ_002"[% IF refill.eps.bankname == "ARZ_002" %]
+                          selected="selected"[% END %]>Hypo Tirol Bank AG</option>
+                  <option value="ARZ_015"[% IF refill.eps.bankname == "ARZ_015" %]
+                          selected="selected"[% END %]>Hypo-Alpe-Adria-Bank AGs</option>
+                  <option value="ARZ_109"[% IF refill.eps.bankname == "ARZ_109" %]
+                          selected="selected"[% END %]>Investkredit Bank AG</option>
+-->
+                </select>
+              </p>
+
+              <p class="save">
+                <label for="go_eps">Mit E-Banking forfahren</label>
+                <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="go_eps">
+              </p>
+
+              [% IF mpay24_errors.eps %]<br><div id="errormsg"><p>[% mpay24_errors.eps %]</p></div>[% END %]
+
+            </form>
+          </fieldset><br clear="all" />
+
+          <fieldset id="maestro">
             <form action="/[% backend %]/dopay_maestro" method="post">
               <input type="hidden" name="sk" value="[% sk %]" />
               <p>
@@ -193,7 +227,7 @@
             </form>
           </fieldset><br clear="all" />
 
-          <fieldset id="paypal">
+          <fieldset class="alt" id="paypal">
             <form action="/[% backend %]/dopay_paypal" method="post">
               <input type="hidden" name="sk" value="[% sk %]" />
               <p>
@@ -213,5 +247,7 @@
 
             </form>
           </fieldset><br clear="all" />
+
+        [% END %]
 
         </span>

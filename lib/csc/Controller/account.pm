@@ -29,7 +29,7 @@ sub index : Private {
 sub info : Local {
     my ( $self, $c ) = @_;
 
-    $c->log->debug('***account::settings called');
+    $c->log->debug('***account::info called');
 
     if($c->session->{user}{username} eq 'demonstration') {
         $c->response->redirect($c->uri_for('/desktop'));
@@ -173,7 +173,8 @@ sub balance : Local {
         return 1;
     }
 
-    $c->stash->{refill}{amount} = $c->request->params->{amount} || '';
+    $c->stash->{refill} = $c->session->{refill};
+    delete $c->session->{refill};
 
     $c->stash->{subscriber}{account}{cash_balance} = sprintf "%.2f", $c->session->{user}{account}{cash_balance} / 100;
     $c->stash->{template} = 'tt/account_balance.tt';
@@ -197,10 +198,27 @@ sub setpay : Local {
 
     my $amount = $c->request->params->{amount};
     if($amount !~ /^\d+$/) {
-        $c->session->{messages}{msgamount} = 'Client.Billing.MalformedAmount';
+        $messages{msgamount} = 'Client.Billing.MalformedAmount';
+        $c->session->{refill}{amount} = $amount;
+    }
+
+    my $auto_reload = $c->request->params->{auto_reload};
+    my $auto_amount = $c->request->params->{auto_amount};
+    if($auto_reload) {
+        if($auto_amount !~ /^\d+$/) {
+            $messages{msgautoamount} = 'Client.Billing.MalformedAmount';
+            $c->session->{refill}{auto_amount} = $auto_amount;
+        }
+    }
+
+    if(keys %messages) {
+        $c->session->{messages} = \%messages;
         $c->response->redirect($c->uri_for('/account/balance'));
         return;
     }
+
+    $c->session->{payment}{auto_reload} = $auto_reload;
+    $c->session->{payment}{auto_amount} = $auto_amount;
 
     unless($c->model('Provisioning')->get_usr_preferences($c)) {
         $c->response->redirect($c->uri_for('/account/balance'));
@@ -247,55 +265,10 @@ sub dopay : Local {
 
     $c->stash->{backend} = 'account';
     $c->stash->{template} = 'tt/account_payment.tt';
-}
 
-sub dopay_eps : Local {
-    my ( $self, $c ) = @_;
-
-    $c->log->debug('***account::dopay_eps called');
-
-    my $amount = $c->session->{payment}{amount};
-
-    my $bankname = $c->request->params->{bankname};
-    my ($bank, $bankid);
-    $bank = $bankname;
-
-    if($bankname =~ /^ARZ_/) {
-        ($bank, $bankid) = split /_/, $bankname;
-    }
-
-    my $tid = $self->_start_transaction($c, 'eps', $amount);
-    unless($tid) {
-        $c->response->redirect('/account/dopay');
-        return;
-    }
-
-    if($c->model('Mpay24')->accept_eps_payment($c, $tid, $amount, $bank, $bankid)) {
-        unless($c->model('Provisioning')->call_prov($c, 'billing', 'update_payment',
-                                                    { id   => $tid,
-                                                      data => { state => 'transact' },
-                                                    },
-                                                    undef
-                                                   ))
-        {
-            return;
-        }
-        $c->response->redirect($c->session->{mpay24}{LOCATION});
-        $c->log->info("redirected customer to ". $c->session->{mpay24}{LOCATION});
-    } elsif(defined $c->session->{mpay24}) { # application error
-        $self->_fail_transaction($c, $tid);
-        $c->session->{mpay24_errors}{eps} = $c->session->{mpay24}{EXTERNALSTATUS}
-                                            || $c->model('Provisioning')->localize('Web.Payment.UnknownError');
-        $c->session->{refill}{eps}{bankname} = $bankname;
-        $c->response->redirect('/account/dopay#eps');
-    } else { # transport error
-        $self->_fail_transaction($c, $tid);
-        $c->session->{mpay24_errors}{eps} = $c->model('Provisioning')->localize('Web.Payment.HttpFailed');
-        $c->session->{refill}{eps}{bankname} = $bankname;
-        $c->response->redirect('/account/dopay#eps');
-    }
-
-    return 1;
+    $c->stash->{payment} = $c->session->{payment};
+    $c->stash->{elv_error} = $c->session->{elv_error} if $c->session->{elv_error};
+    delete $c->session->{elv_error};
 }
 
 sub dopay_elv : Local {
@@ -305,43 +278,19 @@ sub dopay_elv : Local {
 
     my $amount = $c->session->{payment}{amount};
 
-    my $agb_ack = $c->request->params->{agb_ack};
     my $accountnumber = $c->request->params->{accountnumber};
     my $bankid = $c->request->params->{bankid};
 
-    my $tid = $self->_start_transaction($c, 'elv', $amount);
-    unless($tid) {
-        $c->response->redirect('/account/dopay');
-        return;
-    }
+#    my $tid = $self->_start_transaction($c, 'elv', $amount);
+#    unless($tid) {
+#        $c->response->redirect('/account/dopay');
+#        return;
+#    }
 
-    if($c->model('Mpay24')->accept_elv_payment($c, $tid, $amount, $accountnumber, $bankid)) {
-        unless($c->model('Provisioning')->update_account_balance($c, $amount)) {
-            $self->_fail_transaction($c, $tid);
-            $c->response->redirect('/account/balance');
-            return;
-        }
-        unless($self->_finish_transaction($c, $tid)) {
-            # hmm, what? some logging, at least.
-        }
-        $c->session->{messages}{topmsg} = 'Server.Billing.Success';
-        $c->response->redirect('/account/balance');
-    } elsif(defined $c->session->{mpay24}) {
-        $self->_fail_transaction($c, $tid);
-        $c->session->{mpay24_errors}{elv} = $c->session->{mpay24}{EXTERNALSTATUS}
-                                            || $c->model('Provisioning')->localize('Web.Payment.UnknownError');
-        $c->session->{refill}{elv}{accountnumber} = $accountnumber;
-        $c->session->{refill}{elv}{bankid} = $bankid;
-        $c->response->redirect('/account/dopay#elv');
-    } else {
-        $self->_fail_transaction($c, $tid);
-        $c->session->{mpay24_errors}{elv} = $c->model('Provisioning')->localize('Web.Payment.HttpFailed');
-        $c->session->{refill}{elv}{accountnumber} = $accountnumber;
-        $c->session->{refill}{elv}{bankid} = $bankid;
-        $c->response->redirect('/account/dopay#elv');
-    }
+    $c->session->{elv_error} = "Bezahlen via Bankeinzug ist noch nicht implementiert!";
+    $c->response->redirect('/account/dopay');
 
-    return 1;
+    return;
 }
 
 sub dopay_cc : Local {
@@ -408,6 +357,55 @@ sub dopay_cc : Local {
         $c->session->{refill}{cc}{cc_month} = $cc_month;
         $c->session->{refill}{cc}{cc_year} = $cc_year;
         $c->response->redirect('/account/dopay#cc');
+    }
+
+    return 1;
+}
+
+sub dopay_eps : Local {
+    my ( $self, $c ) = @_;
+
+    $c->log->debug('***account::dopay_eps called');
+
+    my $amount = $c->session->{payment}{amount};
+
+    my $bankname = $c->request->params->{bankname};
+    my ($bank, $bankid);
+    $bank = $bankname;
+
+    if($bankname =~ /^ARZ_/) {
+        ($bank, $bankid) = split /_/, $bankname;
+    }
+
+    my $tid = $self->_start_transaction($c, 'eps', $amount);
+    unless($tid) {
+        $c->response->redirect('/account/dopay');
+        return;
+    }
+
+    if($c->model('Mpay24')->accept_eps_payment($c, $tid, $amount, $bank, $bankid)) {
+        unless($c->model('Provisioning')->call_prov($c, 'billing', 'update_payment',
+                                                    { id   => $tid,
+                                                      data => { state => 'transact' },
+                                                    },
+                                                    undef
+                                                   ))
+        {
+            return;
+        }
+        $c->response->redirect($c->session->{mpay24}{LOCATION});
+        $c->log->info("redirected customer to ". $c->session->{mpay24}{LOCATION});
+    } elsif(defined $c->session->{mpay24}) { # application error
+        $self->_fail_transaction($c, $tid);
+        $c->session->{mpay24_errors}{eps} = $c->session->{mpay24}{EXTERNALSTATUS}
+                                            || $c->model('Provisioning')->localize('Web.Payment.UnknownError');
+        $c->session->{refill}{eps}{bankname} = $bankname;
+        $c->response->redirect('/account/dopay#eps');
+    } else { # transport error
+        $self->_fail_transaction($c, $tid);
+        $c->session->{mpay24_errors}{eps} = $c->model('Provisioning')->localize('Web.Payment.HttpFailed');
+        $c->session->{refill}{eps}{bankname} = $bankname;
+        $c->response->redirect('/account/dopay#eps');
     }
 
     return 1;
