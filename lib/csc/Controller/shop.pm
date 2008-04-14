@@ -52,11 +52,11 @@ sub hardware : Local {
     if(ref $c->session->{shop}{cart} eq 'HASH' and keys %{$c->session->{shop}{cart}}) {
         my (@cart, $price_sum);
         foreach my $ci (sort keys %{$c->session->{shop}{cart}}) {
-            push @cart, { count => $c->session->{shop}{cart}{$ci}{count},
+            push @cart, { count => $c->session->{shop}{cart}{$ci},
                           product => $ci,
-                          price => $c->session->{shop}{cart}{$ci}{price_sum}
+                          price => sprintf("%.2f", $c->session->{shop}{cart}{$ci} * $c->session->{shop}{dbprodhash}{$ci}{price} / 100)
                         };
-            $price_sum += $c->session->{shop}{cart}{$ci}{price_sum};
+            $price_sum += $c->session->{shop}{cart}{$ci} * $c->session->{shop}{dbprodhash}{$ci}{price} / 100;
         }
         $c->stash->{price_sum} = sprintf "%.2f", $price_sum;
         $c->stash->{cart} = \@cart;
@@ -103,12 +103,7 @@ sub add_to_cart : Local {
     }
 
     $c->log->info("***shop::add_to_cart adding $count '$product' to cart");
-    $c->session->{shop}{cart}{$product}{count} += $count;
-    $c->session->{shop}{cart}{$product}{handle} = $product;
-    $c->session->{shop}{cart}{$product}{name} = $c->session->{shop}{dbprodhash}{$product}{name};
-    $c->session->{shop}{cart}{$product}{price} = sprintf "%.2f", $c->session->{shop}{dbprodhash}{$product}{price} / 100;
-    $c->session->{shop}{cart}{$product}{price_sum} =
-        sprintf "%.2f", $c->session->{shop}{cart}{$product}{count} * $c->session->{shop}{cart}{$product}{price};
+    $c->session->{shop}{cart}{$product} += $count;
 
     $c->response->redirect('/shop/hardware?sk='. $c->session->{shop}{session_key});
     return;
@@ -153,17 +148,17 @@ sub show_cart : Local {
     if(ref $c->session->{shop}{cart} eq 'HASH' and keys %{$c->session->{shop}{cart}}) {
         my (@cart, $price_sum);
         foreach my $ci (sort keys %{$c->session->{shop}{cart}}) {
-            push @cart, { count     => $c->session->{shop}{cart}{$ci}{count},
-                          product   => $c->session->{shop}{cart}{$ci}{name},
+            push @cart, { count     => $c->session->{shop}{cart}{$ci},
                           handle    => $ci,
-                          price     => $c->session->{shop}{cart}{$ci}{price},
-                          price_sum => $c->session->{shop}{cart}{$ci}{price_sum},
+                          product   => $c->session->{shop}{dbprodhash}{$ci}{name},
+                          price     => sprintf("%.2f", $c->session->{shop}{dbprodhash}{$ci}{price} / 100),
+                          price_sum => sprintf("%.2f", $c->session->{shop}{cart}{$ci} * $c->session->{shop}{dbprodhash}{$ci}{price} / 100),
                         };
-            $price_sum += $c->session->{shop}{cart}{$ci}{price_sum};
+            $price_sum += $c->session->{shop}{cart}{$ci} * $c->session->{shop}{dbprodhash}{$ci}{price} / 100;
         }
         $c->stash->{price_sum} = sprintf "%.2f", $price_sum;
-        $c->stash->{tax_sum} = sprintf "%.2f", $price_sum * 0.2;
-        $c->stash->{price_with_tax} = sprintf "%.2f", $c->stash->{price_sum} + $c->stash->{tax_sum};
+#        $c->stash->{tax_sum} = sprintf "%.2f", $price_sum * 0.2;
+#        $c->stash->{price_with_tax} = sprintf "%.2f", $c->stash->{price_sum} + $c->stash->{tax_sum};
         $c->stash->{cart} = \@cart;
     } else {
         $c->stash->{price_sum} = '0.00';
@@ -201,9 +196,7 @@ sub update_cart : Local {
 
     if($count) {
         $c->log->info("***shop::update_cart setting '$product' count to '$count'");
-        $c->session->{shop}{cart}{$product}{count} = $count;
-        $c->session->{shop}{cart}{$product}{price_sum} =
-            sprintf "%.2f", $c->session->{shop}{cart}{$product}{count} * $c->session->{shop}{cart}{$product}{price};
+        $c->session->{shop}{cart}{$product} = $count;
     } else {
         $c->log->info("***shop::update_cart removing '$product' from cart");
         delete $c->session->{shop}{cart}{$product};
@@ -816,24 +809,37 @@ sub overview : Local {
     $c->stash->{sk} = $c->session->{shop}{session_key};
     $c->stash->{tarif} = $c->session->{shop}{tarif};
 
+    $c->session->{shop}{shipping_weight} = 0;
+
     if(ref $c->session->{shop}{cart} eq 'HASH' and keys %{$c->session->{shop}{cart}}) {
         my @cart;
         foreach my $ci (sort keys %{$c->session->{shop}{cart}}) {
-            push @cart, { count     => $c->session->{shop}{cart}{$ci}{count},
-                          product   => $c->session->{shop}{cart}{$ci}{name},
-                          price     => $c->session->{shop}{cart}{$ci}{price},
-                          price_sum => $c->session->{shop}{cart}{$ci}{price_sum},
+            push @cart, { count     => $c->session->{shop}{cart}{$ci},
+                          product   => $c->session->{shop}{dbprodhash}{$ci}{name},
+                          handle    => $ci,
+                          price     => sprintf("%.2f", $c->session->{shop}{dbprodhash}{$ci}{price} / 100),
+                          price_sum => sprintf("%.2f", $c->session->{shop}{cart}{$ci} * $c->session->{shop}{dbprodhash}{$ci}{price} / 100),
                         };
+            $c->session->{shop}{shipping_weight} += $c->session->{shop}{cart}{$ci} * $c->session->{shop}{dbprodhash}{$ci}{weight};
         }
         $c->stash->{cart} = \@cart;
     } elsif(ref $c->session->{shop}{system} eq 'HASH') {
         $c->stash->{system} = $c->session->{shop}{system};
         $c->stash->{phones} = $c->session->{shop}{phones};
+        $c->session->{shop}{shipping_weight} = $c->session->{shop}{dbprodhash}{$c->session->{shop}{system}{handle}}{weight};
+        if(ref $c->session->{shop}{phones} eq 'ARRAY' and @{ $c->session->{shop}{phones} }) {
+            for(@{ $c->session->{shop}{phones} }) {
+                $c->session->{shop}{shipping_weight} += $$_{count} * $c->session->{shop}{dbprodhash}{$$_{handle}}{weight};
+            }
+        }
     }
+
 
     $c->session->{shop}{price_sum} = $self->_calculate_price_sum($c);
     $c->stash->{price_sum} = $c->session->{shop}{price_sum};
     $c->stash->{month_sum} = sprintf "%.2f", $c->stash->{tarif}{monthly} || 0;
+    $c->stash->{shipping_weight} = sprintf "%.1f", $c->session->{shop}{shipping_weight} / 1000;
+    # TODO: calculate costs from weight
     $c->stash->{shipping_fee} = $c->session->{shop}{shipping_fee} = '9.50';
     $c->stash->{price_sum2} = sprintf "%.2f", $c->session->{shop}{price_sum} + $c->stash->{shipping_fee};
     $c->stash->{price_tax} = sprintf "%.2f", $c->stash->{price_sum2} * .2;
@@ -918,7 +924,7 @@ sub _calculate_price_sum : Private {
 
     if(ref $c->session->{shop}{cart} eq 'HASH' and keys %{$c->session->{shop}{cart}}) {
         foreach my $ci (sort keys %{$c->session->{shop}{cart}}) {
-            $price += $c->session->{shop}{cart}{$ci}{price_sum};
+            $price += $c->session->{shop}{cart}{$ci} * $c->session->{shop}{dbprodhash}{$ci}{price} / 100;
         }
     } else {
         $price = $c->session->{shop}{system}{price} || 0;
@@ -1047,20 +1053,20 @@ sub _create_contracts : Private {
 
     if(ref $c->session->{shop}{cart} eq 'HASH' and keys %{$c->session->{shop}{cart}}) {
         foreach my $ci (sort keys %{$c->session->{shop}{cart}}) {
-            $ci = $c->session->{shop}{cart}{$ci};
-            next if ref $$ci{contract_ids} eq 'ARRAY' and scalar @{ $$ci{contract_ids} } == $$ci{count};
-            my $start = ref $$ci{contract_ids} eq 'ARRAY' ? scalar @{ $$ci{contract_ids} } : 1;
-            for($start .. $$ci{count}) {
+            next if ref $c->session->{shop}{contracts}{$ci} eq 'ARRAY'
+                    and scalar @{ $c->session->{shop}{contracts}{$ci} } == $c->session->{shop}{cart}{$ci};
+            my $start = ref $c->session->{shop}{contracts}{$ci} eq 'ARRAY' ? scalar @{ $c->session->{shop}{contracts}{$ci} } : 1;
+            for($start .. $c->session->{shop}{cart}{$ci}) {
                 my $contract_id;
                 $c->model('Provisioning')->call_prov($c, 'billing', 'create_hardware_contract',
-                                                     { product     => $$ci{handle},
+                                                     { product     => $ci,
                                                        customer_id => $c->session->{shop}{customer_id},
                                                        status      => 'pending',
                                                        order_id    => $c->session->{shop}{order_id},
                                                      },
                                                      \$contract_id
                                                    ) or return;
-                push @{ $$ci{contract_ids} }, $contract_id;
+                push @{ $c->session->{shop}{contracts}{$ci} }, $contract_id;
             }
         }
     } else {
@@ -1142,41 +1148,40 @@ aufgenommen:
 ");
     $smtp->datasend("AUFTRAGSNUMMER: ". $c->session->{shop}{dbinvoice} ."\n");
     $smtp->datasend("
-                                        Einmalig           Monatlich
+                                           Einmalig        Monatlich
 --------------------------------------------------------------------
 ");
     $smtp->datasend("1x Tarif ". $c->session->{shop}{tarif}{name} .
-                    " " x (31 - length $c->session->{shop}{tarif}{name}) .
+                    " " x (34 - length $c->session->{shop}{tarif}{name}) .
                     "EUR ". $c->session->{shop}{tarif}{price} .
-                    " " x (15 - length $c->session->{shop}{tarif}{price}) .
+                    " " x (12 - length $c->session->{shop}{tarif}{price}) .
                     "EUR ". $c->session->{shop}{tarif}{monthly} ."\n")
         if $c->session->{shop}{tarif}{name};
-    $smtp->datasend("1x Startguthaben ". " " x 23 .
+    $smtp->datasend("1x Startguthaben ". " " x 26 .
                     "EUR ". $c->session->{shop}{tarif}{initial_charge} .
-                    " " x (15 - length $c->session->{shop}{tarif}{initial_charge}) .
+                    " " x (12 - length $c->session->{shop}{tarif}{initial_charge}) .
                     "EUR 0.00\n")
         if $c->session->{shop}{tarif}{initial_charge};
     if(ref $c->session->{shop}{cart} eq 'HASH' and keys %{$c->session->{shop}{cart}}) {
         foreach my $ci (sort keys %{$c->session->{shop}{cart}}) {
-            my $tprice = sprintf("%.2f", $c->session->{shop}{cart}{$ci}{count} * $c->session->{shop}{dbprodhash}{$ci}{price} / 100);
-            $smtp->datasend($c->session->{shop}{cart}{$ci}{count} ."x ". $ci .
-                            " " x ((38 - length $c->session->{shop}{cart}{$ci}{count}) - length $ci) .
-                            "EUR ". $c->session->{shop}{cart}{$ci}{price_sum} .
-                            " " x (15 - length $c->session->{shop}{cart}{$ci}{price_sum}) . "EUR 0.00\n");
+            my $tprice = sprintf("%.2f", $c->session->{shop}{cart}{$ci} * $c->session->{shop}{dbprodhash}{$ci}{price} / 100);
+            $smtp->datasend($c->session->{shop}{cart}{$ci} ."x ". $c->session->{shop}{dbprodhash}{$ci}{name} .
+                            " " x ((41 - length $c->session->{shop}{cart}{$ci}) - length $c->session->{shop}{dbprodhash}{$ci}{name}) .
+                            "EUR ". $tprice . " " x (12 - length $tprice) . "EUR 0.00\n");
         }
     } else {
-        $smtp->datasend("1 x ". $c->session->{shop}{system}{name} .
-                        " " x (36 - length $c->session->{shop}{system}{name}) .
+        $smtp->datasend("1x ". $c->session->{shop}{system}{name} .
+                        " " x (40 - length $c->session->{shop}{system}{name}) .
                         "EUR ". $c->session->{shop}{system}{price} .
-                        " " x (15 - length $c->session->{shop}{system}{price}) .
+                        " " x (12 - length $c->session->{shop}{system}{price}) .
                         "EUR 0.00\n")
             if $c->session->{shop}{system}{name};
         if(ref $c->session->{shop}{phones} eq 'ARRAY') {
             foreach my $phone (@{$c->session->{shop}{phones}}) {
-                $smtp->datasend($$phone{count} ." x ". $$phone{name} .
-                                " " x (32 - length $$phone{count} - length $$phone{name}) .
+                $smtp->datasend($$phone{count} ."x ". $$phone{name} .
+                                " " x ((41 - length $$phone{count}) - length $$phone{name}) .
                                 "EUR ". $$phone{price_sum} .
-                                " " x (15 - length $$phone{price_sum}) .
+                                " " x (12 - length $$phone{price_sum}) .
                                 "EUR 0.00\n");
             }
         }
@@ -1184,33 +1189,34 @@ aufgenommen:
 
     $smtp->datasend("--------------------------------------------------------------------\n");
     my $price_sum1 = $self->_calculate_price_sum($c);
-    $smtp->datasend("Zwischensumme" . " " x 27 .
+    $smtp->datasend("Zwischensumme" . " " x 30 .
                     "EUR ". $price_sum1 .
-                    " " x (15 - length $price_sum1) .
+                    " " x (12 - length $price_sum1) .
                     "EUR ". ($c->session->{shop}{tarif}{monthly} || '0.00') ."\n");
-    $smtp->datasend("+Versandkosten". " " x 26 .
+    $smtp->datasend("+Versandkosten". " " x 29 .
                     "EUR ". $c->session->{shop}{shipping_fee} .
-                    " " x (15 - length $c->session->{shop}{shipping_fee}) .
+                    " " x (12 - length $c->session->{shop}{shipping_fee}) .
                     "EUR 0.00\n");
     my $price_tax = sprintf "%.2f", ($price_sum1 + $c->session->{shop}{shipping_fee}) * .2;
     my $month_tax = sprintf "%.2f", ($c->session->{shop}{tarif}{monthly} || 0) * .2;
-    $smtp->datasend("+20% USt". " " x 32 .
+    $smtp->datasend("+20% USt". " " x 35 .
                     "EUR ". $price_tax .
-                    " " x (15 - length $price_tax) .
+                    " " x (12 - length $price_tax) .
                     "EUR ". $month_tax ."\n");
     $smtp->datasend("--------------------------------------------------------------------\n");
     $smtp->datasend("\n");
     my $month_sum = sprintf "%.2f", ($c->session->{shop}{tarif}{monthly} || 0) + $month_tax;
-    $smtp->datasend("Summe" . " " x 35 .
+    $smtp->datasend("Summe" . " " x 38 .
                     "EUR ". $c->session->{shop}{price_sum} .
-                    " " x (15 - length $c->session->{shop}{price_sum}) .
+                    " " x (12 - length $c->session->{shop}{price_sum}) .
                     "EUR ". $month_sum ."\n");
     $smtp->datasend("\n\n");
 
     $smtp->datasend("GESAMTBETRAG:". " " x 5 . "EUR ". $c->session->{shop}{price_sum} ." inkl. USt\n");
     $smtp->datasend("\n");
 
-    $smtp->datasend("VERSANDART:". " " x 7 . "Hermes Paketversand\n");
+    $smtp->datasend("VERSANDART:". " " x 7 . "Hermes Paketversand, ".
+                    sprintf("%.1f", $c->session->{shop}{shipping_weight} / 1000) ." kg\n");
     $smtp->datasend("\n");
 
     $smtp->datasend("RECHNUNGSADRESSE: " . $c->session->{shop}{personal}{firstname} ." ".

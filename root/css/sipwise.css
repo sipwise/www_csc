@@ -446,6 +446,17 @@
    padding: 0;
 }
 
+/* make order table fill width */
+#main table.bestelltable {
+   width: 100%;
+}
+.bestelltable .image_items .tdright {
+   padding-top: 6px !important;
+}
+.bestelltable .image_items .smallpreis {
+   margin-top: 6px;
+}
+
 /* hide or show business data form elements per default */
 #main .data_business_hidden {
    display: none;

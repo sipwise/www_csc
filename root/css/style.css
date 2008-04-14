@@ -1575,7 +1575,7 @@ body.hp {
 	display: block;
 	text-align: right;
 	float: left;
-	padding: 4px 7px 0 0;
+	padding: 5px 4px 0 0;
 	width: 35px;
 	voice-family: "\"}\"";
 	voice-family:inherit;
@@ -1601,7 +1601,7 @@ body.hp {
 .okprodtext {
 	float: left;
 	margin: 0px;
-	padding: 6px 0 0 7px;
+	padding: 6px 0 0 4px;
 }
 .bestelltable {
 	border: none;
@@ -1650,7 +1650,6 @@ body.hp {
 .mysumme h3 {
 	color: #2C2C2C !important;
 	font-weight: bold !important;
-	padding-top: 3px !important;
 }
 .mysumme .smallpreis {
 	font-size: 14px;

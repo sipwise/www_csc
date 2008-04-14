@@ -44,7 +44,7 @@
 
               [% first = 1 %]
               [% FOREACH ci = cart %]
-                <tr>
+                <tr class="image_items">
                 [% IF first %]
                   [% first = 0 %]
                   <td class="tdright">
@@ -55,7 +55,7 @@
                 [% END %]
                   <td>
                     <strong class="okprodcount">[% ci.count %]x</strong>
-                    <img class="okprodimg" src="" width="22" height="25" alt="" />
+                    <img class="okprodimg" src="/grafik_shop/icon_[% ci.handle %].gif" width="22" height="25" alt="" />
                     <span class="okprodtext">[% ci.product %]</span>
                   </td>
                   <td>
@@ -66,7 +66,7 @@
               [% END %]
                   
             [% ELSE %] <!-- items from solutions workflow -->
-              <tr>
+              <tr class="image_items">
                 <td class="tdright">
                   <h3>Telefonanlage</h3>
                 </td>
@@ -86,7 +86,7 @@
               [% notfirst = 0 %]
               [% FOREACH phone = phones %]
                 [% IF system.name || notfirst %]
-                <tr>
+                <tr class="image_items">
                   <td class="tdright" />
                 [% END %]
                 [% notfirst = notfirst + 1 %]
@@ -122,7 +122,7 @@
               <td class="tdright">
                 <h3>Versandkosten</h3>
               </td>
-              <td>Hermes Paketversand, versicherte Sendung</td>
+              <td>Hermes Paketversand, [% shipping_weight %] kg</td>
               <td><strong class="smallpreis">&euro;&nbsp;[% shipping_fee %]</strong></td>
               <td><strong class="smallpreis">&euro;&nbsp;0.00</strong></td>
             </tr>

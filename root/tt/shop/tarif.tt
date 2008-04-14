@@ -89,6 +89,7 @@
       <div class="spalte2">
 
         <p class="prodsumme">
+          EURO <strong>[% price_sum %]</strong>
         </p>
 
         <ul class="schritte">
