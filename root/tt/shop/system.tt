@@ -57,8 +57,8 @@
               >
                 <img src="/img/pap2.jpg" width="146" height="135" alt="PAP2" />
                 <h4>
-                  <input class="zradio" type="radio" name="system" value="pap2t"
-                     [% IF refill.system == "pap2t" %]checked="checked"[% END %] /> PAP2T
+                  <input class="zradio" type="radio" name="system" value="PAP2T"
+                     [% IF refill.system == "PAP2T" %]checked="checked"[% END %] /> PAP2T
                   <strong class="smallpreis">&euro; [% price.PAP2T %]</strong>
                 </h4>
                 <ul>
@@ -78,9 +78,9 @@
               >
                 <img src="/img/spa9000.jpg" width="146" height="135" alt="PAP2" />
                 <h4>
-                  <input class="zradio" type="radio" name="system" value="spa9000_4" 
-                         [% IF refill.system == "spa9000_4" %]checked="checked"[% END %] /> SPA9000
-                  <strong class="smallpreis">&euro; [% price.SPA9000_4_Port %]</strong>
+                  <input class="zradio" type="radio" name="system" value="SPA9000_4" 
+                         [% IF refill.system == "SPA9000_4" %]checked="checked"[% END %] /> SPA9000
+                  <strong class="smallpreis">&euro; [% price.SPA9000_4 %]</strong>
                 </h4>
                 <ul>
                   <li><strong>Bis zu 4 Anschlüsse</strong></li>
@@ -99,9 +99,9 @@
               >
                 <img src="/img/spa9000.jpg" width="146" height="135" alt="SPA9000" />
                 <h4>
-                  <input class="zradio" type="radio" name="system" value="spa9000_16"
-                         [% IF refill.system == "spa9000_16" %]checked="checked"[% END %] /> SPA9000
-                  <strong class="smallpreis">&euro; [% price.SPA9000_16_Port %]</strong>
+                  <input class="zradio" type="radio" name="system" value="SPA9000_16"
+                         [% IF refill.system == "SPA9000_16" %]checked="checked"[% END %] /> SPA9000
+                  <strong class="smallpreis">&euro; [% price.SPA9000_16 %]</strong>
                 </h4>
                 <ul>
                   <li><strong>Bis zu 16 Anschlüsse</strong></li>
@@ -153,7 +153,7 @@
                 <img src="/img/spa921.jpg" width="146" height="108" alt="SPA921" />
                 <h4>SPA921 <strong class="smallpreis">&euro; [% price.SPA921 %]</strong></h4>
                 <p>
-                  <input type="text" size="3" name="spa921" value="[% refill.spa921 %]" /> Stk.
+                  <input type="text" size="3" name="SPA921" value="[% refill.SPA921 %]" /> Stk.
                 </p>
                 <ul>
                   <li>1-Line IP Telefon</li>
@@ -175,7 +175,7 @@
                 <img src="/img/spa921.jpg" width="146" height="108" alt="SPA922" />
                 <h4>SPA922 <strong class="smallpreis">&euro; [% price.SPA922 %]</strong></h4>
                 <p>
-                  <input type="text" size="3" name="spa922" value="[% refill.spa922 %]" /> Stk.
+                  <input type="text" size="3" name="SPA922" value="[% refill.SPA922 %]" /> Stk.
                 </p>
                 <ul>
                   <li>1-Line IP Telefon</li>
@@ -197,7 +197,7 @@
                 <img src="/img/spa941.jpg" width="146" height="108" alt="SPA941" />
                 <h4>SPA941 <strong class="smallpreis">&euro; [% price.SPA941 %]</strong></h4>
                 <p>
-                  <input type="text" size="3" name="spa941" value="[% refill.spa941 %]" /> Stk.
+                  <input type="text" size="3" name="SPA941" value="[% refill.SPA941 %]" /> Stk.
                 </p>
                 <ul>
                   <li>2 oder 4-Line IP Telefon</li>
@@ -218,7 +218,7 @@
                 <img src="/img/spa942.jpg" width="146" height="108" alt="SPA942" />
                 <h4>SPA942 <strong class="smallpreis">&euro; [% price.SPA942 %]</strong></h4>
                 <p>
-                  <input type="text" size="3" name="spa942" value="[% refill.spa942 %]" /> Stk.
+                  <input type="text" size="3" name="SPA942" value="[% refill.SPA942 %]" /> Stk.
                 </p>
                 <ul>
                   <li>2 oder 4-Line IP Telefon</li>

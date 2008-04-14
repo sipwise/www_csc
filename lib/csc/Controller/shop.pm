@@ -46,9 +46,7 @@ sub hardware : Local {
     $self->_load_products($c) or return;
 
     foreach my $product (@{$c->session->{shop}{dbprodarray}}) {
-        my $name = $$product{name};
-        $name =~ s/ /_/g;
-        $c->stash->{product_hash}{$name}{price} = sprintf "%.2f", $$product{price} / 100;
+        $c->stash->{product_hash}{$$product{handle}}{price} = sprintf "%.2f", $$product{price} / 100;
     }
 
     if(ref $c->session->{shop}{cart} eq 'HASH' and keys %{$c->session->{shop}{cart}}) {
@@ -106,7 +104,8 @@ sub add_to_cart : Local {
 
     $c->log->info("***shop::add_to_cart adding $count '$product' to cart");
     $c->session->{shop}{cart}{$product}{count} += $count;
-    $c->session->{shop}{cart}{$product}{name} = $product;
+    $c->session->{shop}{cart}{$product}{handle} = $product;
+    $c->session->{shop}{cart}{$product}{name} = $c->session->{shop}{dbprodhash}{$product}{name};
     $c->session->{shop}{cart}{$product}{price} = sprintf "%.2f", $c->session->{shop}{dbprodhash}{$product}{price} / 100;
     $c->session->{shop}{cart}{$product}{price_sum} =
         sprintf "%.2f", $c->session->{shop}{cart}{$product}{count} * $c->session->{shop}{cart}{$product}{price};
@@ -155,7 +154,8 @@ sub show_cart : Local {
         my (@cart, $price_sum);
         foreach my $ci (sort keys %{$c->session->{shop}{cart}}) {
             push @cart, { count     => $c->session->{shop}{cart}{$ci}{count},
-                          product   => $ci,
+                          product   => $c->session->{shop}{cart}{$ci}{name},
+                          handle    => $ci,
                           price     => $c->session->{shop}{cart}{$ci}{price},
                           price_sum => $c->session->{shop}{cart}{$ci}{price_sum},
                         };
@@ -301,36 +301,34 @@ sub system : Local {
 
     foreach my $product (@{$c->session->{shop}{dbprodarray}}) {
         next unless $$product{class} eq 'hardware';
-        my $name = $$product{name};
-        $name =~ s/ /_/g;
-        $c->stash->{price}{$name} = sprintf "%.2f", $$product{price} / 100;
+        $c->stash->{price}{$$product{handle}} = sprintf "%.2f", $$product{price} / 100;
     }
 
     if(exists $c->session->{refill}{hardware}) {
         $c->stash->{refill} = $c->session->{refill}{hardware};
         if(($c->session->{shop}{extensions} == 1
             and $c->session->{refill}{hardware}{system} ne 'none'
-                && $c->session->{refill}{hardware}{system} ne 'pap2t')
+                && $c->session->{refill}{hardware}{system} ne 'PAP2T')
            or ($c->session->{shop}{extensions} == 4
-               and $c->session->{refill}{hardware}{system} ne 'spa9000_4')
+               and $c->session->{refill}{hardware}{system} ne 'SPA9000_4')
            or ($c->session->{shop}{extensions} == 16
-               and $c->session->{refill}{hardware}{system} ne 'spa9000_16'))
+               and $c->session->{refill}{hardware}{system} ne 'SPA9000_16'))
         {
             $c->stash->{refill}{showmore}{system} = 1;
         }
-        if($c->session->{refill}{hardware}{spa922}
-           or $c->session->{refill}{hardware}{spa941}
-           or $c->session->{refill}{hardware}{spa942})
+        if($c->session->{refill}{hardware}{SPA922}
+           or $c->session->{refill}{hardware}{SPA941}
+           or $c->session->{refill}{hardware}{SPA942})
         {
             $c->stash->{refill}{showmore}{phones} = 1;
         }
     } else {
         if($c->session->{shop}{extensions} == 1) {
-            $c->stash->{refill} = { system => 'pap2t' };
+            $c->stash->{refill} = { system => 'PAP2T' };
         } elsif($c->session->{shop}{extensions} == 4) {
-            $c->stash->{refill} = { system => 'spa9000_4' };
+            $c->stash->{refill} = { system => 'SPA9000_4' };
         } elsif($c->session->{shop}{extensions} == 16) {
-            $c->stash->{refill} = { system => 'spa9000_16' };
+            $c->stash->{refill} = { system => 'SPA9000_16' };
         } else {
             $c->stash->{refill} = { system => 'none' };
         }
@@ -352,96 +350,71 @@ sub set_system : Local {
 
     my %messages;
 
-    if(!defined $c->request->params->{system}) {
+    my $system = $c->request->params->{system};
+    if(!defined $system) {
         $messages{system} = 'Web.MissingSystem';
-    } elsif($c->request->params->{system} eq 'pap2t') {
-        foreach my $product (@{$c->session->{shop}{dbprodarray}}) {
-            next unless $$product{name} eq 'PAP2T';
-            $c->session->{shop}{system}{name} = $$product{name};
-            $c->session->{shop}{system}{price} = sprintf "%.2f", $$product{price} / 100;
-        }
-    } elsif($c->request->params->{system} eq 'spa9000_4') {
-        foreach my $product (@{$c->session->{shop}{dbprodarray}}) {
-            next unless $$product{name} eq 'SPA9000 4 Port';
-            $c->session->{shop}{system}{name} = $$product{name};
-            $c->session->{shop}{system}{price} = sprintf "%.2f", $$product{price} / 100;
-        }
-    } elsif($c->request->params->{system} eq 'spa9000_16') {
-        foreach my $product (@{$c->session->{shop}{dbprodarray}}) {
-            next unless $$product{name} eq 'SPA9000 16 Port';
-            $c->session->{shop}{system}{name} = $$product{name};
-            $c->session->{shop}{system}{price} = sprintf "%.2f", $$product{price} / 100;
-        }
-    } elsif($c->request->params->{system} eq 'none') {
+    } elsif($system eq 'none') {
         delete $c->session->{shop}{system} if exists $c->session->{shop}{system};
+    } elsif(exists $c->session->{shop}{dbprodhash}{$system}) {
+        $c->session->{shop}{system}{handle} = $c->session->{shop}{dbprodhash}{$system}{handle};
+        $c->session->{shop}{system}{name} = $c->session->{shop}{dbprodhash}{$system}{name};
+        $c->session->{shop}{system}{price} = sprintf "%.2f", $c->session->{shop}{dbprodhash}{$system}{price} / 100;
     } else {
         $messages{system} = 'Web.MissingSystem';
     }
 
     delete $c->session->{shop}{phones} if exists $c->session->{shop}{phones};
 
-    my $spa921 = $c->request->params->{spa921};
+    my $spa921 = $c->request->params->{SPA921};
     if($spa921) {
         if($spa921 =~ /^\d+$/) {
-            my $price;
-            foreach my $product (@{$c->session->{shop}{dbprodarray}}) {
-                next unless $$product{name} eq 'SPA921';
-                $price = $$product{price};
-            }
-            push @{$c->session->{shop}{phones}}, { name => 'SPA921', count => $spa921,
+            my $price = $c->session->{shop}{dbprodhash}{SPA921}{price};
+            push @{$c->session->{shop}{phones}}, { handle => 'SPA921', count => $spa921,
+                                                   name => $c->session->{shop}{dbprodhash}{SPA921}{name},
                                                    price => $price / 100, price_sum => sprintf "%.2f", $spa921 * $price / 100 };
         } else {
             $messages{count} = 'Web.Syntax.Numeric';
         }
     }
 
-    my $spa922 = $c->request->params->{spa922};
+    my $spa922 = $c->request->params->{SPA922};
     if($spa922) {
         if($spa922 =~ /^\d+$/) {
-            my $price;
-            foreach my $product (@{$c->session->{shop}{dbprodarray}}) {
-                next unless $$product{name} eq 'SPA922';
-                $price = $$product{price};
-            }
-            push @{$c->session->{shop}{phones}}, { name => 'SPA922', count => $spa922,
+            my $price = $c->session->{shop}{dbprodhash}{SPA922}{price};;
+            push @{$c->session->{shop}{phones}}, { handle => 'SPA922', count => $spa922,
+                                                   name => $c->session->{shop}{dbprodhash}{SPA922}{name},
                                                    price => $price / 100, price_sum => sprintf "%.2f", $spa922 * $price / 100 };
         } else {
             $messages{count} = 'Web.Syntax.Numeric';
         }
     }
 
-    my $spa941 = $c->request->params->{spa941};
+    my $spa941 = $c->request->params->{SPA941};
     if($spa941) {
         if($spa941 =~ /^\d+$/) {
-            my $price;
-            foreach my $product (@{$c->session->{shop}{dbprodarray}}) {
-                next unless $$product{name} eq 'SPA941';
-                $price = $$product{price};
-            }
-            push @{$c->session->{shop}{phones}}, { name => 'SPA941', count => $spa941,
+            my $price = $c->session->{shop}{dbprodhash}{SPA941}{price};;
+            push @{$c->session->{shop}{phones}}, { handle => 'SPA941', count => $spa941,
+                                                   name => $c->session->{shop}{dbprodhash}{SPA941}{name},
                                                    price => $price / 100, price_sum => sprintf "%.2f", $spa941 * $price / 100 };
         } else {
             $messages{count} = 'Web.Syntax.Numeric';
         }
     }
 
-    my $spa942 = $c->request->params->{spa942};
+    my $spa942 = $c->request->params->{SPA942};
     if($spa942) {
         if($spa942 =~ /^\d+$/) {
-            my $price;
-            foreach my $product (@{$c->session->{shop}{dbprodarray}}) {
-                next unless $$product{name} eq 'SPA942';
-                $price = $$product{price};
-            }
-            push @{$c->session->{shop}{phones}}, { name => 'SPA942', count => $spa942,
+            my $price = $c->session->{shop}{dbprodhash}{SPA942}{price};;
+            push @{$c->session->{shop}{phones}}, { handle => 'SPA942', count => $spa942,
+                                                   name => $c->session->{shop}{dbprodhash}{SPA942}{name},
                                                    price => $price / 100, price_sum => sprintf "%.2f", $spa942 * $price / 100 };
         } else {
             $messages{count} = 'Web.Syntax.Numeric';
         }
     }
 
-    $c->session->{refill}{hardware} = { system => $c->request->params->{system}, spa921 => $spa921,
-                                        spa922 => $spa922, spa941 => $spa941, spa942 => $spa942 };
+    $c->session->{refill}{hardware} = { system => $c->request->params->{system}, SPA921 => $spa921,
+                                        SPA922 => $spa922, SPA941 => $spa941, SPA942 => $spa942 };
 
     if(keys %messages) {
         $c->session->{messages} = \%messages;
@@ -466,17 +439,9 @@ sub tarif : Local {
 
     $c->stash->{template} = 'tt/shop/tarif.tt';
     $c->stash->{sk} = $c->session->{shop}{session_key};
-
-    my $products;
-    return unless $c->model('Provisioning')->call_prov( $c, 'billing', 'get_products',
-                                                        undef,
-                                                        \$products,
-                                                      );
-    $c->session->{shop}{dbproducts} = $$products{result};
-#    foreach my $product (@{$c->session->{shop}{dbproducts}}) {
-#        next unless $$product{class} eq 'voip';
-#        $c->stash->{products}{$$product{name}} = $product;
-#    }
+    $c->stash->{system} = $c->session->{shop}{system};
+    $c->stash->{phones} = $c->session->{shop}{phones};
+    $c->stash->{price_sum} = $self->_calculate_price_sum($c);
 
     return 1;
 }
@@ -492,10 +457,11 @@ sub set_tarif : Local {
         unless defined $c->request->params->{sk} and
                $c->request->params->{sk} eq $c->session->{shop}{session_key};
 
-    foreach my $product (@{$c->session->{shop}{dbprodarray}}) {
-        next unless $$product{name} eq $c->request->params->{tarif};
+    if(exists $c->session->{shop}{dbprodhash}{$c->request->params->{tarif}}) {
+        my $product = $c->session->{shop}{dbprodhash}{$c->request->params->{tarif}};
         delete $c->session->{shop}{tarif} if exists $c->session->{shop}{tarif};
-        $c->session->{shop}{tarif}{name} = $c->request->params->{tarif};
+        $c->session->{shop}{tarif}{handle} = $$product{handle};
+        $c->session->{shop}{tarif}{name} = $$product{name};
         $c->session->{shop}{tarif}{price} = sprintf "%.2f", $$product{price} / 100;
         if(defined $$product{billing_profile}) {
             my $bilprof;
@@ -508,6 +474,8 @@ sub set_tarif : Local {
             $c->session->{shop}{tarif}{monthly} = 0;
         }
         $c->session->{shop}{tarif}{initial_charge} = sprintf "%.2f", 10;
+    } else {
+        $c->response->redirect('/shop/tarif?sk='. $c->session->{shop}{session_key});
     }
 
     $c->response->redirect('/shop/personal?sk='. $c->session->{shop}{session_key});
@@ -852,7 +820,7 @@ sub overview : Local {
         my @cart;
         foreach my $ci (sort keys %{$c->session->{shop}{cart}}) {
             push @cart, { count     => $c->session->{shop}{cart}{$ci}{count},
-                          product   => $ci,
+                          product   => $c->session->{shop}{cart}{$ci}{name},
                           price     => $c->session->{shop}{cart}{$ci}{price},
                           price_sum => $c->session->{shop}{cart}{$ci}{price_sum},
                         };
@@ -1047,9 +1015,7 @@ sub _create_contracts : Private {
 
     if($c->session->{shop}{personal}{username} and ! $c->session->{shop}{account_id}) {
         $c->model('Provisioning')->call_prov($c, 'billing', 'create_voip_account',
-                                             { product     => ($c->session->{shop}{tarif} eq 'free'
-                                                               ? 'Libratel VoIP Free'
-                                                               : 'Libratel VoIP Premium'),
+                                             { product     => $c->session->{shop}{tarif}{handle},
                                                customer_id => $c->session->{shop}{customer_id},
                                                status      => 'pending',
                                                order_id    => $c->session->{shop}{order_id},
@@ -1087,7 +1053,7 @@ sub _create_contracts : Private {
             for($start .. $$ci{count}) {
                 my $contract_id;
                 $c->model('Provisioning')->call_prov($c, 'billing', 'create_hardware_contract',
-                                                     { product     => $$ci{name},
+                                                     { product     => $$ci{handle},
                                                        customer_id => $c->session->{shop}{customer_id},
                                                        status      => 'pending',
                                                        order_id    => $c->session->{shop}{order_id},
@@ -1098,11 +1064,11 @@ sub _create_contracts : Private {
             }
         }
     } else {
-        unless( ! $c->session->{shop}{system}{name}
+        unless( ! $c->session->{shop}{system}{handle}
                or $c->session->{shop}{system}{contract_id})
         {
             $c->model('Provisioning')->call_prov($c, 'billing', 'create_hardware_contract',
-                                                 { product     => $c->session->{shop}{system}{name},
+                                                 { product     => $c->session->{shop}{system}{handle},
                                                    customer_id => $c->session->{shop}{customer_id},
                                                    status      => 'pending',
                                                    order_id    => $c->session->{shop}{order_id},
@@ -1118,7 +1084,7 @@ sub _create_contracts : Private {
                 for($start .. $$phone{count}) {
                     my $contract_id;
                     $c->model('Provisioning')->call_prov($c, 'billing', 'create_hardware_contract',
-                                                         { product     => $$phone{name},
+                                                         { product     => $$phone{handle},
                                                            customer_id => $c->session->{shop}{customer_id},
                                                            status      => 'pending',
                                                            order_id    => $c->session->{shop}{order_id},
@@ -1179,13 +1145,13 @@ aufgenommen:
                                         Einmalig           Monatlich
 --------------------------------------------------------------------
 ");
-    $smtp->datasend("1 x Tarif ". $c->session->{shop}{tarif}{name} .
-                    " " x (30 - length $c->session->{shop}{tarif}{name}) .
+    $smtp->datasend("1x Tarif ". $c->session->{shop}{tarif}{name} .
+                    " " x (31 - length $c->session->{shop}{tarif}{name}) .
                     "EUR ". $c->session->{shop}{tarif}{price} .
                     " " x (15 - length $c->session->{shop}{tarif}{price}) .
                     "EUR ". $c->session->{shop}{tarif}{monthly} ."\n")
         if $c->session->{shop}{tarif}{name};
-    $smtp->datasend("1 x Startguthaben ". " " x 22 .
+    $smtp->datasend("1x Startguthaben ". " " x 23 .
                     "EUR ". $c->session->{shop}{tarif}{initial_charge} .
                     " " x (15 - length $c->session->{shop}{tarif}{initial_charge}) .
                     "EUR 0.00\n")
@@ -1348,7 +1314,7 @@ sub _load_products : Private {
 
         $products = {};
         for(@{$c->session->{shop}{dbprodarray}}) {
-            $$products{$$_{name}} = $_;
+            $$products{$$_{handle}} = $_;
         }
         $c->session->{shop}{dbprodhash} = $products;
     }

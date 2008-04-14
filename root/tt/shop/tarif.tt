@@ -29,7 +29,7 @@
               <li>ins österreichische Festnetz für nur 2,8 ct/min.</li>
             </ul>
             <form method="post" action="/shop/set_tarif">
-              <input type="hidden" name="tarif" value="Libratel VoIP Free" />
+              <input type="hidden" name="tarif" value="VOIP_FREE" />
               <div class="tarifbuttons">
                 <div class="tarifbuttons1">
                   &nbsp;
@@ -59,7 +59,7 @@
               <li>ins österreichische Festnetz für nur 2,2 ct/min.</li>
             </ul>
             <form method="post" action="/shop/set_tarif">
-              <input type="hidden" name="tarif" value="Libratel VoIP Premium" />
+              <input type="hidden" name="tarif" value="VOIP_PREMIUM" />
               <div class="tarifbuttons">
                 <div class="tarifbuttons1">
                   &nbsp;
@@ -95,6 +95,18 @@
           <li class="ok">
             <strong>Schritt 1:</strong><br />
             System und Endgeräte<br />
+            [% IF system.handle %]
+            <strong class="okprodcount">1x</strong>
+            <img class="okprodimg" src="/grafik/ok_system.gif" width="22" height="" alt="25" />
+            <span class="okprodtext">[% system.handle %]</span>
+            <br clear="all" />
+            [% END %]
+            [% FOREACH phone = phones %]
+              <strong class="okprodcount">[% phone.count %]x</strong>
+              <img class="okprodimg" src="/grafik/ok_phone.gif" width="22" height="" alt="25" />
+              <span class="okprodtext">[% phone.handle %]</span>
+              <br clear="all" />
+            [% END %]
           </li>
           <li class="on">
             <strong>Schritt 2:</strong><br />

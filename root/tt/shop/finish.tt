@@ -54,16 +54,16 @@
           <li class="ok">
             <strong>Schritt 1:</strong><br />
             System und Endgeräte<br />
-            [% IF system.name %]
+            [% IF system.handle %]
             <strong class="okprodcount">1x</strong>
             <img class="okprodimg" src="/grafik/ok_system.gif" width="22" height="25" alt="" />
-            <span class="okprodtext">[% system.name %]</span>
+            <span class="okprodtext">[% system.handle %]</span>
             <br clear="all" />
             [% END %]
             [% FOREACH phone = phones %]
               <strong class="okprodcount">[% phone.count %]x</strong>
               <img class="okprodimg" src="/grafik/ok_phone.gif" width="22" height="25" alt="" />
-              <span class="okprodtext">[% phone.name %]</span>
+              <span class="okprodtext">[% phone.handle %]</span>
               <br clear="all" />
             [% END %]
           </li>

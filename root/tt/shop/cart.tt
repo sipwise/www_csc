@@ -43,7 +43,7 @@
                 <td class="cart_update">
                   <form method="post" action="/shop/update_cart">
                     <input type="hidden" name="sk" value="[% sk %]" />
-                    <input type="hidden" name="product" value="[% ci.product %]" />
+                    <input type="hidden" name="product" value="[% ci.handle %]" />
                     <input type="text" name="count" value="[% ci.count %]" class="input5" />
                     <input type="image" src="/grafik_shop/reload.gif" alt="aktualisieren" class="noborder ci_reload" />
                   </form>
