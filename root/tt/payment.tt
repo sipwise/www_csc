@@ -1,6 +1,6 @@
         <span class="anmelden feinstellungen payment">
 
-          [% IF mpay24_errors.top %]<br><div id="errormsg"><p>[% mpay24_errors.top %]</p></div>[% END %]
+          [% IF mpay24_errors.top %]<br /><div id="errormsg"><p>[% mpay24_errors.top %]</p></div>[% END %]
 
           <fieldset class="alt" id="elv">
             <form action="/[% backend %]/dopay_elv" method="POST">
@@ -22,14 +22,16 @@
                 <label for="fbankid">Bankleitzahl</label>
                 <input type="text" size="10" class="input20" id="fbankid"
                        name="bankid" value="[% refill.elv.bankid %]" /><br />
-              </p>
+              </p><br clear="all" />
 
               <p class="save">
                 <label for="go_elv">Bankeinzug veranlassen</label>
                 <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="go_elv">
               </p>
 
-              [% IF elv_error %]<br clear="all" /><div id="errormsg">[% elv_error %]</div><br clear="all" />[% END %]
+              [% IF mpay24_errors.elv %]
+                <br /><div id="errormsg">[% mpay24_errors.elv %]</div>
+              [% END %]
 
             </form>
           </fieldset><br clear="all" />
@@ -100,7 +102,7 @@
                 <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="go_credit">
               </p>
 
-              [% IF mpay24_errors.cc %]<br><div id="errormsg"><p>[% mpay24_errors.cc %]</p></div>[% END %]
+              [% IF mpay24_errors.cc %]<br /><div id="errormsg"><p>[% mpay24_errors.cc %]</p></div>[% END %]
 
             </form>
           </fieldset><br clear="all" />
@@ -155,7 +157,7 @@
                 <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="go_eps">
               </p>
 
-              [% IF mpay24_errors.eps %]<br><div id="errormsg"><p>[% mpay24_errors.eps %]</p></div>[% END %]
+              [% IF mpay24_errors.eps %]<br /><div id="errormsg"><p>[% mpay24_errors.eps %]</p></div>[% END %]
 
             </form>
           </fieldset><br clear="all" />
@@ -222,7 +224,7 @@
                 <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="go_maestro">
               </p>
 
-              [% IF mpay24_errors.maestro %]<br><div id="errormsg"><p>[% mpay24_errors.maestro %]</p></div>[% END %]
+              [% IF mpay24_errors.maestro %]<br /><div id="errormsg"><p>[% mpay24_errors.maestro %]</p></div>[% END %]
 
             </form>
           </fieldset><br clear="all" />

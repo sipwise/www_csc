@@ -120,6 +120,11 @@ sub dopay_elv : Local {
         unless defined $c->request->params->{sk} and
                $c->request->params->{sk} eq $c->session->{shop}{session_key};
 
+    # currently disabled until implemented
+    $c->session->{mpay24_errors}{elv} = "ELV is currently not implemented.";
+    $c->response->redirect('/payment?sk='. $c->session->{shop}{session_key});
+    return;
+
     my $amount = $c->session->{shop}{price_sum} * 100;
 
     my $agb_ack = $c->request->params->{agb_ack};
