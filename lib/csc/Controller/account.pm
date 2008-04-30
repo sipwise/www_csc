@@ -267,7 +267,7 @@ sub dopay : Local {
     $c->stash->{template} = 'tt/account_payment.tt';
 
     $c->stash->{payment} = $c->session->{payment};
-    $c->stash->{elv_error} = $c->session->{elv_error} if $c->session->{elv_error};
+    $c->stash->{mpay24_errors}{elv} = $c->session->{elv_error} if $c->session->{elv_error};
     delete $c->session->{elv_error};
 }
 
