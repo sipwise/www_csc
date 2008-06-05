@@ -324,11 +324,18 @@ sub dopay_paypal : Local {
         $c->response->redirect('/payment?sk='. $c->session->{shop}{session_key});
         return;
     }
+
+    # hmm. update payment status?
+
     $c->response->redirect($c->config->{paypal_redirecturl} . $c->session->{paypal}{Token});
 
     return 1;
 }
 
+# some paidack and paiderr notes:
+# 1) used by paypal only
+# 2) used only to acknowledge shop order payments
+#    -> see account.pm for CSC credit payment ACK from paypal
 sub paidack : Local {
     my ( $self, $c ) = @_;
 
@@ -367,6 +374,8 @@ sub paiderr : Local {
     $c->response->redirect('/payment?sk='. $c->session->{shop}{session_key});
 }
 
+# This function is used to confirm payments by mPAY24 servers for both
+# shop order and credit payments. We don't care which one it is.
 sub confirm : Local {
     my ( $self, $c ) = @_;
 
@@ -394,6 +403,9 @@ sub confirm : Local {
     $c->response->body('OK');
 }
 
+# the following functions are used for mPAY24 payments, as the mPAY24
+# servers redirect users to the URLs after successfull / failed payments
+# -> these are used both for shop order and credit payments
 sub success : Local {
     my ( $self, $c ) = @_;
 
@@ -411,9 +423,14 @@ sub success : Local {
         return;
     }
 
+    if($$payment{transaction_type} eq 'credit') {
+        $c->response->redirect('https://csc.libratel.at/account/success?tid='. $$payment{id});
+        return;
+    }
+
     my $order;
     unless($c->model('Provisioning')->call_prov($c, 'billing', 'get_order',
-                                                { id   => $$payment{order_id} },
+                                                { id => $$payment{transaction_id} },
                                                 \$order
                                                ))
     {
@@ -422,11 +439,6 @@ sub success : Local {
     }
 
     $c->log->info("***payment::success payment $$payment{id} for order $$order{id} status is: $$payment{status} / $$payment{state}");
-
-    if($$order{type} eq 'charge') {
-        $c->response->redirect('https://csc.libratel.at/account/success?tid='. $$payment{id});
-        return;
-    }
 
     if($$payment{status} eq 'RESERVED' or $$payment{status} eq 'BILLED' or $$payment{status} eq 'CREDITED') {
         $c->response->redirect('/shop/finish?sk='. $c->session->{shop}{session_key});
@@ -462,9 +474,14 @@ sub error : Local {
         return;
     }
 
+    if($$payment{transaction_type} eq 'credit') {
+        $c->response->redirect('https://csc.libratel.at/account/error?tid='. $$payment{id});
+        return;
+    }
+
     my $order;
     unless($c->model('Provisioning')->call_prov($c, 'billing', 'get_order',
-                                                { id   => $$payment{order_id} },
+                                                { id   => $$payment{transaction_id} },
                                                 \$order
                                                ))
     {
@@ -481,11 +498,6 @@ sub error : Local {
 
     $c->log->info("***payment::error payment $$payment{id} for order $$order{id} status is: $$payment{status} / $$payment{state}");
 
-    if($$order{type} eq 'charge') {
-        $c->response->redirect('https://csc.libratel.at/account/error?tid='. $$payment{id});
-        return;
-    }
-
     $c->session->{mpay24_errors}{$$payment{type}} = $$payment{externalstatus}
                                                     || $c->model('Provisioning')->localize('Web.Payment.ExternalError');
     $c->response->redirect('/payment?sk='. $c->session->{shop}{session_key} .'#'. $$payment{type});
@@ -497,9 +509,10 @@ sub _start_transaction : Private {
 
     my $payment_id;
     unless($c->model('Provisioning')->call_prov($c, 'billing', 'create_payment',
-                                                { order_id => $c->session->{shop}{order_id},
-                                                  type     => $type,
-                                                  amount   => $amount,
+                                                { transaction_type => 'order',
+                                                  transaction_id   => $c->session->{shop}{order_id},
+                                                  type             => $type,
+                                                  amount           => $amount,
                                                 },
                                                 \$payment_id
                                                ))
@@ -533,7 +546,7 @@ sub _finish_transaction : Private {
     }
 
     unless($c->model('Provisioning')->call_prov($c, 'billing', 'update_order',
-                                                { id   => $$payment{order_id},
+                                                { id   => $$payment{transaction_id},
                                                   data => { state => 'transact' },
                                                 },
                                                 undef
@@ -544,7 +557,7 @@ sub _finish_transaction : Private {
 
     my $order;
     unless($c->model('Provisioning')->call_prov($c, 'billing', 'get_order',
-                                                { id => $$payment{order_id} },
+                                                { id => $$payment{transaction_id} },
                                                 \$order
                                                ))
     {

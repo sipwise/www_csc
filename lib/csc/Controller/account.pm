@@ -192,7 +192,7 @@ sub setpay : Local {
         return;
     }
 
-    delete $c->session->{payment}{order_id} if exists $c->session->{payment}{order_id};
+    delete $c->session->{payment}{credit_id} if exists $c->session->{payment}{credit_id};
     delete $c->session->{mpay24} if exists $c->session->{mpay24};
     delete $c->session->{paypal} if exists $c->session->{paypal};
 
@@ -224,16 +224,7 @@ sub setpay : Local {
         $c->response->redirect($c->uri_for('/account/balance'));
         return;
     }
-    my $account;
-    unless($c->model('Provisioning')->call_prov($c, 'billing', 'get_voip_account_by_id',
-                                                { id => $c->session->{user}{data}{account_id} },
-                                                \$account
-                                               ))
-    {
-        return;
-    }
 
-    $c->session->{payment}{customer_id} = $$account{customer_id};
     $c->session->{payment}{amount} = $amount * 100;
     $c->response->redirect('/account/dopay');
 }
@@ -317,6 +308,7 @@ sub dopay_cc : Local {
     my $rc = $c->model('Mpay24')->accept_cc_payment($c, $tid, $amount, $cctype, $cardnum, $expiry, $cvc);
     if($rc == 1) {
         unless($c->model('Provisioning')->update_account_balance($c, $amount)) {
+            # that's not good. money has already been transfered!
             $self->_fail_transaction($c, $tid);
             $c->response->redirect('/account/balance');
             return;
@@ -600,13 +592,14 @@ sub error : Local {
 sub _start_transaction : Private {
     my ($self, $c, $type, $amount) = @_;
 
-    unless($c->session->{payment}{order_id}
-           or $c->model('Provisioning')->call_prov($c, 'billing', 'create_order',
-                                                   { customer_id => $c->session->{payment}{customer_id},
-                                                     type        => 'charge',
-                                                     value       => $amount,
+    unless($c->session->{payment}{credit_id}
+           or $c->model('Provisioning')->call_prov($c, 'billing', 'create_contract_credit',
+                                                   { contract_id => $c->session->{user}{data}{account_id},
+                                                     data        => { value  => $amount,
+                                                                      reason => 'CSC reload',
+                                                                    },
                                                    },
-                                                   \$c->session->{payment}{order_id}
+                                                   \$c->session->{payment}{credit_id}
                                                   ))
     {
         return;
@@ -614,9 +607,10 @@ sub _start_transaction : Private {
 
     my $payment_id;
     unless($c->model('Provisioning')->call_prov($c, 'billing', 'create_payment',
-                                                { order_id => $c->session->{payment}{order_id},
-                                                  type     => $type,
-                                                  amount   => $amount,
+                                                { transaction_type => 'credit',
+                                                  transaction_id   => $c->session->{payment}{credit_id},
+                                                  type             => $type,
+                                                  amount           => $amount,
                                                 },
                                                 \$payment_id
                                                ))
@@ -644,8 +638,8 @@ sub _finish_transaction : Private {
         return;
     }
 
-    unless($c->model('Provisioning')->call_prov($c, 'billing', 'update_order',
-                                                { id   => $c->session->{payment}{order_id},
+    unless($c->model('Provisioning')->call_prov($c, 'billing', 'update_contract_credit',
+                                                { id   => $c->session->{payment}{credit_id},
                                                   data => { state => 'success' },
                                                 },
                                                 undef
@@ -654,7 +648,7 @@ sub _finish_transaction : Private {
         return;
     }
 
-    delete $c->session->{payment}{order_id};
+    delete $c->session->{payment}{credit_id};
 
     return 1;
 }
