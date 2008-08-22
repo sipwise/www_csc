@@ -901,78 +901,88 @@ aufgenommen:
                     "EUR ". $c->session->{shop}{tarif}{price} .
                     " " x (15 - length $c->session->{shop}{tarif}{price}) .
                     "EUR ". $c->session->{shop}{tarif}{monthly} ."\n");
-   $smtp->datasend("1 x Startguthaben ". " " x 22 .
-                   "EUR ". $c->session->{shop}{tarif}{initial_charge} .
-                   " " x (15 - length $c->session->{shop}{tarif}{initial_charge}) .
-                   "EUR 0.00\n");
-   $smtp->datasend("1 x ". $c->session->{shop}{system}{name} .
-                   " " x (36 - length $c->session->{shop}{system}{name}) .
-                   "EUR ". $c->session->{shop}{system}{price} .
-                   " " x (15 - length $c->session->{shop}{system}{price}) .
-                   "EUR 0.00\n")
-       if $c->session->{shop}{system};
-   if(ref $c->session->{shop}{phones} eq 'ARRAY') {
-       foreach my $phone (@{$c->session->{shop}{phones}}) {
-           $smtp->datasend($$phone{count} ." x ". $$phone{name} .
-                           " " x (32 - length $$phone{count} - length $$phone{name}) .
-                           "EUR ". $$phone{price_sum} .
-                           " " x (15 - length $$phone{price_sum}) .
-                           "EUR 0.00\n");
-       }
-   }
-   $smtp->datasend("--------------------------------------------------------------------\n");
-   my $price_sum1 = $self->_calculate_price_sum($c);
-   $smtp->datasend("Zwischensumme" . " " x 27 .
-                   "EUR ". $price_sum1 .
-                   " " x (15 - length $price_sum1) .
-                   "EUR ". $c->session->{shop}{tarif}{monthly} ."\n");
-   $smtp->datasend("+Versandkosten". " " x 26 .
-                   "EUR ". $c->session->{shop}{shipping_fee} .
-                   " " x (15 - length $c->session->{shop}{shipping_fee}) .
-                   "EUR 0.00\n");
-   my $price_tax = sprintf "%.2f", ($price_sum1 + $c->session->{shop}{shipping_fee}) * .2;
-   my $month_tax = sprintf "%.2f", $c->session->{shop}{tarif}{monthly} * .2;
-   $smtp->datasend("+20% USt". " " x 32 .
-                   "EUR ". $price_tax .
-                   " " x (15 - length $price_tax) .
-                   "EUR ". $month_tax ."\n");
-   $smtp->datasend("--------------------------------------------------------------------\n");
-   $smtp->datasend("\n");
-   my $month_sum = sprintf "%.2f", $c->session->{shop}{tarif}{monthly} + $month_tax;
-   $smtp->datasend("Summe" . " " x 35 .
-                   "EUR ". $c->session->{shop}{price_sum} .
-                   " " x (15 - length $c->session->{shop}{price_sum}) .
-                   "EUR ". $month_sum ."\n");
-   $smtp->datasend("\n\n");
+    $smtp->datasend("1 x Startguthaben ". " " x 22 .
+                    "EUR ". $c->session->{shop}{tarif}{initial_charge} .
+                    " " x (15 - length $c->session->{shop}{tarif}{initial_charge}) .
+                    "EUR 0.00\n");
+    if(ref $c->session->{shop}{cart} eq 'HASH' and keys %{$c->session->{shop}{cart}}) {
+        foreach my $ci (sort keys %{$c->session->{shop}{cart}}) {
+            my $tprice = sprintf("%.2f", $c->session->{shop}{cart}{$ci} * $c->session->{shop}{dbprodhash}{$ci}{price} / 100);
+            $smtp->datasend($c->session->{shop}{cart}{$ci} ."x ". $ci .
+                            " " x ((38 - length $c->session->{shop}{cart}{$ci}) - length $ci) .
+                            "EUR ". $tprice . " " x (15 - length $tprice) . "EUR 0.00\n");
+        }
+    } else {
+        $smtp->datasend("1 x ". $c->session->{shop}{system}{name} .
+                        " " x (36 - length $c->session->{shop}{system}{name}) .
+                        "EUR ". $c->session->{shop}{system}{price} .
+                        " " x (15 - length $c->session->{shop}{system}{price}) .
+                        "EUR 0.00\n")
+            if $c->session->{shop}{system}{name};
+        if(ref $c->session->{shop}{phones} eq 'ARRAY') {
+            foreach my $phone (@{$c->session->{shop}{phones}}) {
+                $smtp->datasend($$phone{count} ." x ". $$phone{name} .
+                                " " x (32 - length $$phone{count} - length $$phone{name}) .
+                                "EUR ". $$phone{price_sum} .
+                                " " x (15 - length $$phone{price_sum}) .
+                                "EUR 0.00\n");
+            }
+        }
+    }
 
-   $smtp->datasend("GESAMTBETRAG:". " " x 5 . "EUR ". $c->session->{shop}{price_sum} ." inkl. USt\n");
-   $smtp->datasend("\n");
+    $smtp->datasend("--------------------------------------------------------------------\n");
+    my $price_sum1 = $self->_calculate_price_sum($c);
+    $smtp->datasend("Zwischensumme" . " " x 27 .
+                    "EUR ". $price_sum1 .
+                    " " x (15 - length $price_sum1) .
+                    "EUR ". $c->session->{shop}{tarif}{monthly} ."\n");
+    $smtp->datasend("+Versandkosten". " " x 26 .
+                    "EUR ". $c->session->{shop}{shipping_fee} .
+                    " " x (15 - length $c->session->{shop}{shipping_fee}) .
+                    "EUR 0.00\n");
+    my $price_tax = sprintf "%.2f", ($price_sum1 + $c->session->{shop}{shipping_fee}) * .2;
+    my $month_tax = sprintf "%.2f", $c->session->{shop}{tarif}{monthly} * .2;
+    $smtp->datasend("+20% USt". " " x 32 .
+                    "EUR ". $price_tax .
+                    " " x (15 - length $price_tax) .
+                    "EUR ". $month_tax ."\n");
+    $smtp->datasend("--------------------------------------------------------------------\n");
+    $smtp->datasend("\n");
+    my $month_sum = sprintf "%.2f", $c->session->{shop}{tarif}{monthly} + $month_tax;
+    $smtp->datasend("Summe" . " " x 35 .
+                    "EUR ". $c->session->{shop}{price_sum} .
+                    " " x (15 - length $c->session->{shop}{price_sum}) .
+                    "EUR ". $month_sum ."\n");
+    $smtp->datasend("\n\n");
 
-   $smtp->datasend("VERSANDART:". " " x 7 . "Hermes Paketversand\n");
-   $smtp->datasend("\n");
+    $smtp->datasend("GESAMTBETRAG:". " " x 5 . "EUR ". $c->session->{shop}{price_sum} ." inkl. USt\n");
+    $smtp->datasend("\n");
 
-   $smtp->datasend("RECHNUNGSADRESSE: " . $c->session->{shop}{personal}{firstname} ." ".
-                                          $c->session->{shop}{personal}{lastname} ."\n");
-   $smtp->datasend(" " x 18 . $c->session->{shop}{personal}{company} ."\n") if $c->session->{shop}{personal}{company};
-   $smtp->datasend(" " x 18 . $c->session->{shop}{personal}{street} ."\n");
-   $smtp->datasend(" " x 18 . $c->session->{shop}{personal}{postcode} ." ". $c->session->{shop}{personal}{city} ."\n");
-   $smtp->datasend("\n");
+    $smtp->datasend("VERSANDART:". " " x 7 . "Hermes Paketversand\n");
+    $smtp->datasend("\n");
 
-   if(ref $c->session->{shop}{personal}{delivery} eq 'HASH') {
-       $smtp->datasend("VERSANDADRESSE:". " " x 3 .
-                       $c->session->{shop}{personal}{delivery}{firstname} ." ".
-                       $c->session->{shop}{personal}{delivery}{lastname} ."\n");
-       $smtp->datasend(" " x 18 . $c->session->{shop}{personal}{delivery}{company} ."\n")
-           if $c->session->{shop}{personal}{delivery}{company};
-       $smtp->datasend(" " x 18 . $c->session->{shop}{personal}{delivery}{street} ."\n");
-       $smtp->datasend(" " x 18 . $c->session->{shop}{personal}{delivery}{postcode} ." ".
-                       $c->session->{shop}{personal}{delivery}{city} ."\n");
-       $smtp->datasend("\n");
-   } else {
-       $smtp->datasend("VERSANDADRESSE:". " " x 3 . "Wie Rechnungsadresse.\n\n");
-   }
+    $smtp->datasend("RECHNUNGSADRESSE: " . $c->session->{shop}{personal}{firstname} ." ".
+                                           $c->session->{shop}{personal}{lastname} ."\n");
+    $smtp->datasend(" " x 18 . $c->session->{shop}{personal}{company} ."\n") if $c->session->{shop}{personal}{company};
+    $smtp->datasend(" " x 18 . $c->session->{shop}{personal}{street} ."\n");
+    $smtp->datasend(" " x 18 . $c->session->{shop}{personal}{postcode} ." ". $c->session->{shop}{personal}{city} ."\n");
+    $smtp->datasend("\n");
 
-   $smtp->datasend('
+    if(ref $c->session->{shop}{personal}{delivery} eq 'HASH') {
+        $smtp->datasend("VERSANDADRESSE:". " " x 3 .
+                        $c->session->{shop}{personal}{delivery}{firstname} ." ".
+                        $c->session->{shop}{personal}{delivery}{lastname} ."\n");
+        $smtp->datasend(" " x 18 . $c->session->{shop}{personal}{delivery}{company} ."\n")
+            if $c->session->{shop}{personal}{delivery}{company};
+        $smtp->datasend(" " x 18 . $c->session->{shop}{personal}{delivery}{street} ."\n");
+        $smtp->datasend(" " x 18 . $c->session->{shop}{personal}{delivery}{postcode} ." ".
+                        $c->session->{shop}{personal}{delivery}{city} ."\n");
+        $smtp->datasend("\n");
+    } else {
+        $smtp->datasend("VERSANDADRESSE:". " " x 3 . "Wie Rechnungsadresse.\n\n");
+    }
+
+    $smtp->datasend('
 Ihre Rechnung wird Ihnen zusammen mit der Ware zugestellt.
 
 --------------------------------------------------------------------
