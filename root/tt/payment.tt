@@ -1,6 +1,6 @@
         <span class="anmelden feinstellungen payment">
 
-          [% IF mpay24_errors.top %]<br><div id="errormsg"><p>[% mpay24_errors.top %]</p></div>[% END %]
+          [% IF mpay24_errors.top %]<br /><div id="errormsg"><p>[% mpay24_errors.top %]</p></div>[% END %]
 
           <fieldset class="alt" id="eps">
             <form action="/[% backend %]/dopay_eps" method="post">
@@ -50,7 +50,7 @@
                 <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="go_eps">
               </p>
 
-              [% IF mpay24_errors.eps %]<br><div id="errormsg"><p>[% mpay24_errors.eps %]</p></div>[% END %]
+              [% IF mpay24_errors.eps %]<br /><div id="errormsg"><p>[% mpay24_errors.eps %]</p></div>[% END %]
 
             </form>
           </fieldset><br clear="all" />
@@ -121,7 +121,7 @@
                 <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="go_credit">
               </p>
 
-              [% IF mpay24_errors.cc %]<br><div id="errormsg"><p>[% mpay24_errors.cc %]</p></div>[% END %]
+              [% IF mpay24_errors.cc %]<br /><div id="errormsg"><p>[% mpay24_errors.cc %]</p></div>[% END %]
 
             </form>
           </fieldset><br clear="all" />
@@ -188,7 +188,7 @@
                 <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="go_maestro">
               </p>
 
-              [% IF mpay24_errors.maestro %]<br><div id="errormsg"><p>[% mpay24_errors.maestro %]</p></div>[% END %]
+              [% IF mpay24_errors.maestro %]<br /><div id="errormsg"><p>[% mpay24_errors.maestro %]</p></div>[% END %]
 
             </form>
           </fieldset><br clear="all" />
