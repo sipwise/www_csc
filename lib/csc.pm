@@ -21,7 +21,7 @@ use Catalyst qw/ConfigLoader Static::Simple
                 Session Session::Store::FastMmap Session::State::Cookie
                /;
 
-our $VERSION = '1.0';
+our $VERSION = '1.0.0';
 
 # Configure the application. 
 #
