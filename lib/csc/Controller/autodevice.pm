@@ -88,7 +88,6 @@ sub savespa : Local
 	    $num1 = $c->request->params->{fieldset} eq "small" ? $c->request->params->{fxs1} : $c->request->params->{fullnum1};
 	    $num2 = $c->request->params->{fieldset} eq "small" ? $c->request->params->{fxs2} : $c->request->params->{fullnum2};
     }
-    return;
     $spa{fxs1_subscriber_id} = int($num1) if($num1 && $num1 =~ /^\d+$/);
     $spa{fxs2_subscriber_id} = int($num2) if($num2 && $num2 =~ /^\d+$/);
     if(defined $spa{fxs1_subscriber_id} && defined $spa{fxs2_subscriber_id} &&
@@ -119,7 +118,7 @@ sub savespa : Local
                 \$dev);
     $spa{device_id} = $dev->{id};
 
-#    print Dumper \%spa;
+    #print Dumper \%spa;
 
     my $unit;
     return 1 unless
