@@ -463,10 +463,13 @@ sub set_tarif : Local {
                                                                 \$bilprof,
                                                               );
             $c->session->{shop}{tarif}{monthly} = sprintf "%.2f", $$bilprof{interval_charge} / 100;
+            $c->session->{shop}{tarif}{prepaid} = $$bilprof{prepaid};
+            # TODO: make initial charge configurable
+            #       (should be a product in the DB, maybe)
+            $c->session->{shop}{tarif}{initial_charge} = sprintf "%.2f", 10 if $$bilprof{prepaid};
         } else {
             $c->session->{shop}{tarif}{monthly} = 0;
         }
-        $c->session->{shop}{tarif}{initial_charge} = sprintf "%.2f", 10;
     } else {
         $c->response->redirect('/shop/tarif?sk='. $c->session->{shop}{session_key});
     }
@@ -823,7 +826,7 @@ sub overview : Local {
             $c->session->{shop}{shipping_weight} += $c->session->{shop}{cart}{$ci} * $c->session->{shop}{dbprodhash}{$ci}{weight};
         }
         $c->stash->{cart} = \@cart;
-    } elsif(ref $c->session->{shop}{system} eq 'HASH') {
+    } elsif(ref $c->session->{shop}{system} eq 'HASH' and keys %{$c->session->{shop}{system}}) {
         $c->stash->{system} = $c->session->{shop}{system};
         $c->stash->{phones} = $c->session->{shop}{phones};
         $c->session->{shop}{shipping_weight} = $c->session->{shop}{dbprodhash}{$c->session->{shop}{system}{handle}}{weight};
@@ -839,8 +842,19 @@ sub overview : Local {
     $c->stash->{price_sum} = $c->session->{shop}{price_sum};
     $c->stash->{month_sum} = sprintf "%.2f", $c->stash->{tarif}{monthly} || 0;
     $c->stash->{shipping_weight} = sprintf "%.1f", $c->session->{shop}{shipping_weight} / 1000;
-    # TODO: calculate costs from weight
-    $c->stash->{shipping_fee} = $c->session->{shop}{shipping_fee} = '9.50';
+    $c->stash->{shipping_fee} = $c->session->{shop}{shipping_fee} = undef;
+
+    # calculate costs from weight
+    for(sort { $$a{weight} <=> $$b{weight} } @{$c->config->{shipping_fees}}) {
+        $c->session->{shop}{shipping_fee} = $$_{fee}
+            if $c->session->{shop}{shipping_weight} >= $$_{weight};
+    }
+    if(defined $c->session->{shop}{shipping_fee}) {
+        $c->stash->{shipping_fee} = sprintf "%.2f", $c->session->{shop}{shipping_fee};
+    } else {
+        $c->stash->{shipping_fee} = $c->session->{shop}{shipping_fee} = 0;
+    }
+
     $c->stash->{price_sum2} = sprintf "%.2f", $c->session->{shop}{price_sum} + $c->stash->{shipping_fee};
     $c->stash->{price_tax} = sprintf "%.2f", $c->stash->{price_sum2} * .2;
     $c->stash->{month_tax} = sprintf "%.2f", $c->stash->{month_sum} * .2;
@@ -1175,7 +1189,7 @@ aufgenommen:
                         "EUR ". $c->session->{shop}{system}{price} .
                         " " x (12 - length $c->session->{shop}{system}{price}) .
                         "EUR 0.00\n")
-            if $c->session->{shop}{system}{name};
+            if $c->session->{shop}{system}{handle};
         if(ref $c->session->{shop}{phones} eq 'ARRAY') {
             foreach my $phone (@{$c->session->{shop}{phones}}) {
                 $smtp->datasend($$phone{count} ."x ". $$phone{name} .
@@ -1196,7 +1210,8 @@ aufgenommen:
     $smtp->datasend("+Versandkosten". " " x 29 .
                     "EUR ". $c->session->{shop}{shipping_fee} .
                     " " x (12 - length $c->session->{shop}{shipping_fee}) .
-                    "EUR 0.00\n");
+                    "EUR 0.00\n")
+        if $c->session->{shop}{shipping_fee};
     my $price_tax = sprintf "%.2f", ($price_sum1 + $c->session->{shop}{shipping_fee}) * .2;
     my $month_tax = sprintf "%.2f", ($c->session->{shop}{tarif}{monthly} || 0) * .2;
     $smtp->datasend("+20% USt". " " x 35 .
@@ -1212,12 +1227,11 @@ aufgenommen:
                     "EUR ". $month_sum ."\n");
     $smtp->datasend("\n\n");
 
-    $smtp->datasend("GESAMTBETRAG:". " " x 5 . "EUR ". $c->session->{shop}{price_sum} ." inkl. USt\n");
-    $smtp->datasend("\n");
+    $smtp->datasend("GESAMTBETRAG:". " " x 5 . "EUR ". $c->session->{shop}{price_sum} ." inkl. USt\n\n");
 
     $smtp->datasend("VERSANDART:". " " x 7 . "Hermes Paketversand, ".
-                    sprintf("%.1f", $c->session->{shop}{shipping_weight} / 1000) ." kg\n");
-    $smtp->datasend("\n");
+                    sprintf("%.1f", $c->session->{shop}{shipping_weight} / 1000) ." kg\n\n")
+        if $c->session->{shop}{shipping_fee};
 
     $smtp->datasend("RECHNUNGSADRESSE: " . $c->session->{shop}{personal}{firstname} ." ".
                                            $c->session->{shop}{personal}{lastname} ."\n");
@@ -1240,9 +1254,15 @@ aufgenommen:
         $smtp->datasend("VERSANDADRESSE:". " " x 3 . "Wie Rechnungsadresse.\n\n");
     }
 
-    $smtp->datasend('
+    if($c->session->{shop}{shipping_fee}) {
+        $smtp->datasend('
 Ihre Rechnung wird Ihnen zusammen mit der Ware zugestellt.
 ');
+    } else {
+        $smtp->datasend('
+Ihre Rechnung wird Ihnen in den nächsten Tagen per Post zugestellt.
+');
+    }
 
     unless($c->session->{shop}{existing_customer}) {
         $smtp->datasend('
@@ -1268,11 +1288,13 @@ Format zugestellt!
 
 ');
         $smtp->datasend('TARIF:'. ' ' x 8 . $c->session->{shop}{tarif}{name} ."\n");
-        $smtp->datasend('GUTHABEN:'. ' ' x 5 . $c->session->{shop}{tarif}{initial_charge} ."EUR\n");
+        $smtp->datasend('GUTHABEN:'. ' ' x 5 . $c->session->{shop}{tarif}{initial_charge} ."EUR\n")
+            if $c->session->{shop}{tarif}{prepaid};
         $smtp->datasend('
 Sie können Ihr Guthaben jederzeit im Kundenbereich unter dem
 Menüpunkt KONTO einsehen und aufladen.
-');
+')
+        if $c->session->{shop}{tarif}{prepaid};
 
     }
 
@@ -1363,8 +1385,8 @@ Daniel Tiefnig <dtiefnig@sipwise.com>
 
 =head1 COPYRIGHT
 
-The shop controller is Copyright (c) 2007 Sipwise GmbH, Austria. All
-rights reserved.
+The shop controller is Copyright (c) 2007-2008 Sipwise GmbH, Austria.
+All rights reserved.
 
 =cut
 

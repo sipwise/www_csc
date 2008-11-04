@@ -24,23 +24,25 @@
               <td><strong class="smallpreis">&euro;&nbsp;[% tarif.price %]</strong></td>
               <td><strong class="smallpreis">&euro;&nbsp;[% tarif.monthly %]</strong></td>
             </tr>
-            <tr>
-              <td class="tdright" />
-              <td>
-                Startguthaben
-              </td>
-              <td><strong class="smallpreis">&euro;&nbsp;[% tarif.initial_charge %]</strong></td>
-              <td><strong class="smallpreis">&euro;&nbsp;0.00</strong></td>
-            </tr>
+            [% IF tarif.initial_charge %]
+              <tr>
+                <td class="tdright" />
+                <td>
+                  Startguthaben
+                </td>
+                <td><strong class="smallpreis">&euro;&nbsp;[% tarif.initial_charge %]</strong></td>
+                <td><strong class="smallpreis">&euro;&nbsp;0.00</strong></td>
+              </tr>
+            [% END %]
           [% END %]
 
-            <tr>
-              <td colspan="4" class="bestelltablehead">
-                &nbsp;
-              </td>
-            </tr>
-
             [% IF cart %] <!-- items from hardware shop -->
+
+              <tr>
+                <td colspan="4" class="bestelltablehead">
+                  &nbsp;
+                </td>
+              </tr>
 
               [% first = 1 %]
               [% FOREACH ci = cart %]
@@ -66,6 +68,14 @@
               [% END %]
                   
             [% ELSE %] <!-- items from solutions workflow -->
+            [% IF system.handle ||  phones %]
+
+              <tr>
+                <td colspan="4" class="bestelltablehead">
+                  &nbsp;
+                </td>
+              </tr>
+
               <tr class="image_items">
                 <td class="tdright">
                   <h3>Telefonanlage</h3>
@@ -103,29 +113,32 @@
               [% END %]
 
             [% END %]
+            [% END %]
 
             <tr class="mysumme">
               <td class="tdright">
                 <h3>Zwischensumme</h3>
               </td>
-              <td>exklusive Steuern und Versand</td>
+              <td>exklusive Steuern[% IF shipping_fee %] und Versand[% END %]</td>
               <td><strong class="smallpreis">&euro;&nbsp;[% price_sum %]</strong></td>
               <td><strong class="smallpreis">&euro;&nbsp;[% month_sum %]</strong></td>
             </tr>
 
-            <tr>
-              <td colspan="4" class="bestelltablehead">
-                &nbsp;
-              </td>
-            </tr>
-            <tr>
-              <td class="tdright">
-                <h3>Versandkosten</h3>
-              </td>
-              <td>Hermes Paketversand, [% shipping_weight %] kg</td>
-              <td><strong class="smallpreis">&euro;&nbsp;[% shipping_fee %]</strong></td>
-              <td><strong class="smallpreis">&euro;&nbsp;0.00</strong></td>
-            </tr>
+            [% IF shipping_fee %]
+              <tr>
+                <td colspan="4" class="bestelltablehead">
+                  &nbsp;
+                </td>
+              </tr>
+              <tr>
+                <td class="tdright">
+                  <h3>Versandkosten</h3>
+                </td>
+                <td>Hermes Paketversand, [% shipping_weight %] kg</td>
+                <td><strong class="smallpreis">&euro;&nbsp;[% shipping_fee %]</strong></td>
+                <td><strong class="smallpreis">&euro;&nbsp;0.00</strong></td>
+              </tr>
+            [% END %]
             <tr>
               <td colspan="4" class="bestelltablehead">
                 &nbsp;
