@@ -25,7 +25,11 @@
                 <strong class="smallpreis">&euro; [% product_hash.PAP2T.price %]</strong></h4>
                 <form method="post" action="/shop/add_to_cart">
                   <p>
-                    <input type="text" name="count" size="3" /><label for="add_PAP2T" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="text" name="count" size="3" />
+                    <span class="add_to_cart">
+                      <label for="add_PAP2T" class="add_to_cart">Stk. in den</label>
+                      <label for="add_PAP2T" class="add_to_cart">Warenkorb</label>
+                    </span>
                     <input type="hidden" name="product" value="PAP2T" />
                     <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_PAP2T" />
                   </p>
@@ -47,7 +51,11 @@
                 <strong class="smallpreis">&euro; [% product_hash.SPA9000_4.price %]</strong></h4>
                 <form method="post" action="/shop/add_to_cart">
                   <p>
-                    <input type="text" name="count" size="3" /><label for="add_SPA9000_4_Port" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="text" name="count" size="3" />
+                    <span class="add_to_cart">
+                      <label for="add_SPA9000_4_Port" class="add_to_cart">Stk. in den</label>
+                      <label for="add_SPA9000_4_Port" class="add_to_cart">Warenkorb</label>
+                    </span>
                     <input type="hidden" name="product" value="SPA9000_4" />
                     <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_SPA9000_4_Port" />
                   </p>
@@ -69,7 +77,11 @@
                 <strong class="smallpreis">&euro; [% product_hash.SPA9000_16.price %]</strong></h4>
                 <form method="post" action="/shop/add_to_cart">
                   <p>
-                    <input type="text" name="count" size="3" /><label for="add_SPA9000_16_Port" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="text" name="count" size="3" />
+                    <span class="add_to_cart">
+                      <label for="add_SPA9000_16_Port" class="add_to_cart">Stk. in den</label>
+                      <label for="add_SPA9000_16_Port" class="add_to_cart">Warenkorb</label>
+                    </span>
                     <input type="hidden" name="product" value="SPA9000_16" />
                     <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_SPA9000_16_Port" />
                   </p>
@@ -90,7 +102,11 @@
                 <strong class="smallpreis">&euro; [% product_hash.SPA9000_U.price %]</strong></h4>
                 <form method="post" action="/shop/add_to_cart">
                   <p>
-                    <input type="text" name="count" size="3" /><label for="add_SPA9000_upgrade" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="text" name="count" size="3" />
+                    <span class="add_to_cart">
+                      <label for="add_SPA9000_upgrade" class="add_to_cart">Stk. in den</label>
+                      <label for="add_SPA9000_upgrade" class="add_to_cart">Warenkorb</label>
+                    </span>
                     <input type="hidden" name="product" value="SPA9000_U" />
                     <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_SPA9000_upgrade" />
                   </p>
@@ -187,7 +203,11 @@
                 <strong class="smallpreis">&euro; [% product_hash.SPA921.price %]</strong></h4>
                 <form method="post" action="/shop/add_to_cart">
                   <p>
-                    <input type="text" name="count" size="3" /><label for="add_SPA921" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="text" name="count" size="3" />
+                    <span class="add_to_cart">
+                      <label for="add_SPA921" class="add_to_cart">Stk. in den</label>
+                      <label for="add_SPA921" class="add_to_cart">Warenkorb</label>
+                    </span>
                     <input type="hidden" name="product" value="SPA921" />
                     <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_SPA921" />
                   </p>
@@ -208,7 +228,11 @@
                 <strong class="smallpreis">&euro; [% product_hash.SPA922.price %]</strong></h4>
                 <form method="post" action="/shop/add_to_cart">
                   <p>
-                    <input type="text" name="count" size="3" /><label for="add_SPA922" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="text" name="count" size="3" />
+                    <span class="add_to_cart">
+                      <label for="add_SPA922" class="add_to_cart">Stk. in den</label>
+                      <label for="add_SPA922" class="add_to_cart">Warenkorb</label>
+                    </span>
                     <input type="hidden" name="product" value="SPA922" />
                     <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_SPA922" />
                   </p>
@@ -229,7 +253,11 @@
                 <strong class="smallpreis">&euro; [% product_hash.SPA941.price %]</strong></h4>
                 <form method="post" action="/shop/add_to_cart">
                   <p>
-                    <input type="text" name="count" size="3" /><label for="add_SPA941" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="text" name="count" size="3" />
+                    <span class="add_to_cart">
+                      <label for="add_SPA941" class="add_to_cart">Stk. in den</label>
+                      <label for="add_SPA941" class="add_to_cart">Warenkorb</label>
+                    </span>
                     <input type="hidden" name="product" value="SPA941" />
                     <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_SPA941" />
                   </p>
@@ -249,7 +277,11 @@
                 <strong class="smallpreis">&euro; [% product_hash.SPA942.price %]</strong></h4>
                 <form method="post" action="/shop/add_to_cart">
                   <p>
-                    <input type="text" name="count" size="3" /><label for="add_SPA942" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="text" name="count" size="3" />
+                    <span class="add_to_cart">
+                      <label for="add_SPA942" class="add_to_cart">Stk. in den</label>
+                      <label for="add_SPA942" class="add_to_cart">Warenkorb</label>
+                    </span>
                     <input type="hidden" name="product" value="SPA942" />
                     <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_SPA942" />
                   </p>
@@ -346,7 +378,11 @@
                 <strong class="smallpreis">&euro; [% product_hash.POES5.price %]</strong></h4>
                 <form method="post" action="/shop/add_to_cart">
                   <p>
-                    <input type="text" name="count" size="3" /><label for="add_POES5" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="text" name="count" size="3" />
+                    <span class="add_to_cart">
+                      <label for="add_POES5" class="add_to_cart">Stk. in den</label>
+                      <label for="add_POES5" class="add_to_cart">Warenkorb</label>
+                    </span>
                     <input type="hidden" name="product" value="POES5" />
                     <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_POES5" />
                   </p>
@@ -367,7 +403,11 @@
                 <strong class="smallpreis">&euro; [% product_hash.WBP54G.price %]</strong></h4>
                 <form method="post" action="/shop/add_to_cart">
                   <p>
-                    <input type="text" name="count" size="3" /><label for="add_WBP54G" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="text" name="count" size="3" />
+                    <span class="add_to_cart">
+                      <label for="add_WBP54G" class="add_to_cart">Stk. in den</label>
+                      <label for="add_WBP54G" class="add_to_cart">Warenkorb</label>
+                    </span>
                     <input type="hidden" name="product" value="WBP54G" />
                     <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_WBP54G" />
                   </p>
@@ -388,7 +428,11 @@
                 <strong class="smallpreis">&euro; [% product_hash.PA100.price %]</strong></h4>
                 <form method="post" action="/shop/add_to_cart">
                   <p>
-                    <input type="text" name="count" size="3" /><label for="add_PA100" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="text" name="count" size="3" />
+                    <span class="add_to_cart">
+                      <label for="add_PA100" class="add_to_cart">Stk. in den</label>
+                      <label for="add_PA100" class="add_to_cart">Warenkorb</label>
+                    </span>
                     <input type="hidden" name="product" value="PA100" />
                     <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_PA100" />
                   </p>
@@ -408,7 +452,11 @@
                 <strong class="smallpreis">&euro; [% product_hash.MB100.price %]</strong></h4>
                 <form method="post" action="/shop/add_to_cart">
                   <p>
-                    <input type="text" name="count" size="3" /><label for="add_MB100" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="text" name="count" size="3" />
+                    <span class="add_to_cart">
+                      <label for="add_MB100" class="add_to_cart">Stk. in den</label>
+                      <label for="add_MB100" class="add_to_cart">Warenkorb</label>
+                    </span>
                     <input type="hidden" name="product" value="MB100" />
                     <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_MB100" />
                   </p>
@@ -505,7 +553,11 @@
                 <strong class="smallpreis">&euro; [% product_hash.SD208.price %]</strong></h4>
                 <form method="post" action="/shop/add_to_cart">
                   <p>
-                    <input type="text" name="count" size="3" /><label for="add_SD208" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="text" name="count" size="3" />
+                    <span class="add_to_cart">
+                      <label for="add_SD208" class="add_to_cart">Stk. in den</label>
+                      <label for="add_SD208" class="add_to_cart">Warenkorb</label>
+                    </span>
                     <input type="hidden" name="product" value="SD208" />
                     <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_SD208" />
                   </p>
@@ -526,7 +578,11 @@
                 <strong class="smallpreis">&euro; [% product_hash.SR224.price %]</strong></h4>
                 <form method="post" action="/shop/add_to_cart">
                   <p>
-                    <input type="text" name="count" size="3" /><label for="add_SR224" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="text" name="count" size="3" />
+                    <span class="add_to_cart">
+                      <label for="add_SR224" class="add_to_cart">Stk. in den</label>
+                      <label for="add_SR224" class="add_to_cart">Warenkorb</label>
+                    </span>
                     <input type="hidden" name="product" value="SR224" />
                     <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_SR224" />
                   </p>
@@ -547,7 +603,11 @@
                 <strong class="smallpreis">&euro; [% product_hash.SRW208P.price %]</strong></h4>
                 <form method="post" action="/shop/add_to_cart">
                   <p>
-                    <input type="text" name="count" size="3" /><label for="add_SRW208P" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="text" name="count" size="3" />
+                    <span class="add_to_cart">
+                      <label for="add_SRW208P" class="add_to_cart">Stk. in den</label>
+                      <label for="add_SRW208P" class="add_to_cart">Warenkorb</label>
+                    </span>
                     <input type="hidden" name="product" value="SRW208P" />
                     <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_SRW208P" />
                   </p>
@@ -567,7 +627,11 @@
                 <strong class="smallpreis">&euro; [% product_hash.SRW224P.price %]</strong></h4>
                 <form method="post" action="/shop/add_to_cart">
                   <p>
-                    <input type="text" name="count" size="3" /><label for="add_SRW224P" class="add_to_cart">Stk. in den Warenkorb</label>
+                    <input type="text" name="count" size="3" />
+                    <span class="add_to_cart">
+                      <label for="add_SRW224P" class="add_to_cart">Stk. in den</label>
+                      <label for="add_SRW224P" class="add_to_cart">Warenkorb</label>
+                    </span>
                     <input type="hidden" name="product" value="SRW224P" />
                     <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_SRW224P" />
                   </p>
@@ -674,15 +738,24 @@
                 [% bgflip = 1 %]
                 <tr>
                 [% END %]
-                  <td>[% ci.count %]x</td>
-                  <td>[% ci.product %]</td>
-                  <td class="money">&euro; [% ci.price %]</td>
+                  <td>
+                    <table class="cart_small_tt">
+                      <tr>
+                        <td class="cart_small_count">[% ci.count %]x</td>
+                        <td>[% ci.product %]</td>
+                      </tr>
+                      <tr>
+                        <td />
+                        <td class="money">&euro; [% ci.price %]</td>
+                      </tr>
+                    </table>
+                  </td>
                 </tr>
               [% END %]
             </table>
-            Warenwert: <strong>&euro; [% price_sum %]</strong>
+            Warenwert: <span class="money"><strong>&euro; [% price_sum %]</strong></span>
             <a href="/shop/clear_cart?sk=[% sk %]" class="link" id="delete_cart">leeren</a>
-            <a href="/shop/show_cart?sk=[% sk %]" class="link" id="show_cart">bestellen</a>
+            <a href="/shop/show_cart?sk=[% sk %]" class="link" id="show_cart">anzeigen</a>
           [% ELSE %]
             <table class="cart_small">
               <tr><td>Ihr Warenkorb ist leer.</td></tr>

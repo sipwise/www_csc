@@ -635,10 +635,14 @@
 }
 
 /* add to cart link next to product images */
-#main .produktwahlshop .produktwahl label.add_to_cart {
-   width: auto;
+#main .produktwahlshop .produktwahl span.add_to_cart {
+   float: left;
    text-align: left;
    margin: -37px 0 5px 43px;
+   padding: 0;
+}
+#main .produktwahlshop .produktwahl span.add_to_cart label.add_to_cart {
+   width: auto;
    padding: 0;
    font-weight: bold;
    color: #2D91DF;
@@ -646,7 +650,7 @@
    text-decoration: none;
    cursor: pointer;
 }
-#main .produktwahlshop .produktwahl label.add_to_cart:hover {
+#main .produktwahlshop .produktwahl span.add_to_cart:hover label.add_to_cart {
    color: #FF8A00;
    background: url(/grafik/dot_orange.gif) left bottom repeat-x;
 }
@@ -667,7 +671,7 @@
    border-top: 1px solid #D0DCDF;
 }
 #main .cart_small .tr_alt {
-   background: url(../grafik/cartsmalltdalt.gif) left top repeat-y #fff;
+   background: url(../grafik/cartsmalltdalt.gif) left top repeat #fff;
 }
 #main .cart_small td {
    padding: 1px 4px;
@@ -686,11 +690,29 @@
    margin: 10px 5px 5px 0;
 }
 
-/* also used for cart template */
-#main td.money,
-#main th.money {
+#main table.cart_small_tt {
+   width: 100%;
+   table-layout:fixed;
+   border: none;
+   border-spacing: 0;
+}
+
+#main .cart_small .cart_small_tt td {
+   padding: 0;
+   margin: 0;
+   border: none;
+}
+#main .cart_small .cart_small_tt td.cart_small_count {
+   width: 25%;
+}
+
+#main .money {
    white-space: nowrap;
    text-align: right;
+}
+#main span.money {
+   float: right;
+   margin-top: -18px;
 }
 
 /* settings for cart template */
