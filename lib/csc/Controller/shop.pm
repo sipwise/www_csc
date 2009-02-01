@@ -1021,7 +1021,7 @@ Ihr Libratel Team
 
 --------------------------------------------------------------------
 Libratel IP Communications GmbH       Geschäftsführer: Atilla Ceylan
-Prof. Dr. Stephan Koren Straße 10                A-2700 Wr. Neustadt                
+Europaring F15                               A-2345 Brunn am Gebirge
 
 Email: office@libratel.at                Web: http://www.libratel.at
 Tel: 0720 456789-0                               Fax: 0720 456789-10
