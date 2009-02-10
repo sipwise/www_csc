@@ -1,0 +1,14 @@
+Source: www-csc
+Section: admin
+Priority: extra
+Maintainer: Michael Prokop <mika@grml.org>
+Build-Depends: debhelper (>= 5)
+Standards-Version: 3.8.0
+Homepage: http://sipwise.com/
+
+Package: www-csc
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ossbss, libcatalyst-perl
+Description: frontend for endusers to configure their accounts on the Sipwise NGCP
+  The csc framework is used by endusers to configure their accounts on the
+  Sipwise NGCP.
