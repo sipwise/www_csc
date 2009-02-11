@@ -29,13 +29,13 @@ install: build
 	dh_prep  
 	dh_installdirs usr/local/csc
 
-	# Add here commands to install the package into debian/www-csc.
-	cp -a lib  debian/www-csc/usr/local/csc/
-	cp -a root debian/www-csc/usr/local/csc/
-	cp -a script debian/www-csc/usr/local/csc/
-	install -m 644 csc.yml debian/www-csc/usr/local/csc/
+	# Add here commands to install the package into debian/sipwise-www-csc.
+	cp -a lib  debian/sipwise-www-csc/usr/local/csc/
+	cp -a root debian/sipwise-www-csc/usr/local/csc/
+	cp -a script debian/sipwise-www-csc/usr/local/csc/
+	install -m 644 csc.yml debian/sipwise-www-csc/usr/local/csc/
 	# make sure we don't have any svn files inside the .deb:
-	find debian/www-csc -name \.svn -print0 | xargs -0 rm -rf
+	find debian/sipwise-www-csc -name \.svn -print0 | xargs -0 rm -rf
 
 
 # Build architecture-dependent files here.
