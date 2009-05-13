@@ -1035,22 +1035,24 @@ sub _create_contracts : Private {
 
     if($c->session->{shop}{personal}{username} and ! $c->session->{shop}{account_id}) {
         $c->model('Provisioning')->call_prov($c, 'billing', 'create_voip_account',
-                                             { product     => $c->session->{shop}{tarif}{handle},
-                                               customer_id => $c->session->{shop}{customer_id},
-                                               status      => 'pending',
-                                               order_id    => $c->session->{shop}{order_id},
-                                               subscribers => [{ username    => $c->session->{shop}{personal}{username},
-                                                                 domain      => $c->config->{site_domain},
-                                                                 password    => $self->_generate_sip_password($c),
-                                                                 admin       => 1,
-                                                                 cc          => $c->session->{shop}{number}{cc},
-                                                                 ac          => $c->session->{shop}{number}{ac},
-                                                                 sn          => $c->session->{shop}{number}{sn},
-                                                                 webusername => $c->session->{shop}{personal}{username},
-                                                                 webpassword => $c->session->{shop}{personal}{password},
-                                                                 #TODO: phonebook attribute in BSS
-                                                                 # phonebook   => $c->session->{shop}{phonebook},
-                                                              }],
+                                             { data => {
+                                                   product     => $c->session->{shop}{tarif}{handle},
+                                                   customer_id => $c->session->{shop}{customer_id},
+                                                   status      => 'pending',
+                                                   order_id    => $c->session->{shop}{order_id},
+                                                   subscribers => [{ username    => $c->session->{shop}{personal}{username},
+                                                                     domain      => $c->config->{site_domain},
+                                                                     password    => $self->_generate_sip_password($c),
+                                                                     admin       => 1,
+                                                                     cc          => $c->session->{shop}{number}{cc},
+                                                                     ac          => $c->session->{shop}{number}{ac},
+                                                                     sn          => $c->session->{shop}{number}{sn},
+                                                                     webusername => $c->session->{shop}{personal}{username},
+                                                                     webpassword => $c->session->{shop}{personal}{password},
+                                                                     #TODO: phonebook attribute in BSS
+                                                                     # phonebook   => $c->session->{shop}{phonebook},
+                                                                  }],
+                                               },
                                              },
                                              \$c->session->{shop}{account_id}
                                             ) or return;
