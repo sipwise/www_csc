@@ -10,24 +10,6 @@
      MACRO debug(message) CALL Catalyst.log.debug(message);
    END;
 
-   # define a data structure to hold sitewide data
-   site = {
-     title     => 'Libratel CSC',
-     company   => {
-                   name      => 'Libratel IP Communications GmbH',
-                   logo      => '/grafik/libratel.gif',
-                   hotline   => '0720 / 456 789',
-                   city      => '2345 Brunn am Gebirge',
-                   street    => 'Europaring F15',
-                   phone     => '+43 (0)720 456789-0',
-                   fax       => '+43 (0)720 456789-10',
-                   email     => 'office@libratel.at',
-                   webserver => 'www.libratel.at',
-                  },
-     language  => 'de',
-     css       => '/css/style.css',
-   };
-
 ##   # load up any other configuration items
 ##   PROCESS config/col
 ##         + config/url;

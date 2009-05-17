@@ -1,21 +1,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="[% site.language %]">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="[% Catalyst.config.site_config.language %]">
 
 <head>
 
-  <title>[% template.title or site.title %]</title>
+  <title>[% template.title or Catalyst.config.site_config.title %]</title>
 
   [% FOREACH css_file = site_config.css %]
     <link rel="stylesheet" type="text/css" href="[% css_file %]" />
   [% END %]
 
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <meta http-equiv="content-language" content="[% site.language %]" />
+  <meta http-equiv="content-language" content="[% Catalyst.config.site_config.language %]" />
 
-  <meta name="description" content="[% template.title or site.title %]" />
-  <meta name="title" content="[% template.title or site.title %]" />
-  <meta name="Company" content="[% site.company.name %]" />
+  <meta name="description" content="[% template.title or Catalyst.config.site_config.title %]" />
+  <meta name="title" content="[% template.title or Catalyst.config.site_config.title %]" />
+  <meta name="Company" content="[% Catalyst.config.site_config.company.name %]" />
   <meta name="keywords" content="" />
   <meta name="Language" content="Deutsch" />
 
@@ -37,7 +37,7 @@
 
 </head>
 
-<body id="[% site.language %]">
+<body id="[% Catalyst.config.site_config.language %]">
 [% content %]
 </body>
 

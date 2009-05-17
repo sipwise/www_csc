@@ -37,7 +37,7 @@
           <p class="anmeldeninfo">
             Ihre Daten wurden gespeichert.<br />
             Für Änderungen, Anregungen und weitere Hilfe wenden Sie sich bitte an unseren
-            <a href="http://[% site.company.webserver %]/kontakt.html">Support</a>.
+            <a href="http://[% Catalyst.config.site_config.company.webserver %]/kontakt.html">Support</a>.
           </p>
 
         </div><br clear="all" />
