@@ -19,6 +19,7 @@ __PACKAGE__->config(
           css => [ '/css/sipwise.css', '/css/style.css' ],
        },
     },
+    ENCODING     => 'utf-8',
 );
 
 =head1 NAME
