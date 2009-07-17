@@ -99,7 +99,7 @@
                 <img src="/grafik_shop/SPA9000_U.gif" width="146" height="135" alt="SPA9000 upgrade" />
                 <h4>SPA9000 Upgrade<br/>
                 von 4 auf 16 Nebenst.<br />
-                <strong class="smallpreis">&euro; [% product_hash.SPA9000_U.price %]</strong></h4>
+                <strong class="smallpreis">&euro; [% product_hash.SPA9000_UPGRADE.price %]</strong></h4>
                 <form method="post" action="/shop/add_to_cart">
                   <p>
                     <input type="text" name="count" size="3" />
@@ -107,7 +107,7 @@
                       <label for="add_SPA9000_upgrade" class="add_to_cart">Stk. in den</label>
                       <label for="add_SPA9000_upgrade" class="add_to_cart">Warenkorb</label>
                     </span>
-                    <input type="hidden" name="product" value="SPA9000_U" />
+                    <input type="hidden" name="product" value="SPA9000_UPGRADE" />
                     <input type="image" class="invisible" src="/grafik/dot_trans.gif" id="add_SPA9000_upgrade" />
                   </p>
                 </form>

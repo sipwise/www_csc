@@ -46,7 +46,7 @@ sub hardware : Local {
     $self->_load_products($c) or return;
 
     foreach my $product (@{$c->session->{shop}{dbprodarray}}) {
-        $c->stash->{product_hash}{$$product{handle}}{price} = sprintf "%.2f", $$product{price} / 100;
+        $c->stash->{product_hash}{$$product{handle}}{price} = sprintf "%.2f", $$product{data}{price} / 100;
     }
 
     if(ref $c->session->{shop}{cart} eq 'HASH' and keys %{$c->session->{shop}{cart}}) {
@@ -294,7 +294,7 @@ sub system : Local {
 
     foreach my $product (@{$c->session->{shop}{dbprodarray}}) {
         next unless $$product{class} eq 'hardware';
-        $c->stash->{price}{$$product{handle}} = sprintf "%.2f", $$product{price} / 100;
+        $c->stash->{price}{$$product{handle}} = sprintf "%.2f", $$product{data}{price} / 100;
     }
 
     if(exists $c->session->{refill}{hardware}) {
@@ -1344,7 +1344,8 @@ sub _load_products : Private {
 
         $products = {};
         for(@{$c->session->{shop}{dbprodarray}}) {
-            $$products{$$_{handle}} = $_;
+            $$_{data}{handle} = $$_{handle};
+            $$products{$$_{handle}} = $$_{data};
         }
         $c->session->{shop}{dbprodhash} = $products;
     }
