@@ -1,5 +1,5 @@
-sipwise-www-csc (1.1.4-1) unstable; urgency=low
+sipwise-www-csc (1.1.4) unstable; urgency=low
 
   * Initial release.
 
- -- Michael Prokop <mika@grml.org>  Tue, 10 Feb 2009 18:45:14 +0100
+ -- Michael Prokop <mprokop@sipwise.com>  Tue, 10 Feb 2009 18:45:14 +0100
