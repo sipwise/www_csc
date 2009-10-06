@@ -171,6 +171,7 @@ sub save : Local {
     } else {
         $messages{toperr} = 'Client.Voip.InputErrorFound';
         $c->session->{messages} = \%messages;
+        $refill{id} = $c->request->params->{id};
         $self->edit($c, \%refill);
         return;
     }
