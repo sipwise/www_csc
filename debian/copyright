@@ -1,22 +1,7 @@
-This package was debianized by Michael Prokop <mika@grml.org> on
-Tue, 10 Feb 2009 18:45:14 +0100.
-
-It was downloaded from http://sipwise.com/
-
-Upstream Author:
-
-    Daniel Tiefnig <dtiefnig@sipwise.com>
-
-Copyright:
-
-    Copyright (c) 2007 Sipwise GmbH, Austria
-
-License:
-
-All software included in this package is Copyright (c) 2007 Sipwise
-GmbH, Austria. All rights reserved.
-You may not copy, distribute or modify without prior written permission
-from Sipwise GmbH, Austria.
-
-The Debian packaging is copyright 2009, Michael Prokop <mika@grml.org> and
-is licensed under the GPL, see `/usr/share/common-licenses/GPL'.
+Upstream Author: The Sipwise Team - http://sipwise.com/
+Copyright:       Copyright (c) 2007-2009 Sipwise GmbH, Austria
+License:         All software included in this package is
+                 Copyright (c) Sipwise GmbH, Austria.
+                 All rights reserved. You may not copy, distribute
+                 or modify without prior written permission from
+                 Sipwise GmbH, Austria.
