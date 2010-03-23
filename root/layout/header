@@ -4,28 +4,17 @@
       <h1><a href="http://[% Catalyst.config.site_config.company.webserver %]/" title="home"><img src="[% Catalyst.config.site_config.company.logo %]" width="192" height="44" alt="[% Catalyst.config.site_config.company.name %]" /></a></h1>
 
       <ul id="menusmall">
-        <li><a href="impressum.html">Impressum</a></li>
-        <li><a href="#">AGB</a></li>
-        <li><a href="kontakt.html">Kontakt</a></li>
         <li class="kundenbereichon"><a href="/logout">logout</a></li>
       </ul>
       <ul id="specialmenu">
         <li>Angemeldet als <strong>[% subscriber.username %]</strong></li> 
       </ul>
-<!--
-      <p id="hotline">
-        HOTLINE: <strong>[% Catalyst.config.site_config.company.hotline %]</strong>
-      </p>
--->
 
 [% IF subscriber.username %]
       <ul id="menu">
         <li [% 'class="on"' IF template.title == "desktop" %]><a href="/desktop">Desktop</a></li>
         <li [% 'class="on"' IF template.title == "calllist" %]><a href="/calllist">Anrufe</a></li>
         <li [% 'class="on"' IF template.title == "voicebox" %]><a href="/voicebox">Voicemail</a></li>
-<!--
-        <li [% 'class="on"' IF template.title == "sms" %]><a href="/sms">SMS</a></li> 
--->
         <li [% 'class="on"' IF template.title == "addressbook" %]><a href="/addressbook">Kontakte</a></li>
         <li [% 'class="on"' IF template.title == "callforward" %]><a href="/callforward">Rufumleitung</a></li>
         <li [% 'class="on"' IF template.title == "callblock" %]><a href="/callblock">Rufnummernsperre</a></li>

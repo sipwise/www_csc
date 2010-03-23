@@ -20,7 +20,7 @@
             <input type="text" class="input20 sipuri required" size="20" id="fsipuri" name="fsipuri" value="[% refill.sipuri %]" />
             <span class="sipuri">@[% Catalyst.session.user.domain %]</span><br clear="all" />
             <p class="anmeldeninfo">
-              Ein SIP-URI ist eine weltweit eindeutige ID, ähnlich einer E-Mail Adresse. Sie wird für den Login in den Kundenbereich der Libratel Webseite verwendet und identifiziert auch VoIP fähigen Endgeräte.
+              Ein SIP-URI ist eine weltweit eindeutige ID, ähnlich einer E-Mail Adresse. Sie wird für den Login in den Kundenbereich der Webseite verwendet und identifiziert auch VoIP fähigen Endgeräte.
             </p>
             <div id="errormsg"><p>[% messages.msgsipuri %]</p></div>
           </fieldset><br clear="all" />
@@ -37,7 +37,7 @@
             </p>
             <br clear="all" />
             <p class="anmeldeninfo">
-              Das Passwort wird für den Login in den Kundenbereich der Libratel Webseite und um VoIP fähige Endgeräte zu authentifizieren benötigt.
+              Das Passwort wird für den Login in den Kundenbereich der Webseite und um VoIP fähige Endgeräte zu authentifizieren benötigt.
             </p>
             <div id="errormsg"><p>[% messages.msgpasswd %]</p></div>
           </fieldset><br clear="all" />

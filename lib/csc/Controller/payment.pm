@@ -21,7 +21,7 @@ Catalyst Controller.
 sub index : Private {
     my ( $self, $c ) = @_;
 
-    $c->response->redirect('http://www.libratel.at/')
+    $c->response->redirect('/')
         unless defined $c->request->params->{sk} and
                $c->request->params->{sk} eq $c->session->{shop}{session_key};
 
@@ -56,7 +56,7 @@ sub dopay_eps : Local {
 
     $c->log->debug('***payment::dopay_eps called');
 
-    $c->response->redirect('http://www.libratel.at/')
+    $c->response->redirect('/')
         unless defined $c->request->params->{sk} and
                $c->request->params->{sk} eq $c->session->{shop}{session_key};
 
@@ -116,7 +116,7 @@ sub dopay_elv : Local {
 
     $c->log->debug('***payment::dopay_elv called');
 
-    $c->response->redirect('http://www.libratel.at/')
+    $c->response->redirect('/')
         unless defined $c->request->params->{sk} and
                $c->request->params->{sk} eq $c->session->{shop}{session_key};
 
@@ -170,7 +170,7 @@ sub dopay_cc : Local {
 
     $c->log->debug('***payment::dopay_cc called');
 
-    $c->response->redirect('http://www.libratel.at/')
+    $c->response->redirect('/')
         unless defined $c->request->params->{sk} and
                $c->request->params->{sk} eq $c->session->{shop}{session_key};
 
@@ -243,7 +243,7 @@ sub dopay_maestro : Local {
 
     $c->log->debug('***payment::dopay_maestro called');
 
-    $c->response->redirect('http://www.libratel.at/')
+    $c->response->redirect('/')
         unless defined $c->request->params->{sk} and
                $c->request->params->{sk} eq $c->session->{shop}{session_key};
 
@@ -304,7 +304,7 @@ sub dopay_paypal : Local {
 
     $c->log->debug('***payment::dopay_paypal called');
 
-    $c->response->redirect('http://www.libratel.at/')
+    $c->response->redirect('/')
         unless defined $c->request->params->{sk} and
                $c->request->params->{sk} eq $c->session->{shop}{session_key};
 
@@ -424,7 +424,7 @@ sub success : Local {
     }
 
     if($$payment{transaction_type} eq 'credit') {
-        $c->response->redirect('https://csc.libratel.at/account/success?tid='. $$payment{id});
+        $c->response->redirect('/account/success?tid='. $$payment{id});
         return;
     }
 
@@ -467,15 +467,15 @@ sub error : Local {
         if($c->session->{shop}{session_key}) {
             $c->response->redirect('/payment?sk='. $c->session->{shop}{session_key});
         } elsif($c->session->{payment}{amount}) {
-            $c->response->redirect('https://csc.libratel.at/account/error?tid='. $c->request->params->{TID});
+            $c->response->redirect('/account/error?tid='. $c->request->params->{TID});
         } else {
-            $c->response->redirect('http://'. $c->config->{www_server});
+            $c->response->redirect('http://'. $c->config->{site_config}{company}{webserver});
         }
         return;
     }
 
     if($$payment{transaction_type} eq 'credit') {
-        $c->response->redirect('https://csc.libratel.at/account/error?tid='. $$payment{id});
+        $c->response->redirect('/account/error?tid='. $$payment{id});
         return;
     }
 
@@ -489,9 +489,9 @@ sub error : Local {
         if($c->session->{shop}{session_key}) {
             $c->response->redirect('/payment?sk='. $c->session->{shop}{session_key});
         } elsif($c->session->{payment}{amount}) {
-            $c->response->redirect('https://csc.libratel.at/account/error?tid='. $c->request->params->{TID});
+            $c->response->redirect('/account/error?tid='. $c->request->params->{TID});
         } else {
-            $c->response->redirect('http://'. $c->config->{www_server});
+            $c->response->redirect('http://'. $c->config->{site_config}{company}{webserver});
         }
         return;
     }

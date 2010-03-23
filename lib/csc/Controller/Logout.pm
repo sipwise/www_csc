@@ -25,7 +25,7 @@ sub index : Private {
     my ( $self, $c ) = @_;
 
     $c->logout;
-    $c->response->redirect('http://'.$c->config->{www_server}.'/');
+    $c->response->redirect('/');
 }
 
 

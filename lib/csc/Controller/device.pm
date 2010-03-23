@@ -7,8 +7,6 @@ use csc::Utils;
 
 use Data::Dumper;
 
-my $sync_url = 'http://autoconf.libratel.eu/autoconf/init';
-
 =head1 NAME
 
 csc::Controller::device - Catalyst Controller
@@ -342,7 +340,7 @@ sub spa : Local
 
 			# show synch link and set config window inactive	
 			$c->session->{dev}{spa}{sync} = 'http://'.$c->session->{dev}{spa}{ip}.
-					'/admin/resync?'.$sync_url.'?mac=$MA';
+					'/admin/resync?'.$c->config->{cpe_autoconf_url}.'?mac=$MA';
 			$c->session->{dev}{spa}{active} = 0;
 
 			# now, show config of next phone if available
@@ -604,7 +602,7 @@ sub phone : Local
 		$phone->{configured} = 1;
 		$phone->{active} = 0;
 		$phone->{sync} = 'http://'.$phone->{ip}.
-			'/admin/resync?'.$sync_url.'?mac=$MA';
+			'/admin/resync?'.$c->config->{cpe_autoconf_url}.'?mac=$MA';
 
 		$c->session->{dev}{currentphone}++;
 		if(defined $c->session->{dev}{spa}{children}[$c->session->{dev}{currentphone}])

@@ -2,13 +2,14 @@
 
     <div id="head">
 
-      <h1><a href="http://[% Catalyst.config.www_server %]/" title="zur Startseite"><img src="[% Catalyst.config.site_config.company.logo %]" width="192" height="44" alt="[% Catalyst.config.site_config.company.name %]" /></a></h1>
+      <h1>
+        <a href="http://[% Catalyst.config.site_config.company.webserver %]/" title="[% Catalyst.config.site_config.company.name %]">
+          <img src="[% Catalyst.config.site_config.company.logo %]" width="192" height="44" alt="[% Catalyst.config.site_config.company.name %]" />
+        </a>
+      </h1>
 
       <ul id="menusmall">
-        <li><a href="http://[% Catalyst.config.www_server %]/impressum.html">Impressum</a></li>
-        <li><a href="http://[% Catalyst.config.www_server %]/agb.html">AGB</a></li>
-        <li><a href="http://[% Catalyst.config.www_server %]/kontakt.html">Kontakt</a></li>
-        <li class="kundenbereich"><a href="https://csc.libratel.at/login">Kundenbereich</a></li>
+        <li class="kundenbereich"><a href="/login">Kundenbereich</a></li>
       </ul>
 
       <p id="hotline">
@@ -16,21 +17,7 @@
       </p>
     
       <ul id="menu">
-        <li><a href="http://[% Catalyst.config.www_server %]/">Startseite</a></li>
-        [% UNLESS template.title == 'Libratel CSC Login' %]
-          <li><a href="http://[% Catalyst.config.www_server %]/einfuehrung.html">Einführung</a></li>
-
-          <li><a href="http://[% Catalyst.config.www_server %]/tarife.html">Tarife</a></li>
-          <li><a href="http://[% Catalyst.config.www_server %]/rufnummern.html">Rufnummern</a></li>
-          <li>
-            <a href="http://[% Catalyst.config.www_server %]/prod_bus_single.html">Lösungen</a>
-          </li> 
-          <li [% 'class="on"' IF template.title == "Libratel Webshop" 
-                                 || template.title == "payment" %]>
-            <a href="http://[% Catalyst.config.www_server %]/shop/hardware">Shop</a>
-          </li> 
-          <li><a href="http://[% Catalyst.config.www_server %]/faq.html">FAQ</a></li>
-        [% END %]
+        <li><a href="http://[% Catalyst.config.site_config.company.webserver %]/">Startseite</a></li>
       </ul>
     </div>
       

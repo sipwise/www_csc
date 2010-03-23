@@ -127,24 +127,6 @@
           </p>
           <br clear="all" />
 
-<!--
-          <h3>Wichtige Kontakte</h3>
-          <p class="rufumleitunginfo">Coming soon</p><br />
--->
-          <div class="hplistsmall">
-            <h3>Shop</h3>
-            <h2><a href="#">Siemens Gigaset C450 IP</a></h2>
-            <p>
-              <a href="#"><img src="img/telefonshop.jpg" width="191" height="112" alt="Siemens Gigaset" /></a>
-            </p>
-            <p align="justify">
-                Siemens Gigaset IP kombiniert den Komfort herkömmlicher Telefone mit den Vorteilen der VoIP Technologie.
-            </p>
-            <p>
-              <a href="#" class="link">mehr Infos</a>
-            </p>
-          </div>
-
         </div>
         <div class="spalte3">
 
@@ -201,20 +183,6 @@
             <a href="/voicebox" class="link">Alle Voicemails</a>
           </p>
           <br clear="all" />
-
-          <div class="hplistsmall">
-            <h3>Shop</h3>
-            <h2><a href="#">Siemens Gigaset C450 IP</a></h2>
-            <p>
-              <a href="#"><img src="img/telefonshop.jpg" width="191" height="112" alt="Siemens Gigaset" /></a>
-            </p>
-            <p align="justify">
-              Siemens Gigaset IP kombiniert den Komfort herkömmlicher Telefone mit den Vorteilen der VoIP Technologie.
-            </p>
-            <p>
-              <a href="#" class="link">mehr Infos</a>
-            </p>
-          </div>
 
         </div>
 

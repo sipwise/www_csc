@@ -1,4 +1,4 @@
-[% META title = 'Libratel CSC Login' %]
+[% META title = 'CSC Login' %]
 
   <div id="headimg">
     <img src="/grafik/area_login.jpg" width="869" height="69" alt="Bitte melden Sie sich an." />

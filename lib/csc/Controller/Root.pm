@@ -39,21 +39,18 @@ sub auto : Private {
     $c->log->debug('***Root::auto controller is: '. $c->controller);
 
     # Allow unauthenticated users to reach the front page and login.
-    if ($c->controller =~ /^csc::Controller::Root\b/
-        or $c->controller =~ /^csc::Controller::Login\b/
+    if ($c->controller =~ /^csc::Controller::Login\b/
         or $c->controller =~ /^csc::Controller::autoconf\b/
-        or $c->controller =~ /^csc::Controller::registration\b/
-        or $c->controller =~ /^csc::Controller::shop\b/
         or $c->controller =~ /^csc::Controller::payment\b/)
     {
-        $c->log->debug('***Root::auto front page or login access granted.');
+        $c->log->debug('***Root::auto login access granted.');
         return 1;
     }
 
     # If a user doesn't exist, force login
     if (!$c->user_exists) {
-        $c->log->debug('***Root::auto User not found, forwarding to /');
-        $c->response->redirect($c->uri_for('/'));
+        $c->log->debug('***Root::auto User not found, forwarding to /login');
+        $c->response->redirect($c->uri_for('/login'));
         return 0;
     }
 
@@ -62,15 +59,6 @@ sub auto : Private {
 
 sub default : Private {
     my ( $self, $c ) = @_;
-
-    # redirect for operation
-    unless($c->config->{development}) {
-        my $wwwserver = $c->config->{www_server};
-        unless($c->request->{headers}{host} =~ /^$wwwserver$/i) {
-            $c->response->redirect('http://'.$c->config->{www_server}.'/');
-            return;
-        }
-    }
 
     $c->log->debug("***Root::default path is: ". $c->req->path);
     if($c->req->path =~ m#/#) {
