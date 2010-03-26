@@ -139,7 +139,7 @@ sub index : Private {
     my ($sdate, $edate);
     if(!defined $liststart and !defined $listend) {
         $sdate = $edate = { year => $callyear, month => $callmonth };
-        $c->stash->{subscriber}{call_range} = $localized_months[$callmonth] .' 2007';
+        $c->stash->{subscriber}{call_range} = $localized_months[$callmonth] .' '. $callyear;
     } else {
         if(defined $liststart) {
             my ($day, $month, $year) = split /\./, $liststart;
@@ -215,7 +215,7 @@ Daniel Tiefnig <dtiefnig@sipwise.com>
 
 =head1 COPYRIGHT
 
-The calllist controller is Copyright (c) 2007 Sipwise GmbH, Austria. All
+The calllist controller is Copyright (c) 2007-2010 Sipwise GmbH, Austria. All
 rights reserved.
 
 =cut

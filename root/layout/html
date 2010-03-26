@@ -6,7 +6,7 @@
 
   <title>[% template.title or Catalyst.config.site_config.title %]</title>
 
-  [% FOREACH css_file = site_config.css %]
+  [% FOREACH css_file = Catalyst.config.site_config.css %]
     <link rel="stylesheet" type="text/css" href="[% css_file %]" />
   [% END %]
 

@@ -30,33 +30,6 @@
           [% END %]
         </h3>
 
-<!--        <form class="anruflistenummer" action="">
-          <select>
-            <option>Alle Telefonnummern</option>
-            <option>0043 / 1 / 244 56 78 - 10</option>
-            <option>0043 / 1 / 244 56 78 - 20</option>
-            <option>0043 / 1 / 244 56 78 - 30</option>
-            <option>0043 / 1 / 244 56 78 - 40</option>
-            <option>0043 / 1 / 244 56 78 - 50</option>
-          </select>
-        </form>
--->
-<!--        <p class="anruflisteordnen">
-          Set: &nbsp;
-          <a href="#" class="on">1</a> 
-          <a href="#">2</a> 
-          <a href="#">3</a> 
-          <a href="#">4</a> 
-          <a href="#">5</a>
-          &nbsp;
-          <nobr>
-            <a href="#" class="on"><img src="grafik/anruf_alle_small.gif" width="14" height="13" alt="alle Anrufe"> alle</a> 
-            <a href="#"><img src="grafik/anruf_ein_small.gif" width="14" height="13" alt="eingehender Anruf"> eingehende</a> 
-            <a href="#"><img src="grafik/anruf_aus_small.gif" width="14" height="13" alt="ausgehender Anruf"> ausgehende</a> 
-            <a href="#"><img src="grafik/anruf_error_small.gif" width="14" height="13" alt="Anruf in Abwensenheit"> abwesend</a>
-          </nobr>
-        </p>
--->
         <p class="anruflisteordnen">
           <img src="/grafik/anruf_ein_small.gif" width="14" height="13" alt="eingehender Anruf"> eingehend
           <img src="/grafik/anruf_ein_err_small.gif" width="14" height="13" alt="eingehender Anruf"> abwesend
@@ -137,7 +110,7 @@
       </div>
       <div class="spalte2">
 
-        <div class="container">
+        <div class="search_container">
 
           <h3>Suche</h3>
 
@@ -156,8 +129,6 @@
             <div class="save">
               <label for="calllist_apply_filter">Filter anwenden</label>
               <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="calllist_apply_filter" />
-
-              <label for="calllist_reset_filter">Filter zurücksetzen</label>
             </div>
             <input type="hidden" name="listmonth" value="[% subscriber.list_month %]" />
           </form>
@@ -167,10 +138,12 @@
             <input type="hidden" name="list_end" value="" />
             <input type="hidden" name="list_filter" value="" />
             <input type="hidden" name="listmonth" value="[% subscriber.list_month %]" />
-            <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="calllist_reset_filter">
+            <div class="save">
+              <label for="calllist_reset_filter">Filter zurücksetzen</label>
+              <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="calllist_reset_filter">
+            </div>
           </form>
 
-          <br clear="all" />
         </div>
 
         <h3>Anrufe nach Monaten</h3>

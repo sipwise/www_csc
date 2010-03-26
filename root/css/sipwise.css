@@ -76,6 +76,16 @@
    white-space: nowrap;
 }
 
+/* spacing for small calllist and voicemaillist search forms */
+.search_container {
+    width: auto;
+    margin-bottom: 40px;
+}
+
+#anrufsuchereset .save label {
+    margin-top: 4px !important;
+}
+
 /* center alignment for contact list */
 .kontaktliste td {
    vertical-align: middle;

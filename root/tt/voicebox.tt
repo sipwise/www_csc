@@ -131,7 +131,7 @@
       </div>
       <div class="spalte2">
 
-        <div class="container">
+        <div class="search_container">
 
           <h3>Suche</h3>
 
@@ -150,8 +150,6 @@
             <div class="save">
               <label for="voicebox_apply_filter">Filter anwenden</label>
               <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="voicebox_apply_filter" />
-
-              <label for="voicebox_reset_filter">Filter zurücksetzen</label>
             </div>
             <input type="hidden" name="listmonth" value="[% subscriber.list_month %]" />
           </form>
@@ -161,7 +159,10 @@
             <input type="hidden" name="list_end" value="" />
             <input type="hidden" name="list_filter" value="" />
             <input type="hidden" name="listmonth" value="[% subscriber.list_month %]" />
-            <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="voicebox_reset_filter">
+            <div class="save">
+              <label for="voicebox_reset_filter">Filter zurücksetzen</label>
+              <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="voicebox_reset_filter">
+            </div>
           </form>
 
         </div>
