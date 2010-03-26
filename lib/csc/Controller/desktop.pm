@@ -31,13 +31,39 @@ sub index : Private {
 
     return 1 unless $c->model('Provisioning')->get_usr_preferences($c);
     return 1 unless $c->model('Provisioning')->get_call_list($c);
-    return 1 if $c->session->{user}{admin} and ! $c->model('Provisioning')->get_account_balance($c);
     return 1 unless $c->model('Provisioning')->get_voicemails_by_limit($c);
 
     if($c->session->{user}{admin}) {
-        $c->stash->{subscriber}{account}{cash_balance} = sprintf "%.2f", $c->session->{user}{account}{cash_balance} / 100;
-        $c->stash->{subscriber}{account}{free_time_balance} = int($c->session->{user}{account}{free_time_balance} / 60);
+        my $acct;
+        return 1 unless $c->model('Provisioning')->call_prov($c, 'billing', 'get_voip_account_by_id',
+                                                             { id => $c->session->{user}{data}{account_id} },
+                                                             \$acct
+                                                            );
+        my $bilprof = {};
+        if(eval { defined $$acct{billing_profile} }) {
+            return 1 unless $c->model('Provisioning')->call_prov($c, 'billing', 'get_billing_profile',
+                                                                 { handle => $$acct{billing_profile} },
+                                                                 \$bilprof
+                                                                );
+        }
+        return 1 unless $c->model('Provisioning')->get_account_balance($c);
+        # set cash balance if account or billing profile depends on or has some credits
+        if($$bilprof{data}{prepaid}
+           or $$bilprof{data}{interval_free_cash}
+           or $c->session->{user}{account}{cash_balance})
+        {
+            $c->stash->{subscriber}{account}{cash_balance} = sprintf "%.2f", $c->session->{user}{account}{cash_balance} / 100;
+            $c->stash->{show_cash_balance} = 1;
+        }
+        # set free time balance if account or billing profile has some free time
+        if($$bilprof{data}{interval_free_time}
+           or $c->session->{user}{account}{free_time_balance})
+        {
+            $c->stash->{subscriber}{account}{free_time_balance} = int($c->session->{user}{account}{free_time_balance} / 60);
+            $c->stash->{show_free_time_balance} = 1;
+        }
     }
+
     $c->stash->{subscriber}{call_list} = csc::Utils::prepare_call_list($c, $c->session->{user}{call_list}, 0)
         if @{$c->session->{user}{call_list}};
     delete $c->session->{user}{call_list} if exists $c->session->{user}{call_list};
