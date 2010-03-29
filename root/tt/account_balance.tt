@@ -23,7 +23,7 @@
 
               <p class="save">
                 <label for="save_settings">weiter</label>
-                <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="save_settings">
+                <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_settings">
               </p>
            </fieldset>
           </form><br clear="all" />

@@ -28,7 +28,7 @@
           <label for="addrbook_new">Neuen Kontakt erstellen</label>
           <form action="/addressbook/edit" method="post">
             <input type="hidden" name="addrbook_id" value="0" />
-            <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="addrbook_new" />
+            <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="addrbook_new" />
           </form>
         </p>
         <p class="anruflisteordnen">
@@ -176,7 +176,7 @@
           <label for="fsuchbegriff">Suchbegriff</label><br />
           <input type="text" id="ffilter" name="filter" size="21" class="input21" value="[% filter %]" />
           <br clear="all" />
-          <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="addrbook_filter" />
+          <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="addrbook_filter" />
           <div class="save"><label for="addrbook_filter">Filter anwenden</label></div>
         </form>
 

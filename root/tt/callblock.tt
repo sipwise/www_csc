@@ -33,7 +33,7 @@
               <input type="radio" id="block_in_mode1" name="block_in_mode" value="1" [% subscriber.blk.inmode1_checked %] />
               <label for="block_in_mode1">Alles sperren ausser ...</label>
               <p class="save">
-                <label for="save_blockinmode">Einstellung speichern</label><input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="save_blockinmode">
+                <label for="save_blockinmode">Einstellung speichern</label><input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_blockinmode">
               </p>
             </form>
           </fieldset>
@@ -48,7 +48,7 @@
                       <input type="hidden" name="block_in_del" value="[% blockentry.number %]" />
                       <input type="hidden" name="block_in_stat" value="[% blockentry.active %]" />
                       <label for="save_blockindel[% blockentry.id %]">löschen</label>
-                      <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="save_blockindel[% blockentry.id %]">
+                      <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_blockindel[% blockentry.id %]">
                     </div>
                   </form>
                 </td>
@@ -59,12 +59,12 @@
                         <input type="hidden" name="block_in_act" value="[% blockentry.number %]" />
                         <input type="hidden" name="block_in_stat" value="1" />
                         <label for="save_blockinact[% blockentry.id %]">deaktivieren</label>
-                        <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="save_blockinact[% blockentry.id %]">
+                        <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_blockinact[% blockentry.id %]">
                       [% ELSIF blockentry.active  == 0 %]
                         <input type="hidden" name="block_in_act" value="[% blockentry.number %]" />
                         <input type="hidden" name="block_in_stat" value="0" />
                         <label for="save_blockinact[% blockentry.id %]">aktivieren</label>
-                        <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="save_blockinact[% blockentry.id %]">
+                        <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_blockinact[% blockentry.id %]">
                       [% END %]
                     </div>
                   </form>
@@ -79,7 +79,7 @@
               <input type="text" size="20" name="block_in_add" id="save_blockinaddtxt" value="[% refill.blockinaddtxt %]" />
               <div id="errormsg"><p>[% messages.msginadd %]</p></div>
               <p class="save">
-                <label for="save_blockinadd">Nummer hinzufügen</label><input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="save_blockinadd">
+                <label for="save_blockinadd">Nummer hinzufügen</label><input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_blockinadd">
               </p><br clear="all" />
               <p class="info">
                 Bitte verwenden Sie nur Ziffern und "?" als Platzhalter für eine, bzw. "*" für mehrere beliebige Ziffer(n) in der Rufnummer. Um Anrufe mit unterdrückter Rufnummer hinzuzufügen, müssen Sie das Eingabefeld einfach leer lassen.
@@ -106,7 +106,7 @@
               <input type="radio" id="block_out_mode1" name="block_out_mode" value="1" [% subscriber.blk.outmode1_checked %] />
               <label for="block_out_mode1">Alles sperren ausser ...</label>
               <p class="save">
-                <label for="save_blockoutmode">Einstellung speichern</label><input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="save_blockoutmode">
+                <label for="save_blockoutmode">Einstellung speichern</label><input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_blockoutmode">
               </p>
             </form>
           </fieldset>
@@ -121,7 +121,7 @@
                       <input type="hidden" name="block_out_del" value="[% blockentry.number %]" />
                       <input type="hidden" name="block_out_stat" value="[% blockentry.active %]" />
                       <label for="save_blockoutdel[% blockentry.id %]">löschen</label>
-                      <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="save_blockoutdel[% blockentry.id %]">
+                      <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_blockoutdel[% blockentry.id %]">
                     </div>
                   </form>
                 </td>
@@ -132,12 +132,12 @@
                         <input type="hidden" name="block_out_act" value="[% blockentry.number %]" />
                         <input type="hidden" name="block_out_stat" value="1" />
                         <label for="save_blockoutact[% blockentry.id %]">deaktivieren</label>
-                        <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="save_blockoutact[% blockentry.id %]">
+                        <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_blockoutact[% blockentry.id %]">
                       [% ELSIF blockentry.active  == 0 %]
                         <input type="hidden" name="block_out_act" value="[% blockentry.number %]" />
                         <input type="hidden" name="block_out_stat" value="0" />
                         <label for="save_blockoutact[% blockentry.id %]">aktivieren</label>
-                        <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="save_blockoutact[% blockentry.id %]">
+                        <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_blockoutact[% blockentry.id %]">
                       [% END %]
                     </div>
                   </form>
@@ -151,7 +151,7 @@
               <input type="text" size="20" name="block_out_add" id="save_blockoutaddtxt" value="[% refill.blockoutaddtxt %]" />
               <div id="errormsg"><p>[% messages.msgoutadd %]</p></div>
               <p class="save">
-                <label for="save_blockoutadd">Nummer hinzufügen</label><input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="save_blockoutadd">
+                <label for="save_blockoutadd">Nummer hinzufügen</label><input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_blockoutadd">
               </p><br clear="all" />
               <p class="info">
                 Bitte verwenden Sie nur Ziffern und "?" als Platzhalter für eine, bzw. "*" für mehrere beliebige Ziffer(n) in der Rufnummer.

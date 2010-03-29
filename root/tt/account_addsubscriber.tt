@@ -47,6 +47,6 @@
           </fieldset><br clear="all" />
 
           <p class="save">
-            <label for="create_account">Benutzer erstellen</label><input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="create_account">
+            <label for="create_account">Benutzer erstellen</label><input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="create_account">
           </p>
           </form><br clear="all" />

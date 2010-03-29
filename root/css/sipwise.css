@@ -170,6 +170,11 @@
    background: url(/grafik/dot_orange.gif) left bottom repeat-x;
 }
 
+/* hidden post label images */
+.hidden {
+   display: none !important;
+}
+
 /* alignment for contact entry save label */
 #main .kontaktlistebig .save {
    text-align: right;

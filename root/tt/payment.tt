@@ -26,7 +26,7 @@
 
               <p class="save">
                 <label for="go_elv">Bankeinzug veranlassen</label>
-                <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="go_elv">
+                <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="go_elv">
               </p>
 
               [% IF mpay24_errors.elv %]
@@ -99,7 +99,7 @@
 
               <p class="save">
                 <label for="go_credit">Kreditkartenzahlung vornehmen</label>
-                <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="go_credit">
+                <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="go_credit">
               </p>
 
               [% IF mpay24_errors.cc %]<br /><div id="errormsg"><p>[% mpay24_errors.cc %]</p></div>[% END %]
@@ -154,7 +154,7 @@
 
               <p class="save">
                 <label for="go_eps">Mit E-Banking forfahren</label>
-                <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="go_eps">
+                <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="go_eps">
               </p>
 
               [% IF mpay24_errors.eps %]<br /><div id="errormsg"><p>[% mpay24_errors.eps %]</p></div>[% END %]
@@ -221,7 +221,7 @@
 
               <p class="save">
                 <label for="go_maestro">Bankomatisch bezahlen</label>
-                <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="go_maestro">
+                <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="go_maestro">
               </p>
 
               [% IF mpay24_errors.maestro %]<br /><div id="errormsg"><p>[% mpay24_errors.maestro %]</p></div>[% END %]
@@ -244,7 +244,7 @@
 
               <p class="save">
                 <label for="go_paypal">Zur PayPal Webseite</label>
-                <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="go_paypal">
+                <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="go_paypal">
               </p>
 
             </form>

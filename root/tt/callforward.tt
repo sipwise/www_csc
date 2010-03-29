@@ -90,7 +90,7 @@
 
 <!--              <input type="submit" name="save" value="Einstellungen speichern"> -->
             <p class="save">
-              <label for="save_settings">Einstellungen speichern</label><input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="save_settings">
+              <label for="save_settings">Einstellungen speichern</label><input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_settings">
             </p>
           </form><br clear="all" />
 

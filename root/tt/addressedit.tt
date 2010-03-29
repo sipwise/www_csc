@@ -73,7 +73,7 @@
           <input type="hidden" name="id" value="[% contact.id %]" />
 
           <p class="save umleitung">
-            <label for="save_contact">Kontakt speichern</label><input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="save_contact">
+            <label for="save_contact">Kontakt speichern</label><input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_contact">
           </p>
         </form><br clear="all" />
 

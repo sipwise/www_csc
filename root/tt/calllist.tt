@@ -126,7 +126,7 @@
 
             <div class="save">
               <label for="calllist_apply_filter">Filter anwenden</label>
-              <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="calllist_apply_filter" />
+              <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="calllist_apply_filter" />
             </div>
             <input type="hidden" name="listmonth" value="[% subscriber.list_month %]" />
           </form>
@@ -138,7 +138,7 @@
             <input type="hidden" name="listmonth" value="[% subscriber.list_month %]" />
             <div class="save">
               <label for="calllist_reset_filter">Filter zurücksetzen</label>
-              <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="calllist_reset_filter">
+              <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="calllist_reset_filter">
             </div>
           </form>
 
@@ -154,7 +154,7 @@
             <form action="/calllist" method="post">
               <div class="save">
               <label for="selmon_[% selectmonth.link %]">[% selectmonth.display %]</label>
-              <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" id="selmon_[% selectmonth.link %]" />
+              <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="selmon_[% selectmonth.link %]" />
               </div><br clear="all" />
               <input type="hidden" name="listmonth" value="[% selectmonth.link %]" />
             </form>

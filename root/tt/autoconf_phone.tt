@@ -80,7 +80,7 @@
                         [% IF morephones == 1 %]
                         <div class="aconflinkbold">
                             <label for="fnext">Weiteres Telefon konfigurieren</label>
-                            <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" class="noborder" id="fnext" name="fnext" value="1"/>
+                            <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="fnext" name="fnext" value="1"/>
                         </div>
                         <br/>
                         oder
@@ -88,7 +88,7 @@
                         [% END %]
                         <div class="aconflinkbold">
                             <label for="fdone">Konfiguration fertigstellen</label>
-                            <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" class="noborder" id="fdone" name="fdone" value="1"/>
+                            <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="fdone" name="fdone" value="1"/>
                         </div>
 
 

@@ -6,7 +6,7 @@
               <p class="subscribernew">
                 <label for="subscriber_new">Neuen Benutzer erstellen</label>
                 <form action="/account/addsubscriber" method="post">
-                  <input type="image" width="0" height="0" src="/grafik/dot_trans.gif" alt="" class="noborder" id="subscriber_new" />
+                  <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" class="noborder" id="subscriber_new" />
                 </form>
               </p>
             </fieldset>
