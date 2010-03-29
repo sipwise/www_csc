@@ -138,7 +138,8 @@ sub index : Private {
 
     my ($sdate, $edate);
     if(!defined $liststart and !defined $listend) {
-        $sdate = $edate = { year => $callyear, month => $callmonth };
+        $sdate = { year => $callyear, month => $callmonth };
+        $edate = { year => $callyear, month => $callmonth };
         $c->stash->{subscriber}{call_range} = $localized_months[$callmonth] .' '. $callyear;
     } else {
         if(defined $liststart) {
@@ -166,7 +167,16 @@ sub index : Private {
         }
     }
 
-    unless($c->model('Provisioning')->get_calls_by_date($c, $sdate, $edate)) {
+    unless($c->model('Provisioning')->call_prov($c, 'voip', 'get_subscriber_calls',
+                                                { username => $c->session->{user}{username},
+                                                  domain   => $c->session->{user}{domain},
+                                                  filter   => { start_date => $sdate,
+                                                                end_date   => $edate,
+                                                              }
+                                                },
+                                                \$c->session->{user}{call_list}
+                                               ))
+    {
         delete $c->session->{user}{call_list} if exists $c->session->{user}{call_list};
         return 1;
     }

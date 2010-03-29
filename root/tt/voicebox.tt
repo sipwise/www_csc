@@ -25,32 +25,8 @@
       <div class="spalte1">
 
         <h3>
-          [% subscriber.call_range %]
-          [% IF subscriber.call_filter %]
-            , <span class="anruffilter">Filter: [% subscriber.call_filter %]</span>
-          [% END %]
+          [% subscriber.call_range %][% IF subscriber.call_filter %], <span class="anruffilter">Filter: [% subscriber.call_filter %]</span>[% END %]
         </h3>
-
-<!--        <form class="anruflistenummer" action="">
-          <select>
-            <option>Alle Telefonnummern</option>
-            <option>0043 / 1 / 244 56 78 - 10</option>
-            <option>0043 / 1 / 244 56 78 - 20</option>
-            <option>0043 / 1 / 244 56 78 - 30</option>
-            <option>0043 / 1 / 244 56 78 - 40</option>
-            <option>0043 / 1 / 244 56 78 - 50</option>
-          </select>
-        </form>
--->
-<!--        <p class="anruflisteordnen">
-          Set: &nbsp;
-          <a href="#" class="on">1</a> 
-          <a href="#">2</a> 
-          <a href="#">3</a> 
-          <a href="#">4</a> 
-          <a href="#">5</a>
-        </p>
--->
 
         <table class="anrufliste voicemaillistebig">
 

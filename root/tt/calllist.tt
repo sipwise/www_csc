@@ -25,10 +25,7 @@
       <div class="spalte1">
 
         <h3>
-          [% subscriber.call_range %]
-          [% IF subscriber.call_filter %]
-            , <span class="anruffilter">Filter: [% subscriber.call_filter %]</span>
-          [% END %]
+          [% subscriber.call_range %][% IF subscriber.call_filter %], <span class="anruffilter">Filter: [% subscriber.call_filter %]</span>[% END %]
         </h3>
 
         <p class="anruflisteordnen">
