@@ -1,8 +1,9 @@
 [% META title = 'callforward' %]
 
     <div id="headimg">
-      <img src="/grafik/area_rufumleitung.jpg" width="869" height="69" alt="Konfigurieren einer Rufumleitung" />
+      <img src="/grafik/area.jpg" width="869" height="69" alt="" />
     </div>
+    <div id="headtxt">Konfigurieren einer Rufumleitung.</div>
 
     <div id="main">
 

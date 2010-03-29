@@ -1,8 +1,9 @@
 [% META title = 'desktop' %]
 
     <div id="headimg">
-      <img src="/grafik/area_desktop.jpg" width="869" height="69" alt="Willkommen auf Ihrem persönlichen Desktop" />
+      <img src="/grafik/area.jpg" width="869" height="69" alt="" />
     </div>
+    <div id="headtxt">Willkommen auf Ihrem persönlichen Desktop.</div>
 
     <div id="main">
 

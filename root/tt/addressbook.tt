@@ -1,8 +1,9 @@
 [% META title = 'addressbook' %]
 
   <div id="headimg">
-    <img src="/grafik/area_kontakte.jpg" width="869" height="69" alt="Ihre persönlichen Kontakte" />
+    <img src="/grafik/area.jpg" width="869" height="69" alt="" />
   </div>
+  <div id="headtxt">Ihre persönlichen Kontakte.</div>
 
   <div id="main">
 

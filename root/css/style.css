@@ -270,7 +270,7 @@ body.hp {
 	position: absolute;
 	top: 97px;
 	right: 32px;
-	width: 170px;
+	width: auto;
 	height: 19px;
 	text-align: right;
 	margin: 0px;
@@ -287,6 +287,12 @@ body.hp {
 
 #headimg {
 	margin: 0 0 10px 0;
+}
+#headtxt {
+	margin: -61px 0 45px 50px;
+	text-align: Left;
+	font: 18px arial, helvetica;
+	color: #1157AC;
 }
 
 /* 3.6 Special-Menü im internen Bereich (Kontostand, Einstellungen) */

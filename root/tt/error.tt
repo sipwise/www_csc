@@ -1,8 +1,9 @@
 [% META title = 'internal error' %]
 
   <div id="headimg">
-    <img src="/grafik/area_error.jpg" width="869" height="69" alt="Ein Fehler ist aufgetreten." />
+    <img src="/grafik/area.jpg" width="869" height="69" alt="" />
   </div>
+  <div id="headtxt">Ein Fehler ist aufgetreten.</div>
 
   <div id="main">
 

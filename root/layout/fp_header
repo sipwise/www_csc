@@ -4,7 +4,7 @@
 
       <h1>
         <a href="http://[% Catalyst.config.site_config.company.webserver %]/" title="[% Catalyst.config.site_config.company.name %]">
-          <img src="[% Catalyst.config.site_config.company.logo %]" width="192" height="44" alt="[% Catalyst.config.site_config.company.name %]" />
+          <img src="[% Catalyst.config.site_config.company.logo %]" height="44" alt="[% Catalyst.config.site_config.company.name %]" />
         </a>
       </h1>
 
@@ -12,9 +12,11 @@
         <li class="kundenbereich"><a href="/login">Kundenbereich</a></li>
       </ul>
 
+      [% IF Catalyst.config.site_config.company.hotline %]
       <p id="hotline">
-        HOTLINE: <strong>[% Catalyst.config.site_config.company.hotline %]</strong>
+        Hotline: <strong>[% Catalyst.config.site_config.company.hotline %]</strong>
       </p>
+      [% END %]
     
       <ul id="menu">
         <li><a href="http://[% Catalyst.config.site_config.company.webserver %]/">Startseite</a></li>

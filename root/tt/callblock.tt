@@ -1,8 +1,9 @@
 [% META title = 'callblock' %]
 
   <div id="headimg">
-    <img src="/grafik/area_rufnummernsperre.jpg" width="869" height="69" alt="Rufnummernsperre für eingehende und ausgehende Telefonate." />
+    <img src="/grafik/area.jpg" width="869" height="69" alt="" />
   </div>
+  <div id="headtxt">Rufnummernsperre für eingehende und ausgehende Telefonate.</div>
   
   <div id="main">
     

@@ -1,8 +1,9 @@
 [% META title = 'calllist' %]
 
   <div id="headimg">
-    <img src="grafik/area_anrufe.jpg" width="869" height="69" alt="Eingehende, ausgehende und verpasste Anrufe" />
+    <img src="grafik/area.jpg" width="869" height="69" alt="" />
   </div>
+  <div id="headtxt">Eingehende, ausgehende und verpasste Anrufe.</div>
 
   <div id="main">
 

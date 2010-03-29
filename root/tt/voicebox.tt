@@ -1,8 +1,9 @@
 [% META title = 'voicebox' %]
 
   <div id="headimg">
-    <img src="/grafik/area_voicebox.jpg" width="869" height="69" alt="Erhaltene Voicemails" />
+    <img src="/grafik/area.jpg" width="869" height="69" alt="" />
   </div>
+  <div id="headtxt">Gespeicherte Sprachnachrichten.</div>
 
   <div id="main">
 

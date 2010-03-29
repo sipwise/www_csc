@@ -1,8 +1,9 @@
 [% META title = 'device' %]
 
   <div id="headimg">
-    <img src="/grafik/area_device.jpg" width="869" height="69" alt="Test" />
+    <img src="/grafik/area.jpg" width="869" height="69" alt="" />
   </div>
+  <div id="headtxt">Konfigurieren Sie Ihre Endgeräte.</div>
   
   <div id="main">
       

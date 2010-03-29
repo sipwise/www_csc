@@ -1,8 +1,9 @@
 [% META title = 'CSC Login' %]
 
   <div id="headimg">
-    <img src="/grafik/area_login.jpg" width="869" height="69" alt="Bitte melden Sie sich an." />
+    <img src="/grafik/area.jpg" width="869" height="69" alt="" />
   </div>
+  <div id="headtxt">Bitte geben Sie Username und Passwort ein.</div>
 
   <div id="main">
 
