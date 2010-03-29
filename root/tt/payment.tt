@@ -62,12 +62,16 @@
                 </label>
               </p><br /><br clear="all" />
 
-              <label for="fkartennummer">Kartennummer</label>
-              <input type="text" size="20" class="input20" maxlength="16" id="fkartennummer"
-                     name="cardnum" value="[% refill.cc.cardnum %]" />
-              <label for="fkartenpruefnummer">Kartenprüfnummer</label>
-              <input type="text" size="5" class="input5" maxlength="3" id="fkartenpruefnummer"
-                     name="cvc" value="[% refill.cc.cvc %]" />
+              <p class="left">
+                <label for="fkartennummer">Kartennummer</label>
+                <input type="text" size="20" class="input20" maxlength="16" id="fkartennummer"
+                       name="cardnum" value="[% refill.cc.cardnum %]" />
+              </p>
+              <p class="right">
+                <label style="width: auto;" for="fkartenpruefnummer">Kartenprüfnummer</label>
+                <input type="text" size="5" class="input5" maxlength="3" id="fkartenpruefnummer"
+                       name="cvc" value="[% refill.cc.cvc %]" />
+              </p>
               <p class="anmeldennummerinfo">
                 Die Kartenprüfnummer (CVV2/CVC2) befindet sich auf der Rückseite Ihrer Kreditkarte. Bitte tragen Sie die letzten 3 Stellen ein.
               </p><br clear="all" />

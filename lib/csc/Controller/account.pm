@@ -23,7 +23,11 @@ sub index : Private {
 
     $c->log->debug('***account::index called');
 
-    $c->response->redirect('/account/info');
+    if($c->config->{display_account_info}) {
+        $c->response->redirect('/account/info');
+    } else {
+        $c->response->redirect('/account/pass');
+    }
 }
 
 sub info : Local {
@@ -31,7 +35,7 @@ sub info : Local {
 
     $c->log->debug('***account::info called');
 
-    if($c->session->{user}{username} eq 'demonstration') {
+    if($c->session->{user}{username} eq 'demonstration' or ! $c->config->{display_account_info}) {
         $c->response->redirect($c->uri_for('/desktop'));
         return;
     }
@@ -41,7 +45,7 @@ sub info : Local {
         return 1;
     }
 
-    $c->stash->{subscriber}{active_number} = '00'. $c->session->{user}{data}{cc} .
+    $c->stash->{subscriber}{active_number} = '+'. $c->session->{user}{data}{cc} .
                                              ' (0)'. $c->session->{user}{data}{ac} .
                                              ' '. $c->session->{user}{data}{sn};
     if($c->session->{user}{extension}) {
@@ -130,27 +134,15 @@ sub savepass : Local {
             return;
         }
 
-        if($c->model('Provisioning')->call_prov($c, 'billing', 'update_customer',
-                                                { id   => $$account{customer_id},
-                                                  data => { shoppass => $passwd1 },
+        if($c->model('Provisioning')->call_prov($c, 'voip', 'update_webuser_password',
+                                                { webusername => $c->session->{user}{username},
+                                                  domain      => $c->session->{user}{domain},
+                                                  webpassword => $passwd1
                                                 }
                                                ))
         {
-            if($c->model('Provisioning')->call_prov($c, 'voip', 'update_webuser_password',
-                                                    { webusername => $c->session->{user}{username},
-                                                      domain      => $c->session->{user}{domain},
-                                                      webpassword => $passwd1
-                                                    }
-                                                   ))
-            {
-                $messages{topmsg} = 'Server.Voip.SavedPass';
-                $c->session->{user}{password} = $passwd1;
-            } else {
-                $c->model('Provisioning')->call_prov($c, 'billing', 'update_customer',
-                                                     { id   => $$account{customer_id},
-                                                       data => { shoppass => $c->session->{user}{password} }
-                                                     });
-            }
+            $messages{topmsg} = 'Server.Voip.SavedPass';
+            $c->session->{user}{password} = $passwd1;
         }
     }
 
@@ -163,8 +155,8 @@ sub balance : Local {
 
     $c->log->debug('***account::balance called');
 
-    unless($c->session->{user}{admin}) {
-        $c->response->redirect($c->uri_for('/account/info'));
+    unless($c->session->{user}{admin} and $c->config->{payment_features}) {
+        $c->response->redirect('/account');
         return;
     }
 
@@ -187,8 +179,8 @@ sub setpay : Local {
 
     $c->log->debug('***account::setpay called');
 
-    unless($c->session->{user}{admin}) {
-        $c->response->redirect($c->uri_for('/account/info'));
+    unless($c->session->{user}{admin} and $c->config->{payment_features}) {
+        $c->response->redirect('/account');
         return;
     }
 
@@ -234,8 +226,8 @@ sub dopay : Local {
 
     $c->log->debug('***account::dopay called');
 
-    unless($c->session->{user}{admin}) {
-        $c->response->redirect($c->uri_for('/account/info'));
+    unless($c->session->{user}{admin} and $c->config->{payment_features}) {
+        $c->response->redirect('/account');
         return;
     }
 
@@ -972,8 +964,8 @@ Daniel Tiefnig <dtiefnig@sipwise.com>
 
 =head1 COPYRIGHT
 
-The account controller is Copyright (c) 2007 Sipwise GmbH, Austria. All
-rights reserved.
+The account controller is Copyright (c) 2007-2010 Sipwise GmbH, Austria.
+All rights reserved.
 
 =cut
 

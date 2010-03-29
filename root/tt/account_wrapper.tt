@@ -18,10 +18,12 @@
 
         <div class="spalte1">
           <ul class="menueinstellungen">
-            <li [% 'class="on"' IF template.subtitle == "account_info" %]><a href="/account/info">Informationen</a></li>
-            <li [% 'class="on"' IF template.subtitle == "account_pass" %]><a href="/account/pass">Passwort</a></li>
-            [% IF Catalyst.session.user.admin %]
-            <li [% 'class="on"' IF template.subtitle == "account_balance" %]><a href="/account/balance">Kontostand</a></li>
+            [% IF Catalyst.config.display_account_info %]
+              <li [% 'class="on"' IF template.subtitle == "account_info" %]><a href="/account/info">Informationen</a></li>
+            [% END %]
+              <li [% 'class="on"' IF template.subtitle == "account_pass" %]><a href="/account/pass">Passwort</a></li>
+            [% IF Catalyst.config.payment_features && Catalyst.session.user.preferences.prepaid && Catalyst.session.user.admin %]
+              <li [% 'class="on"' IF template.subtitle == "account_balance" %]><a href="/account/balance">Kontostand</a></li>
             [% END %]
           </ul>
 
