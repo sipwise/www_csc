@@ -58,9 +58,11 @@
 
           </table>
 
+          [% IF Catalyst.config.main_menu.calllist %]
           <p>
             <a href="/calllist" class="link">Alle Telefonate</a>
           </p>
+          [% END %]
 
         </div>
         <div class="spalte2">
@@ -85,6 +87,7 @@
           </p>
           <br clear="all" />
 
+        [% IF Catalyst.config.main_menu.voicebox %]
           <h3>Neue Voicemails</h3>
           [% IF subscriber.voicemail_list %]
             <ul class="voicemailliste">
@@ -117,10 +120,12 @@
             <a href="/voicebox" class="link">Alle Voicemails</a>
           </p>
           <br clear="all" />
+        [% END %]
 
         </div>
         <div class="spalte3">
 
+        [% IF Catalyst.config.main_menu.callforward %]
           <h3>Rufumleitung</h3>
 
           <p class="rufumleitung">
@@ -136,6 +141,7 @@
             <a href="/callforward" class="link">Einstellungen ändern</a>
           </p>
           <br clear="all" />
+        [% END %]
 
         </div>
 
