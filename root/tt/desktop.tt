@@ -138,7 +138,25 @@
             [% END %]
           </p>
           <p style="clear:left">
-            <a href="/callforward" class="link">Einstellungen ändern</a>
+            <a href="/callforward" class="link">Einstellungen ansehen</a>
+          </p>
+          <br clear="all" />
+        [% END %]
+
+        [% IF Catalyst.config.main_menu.reminder %]
+          <h3>Weckruf</h3>
+
+          <p class="rufumleitung">
+            [% IF subscriber.reminder.time %]
+              <img src="/grafik/reminder_on.gif" width="34" height="43" alt="" />
+              Weckruf aktiv
+            [% ELSE %]
+              <img src="/grafik/reminder_off.gif" width="34" height="43" alt="" />
+              Weckruf deaktiviert
+            [% END %]
+          </p>
+          <p style="clear:left">
+            <a href="/reminder" class="link">Einstellungen ansehen</a>
           </p>
           <br clear="all" />
         [% END %]

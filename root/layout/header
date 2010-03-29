@@ -34,6 +34,9 @@
       [% IF Catalyst.config.main_menu.callblock %]
         <li [% 'class="on"' IF template.title == "callblock" %]><a href="/callblock">Rufnummernsperre</a></li>
       [% END %]
+      [% IF Catalyst.config.main_menu.reminder %]
+        <li [% 'class="on"' IF template.title == "reminder" %]><a href="/reminder">Weckruf</a></li>
+      [% END %]
       [% IF Catalyst.config.main_menu.device && Catalyst.session.user.admin %]
         <li [% 'class="on"' IF template.title == "device" %]><a href="/autosubscriber">Endgeräte</a></li>
       [% END %]

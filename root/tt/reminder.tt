@@ -1,0 +1,81 @@
+[% META title = 'reminder' %]
+
+    <div id="headimg">
+      <img src="/grafik/area.jpg" width="869" height="69" alt="" />
+    </div>
+    <div id="headtxt">Stellen Sie Ihren persönlichen Wecker.</div>
+
+    <div id="main">
+
+      <div id="topmsg">
+        <p> [% messages.topmsg %] </p>
+      </div>
+      <div id="toperr">
+        <p> [% messages.toperr %] </p>
+        <p> [% messages.prov_error %] </p>
+      </div>
+
+      <div class="sperrehead">
+        <h3>Weckruf</h3>
+        <h2 class="umleitungfuer">Einstellungen für [% subscriber.active_number %]</h2>
+      </div>
+      <div id="spalten31">
+
+        <div class="spalte1">
+
+          <form id="reminder" action="/reminder/save" method="post">
+              <h3 class="blueh3">Wann</h3>
+              <p>
+                <label class="lleft" for="reminder_time">Uhrzeit: </label>
+                <input type="text" id="reminder_time" name="time" size="5" class="input5" value="[% subscriber.reminder.time %]" />
+                <span class="info">(hh:mm)</span>
+                [% IF messages.time %]<div id="errormsg">[% messages.time %]</div><br clear="all" />[% END %]
+              </p>
+              <p>
+                <label class="lleft">Wiederholung:</label>
+                <p class="recur">
+                  <input type="radio" id="reminder_recur_never" value="never" name="recur" class="radio"
+                         [% IF subscriber.reminder.recur == "never" %]checked="checked"[% END %] />
+                  <label for="reminder_recur_never">nie</label><br />
+                  <input type="radio" id="reminder_recur_weekdays" value="weekdays" name="recur" class="radio"
+                         [% IF subscriber.reminder.recur == "weekdays" %]checked="checked"[% END %] />
+                  <label for="reminder_recur_weekdays">an Wochentagen (Montag - Samstag)</label><br />
+                  <input type="radio" id="reminder_recur_always" value="always" name="recur" class="radio"
+                         [% IF subscriber.reminder.recur == "always" %]checked="checked"[% END %] />
+                  <label for="reminder_recur_always">täglich</label><br />
+                </p>
+              </p>
+
+            <p class="save">
+              <label for="save_settings">Weckruf aktivieren</label>
+              <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_settings">
+            </p>
+          </form>
+
+          <form action="/reminder/save" method="post">
+            <p class="save">
+              <label for="clear_settings">Weckruf deaktivieren</label>
+              <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="clear_settings">
+            </p>
+          </form>
+          
+          <br clear="all" />
+
+        </div>
+        <div class="spalte2">
+
+          <p class="rufumleitung">
+            [% IF subscriber.reminder.time %]
+              <img src="/grafik/reminder_on.gif" width="34" height="43" alt="reminder" /> 
+              Der Weckruf ist aktiv!
+            [% ELSE %]
+              <img src="/grafik/reminder_off.gif" width="34" height="43" alt="reminder" /> 
+              Der Weckruf ist deaktiviert!
+            [% END %]
+          </p>
+
+        </div>
+
+      </div>
+
+    </div><br clear="all" />

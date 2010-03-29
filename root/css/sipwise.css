@@ -654,6 +654,37 @@
    border: 1px solid #8D9FAA;
 }
 
+/* text fields for reminder config */
+#reminder input,
+#reminder textarea,
+#reminder select {
+   margin: 3px 0 0px 0;
+   border: 1px solid #8D9FAA;
+}
+
+#reminder .input5 {
+   padding-left: 3px;
+   padding-right: 0px;
+   margin-top: -1px;
+   width: 50px; /* falsch für ie */
+   voice-family: "\"}\"";
+   voice-family:inherit;
+   width: 45px; /* richtig */
+}
+
+#reminder p {
+   margin-top: 8px;
+}
+
+#reminder .recur {
+   margin-left: 100px;
+}
+
+#reminder .lleft {
+   float: left;
+   width: 100px !important;
+}
+
 /* add to cart link next to product images */
 #main .produktwahlshop .produktwahl span.add_to_cart {
    float: left;

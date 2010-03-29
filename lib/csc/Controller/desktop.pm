@@ -82,6 +82,14 @@ sub index : Private {
                and @{$c->stash->{subscriber}{voicemail_list}};
     delete $c->session->{user}{voicemail_list} if exists $c->session->{user}{voicemail_list};
 
+    return 1 unless $c->model('Provisioning')->call_prov($c, 'voip', 'get_subscriber_reminder',
+                                                         { username => $c->session->{user}{username},
+                                                           domain   => $c->session->{user}{domain},
+                                                         },
+                                                         \$c->stash->{subscriber}{reminder}
+                                                        );
+
+    return;
 }
 
 =head1 BUGS AND LIMITATIONS
