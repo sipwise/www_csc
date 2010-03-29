@@ -195,6 +195,11 @@
    white-space: nowrap;
 }
 
+/* mark block entry as disabled */
+.blockentry_inactive {
+   text-decoration: line-through;
+}
+
 /* call block save alignment */
 .sperre .sperresave {
    width: 90px;

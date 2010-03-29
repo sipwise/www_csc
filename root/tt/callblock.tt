@@ -41,7 +41,7 @@
           <table class="anrufliste sperre">
             [% FOREACH blockentry = subscriber.block_in_list %]
               <tr class="[% blockentry.background %]">
-                <td class="sperrenummer"> [% blockentry.number %] </td>
+                <td class="sperrenummer"><div [% UNLESS blockentry.active %]class="blockentry_inactive"[% END %]>&nbsp;[% blockentry.number %]&nbsp;</div></td>
                 <td class="sperresave">
                   <form action="/callblock/save" method="post">
                     <div class="save">
@@ -114,7 +114,7 @@
           <table class="anrufliste sperre">
             [% FOREACH blockentry = subscriber.block_out_list %]
               <tr class="[% blockentry.background %]">
-                <td class="sperrenummer"> [% blockentry.number %] </td>
+                <td class="sperrenummer"><div [% UNLESS blockentry.active %]class="blockentry_inactive"[% END %]>&nbsp;[% blockentry.number %]&nbsp;</div></td>
                 <td class="sperresave">
                   <form action="/callblock/save" method="post">
                     <div class="save">

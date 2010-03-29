@@ -891,8 +891,7 @@ sub get_formatted_contacts {
             if(defined $$contact{$_} and
                length $$contact{$_})
             {
-                $$contact{$_} = '00'.$$contact{$_};
-                $$contact{$_} =~ s/^00$user_cc/0/;
+                $$contact{$_} =~ s/^\+$user_cc/0/;
             }
         }
         if(defined $$contact{firstname} and length $$contact{firstname}) {

@@ -148,10 +148,10 @@ sub save : Local {
                     or $contact{$_} =~ /^00[1-9][0-9]+$/
                     or $contact{$_} =~ /^0[1-9][0-9]+$/
                     or $contact{$_} =~ /^[1-9][0-9]+$/;
-            if($contact{$_} =~ s/^00// or $contact{$_} =~ s/^\+//) {
-            } elsif($contact{$_} =~ s/^0/$user_cc/) {
+            if($contact{$_} =~ /^\+/ or $contact{$_} =~ s/^00/+/) {
+            } elsif($contact{$_} =~ s/^0/+$user_cc/) {
             } else {
-                $contact{$_} = $user_cc . $c->session->{user}{data}{ac} . $contact{$_};
+                $contact{$_} = '+'. $user_cc . $c->session->{user}{data}{ac} . $contact{$_};
             }
         } else {
             $contact{$_} = undef;
