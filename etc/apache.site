@@ -1,0 +1,72 @@
+# Listen 443
+
+PerlSwitches -I/usr/local/csc/lib -I/usr/local/admin/lib
+
+# ExtendedStatus On
+
+<VirtualHost *:443>
+        ServerAdmin office@sipwise.com
+        ServerName CSC.CHANGE.ME
+        SSLEngine on
+        SSLCertificateFile /etc/apache2/ssl/CSC.CHANGE.ME.crt
+        SSLCertificateKeyFile /etc/apache2/ssl/CSC.CHANGE.ME.pem
+
+        PerlModule Apache2::RequestUtil csc
+
+        # always keep "Location /" at the top!
+        # it will be overridden by later more specific locations
+        <Location />
+                SetHandler modperl
+                PerlResponseHandler csc
+        </Location>
+
+#        <Location /server-status>
+#                SetHandler server-status
+#                Order allow,deny
+#                Allow from all
+#        </Location> 
+
+        LogLevel info
+        DumpIOInput Off
+        DumpIOOutput Off
+
+        ErrorLog syslog
+        CustomLog "|/usr/bin/logger -p daemon.info -t csc" combined
+</VirtualHost>
+
+Listen 1443
+
+<VirtualHost *:1443>
+        ServerAdmin office@sipwise.com
+        ServerName PROV.CHANGE.ME
+        SSLEngine on
+        SSLCertificateFile /etc/apache2/ssl/PROV.CHANGE.ME.crt
+        SSLCertificateKeyFile /etc/apache2/ssl/PROV.CHANGE.ME.pem
+
+        PerlModule Apache2::RequestUtil admin
+
+        # always keep "Location /" at the top!
+        # it will be overridden by later more specific locations
+        <Location />
+                SetHandler modperl
+                PerlResponseHandler admin
+        </Location>
+
+        <Location /SOAP>
+                AuthName "Sipwise Test Provisioning"
+                AuthType Basic
+                AuthUserFile /usr/local/etc/provisioning.htpasswd
+                Require valid-user
+
+                SetHandler perl-script
+                PerlHandler Sipwise::Provisioning::SOAP
+        </Location>
+
+        LogLevel info
+        DumpIOInput Off
+        DumpIOOutput Off
+
+        ErrorLog syslog
+        CustomLog "|/usr/bin/logger -p daemon.info -t oss" combined
+</VirtualHost>
+
