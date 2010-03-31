@@ -19,6 +19,8 @@ Catalyst Controller.
 
 =head2 index 
 
+Displays the reminder settings for a subscriber.
+
 =cut
 
 sub index : Private {
@@ -64,6 +66,12 @@ sub index : Private {
     }
 
 }
+
+=head2 save
+
+Changes the reminder settings for a subscriber.
+
+=cut
 
 sub save : Local {
     my ( $self, $c ) = @_;

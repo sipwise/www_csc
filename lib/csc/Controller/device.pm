@@ -17,9 +17,6 @@ Catalyst Controller.
 
 =head1 METHODS
 
-=cut
-
-
 =head2 index 
 
 =cut
@@ -45,6 +42,10 @@ sub index : Local
 
 	$self->spa($c);
 }
+
+=head2 spa
+
+=cut
 
 sub spa : Local 
 {
@@ -387,6 +388,10 @@ sub spa : Local
 
 }
 
+=head2 phone
+
+=cut
+
 sub phone : Local 
 {
     my ( $self, $c, $internal) = @_;
@@ -621,6 +626,10 @@ sub phone : Local
 	$c->stash->{dev} = $c->session->{dev};
 
 }
+
+=head2 end
+
+=cut
 
 sub end : ActionClass('RenderView') {
     my ( $self, $c ) = @_;
@@ -1050,5 +1059,36 @@ sub _process_fxs2 {
 		}
 		return 1;
 }
+
+=head1 BUGS AND LIMITATIONS
+
+=over
+
+=item functions should be documented
+
+=item device configuration should be separated from CSC
+
+=back
+
+=head1 SEE ALSO
+
+Provisioning model, Catalyst
+
+=head1 AUTHORS
+
+=over
+
+=item Andreas Granig <agranig@sipwise.com>
+
+=item Daniel Tiefnig <dtiefnig@sipwise.com>
+
+=back
+
+=head1 COPYRIGHT
+
+The voicebox controller is Copyright (c) 2007-2010 Sipwise GmbH,
+Austria. All rights reserved.
+
+=cut
 
 1;

@@ -1249,8 +1249,8 @@ Andreas Granig <agranig@sipwise.com>
 
 =head1 COPYRIGHT
 
-The Sipwise::Provisioning module is Copyright (c) 2007 Sipwise GmbH,
-Austria. All rights reserved.
+The Sipwise::Provisioning module is Copyright (c) 2007-2010 Sipwise
+GmbH, Austria. All rights reserved.
 
 =cut
 

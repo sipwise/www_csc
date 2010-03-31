@@ -24,6 +24,8 @@ csc::Controller::Root - Root Controller for csc
 
 =head2 default
 
+This runs for every request and checks the authentication session.
+
 =cut
 
 # Note that 'auto' runs after 'begin' but before your actions and that
@@ -56,6 +58,13 @@ sub auto : Private {
 
     return 1;
 }
+
+=head2 default
+
+This runs if no action is found for a request and redirects to the
+server's document root.
+
+=cut
 
 sub default : Private {
     my ( $self, $c ) = @_;
@@ -103,11 +112,7 @@ sub end : ActionClass('RenderView') {
 
 =over
 
-=item - syntax checks should be improved.
-
-=item - logging should be improved.
-
-=item - error handling should be improved.
+=item none
 
 =back
 
@@ -121,8 +126,8 @@ Daniel Tiefnig <dtiefnig@sipwise.com>
 
 =head1 COPYRIGHT
 
-The Root controller is Copyright (c) 2007 Sipwise GmbH,
-Austria. All rights reserved.
+The Root controller is Copyright (c) 2007-2010 Sipwise GmbH, Austria.
+All rights reserved.
 
 =cut
 

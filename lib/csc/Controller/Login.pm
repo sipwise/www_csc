@@ -19,6 +19,8 @@ Catalyst Controller.
 
 =head2 index 
 
+Displays a login form.
+
 =cut
 
 sub index : Private {
@@ -91,11 +93,7 @@ sub end : ActionClass('RenderView') {
 
 =over
 
-=item - syntax checks should be improved.
-
-=item - logging should be improved.
-
-=item - error handling should be improved.
+=item none
 
 =back
 
@@ -109,8 +107,8 @@ Daniel Tiefnig <dtiefnig@sipwise.com>
 
 =head1 COPYRIGHT
 
-The Login controller is Copyright (c) 2007 Sipwise GmbH,
-Austria. All rights reserved.
+The Login controller is Copyright (c) 2007-2010 Sipwise GmbH, Austria.
+All rights reserved.
 
 =cut
 

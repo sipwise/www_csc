@@ -20,6 +20,8 @@ Catalyst Controller.
 
 =head2 index 
 
+Displays stored voicemail recordings for a subscriber.
+
 =cut
 
 # TODO: this doubles a lot of code from calllist.pm
@@ -216,6 +218,12 @@ sub index : Private {
     }
 }
 
+=head2 delete
+
+Removes a recording from the server.
+
+=cut
+
 sub delete : Local {
     my ( $self, $c ) = @_;
 
@@ -233,6 +241,12 @@ sub delete : Local {
     $c->response->redirect('/voicebox');
 }
 
+=head2 listen
+
+Tries to stream the recording to the users HTTP client.
+
+=cut
+
 sub listen : Local {
     my ( $self, $c ) = @_;
 
@@ -248,6 +262,12 @@ sub listen : Local {
     }
     $c->response->redirect('/voicebox');
 }
+
+=head2 settings
+
+Changes voicebox settings like PIN and voice2mail address.
+
+=cut
 
 sub settings : Local {
     my ( $self, $c ) = @_;
@@ -313,7 +333,7 @@ sub end : ActionClass('RenderView') {
 
 =over
 
-=item functions should be documented
+=item none
 
 =back
 
@@ -327,8 +347,8 @@ Daniel Tiefnig <dtiefnig@sipwise.com>
 
 =head1 COPYRIGHT
 
-The voicebox controller is Copyright (c) 2007-2010 Sipwise GmbH, Austria. All
-rights reserved.
+The voicebox controller is Copyright (c) 2007-2010 Sipwise GmbH,
+Austria. All rights reserved.
 
 =cut
 

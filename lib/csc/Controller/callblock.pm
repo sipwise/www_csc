@@ -19,6 +19,8 @@ Catalyst Controller.
 
 =head2 index 
 
+Displays call barring settings for a subscriber.
+
 =cut
 
 sub index : Private {
@@ -119,6 +121,12 @@ sub index : Private {
 
     $c->stash->{template} = 'tt/callblock.tt';
 }
+
+=head2 save
+
+Stores CLIR, barring list modes and barring patterns.
+
+=cut
 
 sub save : Local {
     my ( $self, $c ) = @_;
@@ -294,11 +302,7 @@ sub save : Local {
 
 =over
 
-=item - syntax checks should be improved.
-
-=item - logging should be improved.
-
-=item - error handling should be improved.
+=item none
 
 =back
 
@@ -312,8 +316,8 @@ Daniel Tiefnig <dtiefnig@sipwise.com>
 
 =head1 COPYRIGHT
 
-The callblock controller is Copyright (c) 2007 Sipwise GmbH, Austria.
-All rights reserved.
+The callblock controller is Copyright (c) 2007-2010 Sipwise GmbH,
+Austria. All rights reserved.
 
 =cut
 

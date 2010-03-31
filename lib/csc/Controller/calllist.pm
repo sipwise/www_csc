@@ -20,6 +20,8 @@ Catalyst Controller.
 
 =head2 index 
 
+Displays incoming and outgoing calls for a subscriber.
+
 =cut
 
 sub index : Private {
@@ -211,7 +213,7 @@ sub index : Private {
 
 =over
 
-=item functions should be documented
+=item none
 
 =back
 
@@ -225,8 +227,8 @@ Daniel Tiefnig <dtiefnig@sipwise.com>
 
 =head1 COPYRIGHT
 
-The calllist controller is Copyright (c) 2007-2010 Sipwise GmbH, Austria. All
-rights reserved.
+The calllist controller is Copyright (c) 2007-2010 Sipwise GmbH,
+Austria. All rights reserved.
 
 =cut
 

@@ -19,6 +19,8 @@ Catalyst Controller.
 
 =head2 index 
 
+Displays call forward settings.
+
 =cut
 
 sub index : Private {
@@ -102,6 +104,12 @@ sub index : Private {
 
     $c->stash->{template} = 'tt/callforward.tt';
 }
+
+=head2 save
+
+Stores call forward settings.
+
+=cut
 
 sub save : Local {
     my ( $self, $c ) = @_;
@@ -221,11 +229,7 @@ sub save : Local {
 
 =over
 
-=item - syntax checks should be improved.
-
-=item - logging should be improved.
-
-=item - error handling should be improved.
+=item none
 
 =back
 
@@ -239,7 +243,7 @@ Daniel Tiefnig <dtiefnig@sipwise.com>
 
 =head1 COPYRIGHT
 
-The callforward controller is Copyright (c) 2007 Sipwise GmbH,
+The callforward controller is Copyright (c) 2007-2010 Sipwise GmbH,
 Austria. All rights reserved.
 
 =cut

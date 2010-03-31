@@ -19,6 +19,8 @@ Catalyst Controller.
 
 =head2 index 
 
+Displays the subscriber's addressbook.
+
 =cut
 
 sub index : Private {
@@ -89,6 +91,12 @@ sub index : Private {
     $c->stash->{subscriber}{contacts} = \@display_contacts;
 }
 
+=head2 edit
+
+Displays an edit form for existing or new addressbook entries.
+
+=cut
+
 sub edit : Local {
     my ( $self, $c, $contact ) = @_;
 
@@ -113,6 +121,12 @@ sub edit : Local {
 
     $c->stash->{contact} = $contact;
 }
+
+=head2 save
+
+Creates or modifies an entry in the addressbook.
+
+=cut
 
 sub save : Local {
     my ( $self, $c) = @_;
@@ -180,6 +194,12 @@ sub save : Local {
     $c->response->redirect('/addressbook');
 }
 
+=head2 delete
+
+Deletes an entry from the addressbook.
+
+=cut
+
 sub delete : Local {
     my ( $self, $c ) = @_;
 
@@ -201,7 +221,7 @@ sub delete : Local {
 
 =over
 
-=item - none so far
+=item none
 
 =back
 
@@ -215,8 +235,8 @@ Daniel Tiefnig <dtiefnig@sipwise.com>
 
 =head1 COPYRIGHT
 
-The addressbook controller is Copyright (c) 2007 Sipwise GmbH, Austria.
-All rights reserved.
+The addressbook controller is Copyright (c) 2007-2010 Sipwise GmbH,
+Austria.  All rights reserved.
 
 =cut
 

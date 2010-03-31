@@ -16,6 +16,9 @@ Catalyst Controller for account administration.
 
 =head2 index 
 
+Does a redirect to /account/info or /account/pass depending on whether
+display_account_info is set.
+
 =cut
 
 sub index : Private {
@@ -29,6 +32,13 @@ sub index : Private {
         $c->response->redirect('/account/pass');
     }
 }
+
+=head2 info
+
+Displays some basic information about the SIP account and server system
+like username, phone number, SIP proxy server and TFTP boot server.
+
+=cut
 
 sub info : Local {
     my ( $self, $c ) = @_;
@@ -60,6 +70,12 @@ sub info : Local {
     $c->stash->{template} = 'tt/account_info.tt';
 }
 
+=head2 pass
+
+Allows the user to change its webpassword.
+
+=cut
+
 sub pass : Local {
     my ( $self, $c ) = @_;
 
@@ -72,6 +88,12 @@ sub pass : Local {
 
     $c->stash->{template} = 'tt/account_pass.tt';
 }
+
+=head2 savepass
+
+Changes the password for the user.
+
+=cut
 
 sub savepass : Local {
     my ( $self, $c ) = @_;
@@ -150,6 +172,12 @@ sub savepass : Local {
     $c->response->redirect('/account/pass');
 }
 
+=head2 balance
+
+Displays the current account balance and asks the user to top up.
+
+=cut
+
 sub balance : Local {
     my ( $self, $c ) = @_;
 
@@ -171,6 +199,12 @@ sub balance : Local {
     $c->stash->{subscriber}{account}{cash_balance} = sprintf "%.2f", $c->session->{user}{account}{cash_balance} / 100;
     $c->stash->{template} = 'tt/account_balance.tt';
 }
+
+=head2 setpay
+
+Prepares the payment process and redirects the user to /account/dopay.
+
+=cut
 
 sub setpay : Local {
     my ( $self, $c ) = @_;
@@ -221,6 +255,12 @@ sub setpay : Local {
     $c->response->redirect('/account/dopay');
 }
 
+=head2 dopay
+
+Displays the payment forms and errors, if any.
+
+=cut
+
 sub dopay : Local {
     my ( $self, $c ) = @_;
 
@@ -254,6 +294,12 @@ sub dopay : Local {
     delete $c->session->{elv_error};
 }
 
+=head2 dopay_elv
+
+Executes payment via electronic wire transfer. Not yet implemented.
+
+=cut
+
 sub dopay_elv : Local {
     my ( $self, $c ) = @_;
 
@@ -275,6 +321,12 @@ sub dopay_elv : Local {
 
     return;
 }
+
+=head2 dopay_cc
+
+Implements payment via credit card.
+
+=cut
 
 sub dopay_cc : Local {
     my ( $self, $c ) = @_;
@@ -346,6 +398,13 @@ sub dopay_cc : Local {
     return 1;
 }
 
+=head2 dopay_eps
+
+Implements payment via the electronic payment system, offered by most
+banks via their online banking interfaces.
+
+=cut
+
 sub dopay_eps : Local {
     my ( $self, $c ) = @_;
 
@@ -394,6 +453,12 @@ sub dopay_eps : Local {
 
     return 1;
 }
+
+=head2 dopay_maestro
+
+Implements payment via maestro secure code.
+
+=cut
 
 sub dopay_maestro : Local {
     my ( $self, $c ) = @_;
@@ -446,6 +511,12 @@ sub dopay_maestro : Local {
     return 1;
 }
 
+=head2 dopay_paypal
+
+Implements payment via PayPal.
+
+=cut
+
 sub dopay_paypal : Local {
     my ( $self, $c ) = @_;
 
@@ -467,6 +538,12 @@ sub dopay_paypal : Local {
     }
     $c->response->redirect($c->config->{paypal_redirecturl} . $c->session->{paypal}{Token});
 }
+
+=head2 paidack
+
+Finalizes successful payments via PayPal.
+
+=cut
 
 sub paidack : Local {
     my ( $self, $c ) = @_;
@@ -507,6 +584,12 @@ sub paidack : Local {
     $c->response->redirect('/account/balance');
 }
 
+=head2 paiderr
+
+Finalizes failed payments via PayPal.
+
+=cut
+
 sub paiderr : Local {
     my ( $self, $c ) = @_;
 
@@ -522,6 +605,12 @@ sub paiderr : Local {
 
     $c->response->redirect('/account/dopay');
 }
+
+=head2 success
+
+Finalizes successful payments via mPAY24.
+
+=cut
 
 sub success : Local {
     my ( $self, $c ) = @_;
@@ -563,6 +652,12 @@ sub success : Local {
     $c->response->redirect('/account/balance');
 }
 
+=head2 error
+
+Finalizes failed payments via mPAY24.
+
+=cut
+
 sub error : Local {
     my ( $self, $c ) = @_;
 
@@ -580,6 +675,7 @@ sub error : Local {
     $self->_fail_transaction($c, $c->request->params->{tid});
     $c->response->redirect('/account/dopay');
 }
+
 
 sub _start_transaction : Private {
     my ($self, $c, $type, $amount) = @_;
@@ -667,6 +763,12 @@ sub _fail_transaction : Private {
     return 1;
 }
 
+=head2 subscriber
+
+Displays the account's subscribers.
+
+=cut
+
 sub subscriber : Local {
     my ( $self, $c ) = @_;
 
@@ -705,6 +807,12 @@ sub subscriber : Local {
     $c->stash->{subscribers} = [sort {$a->{username} cmp $b->{username}} values %subscribers];
 }
 
+=head2 addsubscriber
+
+Asks the user to add a new subscriber to the account.
+
+=cut
+
 sub addsubscriber : Local {
     my ( $self, $c, $settings ) = @_;
 
@@ -734,6 +842,12 @@ sub addsubscriber : Local {
         }
     }
 }
+
+=head2 doaddsubscriber
+
+Adds a new subscriber to the account.
+
+=cut
 
 sub doaddsubscriber : Local {
     my ( $self, $c ) = @_;
@@ -812,6 +926,12 @@ sub doaddsubscriber : Local {
 
 }
 
+=head2 addextension
+
+Asks the user to create a new extension for its PBX.
+
+=cut
+
 sub addextension : Local {
     my ( $self, $c, $settings ) = @_;
 
@@ -830,6 +950,12 @@ sub addextension : Local {
     }
     $c->stash->{base_cli} = $c->request->params->{base_cli};
 }
+
+=head2 doaddextension
+
+Creates a new extension for a PBX.
+
+=cut
 
 sub doaddextension : Local {
     my ( $self, $c ) = @_;
@@ -926,6 +1052,12 @@ sub doaddextension : Local {
 
 }
 
+=head2 delsubscriber
+
+Deletes a subscriber for an account.
+
+=cut
+
 sub delsubscriber : Local {
     my ( $self, $c ) = @_;
 
@@ -950,7 +1082,7 @@ sub delsubscriber : Local {
 
 =over
 
-=item - currently none
+=item none
 
 =back
 

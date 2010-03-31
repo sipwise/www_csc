@@ -21,6 +21,8 @@ Catalyst Controller.
 
 =head2 index 
 
+Displays an error.
+
 =cut
 
 sub index : Private {
@@ -29,6 +31,13 @@ sub index : Private {
     $c->stash->{template} = 'tt/notyet.tt';
     $c->stash->{funktion} = 'call';
 }
+
+=head2 click2dial
+
+Initiates a call between the subscriber and a foreign party by calling
+both of them.
+
+=cut
 
 sub click2dial : Local {
     my ( $self, $c ) = @_;
@@ -117,7 +126,7 @@ sub click2dial : Local {
 
 =over
 
-=item functions should be documented
+=item none
 
 =back
 

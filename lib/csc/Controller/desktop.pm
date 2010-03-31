@@ -21,6 +21,8 @@ Catalyst Controller.
 
 =head2 index 
 
+Displays various information about a subscriber.
+
 =cut
 
 sub index : Private {
@@ -96,7 +98,7 @@ sub index : Private {
 
 =over
 
-=item functions should be documented
+=item none
 
 =back
 
@@ -110,8 +112,8 @@ Daniel Tiefnig <dtiefnig@sipwise.com>
 
 =head1 COPYRIGHT
 
-The desktop controller is Copyright (c) 2007 Sipwise GmbH, Austria. All
-rights reserved.
+The desktop controller is Copyright (c) 2007-2010 Sipwise GmbH, Austria.
+All rights reserved.
 
 =cut
 

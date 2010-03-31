@@ -19,6 +19,8 @@ Catalyst Controller.
 
 =head2 index 
 
+Clears an authentication session.
+
 =cut
 
 sub index : Private {
@@ -33,11 +35,7 @@ sub index : Private {
 
 =over
 
-=item - syntax checks should be improved.
-
-=item - logging should be improved.
-
-=item - error handling should be improved.
+=item none
 
 =back
 
@@ -51,8 +49,8 @@ Daniel Tiefnig <dtiefnig@sipwise.com>
 
 =head1 COPYRIGHT
 
-The Logout controller is Copyright (c) 2007 Sipwise GmbH,
-Austria. All rights reserved.
+The Logout controller is Copyright (c) 2007-2010 Sipwise GmbH, Austria.
+All rights reserved.
 
 =cut
 
