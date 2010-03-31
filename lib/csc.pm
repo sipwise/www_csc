@@ -35,7 +35,7 @@ our $VERSION = '2';
 # load configuration from admin.conf XML
 my $xs = new XML::Simple;
 my $xc = $xs->XMLin( '/usr/local/etc/csc.conf', ForceArray => 0);
-$$xc{site_config}{language} = 'en' unless $$xc{site_config}{language} =~ /^\w+$/;
+$$xc{site_config}{default_language} = 'en' unless $$xc{site_config}{default_language} =~ /^\w+$/;
 
 __PACKAGE__->config( authentication => {}, %$xc );
 
@@ -53,7 +53,7 @@ sub begin : Private {
     $c->response->headers->push_header( 'Vary' => 'Accept-Language' );  # hmm vary and param?
 
     # set default language
-    $c->session->{lang} = $c->config->{site_config}{language} unless $c->session->{lang};
+    $c->session->{lang} = $c->config->{site_config}{default_language} unless $c->session->{lang};
 
     if($c->request->params->{lang} =~ /^\w+$/) {
         $c->languages([$c->request->params->{lang}]);
