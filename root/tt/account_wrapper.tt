@@ -2,7 +2,7 @@
     <div id="headimg">
       <img src="/grafik/area.jpg" width="869" height="69" alt="" />
     </div>
-    <div id="headtxt">Ihre persönlichen Einstellungen.</div>
+    <div id="headtxt">[% Catalyst.loc('Your personal settings.') %]</div>
 
     <div id="main">
 
@@ -19,11 +19,11 @@
         <div class="spalte1">
           <ul class="menueinstellungen">
             [% IF Catalyst.config.display_account_info %]
-              <li [% 'class="on"' IF template.subtitle == "account_info" %]><a href="/account/info">Informationen</a></li>
+              <li [% 'class="on"' IF template.subtitle == "account_info" %]><a href="/account/info">[% Catalyst.loc('Information') %]</a></li>
             [% END %]
-              <li [% 'class="on"' IF template.subtitle == "account_pass" %]><a href="/account/pass">Passwort</a></li>
+              <li [% 'class="on"' IF template.subtitle == "account_pass" %]><a href="/account/pass">[% Catalyst.loc('Password') %]</a></li>
             [% IF Catalyst.config.payment_features && Catalyst.session.user.preferences.prepaid && Catalyst.session.user.admin %]
-              <li [% 'class="on"' IF template.subtitle == "account_balance" %]><a href="/account/balance">Kontostand</a></li>
+              <li [% 'class="on"' IF template.subtitle == "account_balance" %]><a href="/account/balance">[% Catalyst.loc('Account Balance') %]</a></li>
             [% END %]
           </ul>
 

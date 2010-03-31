@@ -53,6 +53,10 @@
    color: #FF1010;
 }
 
+#menusmall li.language {
+   padding: 0 0 0 10px;
+}
+
 /* alignment for call list on desktop */
 #main .anruflistesymbole {
    margin: 0px;
@@ -160,6 +164,7 @@
    color: #2D91DF;
    margin: 10px 10px;
    padding: 0;
+   width: auto;
    float: left;
    background: url(/grafik/dot_blue.gif) left bottom repeat-x;
    text-decoration: none;
@@ -173,6 +178,11 @@
 /* hidden post label images */
 .hidden {
    display: none !important;
+}
+
+/* position for Login post link */
+#main #anmelden .save label {
+   margin: 10px 0 10px 67px;
 }
 
 /* alignment for contact entry save label */
@@ -533,10 +543,22 @@
    margin: 20px 0 0 0;
 }
 
+#anmelden span {
+   width: auto;
+}
+
+#anmelden #lbenutzer {
+   width: auto;
+}
+
+#anmelden #lpasswort {
+   width: auto;
+}
+
 #spalten31 #anmelden .benutzer,
 #spalten31 #anmelden .passwort {
   width: 120px;
-  float: left;
+  float: right;
   margin: 0 0 5px 5px;
   padding: 0px;
   border: 1px solid #C5CDD2;

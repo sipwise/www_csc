@@ -3,26 +3,26 @@
 
           <form class="anmelden feinstellungen" action="/account/setpay" method="post">
             <fieldset class="alt">
-              <h3>Konto aufladen</h3>
+              <h3>[% Catalyst.loc('Top up') %]</h3>
 
-              <label><strong>aktuelles Guthaben</strong></label>
-              <strong>&euro; [% subscriber.account.cash_balance %]</strong><br clear="all" />
+              <label><strong>[% Catalyst.loc('current balance:') %]</strong></label>
+              <strong>[% subscriber.account.currency %] [% subscriber.account.cash_balance %]</strong><br clear="all" />
 
               <div id="damount">
-                <label for="amount">Betrag aufladen: </label>&euro;
+                <label for="amount">[% Catalyst.loc('amount to charge:') %]</label>[% subscriber.account.currency %]
                 <input type="text" size="4" maxlength="4" class="input10 loose"
                        id="amount" name="amount" value="[% refill.amount %]" /><br clear="all" />
                 [% IF messages.msgamount %]<div id="errormsg">[% messages.msgamount %]</div><br clear="all" />[% END %]
               </div>
 
               <input type="checkbox" name="auto_reload" id="auto_reload" class="noborder" />
-              <label for="auto_reload" class="loose">Diesen Betrag automatisch aufladen,</label>
-              <label for="auto_amount" class="loose">wenn das Guthaben &euro;</label>
+              <label for="auto_reload" class="loose">[% Catalyst.loc('Top up automatically') %]</label>
+              <label for="auto_amount" class="loose">[% Catalyst.loc('if balance falls below') %] [% subscriber.account.currency %]</label>
               <input type="text" size="4" maxlength="4" class="input10 loose"
-                     id="auto_amount" name="auto_amount" value="[% refill.auto_amount %]" /> unterschreitet.
+                     id="auto_amount" name="auto_amount" value="[% refill.auto_amount %]" />
 
               <p class="save">
-                <label for="save_settings">weiter</label>
+                <label for="save_settings">[% Catalyst.loc('continue') %]</label>
                 <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_settings">
               </p>
            </fieldset>

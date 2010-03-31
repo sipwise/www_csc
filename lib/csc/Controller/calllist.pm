@@ -46,7 +46,7 @@ sub index : Private {
 
         for(1 .. 12) {
             my $amon = sprintf("%02d", $_);
-            push @localized_months, $c->model('Provisioning')->localize("Web.Months.".$amon) || $amon;
+            push @localized_months, $c->model('Provisioning')->localize($c, "Web.Months.".$amon) || $amon;
         }
 
         my @selectmonths;

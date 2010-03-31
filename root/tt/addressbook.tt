@@ -3,7 +3,7 @@
   <div id="headimg">
     <img src="/grafik/area.jpg" width="869" height="69" alt="" />
   </div>
-  <div id="headtxt">Ihre persönlichen Kontakte.</div>
+  <div id="headtxt">[% Catalyst.loc('Your personal addressbook.') %]</div>
 
   <div id="main">
 
@@ -16,8 +16,8 @@
     </div>
 
     <div class="sperrehead">
-      <h3>Kontakte</h3>
-      <h2 class="umleitungfuer">Kontakte für [% subscriber.active_number %]</h2>
+      <h3>[% Catalyst.loc('Contacts') %]</h3>
+      <h2 class="umleitungfuer">[% Catalyst.loc('Contacts for [_1]', subscriber.active_number) %]</h2>
     </div>
 
     <div id="spalten31">
@@ -25,15 +25,15 @@
       <div class="spalte1">
 
         <p class="kontaktneu">
-          <label for="addrbook_new">Neuen Kontakt erstellen</label>
+          <label for="addrbook_new">[% Catalyst.loc('create new contact') %]</label>
           <form action="/addressbook/edit" method="post">
             <input type="hidden" name="addrbook_id" value="0" />
             <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="addrbook_new" />
           </form>
         </p>
         <p class="anruflisteordnen">
-          Set: &nbsp;
-          <a href="/addressbook?charsel=" class="[% UNLESS docharsel %]on[% END %]">alle</a> 
+          [% Catalyst.loc('Filter:') %] &nbsp;
+          <a href="/addressbook?charsel=" class="[% UNLESS docharsel %]on[% END %]">[% Catalyst.loc('all') %]</a> 
 
           [% FOREACH contactindex = subscriber.contacts %]
           <a href="/addressbook?charsel=[% contactindex.index %]"
@@ -42,10 +42,10 @@
 
           <br />
 
-          Reihen nach: &nbsp;
-          <a href="/addressbook?sortsel=firstname" class="[% IF sortsel == 'firstname' %]on[% END %]">Vorname</a> 
-          <a href="/addressbook?sortsel=lastname" class="[% IF sortsel == 'lastname' %]on[% END %]">Nachname</a>
-          <a href="/addressbook?sortsel=company" class="[% IF sortsel == 'company' %]on[% END %]">Firma</a>
+          [% Catalyst.loc('Order by') %]: &nbsp;
+          <a href="/addressbook?sortsel=firstname" class="[% IF sortsel == 'firstname' %]on[% END %]">[% Catalyst.loc('firstname') %]</a> 
+          <a href="/addressbook?sortsel=lastname" class="[% IF sortsel == 'lastname' %]on[% END %]">[% Catalyst.loc('lastname') %]</a>
+          <a href="/addressbook?sortsel=company" class="[% IF sortsel == 'company' %]on[% END %]">[% Catalyst.loc('company') %]</a>
         </p>
 
         <table class="anrufliste kontaktliste kontaktlistebig">
@@ -79,7 +79,7 @@
                 [% i = i + 1 %]
                 <div class="yui-skin-sam" id="cd[% i %]">
                   [% contactentry.phonenumber || contactentry.mobilenumber || contactentry.homephonenumber %]
-                  <img src="/grafik/call.gif" width="12" height="14" alt="Jetzt anrufen"
+                  <img src="/grafik/call.gif" width="12" height="14" alt="" title="[% Catalyst.loc('show actions') %]"
                        onclick="cl_pop('cd[% i %]','[% contactentry.phonenumber ||
                                                        contactentry.mobilenumber ||
                                                        contactentry.homephonenumber %]')" />
@@ -101,15 +101,15 @@
               <td colspan="5" class="kontaktopen">
                 [% IF contactentry.homephonenumber || contactentry.phonenumber || contactentry.mobilenumber || contactentry.faxnumber %]
                 <table>
-                  <tr><td colspan="2"><h3>Rufnummern</h3></td></tr>
+                  <tr><td colspan="2"><h3>[% Catalyst.loc('phone numbers') %]</h3></td></tr>
                   [% IF contactentry.homephonenumber %]
                     <tr>
-                      <td class="first">Privat:</td>
+                      <td class="first">[% Catalyst.loc('home:') %]</td>
                       <td>
                         [% i = i + 1 %]
                         <div class="yui-skin-sam" id="cd[% i %]">
                           [% contactentry.homephonenumber %]
-                          <img src="/grafik/call.gif" width="12" height="14" alt="Jetzt anrufen"
+                          <img src="/grafik/call.gif" width="12" height="14" alt="" title="[% Catalyst.loc('show actions') %]"
                                onclick="cl_pop('cd[% i %]','[% contactentry.homephonenumber %]')" />
                         </div>
                       </td>
@@ -117,12 +117,12 @@
                   [% END %]
                   [% IF contactentry.phonenumber %]
                     <tr>
-                      <td class="first">Büro:</td>
+                      <td class="first">[% Catalyst.loc('office:') %]</td>
                       <td>
                         [% i = i + 1 %]
                         <div class="yui-skin-sam" id="cd[% i %]">
                           [% contactentry.phonenumber %]
-                          <img src="/grafik/call.gif" width="12" height="14" alt="Jetzt anrufen"
+                          <img src="/grafik/call.gif" width="12" height="14" alt="" title="[% Catalyst.loc('show actions') %]"
                                onclick="cl_pop('cd[% i %]','[% contactentry.phonenumber %]')" />
                         </div>
                       </td>
@@ -130,30 +130,30 @@
                   [% END %]
                   [% IF contactentry.mobilenumber %]
                     <tr>
-                      <td class="first">Mobil:</td>
+                      <td class="first">[% Catalyst.loc('mobile:') %]</td>
                       <td>
                         [% i = i + 1 %]
                         <div class="yui-skin-sam" id="cd[% i %]">
                           [% contactentry.mobilenumber %]
-                          <img src="/grafik/call.gif" width="12" height="14" alt="Jetzt anrufen"
+                          <img src="/grafik/call.gif" width="12" height="14" alt="" title="[% Catalyst.loc('show actions') %]"
                                onclick="cl_pop('cd[% i %]','[% contactentry.mobilenumber %]')" />
                         </div>
                       </td>
                     </tr>
                   [% END %]
                   [% IF contactentry.faxnumber %]
-                    <tr><td class="first">Fax:</td><td>[% contactentry.faxnumber %]</td></tr>
+                    <tr><td class="first">[% Catalyst.loc('fax:') %]</td><td>[% contactentry.faxnumber %]</td></tr>
                   [% END %]
                 </table>
                 [% END %]
                 [% IF contactentry.email || contactentry.homepage %]
                 <table>
-                  <tr><td colspan="2"><h3>Web</h3></td></tr>
+                  <tr><td colspan="2"><h3>[% Catalyst.loc('web') %]</h3></td></tr>
                   [% IF contactentry.email %]
-                    <tr><td class="first">E-Mail:</td><td><a href="mailto:[% contactentry.email %]">[% contactentry.email %]</a></td></tr>
+                    <tr><td class="first">[% Catalyst.loc('e-mail:') %]</td><td><a href="mailto:[% contactentry.email %]">[% contactentry.email %]</a></td></tr>
                   [% END %]
                   [% IF contactentry.homepage %]
-                    <tr><td class="first">Webseite:</td><td><a href="[% contactentry.homepage %]">[% contactentry.homepage %]</a></td></tr>
+                    <tr><td class="first">[% Catalyst.loc('homepage:') %]</td><td><a href="[% contactentry.homepage %]">[% contactentry.homepage %]</a></td></tr>
                   [% END %]
                 </table>
                 [% END %]
@@ -170,14 +170,14 @@
       </div>
       <div class="spalte2">
 
-        <h3>Suche</h3>
+        <h3>[% Catalyst.loc('Search') %]</h3>
 
         <form id="anrufsuche" action="">
-          <label for="fsuchbegriff">Suchbegriff</label><br />
+          <label for="fsuchbegriff">[% Catalyst.loc('search term') %]</label><br />
           <input type="text" id="ffilter" name="filter" size="21" class="input21" value="[% filter %]" />
           <br clear="all" />
           <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="addrbook_filter" />
-          <div class="save"><label for="addrbook_filter">Filter anwenden</label></div>
+          <div class="save"><label for="addrbook_filter">[% Catalyst.loc('apply filter') %]</label></div>
         </form>
 
       </div>

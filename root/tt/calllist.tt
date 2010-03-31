@@ -3,7 +3,7 @@
   <div id="headimg">
     <img src="grafik/area.jpg" width="869" height="69" alt="" />
   </div>
-  <div id="headtxt">Eingehende, ausgehende und verpasste Anrufe.</div>
+  <div id="headtxt">[% Catalyst.loc('Incoming and outgoing calls.') %]</div>
 
   <div id="main">
 
@@ -16,8 +16,8 @@
     </div>
 
     <div class="sperrehead">
-      <h3>Anrufliste</h3>
-      <h2 class="umleitungfuer">Anrufliste für [% subscriber.active_number %]</h2>
+      <h3>[% Catalyst.loc('Call list') %]</h3>
+      <h2 class="umleitungfuer">[% Catalyst.loc('Call list for [_1]', subscriber.active_number) %]</h2>
     </div>
 
     <div id="spalten31">
@@ -25,14 +25,14 @@
       <div class="spalte1">
 
         <h3>
-          [% subscriber.call_range %][% IF subscriber.call_filter %], <span class="anruffilter">Filter: [% subscriber.call_filter %]</span>[% END %]
+          [% subscriber.call_range %][% IF subscriber.call_filter %], <span class="anruffilter">[% Catalyst.loc('Filter:') %] [% subscriber.call_filter %]</span>[% END %]
         </h3>
 
         <p class="anruflisteordnen">
-          <img src="/grafik/anruf_ein_small.gif" width="14" height="13" alt="eingehender Anruf"> eingehend
-          <img src="/grafik/anruf_ein_err_small.gif" width="14" height="13" alt="eingehender Anruf"> abwesend
-          <img src="/grafik/anruf_aus_small.gif" width="14" height="13" alt="ausgehender Anruf"> ausgehend
-          <img src="/grafik/anruf_aus_err_small.gif" width="14" height="13" alt="Anruf in Abwensenheit"> fehlgeschlagen
+          <img src="/grafik/anruf_ein_small.gif" width="14" height="13" alt=""> [% Catalyst.loc('incoming') %]
+          <img src="/grafik/anruf_ein_err_small.gif" width="14" height="13" alt=""> [% Catalyst.loc('missed') %]
+          <img src="/grafik/anruf_aus_small.gif" width="14" height="13" alt=""> [% Catalyst.loc('outgoing') %]
+          <img src="/grafik/anruf_aus_err_small.gif" width="14" height="13" alt=""> [% Catalyst.loc('failed') %]
         </p>
           
         <table class="anrufliste">
@@ -40,16 +40,16 @@
           [% IF ! subscriber.call_list %]
           <tr class="anruflisteheader"><td colspan="6" /></tr>
           <tr class="alt">
-            <td colspan="6" class="anrufnummer">Es befinden sich keine Anrufe in der Liste.</td>
+            <td colspan="6" class="anrufnummer">[% Catalyst.loc('No matching calls found.') %]</td>
           </tr>
           [% ELSE %]
           <tr class="anruflisteheader">
             <td />
-            <td class="anrufnummer">Gesprächspartner</td>
+            <td class="anrufnummer">[% Catalyst.loc('number') %]</td>
             <td />
-            <td class="anrufdauer">Dauer</td>
-            <td class="anrufkosten">Kosten</td>
-            <td class="anrufzeit">Zeitpunkt</td>
+            <td class="anrufdauer">[% Catalyst.loc('duration') %]</td>
+            <td class="anrufkosten">[% Catalyst.loc('charges') %]</td>
+            <td class="anrufzeit">[% Catalyst.loc('date') %]</td>
           </tr>
           [% END %]
 
@@ -65,17 +65,17 @@
               <tr class="anruflisteheader">
                 <td colspan="6">
                   [% IF cli == 1 %]
-                    <h3>Heute</h3>
+                    <h3>[% Catalyst.loc('today') %]</h3>
                   [% END %]
                   [% IF cli == 2 %]
-                    <h3>Gestern</h3>
+                    <h3>[% Catalyst.loc('yesterday') %]</h3>
                   [% END %]
                   [% IF cli == 3 %]
-                    <h3>Letzte Woche</h3>
+                    <h3>[% Catalyst.loc('last week') %]</h3>
                   [% END %]
                   [% IF cli == 4 %]
                     [% IF subscriber.call_list.today OR subscriber.call_list.yesterday OR subscriber.call_list.lastweek %]
-                      <h3>Frühere</h3>
+                      <h3>[% Catalyst.loc('past') %]</h3>
                     [% END %]
                   [% END %]
                 </td>
@@ -92,7 +92,8 @@
                   </td>
                   <td class="anrufanruf">
                     <div class="yui-skin-sam" id="ca[%c2di%]">
-                      <img src="/grafik/call.gif" width="12" height="14" onclick="cl_pop('ca[%c2di%]','[%callentry.partner_number%]')"/>
+                      <img src="/grafik/call.gif" width="12" height="14" onclick="cl_pop('ca[%c2di%]','[%callentry.partner_number%]')"
+                           title="[% Catalyst.loc('show actions') %]" />
                     </div>
                   </td>
                   <td class="anrufdauer">[% callentry.duration %]</td>
@@ -110,22 +111,22 @@
 
         <div class="search_container">
 
-          <h3>Suche</h3>
+          <h3>[% Catalyst.loc('Search') %]</h3>
 
           <form id="anrufsuche" action="/calllist" method="post">
-            <label for="fzeitraumvon">Zeitraum (TT.MM.JJJJ)</label><br clear="all" />
+            <label for="fzeitraumvon">[% Catalyst.loc('time range (DD.MM.YYYY)') %]</label><br clear="all" />
             <input type="text" id="fzeitraumvon" name="list_start" size="8" class="input8" value="[% subscriber.list_start %]"/>
-            <label for="fzeitraumbis" class="bis">bis</label>
+            <label for="fzeitraumbis" class="bis">[% Catalyst.loc('to') %]</label>
             <input type="text" id="fzeitraumbis" name="list_end" size="8" class="input8" value="[% subscriber.list_end %]"/>
             <br clear="all" />
             <div id="errormsg"><p>[% messages.msgdate %]</p></div>
 
-            <label for="fsuchbegriff">Suchbegriff</label><br />
+            <label for="fsuchbegriff">[% Catalyst.loc('search term') %]</label><br />
             <input type="text" id="fsuchbegriff" name="list_filter" size="21" class="input21" value="[% subscriber.list_filter %]"/>
             <br clear="all" />
 
             <div class="save">
-              <label for="calllist_apply_filter">Filter anwenden</label>
+              <label for="calllist_apply_filter">[% Catalyst.loc('apply filter') %]</label><br />
               <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="calllist_apply_filter" />
             </div>
             <input type="hidden" name="listmonth" value="[% subscriber.list_month %]" />
@@ -137,14 +138,14 @@
             <input type="hidden" name="list_filter" value="" />
             <input type="hidden" name="listmonth" value="[% subscriber.list_month %]" />
             <div class="save">
-              <label for="calllist_reset_filter">Filter zurücksetzen</label>
+              <label for="calllist_reset_filter">[% Catalyst.loc('reset filter') %]</label>
               <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="calllist_reset_filter">
             </div>
           </form>
 
         </div>
 
-        <h3>Anrufe nach Monaten</h3>
+        <h3>[% Catalyst.loc('Calls by month') %]</h3>
 
         <ul class="anrufsuchemonate">
           [% FOREACH selectyear = subscriber.selectmonths %]

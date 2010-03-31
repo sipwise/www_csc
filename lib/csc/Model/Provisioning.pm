@@ -968,21 +968,21 @@ sub delete_contact {
 }
 
 sub localize {
-    my ($self, $messages) = @_;
+    my ($self, $c, $messages) = @_;
 
     return unless defined $messages;
 
     if(ref $messages eq 'HASH') {
         my %translations;
         foreach my $msgname (keys %$messages) {
-            $translations{$msgname} = eval { $$self{prov}->get_localized_string({language => 'de', code => $$messages{$msgname}}) };
+            $translations{$msgname} = eval { $$self{prov}->get_localized_string({language => $c->language, code => $$messages{$msgname}}) };
             unless(defined $translations{$msgname}) {
-                $translations{$msgname} = eval { $$self{prov}->get_localized_string({language => 'de', code => 'Server.Internal'}) };
+                $translations{$msgname} = eval { $$self{prov}->get_localized_string({language => $c->language, code => 'Server.Internal'}) };
             }
         }
         return \%translations;
     } elsif(!ref $messages) {
-        return eval { $$self{prov}->get_localized_string({language => 'de', code => $messages}) };
+        return eval { $$self{prov}->get_localized_string({language => $c->language, code => $messages}) };
     }
 
     return;

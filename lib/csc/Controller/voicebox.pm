@@ -48,7 +48,7 @@ sub index : Private {
 
         for(1 .. 12) {
             my $amon = sprintf("%02d", $_);
-            push @localized_months, $c->model('Provisioning')->localize("Web.Months.".$amon) || $amon;
+            push @localized_months, $c->model('Provisioning')->localize($c, "Web.Months.".$amon) || $amon;
         }
 
         my @selectmonths;
@@ -299,7 +299,7 @@ sub end : ActionClass('RenderView') {
         }
 
         if(exists $c->session->{messages}) {
-            $c->stash->{messages} = $c->model('Provisioning')->localize($c->session->{messages});
+            $c->stash->{messages} = $c->model('Provisioning')->localize($c, $c->session->{messages});
             delete $c->session->{messages};
         }
     }

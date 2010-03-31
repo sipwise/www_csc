@@ -90,7 +90,7 @@ sub end : ActionClass('RenderView') {
         }
 
         if(exists $c->session->{messages}) {
-            $c->stash->{messages} = $c->model('Provisioning')->localize($c->session->{messages});
+            $c->stash->{messages} = $c->model('Provisioning')->localize($c, $c->session->{messages});
             delete $c->session->{messages};
         }
     }

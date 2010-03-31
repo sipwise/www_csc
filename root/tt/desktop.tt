@@ -3,7 +3,7 @@
     <div id="headimg">
       <img src="/grafik/area.jpg" width="869" height="69" alt="" />
     </div>
-    <div id="headtxt">Willkommen auf Ihrem persönlichen Desktop.</div>
+    <div id="headtxt">[% Catalyst.loc('Welcome to your personal desktop.') %]</div>
 
     <div id="main">
 
@@ -19,13 +19,13 @@
 
         <div class="spalte1">
 
-          <h3>Letzte 10 Telefonate</h3>
+          <h3>[% Catalyst.loc('recent calls') %]</h3>
 
           <p class="anruflistesymbole">
-            <img src="/grafik/anruf_ein_small.gif" width="14" height="13" alt="eingehender Anruf"> eingehend 
-            <img src="/grafik/anruf_ein_err_small.gif" width="14" height="13" alt="eingehender Anruf"> abwesend 
-            <img src="/grafik/anruf_aus_small.gif" width="14" height="13" alt="ausgehender Anruf"> ausgehend 
-            <img src="/grafik/anruf_aus_err_small.gif" width="14" height="13" alt="Anruf in Abwensenheit"> fehlgeschlagen 
+            <img src="/grafik/anruf_ein_small.gif" width="14" height="13" alt=""> [% Catalyst.loc('incoming') %] 
+            <img src="/grafik/anruf_ein_err_small.gif" width="14" height="13" alt=""> [% Catalyst.loc('missed') %] 
+            <img src="/grafik/anruf_aus_small.gif" width="14" height="13" alt=""> [% Catalyst.loc('outgoing') %] 
+            <img src="/grafik/anruf_aus_err_small.gif" width="14" height="13" alt=""> [% Catalyst.loc('failed') %] 
           </p>
 
           <table class="anrufliste">
@@ -36,7 +36,7 @@
 
             [% IF ! subscriber.call_list %]
             <tr class="alt">
-              <td colspan="5" class="anrufnummer">Es befinden sich keine Anrufe in der Liste.</td>
+              <td colspan="5" class="anrufnummer">[% Catalyst.loc('There are no calls recorded.') %]</td>
             </tr>
             [% END %]
 
@@ -48,7 +48,8 @@
               <td class="anrufnummer">[% callentry.partner %]</td>
 	      <td class="anrufanruf">
                 <div class="yui-skin-sam" id="c[%c2di%]">
-                  <img src="/grafik/call.gif" width="12" height="14" onclick="cl_pop('c[%c2di%]','[%callentry.partner%]')"/>
+                  <img src="/grafik/call.gif" width="12" height="14" onclick="cl_pop('c[%c2di%]','[%callentry.partner%]')"
+                       title="[% Catalyst.loc('show actions') %]" />
                 </div>
               </td>
               <td class="anrufdauer">[% callentry.duration %]</td>
@@ -60,7 +61,7 @@
 
           [% IF Catalyst.config.main_menu.calllist %]
           <p>
-            <a href="/calllist" class="link">Alle Telefonate</a>
+            <a href="/calllist" class="link">[% Catalyst.loc('all calls') %]</a>
           </p>
           [% END %]
 
@@ -68,34 +69,34 @@
         <div class="spalte2">
 
           [% IF show_cash_balance OR show_free_time_balance %]
-          <h3>Kontostatus</h3>
+          <h3>[% Catalyst.loc('Account Balance') %]</h3>
           <div class="status">
             <p>
               [% IF show_cash_balance %]
-                <strong>&euro; [% subscriber.account.cash_balance %] Guthaben</strong><br />
+                <strong>[% Catalyst.loc('[_1] [_2] credit', subscriber.account.currency, subscriber.account.cash_balance) %]</strong><br />
               [% END%]
               [% IF show_free_time_balance %]
-                <strong>[% subscriber.account.free_time_balance %] Freiminuten</strong><br />
+                <strong>[% Catalyst.loc('[_1] free minutes', subscriber.account.free_time_balance) %]</strong><br />
               [% END %]
             </p>
           </div>
           [% END %]
 
-          <h3>Registrierungen</h3>
+          <h3>[% Catalyst.loc('Clients') %]</h3>
           <p class="[% subscriber.contacts.size > 0 ? 'reginforeg' : 'reginfonoreg' %]">
-            [% subscriber.contacts.size == 0 ? 'Kein' :  subscriber.contacts.size %] Endgerät[% subscriber.contacts.size < 2 ? '' : 'e' %] registriert.
+            [% Catalyst.loc('[_1] client devices registered', subscriber.contacts.size) %]
           </p>
           <br clear="all" />
 
         [% IF Catalyst.config.main_menu.voicebox %]
-          <h3>Neue Voicemails</h3>
+          <h3>[% Catalyst.loc('New Voicemails') %]</h3>
           [% IF subscriber.voicemail_list %]
             <ul class="voicemailliste">
             [% FOREACH voicemail = subscriber.voicemail_list %]
                 [% c2di = c2di + 1 %]
                 <li class="[% voicemail.background %]">
                   <span class="voicemailnummer">
-                    <a href="/voicebox/listen?mailid=[% voicemail.id %]" title="Voicemail abhören">
+                    <a href="/voicebox/listen?mailid=[% voicemail.id %]" title="[% Catalyst.loc('listen to voicemail') %]">
                       <img src="/grafik/voicemail.gif" width="20" height="20" alt="voicemail" /> 
                       <strong>[% voicemail.partner %]</strong>
                     </a>
@@ -107,17 +108,17 @@
                     <div class="yui-skin-sam" id="ca[%c2di%]">
                       <img src="/grafik/call.gif" width="12" height="14"
                            onclick="cl_pop('ca[%c2di%]','[% voicemail.partner_number %]')"
-                           title="Jetzt zurückrufen" />
+                           title="[% Catalyst.loc('show actions') %]" />
                     </div>
                   </span>
                 </li>
             [% END %]
             </ul>
           [% ELSE %]
-            <p class="rufumleitunginfo">Keine neuen Voicemails.</p>
+            <p class="rufumleitunginfo">[% Catalyst.loc('no new voicemails') %]</p>
           [% END %]
           <p>
-            <a href="/voicebox" class="link">Alle Voicemails</a>
+            <a href="/voicebox" class="link">[% Catalyst.loc('all voicemails') %]</a>
           </p>
           <br clear="all" />
         [% END %]
@@ -126,37 +127,37 @@
         <div class="spalte3">
 
         [% IF Catalyst.config.main_menu.callforward %]
-          <h3>Rufumleitung</h3>
+          <h3>[% Catalyst.loc('Call Forwards') %]</h3>
 
           <p class="rufumleitung">
             [% IF subscriber.fw.active %]
               <img src="/grafik/umleitung_on.gif" width="42" height="43" alt="" />
-              Rufumleitung aktiv
+              [% Catalyst.loc('call forward active') %]
             [% ELSE %]
               <img src="/grafik/umleitung_off.gif" width="42" height="43" alt="" />
-              Rufumleitung deaktiviert
+              [% Catalyst.loc('call forward inactive') %]
             [% END %]
           </p>
           <p style="clear:left">
-            <a href="/callforward" class="link">Einstellungen ansehen</a>
+            <a href="/callforward" class="link">[% Catalyst.loc('view settings') %]</a>
           </p>
           <br clear="all" />
         [% END %]
 
         [% IF Catalyst.config.main_menu.reminder %]
-          <h3>Weckruf</h3>
+          <h3>[% Catalyst.loc('Reminder') %]</h3>
 
           <p class="rufumleitung">
             [% IF subscriber.reminder.time %]
               <img src="/grafik/reminder_on.gif" width="34" height="43" alt="" />
-              Weckruf aktiv
+              [% Catalyst.loc('reminder is active') %]
             [% ELSE %]
               <img src="/grafik/reminder_off.gif" width="34" height="43" alt="" />
-              Weckruf deaktiviert
+              [% Catalyst.loc('no reminder set') %]
             [% END %]
           </p>
           <p style="clear:left">
-            <a href="/reminder" class="link">Einstellungen ansehen</a>
+            <a href="/reminder" class="link">[% Catalyst.loc('view settings') %]</a>
           </p>
           <br clear="all" />
         [% END %]

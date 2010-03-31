@@ -16,7 +16,7 @@ use XML::Simple;
 
 use Catalyst::Log::Log4perl;
 
-use Catalyst qw/-Debug ConfigLoader Static::Simple Unicode
+use Catalyst qw/-Debug ConfigLoader Static::Simple Unicode I18N
                 Authentication Authentication::Store::Minimal Authentication::Credential::Password
                 Session Session::Store::FastMmap Session::State::Cookie
                /;
@@ -35,6 +35,7 @@ our $VERSION = '0.01';
 # load configuration from admin.conf XML
 my $xs = new XML::Simple;
 my $xc = $xs->XMLin( '/usr/local/etc/csc.conf', ForceArray => 0);
+$$xc{site_config}{language} = 'en' unless $$xc{site_config}{language} =~ /^\w+$/;
 
 __PACKAGE__->config( authentication => {}, %$xc );
 
@@ -43,6 +44,33 @@ if(__PACKAGE__->config->{log4perlconf}) {
       __PACKAGE__->config->{log4perlconf}
   ));
 }
+
+# this is called once for every request unless overidden by a
+# more specific "begin" in our Controllers
+sub begin : Private {
+    my ( $self, $c ) = @_;
+
+    $c->response->headers->push_header( 'Vary' => 'Accept-Language' );  # hmm vary and param?
+
+    # set default language
+    $c->session->{lang} = $c->config->{site_config}{language} unless $c->session->{lang};
+
+    if($c->request->params->{lang} =~ /^\w+$/) {
+        $c->languages([$c->request->params->{lang}]);
+        if($c->language eq 'i_default') {
+            $c->languages([$c->session->{lang}]);
+        } else {
+            $c->session->{lang} = $c->language;
+        }
+    } else {
+        $c->languages([$c->session->{lang}]);
+    }
+
+    $c->log->debug('***csc::begin final language: '. $c->language);
+
+    return;
+}
+
 
 # Start the application
 __PACKAGE__->setup;
@@ -74,8 +102,8 @@ Daniel Tiefnig <dtiefnig@sipwise.com>
 
 =head1 COPYRIGHT
 
-The csc module is Copyright (c) 2007 Sipwise GmbH, Austria. All rights
-reserved.
+The csc module is Copyright (c) 2007-2010 Sipwise GmbH, Austria. All
+rights reserved.
 
 =cut
 

@@ -3,7 +3,7 @@
   <div id="headimg">
     <img src="/grafik/area.jpg" width="869" height="69" alt="" />
   </div>
-  <div id="headtxt">Bitte geben Sie Username und Passwort ein.</div>
+  <div id="headtxt">[% Catalyst.loc('Please enter your username and password.') %]</div>
 
   <div id="main">
 
@@ -14,20 +14,23 @@
 
     <div id="spalten31">
 
-      <h2>CSC Login</h2>
+      <h2>[% Catalyst.loc('Self-Administration Login') %]</h2>
 
       <div class="spalte1">
 
          <form id="anmelden" action="/login/do_login">
            <fieldset>
-             <label for="benutzer">Benutzer</label>
-             <input type="text" id="benutzer" name="benutzer" class="benutzer" size="20" /><br clear="all" />
-             <label for="passwort">Passwort</label>
-             <input type="password" id="passwort" name="passwort" class="passwort" size="20" /><br clear="all" />
-<!--         <span><a href="#" class="link">Passwort vergessen?</a></span> -->
-             <br clear="all" />
+             <span>
+               <label id="lbenutzer" for="benutzer">[% Catalyst.loc('username:') %]</label>
+               <input type="text" id="benutzer" name="benutzer" class="benutzer" size="20" /><br clear="all" />
+               <label id="lpasswort" for="passwort">[% Catalyst.loc('password:') %]</label>
+               <input type="password" id="passwort" name="passwort" class="passwort" size="20" /><br clear="all" />
+             </span>
            </fieldset>
-           <input type="image" src="grafik/anmelden.gif" alt="Anmelden" />
+           <div class="save">
+             <label for="do_login">[% Catalyst.loc('Login') %]</label>
+             <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="do_login">
+           </div>
          </form>
 
       </div>

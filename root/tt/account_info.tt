@@ -3,15 +3,15 @@
 
           <form class="anmelden feinstellungen">
             <fieldset class="alt">
-              <label for="fusername">Benutzername</label>
+              <label for="fusername">[% Catalyst.loc('username:') %]</label>
               <p><strong>[% subscriber.username %]</strong></p>
-              <label for="fe164num">Telefonnummer</label>
+              <label for="fe164num">[% Catalyst.loc('phone number:') %]</label>
               <p><strong>[% subscriber.active_number %]</strong></p>
-              <label for="fsipuri">SIP-URI</label>
+              <label for="fsipuri">[% Catalyst.loc('SIP URI:') %]</label>
               <p><strong>[% subscriber.username %]@[% sip_domain %]</strong></p>
-              <label for="fsipserver">SIP-Server</label>
+              <label for="fsipserver">[% Catalyst.loc('SIP proxy server:') %]</label>
               <p><strong>[% sip_server %]</strong></p>
-              <label for="ftftpserver">TFTP-Server</label>
+              <label for="ftftpserver">[% Catalyst.loc('TFTP boot server:') %]</label>
               <p><strong>[% tftp_server %]</strong></p>
             </fieldset><br clear="all" />
           </form><br clear="all" />

@@ -3,16 +3,10 @@
     <div id="headimg">
       <img src="/grafik/area.jpg" width="869" height="69" alt="" />
     </div>
-    <div id="headtxt">Konfigurieren einer Rufumleitung.</div>
+    <div id="headtxt">[% Catalyst.loc('Call forwarding for incoming calls.') %]</div>
 
     <div id="main">
 
-<!--      <div id="bigmessage">
-        <p>
-          Seit Ihrem letzten Login haben Sie <a href="voicemail" class="link"><strong>3 neue Voicemails</strong></a> erhalten und <a href="anrufe_verpasst" class="link"><strong>2 Anrufe verpasst</strong></a>.
-        </p>
-      </div>
--->
       <div id="topmsg">
         <p> [% messages.topmsg %] </p>
       </div>
@@ -22,17 +16,8 @@
       </div>
 
       <div class="sperrehead">
-        <h3>Rufumleitung</h3>
-<!--        <form action="">
-          <select>
-            <option>0043 / 1 / 244 56 78 - 10</option>
-            <option>0043 / 1 / 244 56 78 - 20</option>
-            <option>0043 / 1 / 244 56 78 - 30</option>
-            <option>0043 / 1 / 244 56 78 - 40</option>
-            <option>0043 / 1 / 244 56 78 - 50</option>
-          </select>
-        </form>
--->        <h2 class="umleitungfuer">Einstellungen für [% subscriber.active_number %]</h2>
+        <h3>[% Catalyst.loc('Call forward') %]</h3>
+        <h2 class="umleitungfuer">[% Catalyst.loc('Settings for [_1]', subscriber.active_number) %]</h2>
       </div>
       <div id="spalten31">
 
@@ -40,76 +25,75 @@
 
           <form id="kontaktform" class="umleitung" action="/callforward/save" method="post">
             <fieldset class="alt">
-              <h3>Ziel</h3>
+              <h3>[% Catalyst.loc('Destination') %]</h3>
               <p class="wohinp">
                 <label for="fw_voicebox">
-                  <input type="radio" id="fw_voicebox" value="voicebox" name="fw_target" class="radio" [% subscriber.fw.voicebox_checked %] /> Voicebox
+                  <input type="radio" id="fw_voicebox" value="voicebox" name="fw_target" class="radio" [% subscriber.fw.voicebox_checked %] /> [% Catalyst.loc('Voicebox') %]
                 </label><br clear="all" />
               </p>
               <p class="wohinp">
                 <label for="fw_sipuri">
-                  <input type="radio" id="fw_sipuri" value="sipuri" name="fw_target" class="radio" [% subscriber.fw.sipuri_checked %] /> Telefonnummer oder SIP-URI
+                  <input type="radio" id="fw_sipuri" value="sipuri" name="fw_target" class="radio" [% subscriber.fw.sipuri_checked %] /> [% Catalyst.loc('Phone number or SIP URI') %]
                 </label><input type="text" id="fw_sipuri" name="fw_sipuri" size="25" class="input25" value="[% subscriber.fw.sipuri %]" /><br clear="all" />
               </p>
               <div id="errormsg"><p>[% messages.target %]</p></div>
             </fieldset>
 
             <fieldset>
-              <h3>Wann</h3>
+              <h3>[% Catalyst.loc('When') %]</h3>
               <p class="wannp">
                 <label for="fw_act_never">
-                  <input type="radio" id="fw_act_never" value="no" name="fw_active" class="radio" [% subscriber.fw.never_checked %] /> Anrufe nicht umleiten
+                  <input type="radio" id="fw_act_never" value="no" name="fw_active" class="radio" [% subscriber.fw.never_checked %] /> [% Catalyst.loc('do not forward any calls') %]
                 </label><br clear="all" />
               </p>
 
               <p class="wannp">
                 <label for="fw_act_allways">
-                  <input type="radio" id="fw_act_allways" value="yes" name="fw_active" class="radio" [% subscriber.fw.allways_checked %] /> Anrufe immer umleiten
+                  <input type="radio" id="fw_act_allways" value="yes" name="fw_active" class="radio" [% subscriber.fw.allways_checked %] /> [% Catalyst.loc('forward all calls') %]
                 </label><br clear="all" />
               </p>
 
               <p class="wannp">
                 <label for="fw_act_condition">
-                  <input type="radio" id="fw_act_condition" value="conditional" name="fw_active" class="radio" [% subscriber.fw.condition_checked %] /> Anrufe umleiten ...
+                  <input type="radio" id="fw_act_condition" value="conditional" name="fw_active" class="radio" [% subscriber.fw.condition_checked %] /> [% Catalyst.loc('forward calls ...') %]
                 </label><br clear="all" />
               </p>
               <p class="wanncp">
-                <input type="checkbox" value="na" name="fw_condition" class="radio" [% subscriber.fw.na_checked %] /> ... bei Nicht-Erreichbarkeit.
+                <input type="checkbox" value="na" name="fw_condition" class="radio" [% subscriber.fw.na_checked %] /> [% Catalyst.loc('... if no client device is registered') %]
               </p>
               <p class="wanncp">
-                <input type="checkbox" value="timeout" name="fw_condition" class="radio" [% subscriber.fw.timeout_checked %] /> ... nach <input type="text" size="3" id="sek" name="fw_ringtimeout" value="[% subscriber.fw.ringtimeout %]" /> Sekunden ohne Antwort.
+                <input type="checkbox" value="timeout" name="fw_condition" class="radio" [% subscriber.fw.timeout_checked %] /> [% Catalyst.loc('... after ') %]
+                <input type="text" size="3" id="sek" name="fw_ringtimeout" value="[% subscriber.fw.ringtimeout %]" /> [% Catalyst.loc('seconds of ringing') %]
               </p>
               [% IF messages.ringtimeout %]
               <div id="errormsg"><p>[% messages.ringtimeout %]</p></div><br clear="all" />
               [% END %]
               <p class="wanncp">
-                <input type="checkbox" value="busy" name="fw_condition" class="radio" [% subscriber.fw.busy_checked %] /> ... bei laufendem Gespräch.
+                <input type="checkbox" value="busy" name="fw_condition" class="radio" [% subscriber.fw.busy_checked %] /> [% Catalyst.loc('... if there already is a call ongoing') %]
               </p>
               <div id="errormsg"><p>[% messages.condition %]</p></div>
             </fieldset>
 
-<!--              <input type="submit" name="save" value="Einstellungen speichern"> -->
             <p class="save">
-              <label for="save_settings">Einstellungen speichern</label><input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_settings">
+              <label for="save_settings">[% Catalyst.loc('save settings') %]</label>
+              <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_settings">
             </p>
           </form><br clear="all" />
 
         </div>
+
         <div class="spalte2">
 
           <p class="rufumleitung">
             [% IF subscriber.fw.active %]
-              <img src="/grafik/umleitung_on.gif" width="42" height="43" alt="Symbol für Rufumleitung" /> 
-              Rufumleitung ist aktiv!
+              <img src="/grafik/umleitung_on.gif" width="42" height="43" alt="" /> 
+              [% Catalyst.loc('call forward active') %]
             [% ELSE %]
-              <img src="/grafik/umleitung_off.gif" width="42" height="43" alt="Symbol für Rufumleitung" /> 
-              Rufumleitung ist deaktiviert!
+              <img src="/grafik/umleitung_off.gif" width="42" height="43" alt="" /> 
+              [% Catalyst.loc('call forward inactive') %]
             [% END %]
           </p>
-<!--          <p class="rufumleitunginfo">
-            Anrufe werden bei Nicht-Erreichbarkeit in die Voicebox umgeleitet.
-          </p>
--->
+
         </div>
 
       </div>

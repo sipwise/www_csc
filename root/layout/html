@@ -11,13 +11,13 @@
   [% END %]
 
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <meta http-equiv="content-language" content="[% Catalyst.config.site_config.language %]" />
+  <meta http-equiv="content-language" content="[% Catalyst.language %]" />
 
   <meta name="description" content="[% template.title or Catalyst.config.site_config.title %]" />
   <meta name="title" content="[% template.title or Catalyst.config.site_config.title %]" />
   <meta name="Company" content="[% Catalyst.config.site_config.company.name %]" />
   <meta name="keywords" content="" />
-  <meta name="Language" content="Deutsch" />
+  <meta name="Language" content="[% Catalyst.language %]" />
 
   <link rel="stylesheet" type="text/css" href="/js/yui/build/container/assets/skins/sam/container.css" />
   <script type="text/javascript" src="/js/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
@@ -37,7 +37,7 @@
 
 </head>
 
-<body id="[% Catalyst.config.site_config.language %]">
+<body id="[% Catalyst.language %]">
 [% content %]
 </body>
 

@@ -3,7 +3,7 @@
   <div id="headimg">
     <img src="/grafik/area.jpg" width="869" height="69" alt="" />
   </div>
-  <div id="headtxt">Rufnummernsperre für eingehende und ausgehende Telefonate.</div>
+  <div id="headtxt">[% Catalyst.loc('Call barring for incoming and outgoing calls.') %]</div>
   
   <div id="main">
     
@@ -16,24 +16,25 @@
     </div>
 
     <div class="sperrehead">
-      <h3>Rufnummernsperre</h3>
-      <h2 class="umleitungfuer">Einstellungen für [% subscriber.active_number %]</h2>
+      <h3>[% Catalyst.loc('Call barring') %]</h3>
+      <h2 class="umleitungfuer">[% Catalyst.loc('Settings for [_1]', subscriber.active_number) %]</h2>
     </div>
     
     <div id="spalten11">
       
       <div class="spalte1">
         
-        <h3 class="blueh3">Eingehende Anrufe</h3>
+        <h3 class="blueh3">[% Catalyst.loc('Incoming calls') %]</h3>
         <div class="fsperre">
           <fieldset class="fieldblockmode">
             <form action="/callblock/save" method="post">
               <input type="radio" id="block_in_mode0" name="block_in_mode" value="0" [% subscriber.blk.inmode0_checked %] />
-              <label for="block_in_mode0">Alles erlauben ausser ...</label><br />
+              <label for="block_in_mode0">[% Catalyst.loc('Allow everything except ...') %]</label><br />
               <input type="radio" id="block_in_mode1" name="block_in_mode" value="1" [% subscriber.blk.inmode1_checked %] />
-              <label for="block_in_mode1">Alles sperren ausser ...</label>
+              <label for="block_in_mode1">[% Catalyst.loc('Block everything except ...') %]</label>
               <p class="save">
-                <label for="save_blockinmode">Einstellung speichern</label><input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_blockinmode">
+                <label for="save_blockinmode">[% Catalyst.loc('save settings') %]</label>
+                <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_blockinmode">
               </p>
             </form>
           </fieldset>
@@ -47,7 +48,7 @@
                     <div class="save">
                       <input type="hidden" name="block_in_del" value="[% blockentry.number %]" />
                       <input type="hidden" name="block_in_stat" value="[% blockentry.active %]" />
-                      <label for="save_blockindel[% blockentry.id %]">löschen</label>
+                      <label for="save_blockindel[% blockentry.id %]">[% Catalyst.loc('delete') %]</label>
                       <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_blockindel[% blockentry.id %]">
                     </div>
                   </form>
@@ -58,12 +59,12 @@
                       [% IF    blockentry.active  == 1 %]
                         <input type="hidden" name="block_in_act" value="[% blockentry.number %]" />
                         <input type="hidden" name="block_in_stat" value="1" />
-                        <label for="save_blockinact[% blockentry.id %]">deaktivieren</label>
+                        <label for="save_blockinact[% blockentry.id %]">[% Catalyst.loc('disable') %]</label>
                         <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_blockinact[% blockentry.id %]">
                       [% ELSIF blockentry.active  == 0 %]
                         <input type="hidden" name="block_in_act" value="[% blockentry.number %]" />
                         <input type="hidden" name="block_in_stat" value="0" />
-                        <label for="save_blockinact[% blockentry.id %]">aktivieren</label>
+                        <label for="save_blockinact[% blockentry.id %]">[% Catalyst.loc('enable') %]</label>
                         <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_blockinact[% blockentry.id %]">
                       [% END %]
                     </div>
@@ -75,14 +76,17 @@
 
           <fieldset class="sperreadd">
             <form action="/callblock/save" method="post">
-              <label for="save_blockinaddtxt">Neuer Eintrag:</label>
+              <label for="save_blockinaddtxt">[% Catalyst.loc('new entry:') %]</label>
               <input type="text" size="20" name="block_in_add" id="save_blockinaddtxt" value="[% refill.blockinaddtxt %]" />
               <div id="errormsg"><p>[% messages.msginadd %]</p></div>
               <p class="save">
-                <label for="save_blockinadd">Nummer hinzufügen</label><input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_blockinadd">
+                <label for="save_blockinadd">[% Catalyst.loc('add number') %]</label>
+                <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_blockinadd">
               </p><br clear="all" />
               <p class="info">
-                Bitte verwenden Sie nur Ziffern und "?" als Platzhalter für eine, bzw. "*" für mehrere beliebige Ziffer(n) in der Rufnummer. Um Anrufe mit unterdrückter Rufnummer hinzuzufügen, müssen Sie das Eingabefeld einfach leer lassen.
+                [% Catalyst.loc('Please use digits only and include the area code of the number.') %]
+                [% Catalyst.loc('You may use the wildcard characters "?" for one and "*" for an indefinite number of arbitrary digits.') %]
+                [% Catalyst.loc('To block anonymous calls you may just submit the empty string.') %]
               </p>
             </form>
           </fieldset>
@@ -92,7 +96,7 @@
 
       <div class="spalte2">
         
-        <h3 class="blueh3">Ausgehende Anrufe</h3>
+        <h3 class="blueh3">[% Catalyst.loc('Outgoing calls') %]</h3>
         <div class="fsperre">
           <fieldset class="fieldblockmode">
             <form action="/callblock/save" method="post">
@@ -100,13 +104,14 @@
                                             [% IF subscriber.clir %]
                                               checked="checked"
                                             [% END %]
-                                          /> eigene Rufnummer unterdrücken</label></p>
+                                          /> [% Catalyst.loc('hide own number on outgoing calls') %]</label></p>
               <input type="radio" id="block_out_mode0" name="block_out_mode" value="0" [% subscriber.blk.outmode0_checked %] />
-              <label for="block_out_mode0">Alles erlauben ausser ...</label><br />
+              <label for="block_out_mode0">[% Catalyst.loc('Allow everything except ...') %]</label><br />
               <input type="radio" id="block_out_mode1" name="block_out_mode" value="1" [% subscriber.blk.outmode1_checked %] />
-              <label for="block_out_mode1">Alles sperren ausser ...</label>
+              <label for="block_out_mode1">[% Catalyst.loc('Block everything except ...') %]</label>
               <p class="save">
-                <label for="save_blockoutmode">Einstellung speichern</label><input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_blockoutmode">
+                <label for="save_blockoutmode">[% Catalyst.loc('save settings') %]</label>
+                <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_blockoutmode">
               </p>
             </form>
           </fieldset>
@@ -120,7 +125,7 @@
                     <div class="save">
                       <input type="hidden" name="block_out_del" value="[% blockentry.number %]" />
                       <input type="hidden" name="block_out_stat" value="[% blockentry.active %]" />
-                      <label for="save_blockoutdel[% blockentry.id %]">löschen</label>
+                      <label for="save_blockoutdel[% blockentry.id %]">[% Catalyst.loc('delete') %]</label>
                       <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_blockoutdel[% blockentry.id %]">
                     </div>
                   </form>
@@ -131,12 +136,12 @@
                       [% IF    blockentry.active  == 1 %]
                         <input type="hidden" name="block_out_act" value="[% blockentry.number %]" />
                         <input type="hidden" name="block_out_stat" value="1" />
-                        <label for="save_blockoutact[% blockentry.id %]">deaktivieren</label>
+                        <label for="save_blockoutact[% blockentry.id %]">[% Catalyst.loc('disable') %]</label>
                         <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_blockoutact[% blockentry.id %]">
                       [% ELSIF blockentry.active  == 0 %]
                         <input type="hidden" name="block_out_act" value="[% blockentry.number %]" />
                         <input type="hidden" name="block_out_stat" value="0" />
-                        <label for="save_blockoutact[% blockentry.id %]">aktivieren</label>
+                        <label for="save_blockoutact[% blockentry.id %]">[% Catalyst.loc('enable') %]</label>
                         <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_blockoutact[% blockentry.id %]">
                       [% END %]
                     </div>
@@ -147,14 +152,16 @@
           </table>
           <fieldset class="sperreadd">
             <form action="/callblock/save" method="post">
-              <label for="save_blockoutaddtxt">Neuer Eintrag:</label>
+              <label for="save_blockoutaddtxt">[% Catalyst.loc('new entry:') %]</label>
               <input type="text" size="20" name="block_out_add" id="save_blockoutaddtxt" value="[% refill.blockoutaddtxt %]" />
               <div id="errormsg"><p>[% messages.msgoutadd %]</p></div>
               <p class="save">
-                <label for="save_blockoutadd">Nummer hinzufügen</label><input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_blockoutadd">
+                <label for="save_blockoutadd">[% Catalyst.loc('add number') %]</label>
+                <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_blockoutadd">
               </p><br clear="all" />
               <p class="info">
-                Bitte verwenden Sie nur Ziffern und "?" als Platzhalter für eine, bzw. "*" für mehrere beliebige Ziffer(n) in der Rufnummer.
+                [% Catalyst.loc('Please use digits only and include the area code of the number.') %]
+                [% Catalyst.loc('You may use the wildcard characters "?" for one and "*" for an indefinite number of arbitrary digits.') %]
               </p>
             </form>
           </fieldset>

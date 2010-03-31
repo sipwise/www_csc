@@ -9,17 +9,19 @@
       </h1>
 
       <ul id="menusmall">
-        <li class="kundenbereich"><a href="/login">Kundenbereich</a></li>
+        [% FOREACH language = Catalyst.config.site_config.languages %]
+          <li class="language"><a href="?lang=[% language %]"><img src="/grafik/[% language %].png" /> [% language %]</a></li>
+        [% END %]
       </ul>
 
       [% IF Catalyst.config.site_config.company.hotline %]
       <p id="hotline">
-        Hotline: <strong>[% Catalyst.config.site_config.company.hotline %]</strong>
+        [% Catalyst.loc('Hotline:') %] <strong>[% Catalyst.config.site_config.company.hotline %]</strong>
       </p>
       [% END %]
     
       <ul id="menu">
-        <li><a href="http://[% Catalyst.config.site_config.company.webserver %]/">Startseite</a></li>
+        <li><a href="http://[% Catalyst.config.site_config.company.webserver %]/">[% Catalyst.loc('Homepage') %]</a></li>
       </ul>
     </div>
       
