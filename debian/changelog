@@ -1,3 +1,11 @@
+sipwise-www-csc (2.0.0) UNRELEASED; urgency=medium
+
+  * lots of small bugfixes and enhancements
+  * support for new plattform features
+  * internationalization and localization support
+
+ -- Daniel Tiefnig <dtiefnig@sipwise.com>  Wed, 31 Mar 2010 14:13:25 +0200
+
 sipwise-www-csc (1.1.4) unstable; urgency=low
 
   * Initial release.

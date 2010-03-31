@@ -31,9 +31,14 @@ install: build
 
 	# Add here commands to install the package into debian/sipwise-www-csc.
 	cp -a lib  debian/sipwise-www-csc/usr/local/csc/
-	cp -a root debian/sipwise-www-csc/usr/local/csc/
-	cp -a script debian/sipwise-www-csc/usr/local/csc/
-	install -m 644 csc.yml debian/sipwise-www-csc/usr/local/csc/
+	cp -a root debian/sipwise-www-csc/usr/local/csc/lib/csc/
+	install -m 644 csc.yml debian/sipwise-www-csc/usr/local/csc/lib/csc/
+        install -m 644 -D etc/csc.conf debian/sipwise-www-csc/usr/local/etc/csc.conf
+        install -m 644 -D etc/apache.site debian/sipwise-www-csc/usr/share/doc/sipwise-www-csc/apache.site
+        # we don't need csc_create.pl and csc_test.pl:
+        install -m 755 script/csc_cgi.pl     debian/sipwise-www-csc/usr/local/csc/script/
+        install -m 755 script/csc_fastcgi.pl debian/sipwise-www-csc/usr/local/csc/script/
+        install -m 755 script/csc_server.pl  debian/sipwise-www-csc/usr/local/csc/script/
 	# make sure we don't have any svn files inside the .deb:
 	find debian/sipwise-www-csc -name \.svn -print0 | xargs -0 rm -rf
 
