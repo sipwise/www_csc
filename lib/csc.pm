@@ -21,7 +21,7 @@ use Catalyst qw/-Debug ConfigLoader Static::Simple Unicode I18N
                 Session Session::Store::FastMmap Session::State::Cookie
                /;
 
-our $VERSION = '0.01';
+our $VERSION = '2';
 
 # Configure the application. 
 #
