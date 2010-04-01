@@ -48,7 +48,9 @@
             <td class="anrufnummer">[% Catalyst.loc('number') %]</td>
             <td />
             <td class="anrufdauer">[% Catalyst.loc('duration') %]</td>
+            [% IF subscriber.account.billing_profile %]
             <td class="anrufkosten">[% Catalyst.loc('charges') %]</td>
+            [% END %]
             <td class="anrufzeit">[% Catalyst.loc('date') %]</td>
           </tr>
           [% END %]
@@ -97,7 +99,9 @@
                     </div>
                   </td>
                   <td class="anrufdauer">[% callentry.duration %]</td>
+                  [% IF subscriber.account.billing_profile %]
                   <td class="anrufkosten">[% callentry.call_fee %]</td>
+                  [% END %]
                   <td class="anrufzeit">[% callentry.date %]</td>
                 </tr>
               [% END %]

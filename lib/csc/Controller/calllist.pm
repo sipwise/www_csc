@@ -39,6 +39,11 @@ sub index : Private {
         $c->stash->{subscriber}{active_number} =~ s/$ext$/ - $ext/;
     }
 
+    return 1 unless $c->model('Provisioning')->call_prov($c, 'billing', 'get_voip_account_by_id',
+                                                         { id => $c->session->{user}{data}{account_id} },
+                                                         \$c->stash->{subscriber}{account}
+                                                        );
+
     my $cts = $c->session->{user}{data}{create_timestamp};
     if($cts =~ s/^(\d{4}-\d\d)-\d\d \d\d:\d\d:\d\d/$1/) {
         my ($cyear, $cmonth) = split /-/, $cts;
