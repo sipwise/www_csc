@@ -64,6 +64,7 @@ sub index : Private {
             $c->stash->{subscriber}{account}{free_time_balance} = int($c->session->{user}{account}{free_time_balance} / 60);
             $c->stash->{show_free_time_balance} = 1;
         }
+        $c->stash->{subscriber}{account}{billing_profile} = $bilprof;
     }
 
     $c->stash->{subscriber}{call_list} = csc::Utils::prepare_call_list($c, $c->session->{user}{call_list}, 0)
