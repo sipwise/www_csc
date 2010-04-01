@@ -45,17 +45,17 @@
                 </p>
               </p>
 
-            <p class="save">
+            <span id="reminder_save" class="save">
               <label for="save_settings">[% Catalyst.loc('enable reminder') %]</label>
               <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_settings">
-            </p>
+            </span>
           </form>
 
           <form action="/reminder/save" method="post">
-            <p class="save">
+            <span class="save">
               <label for="clear_settings">[% Catalyst.loc('disable reminder') %]</label>
               <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="clear_settings">
-            </p>
+            </span>
           </form>
           
           <br clear="all" />

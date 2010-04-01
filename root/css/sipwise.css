@@ -713,6 +713,10 @@
    width: 100px !important;
 }
 
+#reminder_save {
+   float: left;
+}
+
 /* add to cart link next to product images */
 #main .produktwahlshop .produktwahl span.add_to_cart {
    float: left;
