@@ -177,7 +177,8 @@
 
 /* hidden post label images */
 .hidden {
-   display: none !important;
+   position: relative;
+   left: -90000px;
 }
 
 /* position for Login post link */
