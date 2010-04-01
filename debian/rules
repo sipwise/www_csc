@@ -27,14 +27,14 @@ install: build
 	dh_testdir
 	dh_testroot
 	dh_clean -k
-	dh_installdirs usr/local/csc
+	dh_installdirs usr/local/csc usr/local/csc/script usr/local/etc usr/share/doc/sipwise-www-csc
 
 	# Add here commands to install the package into debian/sipwise-www-csc.
 	cp -a lib  debian/sipwise-www-csc/usr/local/csc/
 	cp -a root debian/sipwise-www-csc/usr/local/csc/lib/csc/
 	install -m 644 csc.yml debian/sipwise-www-csc/usr/local/csc/lib/csc/
-	install -m 644 -D etc/csc.conf debian/sipwise-www-csc/usr/local/etc/csc.conf
-	install -m 644 -D etc/apache.site debian/sipwise-www-csc/usr/share/doc/sipwise-www-csc/apache.site
+	install -m 644 etc/csc.conf debian/sipwise-www-csc/usr/local/etc/csc.conf
+	install -m 644 etc/apache.site debian/sipwise-www-csc/usr/share/doc/sipwise-www-csc/apache.site
 	# we don't need csc_create.pl and csc_test.pl:
 	install -m 755 script/csc_cgi.pl     debian/sipwise-www-csc/usr/local/csc/script/
 	install -m 755 script/csc_fastcgi.pl debian/sipwise-www-csc/usr/local/csc/script/
