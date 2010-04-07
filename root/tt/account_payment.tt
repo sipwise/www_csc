@@ -1,4 +1,4 @@
-[% META title = 'account' %]
+[% META title = 'Account' %]
 [% META subtitle = 'account_balance' %]
 
 [% PROCESS tt/payment.tt %]

@@ -1,4 +1,4 @@
-[% META title = 'reminder' %]
+[% META title = 'Reminder' %]
 
     <div id="headimg">
       <img src="/grafik/area.jpg" width="869" height="69" alt="" />

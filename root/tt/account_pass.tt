@@ -1,4 +1,4 @@
-[% META title = 'account' %]
+[% META title = 'Account' %]
 [% META subtitle = 'account_pass' %]
 
           <form class="anmelden feinstellungen" action="/account/savepass" method="post">

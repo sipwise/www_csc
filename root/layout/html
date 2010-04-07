@@ -4,7 +4,7 @@
 
 <head>
 
-  <title>[% template.title or Catalyst.config.site_config.title %]</title>
+  <title>[% Catalyst.config.site_config.title %] - [% Catalyst.loc(template.title) %]</title>
 
   [% FOREACH css_file = Catalyst.config.site_config.css %]
     <link rel="stylesheet" type="text/css" href="[% css_file %]" />
@@ -13,10 +13,10 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta http-equiv="content-language" content="[% Catalyst.language %]" />
 
-  <meta name="description" content="[% template.title or Catalyst.config.site_config.title %]" />
-  <meta name="title" content="[% template.title or Catalyst.config.site_config.title %]" />
+  <meta name="description" content="[% Catalyst.config.site_config.title %] - [% Catalyst.loc(template.title) %]" />
+  <meta name="title" content="[% Catalyst.config.site_config.title %] - [% Catalyst.loc(template.title) %]" />
   <meta name="Company" content="[% Catalyst.config.site_config.company.name %]" />
-  <meta name="keywords" content="" />
+  <meta name="keywords" content="CSC, VoIP, SIP, telephony, NGN, Sipwise, NGCP, sip:provider, sip:carrier, [% Catalyst.config.site_config.company.name %]" />
   <meta name="Language" content="[% Catalyst.language %]" />
 
   <link rel="stylesheet" type="text/css" href="/js/yui/build/container/assets/skins/sam/container.css" />
