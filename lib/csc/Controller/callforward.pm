@@ -3,6 +3,7 @@ package csc::Controller::callforward;
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
+use csc::Utils;
 
 =head1 NAME
 
@@ -39,7 +40,7 @@ sub index : Private {
         }
     }
 
-    $c->stash->{subscriber}{active_number} = '0'. $c->session->{user}{data}{ac} .' '. $c->session->{user}{data}{sn};
+    $c->stash->{subscriber}{active_number} = csc::Utils::get_active_number_string($c);
     if($c->session->{user}{extension}) {
         my $ext = $c->session->{user}{preferences}{extension};
         $c->stash->{subscriber}{active_number} =~ s/$ext$/ - $ext/;
@@ -97,7 +98,6 @@ sub index : Private {
         $c->stash->{subscriber}{fw}{sipuri} =~  s/^sip://i;
         if($c->stash->{subscriber}{fw}{sipuri} =~ /^\+?\d+\@/) {
             $c->stash->{subscriber}{fw}{sipuri} =~ s/\@.*$//;
-            $c->stash->{subscriber}{fw}{sipuri} =~ s/^\+$subscriber_cc/0/;
         }
         $c->stash->{subscriber}{fw}{sipuri_checked} = 'checked="checked"';
     }
@@ -130,18 +130,11 @@ sub save : Local {
         }
 
         if($fw_target =~ /^\+?\d+$/) {
-            if($fw_target =~ /^\+[1-9][0-9]+$/) {
-                $fw_target = 'sip:'. $fw_target .'@'. $c->session->{user}{domain};
-            } elsif($fw_target =~ /^00[1-9][0-9]+$/) {
-                $fw_target =~ s/^00/+/;
-                $fw_target = 'sip:'. $fw_target .'@'. $c->session->{user}{domain};
-            } elsif($fw_target =~ /^0[1-9][0-9]+$/) {
-                $fw_target =~ s/^0/'+'.$c->session->{user}{data}{cc}/e;
-                $fw_target = 'sip:'. $fw_target .'@'. $c->session->{user}{domain};
-            } else {
-                $messages{target} = 'Client.Voip.MalformedNumber';
-                $fw_target = $c->request->params->{fw_sipuri};
-            }
+            $fw_target = csc::Utils::get_qualified_number_for_subscriber($c, $fw_target);
+            my $checkresult;
+            return unless $c->model('Provisioning')->call_prov( $c, 'voip', 'check_E164_number', $fw_target, \$checkresult);
+            $messages{target} = 'Client.Voip.MalformedNumber'
+                unless $checkresult;
         } elsif($fw_target =~ /^[a-z0-9&=+\$,;?\/_.!~*'()-]+\@[a-z0-9.-]+$/i) {
             $fw_target = 'sip:'. lc $fw_target;
         } elsif($fw_target =~ /^[a-z0-9&=+\$,;?\/_.!~*'()-]+$/) {

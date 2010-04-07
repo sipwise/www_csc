@@ -27,7 +27,7 @@ Catalyst Controller.
 sub index : Local
 {
     my ( $self, $c, $pref) = @_;
-    $c->stash->{active_number} = 0 . $c->session->{user}{data}{ac} . " " . $c->session->{user}{data}{sn};
+    $c->stash->{active_number} = csc::Utils::get_active_number_string($c);
 
     $c->log->debug('***autodevice::index called');
 
@@ -54,7 +54,7 @@ sub index : Local
 sub savespa : Local
 {
     my ( $self, $c, $pref) = @_;
-    $c->stash->{active_number} = 0 . $c->session->{user}{data}{ac} . " " . $c->session->{user}{data}{sn};
+    $c->stash->{active_number} = csc::Utils::get_active_number_string($c);
 
     $c->log->debug('***autodevice::savespa called');
 
@@ -230,7 +230,7 @@ sub savespa : Local
 sub savephone: Local
 {
     my ( $self, $c, $pref) = @_;
-    $c->stash->{active_number} = 0 . $c->session->{user}{data}{ac} . " " . $c->session->{user}{data}{sn};
+    $c->stash->{active_number} = csc::Utils::get_active_number_string($c);
 
 
     $c->log->debug('***autodevice::savephone called');
@@ -354,7 +354,7 @@ sub savephone: Local
 sub deldev : Local
 {
     my ( $self, $c, $pref) = @_;
-    $c->stash->{active_number} = 0 . $c->session->{user}{data}{ac} . " " . $c->session->{user}{data}{sn};
+    $c->stash->{active_number} = csc::Utils::get_active_number_string($c);
     my %messages;
 
 

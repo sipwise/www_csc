@@ -35,7 +35,7 @@ sub index : Private {
 
     return 1 unless $c->model('Provisioning')->get_usr_preferences($c);
 
-    $c->stash->{subscriber}{active_number} = '0'. $c->session->{user}{data}{ac} .' '. $c->session->{user}{data}{sn};
+    $c->stash->{subscriber}{active_number} = csc::Utils::get_active_number_string($c);
     if($c->session->{user}{extension}) {
         my $ext = $c->session->{user}{preferences}{extension};
         $c->stash->{subscriber}{active_number} =~ s/$ext$/ - $ext/;

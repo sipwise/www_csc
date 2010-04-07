@@ -3,6 +3,7 @@ package csc::Controller::addressbook;
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
+use csc::Utils;
 
 =head1 NAME
 
@@ -31,7 +32,7 @@ sub index : Private {
 
     return 1 unless $c->model('Provisioning')->get_usr_preferences($c);
 
-    $c->stash->{subscriber}{active_number} = '0'. $c->session->{user}{data}{ac} .' '. $c->session->{user}{data}{sn};
+    $c->stash->{subscriber}{active_number} = csc::Utils::get_active_number_string($c);
     if($c->session->{user}{extension}) {
         my $ext = $c->session->{user}{preferences}{extension};
         $c->stash->{subscriber}{active_number} =~ s/$ext$/ - $ext/;
@@ -103,7 +104,7 @@ sub edit : Local {
     $c->log->debug('***addressbook::edit called');
     $c->stash->{template} = 'tt/addressedit.tt';
 
-    $c->stash->{subscriber}{active_number} = '0'. $c->session->{user}{data}{ac} .' '. $c->session->{user}{data}{sn};
+    $c->stash->{subscriber}{active_number} = csc::Utils::get_active_number_string($c);
     if($c->session->{user}{extension}) {
         my $ext = $c->session->{user}{preferences}{extension};
         $c->stash->{subscriber}{active_number} =~ s/$ext$/ - $ext/;
@@ -157,16 +158,11 @@ sub save : Local {
 
     for(qw(homephonenumber phonenumber mobilenumber faxnumber)) {
         if(defined $contact{$_} and length $contact{$_}) {
+            $contact{$_} = csc::Utils::get_qualified_number_for_subscriber($c, $contact{$_});
+            my $checkresult;
+            return unless $c->model('Provisioning')->call_prov( $c, 'voip', 'check_E164_number', $contact{$_}, \$checkresult);
             $messages{$_} = 'Client.Voip.MalformedNumber'
-                unless $contact{$_} =~ /^\+[1-9][0-9]+$/
-                    or $contact{$_} =~ /^00[1-9][0-9]+$/
-                    or $contact{$_} =~ /^0[1-9][0-9]+$/
-                    or $contact{$_} =~ /^[1-9][0-9]+$/;
-            if($contact{$_} =~ /^\+/ or $contact{$_} =~ s/^00/+/) {
-            } elsif($contact{$_} =~ s/^0/+$user_cc/) {
-            } else {
-                $contact{$_} = '+'. $user_cc . $c->session->{user}{data}{ac} . $contact{$_};
-            }
+                unless $checkresult;
         } else {
             $contact{$_} = undef;
         }
