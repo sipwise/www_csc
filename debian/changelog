@@ -3,8 +3,10 @@ sipwise-www-csc (2.0.0) UNRELEASED; urgency=medium
   * lots of small bugfixes and enhancements
   * support for new plattform features
   * internationalization and localization support
+  * configurable number normalization to support arbitrary dial plans
+  * more flexible interface supports different deployment scenarios
 
- -- Daniel Tiefnig <dtiefnig@sipwise.com>  Wed, 31 Mar 2010 14:13:25 +0200
+ -- Daniel Tiefnig <dtiefnig@sipwise.com>  Thu, 08 Apr 2010 15:12:09 +0200
 
 sipwise-www-csc (1.1.4) unstable; urgency=low
 
