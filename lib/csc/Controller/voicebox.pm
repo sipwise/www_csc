@@ -153,7 +153,8 @@ sub index : Private {
 
     my ($sdate, $edate);
     if(!defined $liststart and !defined $listend) {
-        $sdate = $edate = { year => $callyear, month => $callmonth };
+        $sdate = { year => $callyear, month => $callmonth };
+        $edate = { year => $callyear, month => $callmonth };
         $c->stash->{subscriber}{call_range} = $localized_months[$callmonth] .' '. $callyear;
     } else {
         if(defined $liststart) {
