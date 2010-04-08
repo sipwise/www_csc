@@ -3,6 +3,7 @@ package csc::Controller::call;
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
+use csc::Utils;
 
 use RPC::XML::Client;
 
@@ -49,26 +50,10 @@ sub click2dial : Local {
     my $callee = $c->request->param('d');
     if($callee =~ /^\+?\d+$/)
     {
-        if($callee =~ /^0[1-9][0-9]+$/)
-        {
-            $callee =~ s/^0//;
-            $callee = "00" . $c->session->{user}{data}{cc} . $callee;
-        }
-        elsif($callee =~ /^00[1-9][0-9]+$/)
-        {
-            # we're fine already
-        }
-        elsif($callee =~ /^\+[1-9][0-9]+$/)
-        {
-            $callee =~ s/^\+/00/;
-        }
-        elsif($callee =~ /^[1-9][0-9]+$/)
-        {
-            $callee = "00" . $c->session->{user}{data}{cc} . 
-            $c->session->{user}{data}{ac} . $callee;
-        }
-        else
-        {
+        $callee = csc::Utils::get_qualified_number_for_subscriber($c, $callee);
+        my $checkresult;
+        return unless $c->model('Provisioning')->call_prov( $c, 'voip', 'check_E164_number', $callee, \$checkresult);
+        unless($checkresult) {
             $c->log->error('***call::click2dial with invalid callee ' . $callee);
 
             # TODO: Error handling, invalid uri or number
