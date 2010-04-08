@@ -28,7 +28,7 @@ sub index : Local
 {
     my ( $self, $c, $pref) = @_;
 	
-    $c->stash->{active_number} = 0 . $c->session->{user}{data}{ac} . " " . $c->session->{user}{data}{sn};
+    $c->stash->{active_number} = csc::Utils::get_active_number_string($c);
 
     $c->log->debug('***autosubscriber::index called');
 
@@ -100,7 +100,7 @@ sub index : Local
 sub doaddgroup : Local
 {
     my ( $self, $c) = @_;
-    $c->stash->{active_number} = 0 . $c->session->{user}{data}{ac} . " " . $c->session->{user}{data}{sn};
+    $c->stash->{active_number} = csc::Utils::get_active_number_string($c);
 
     unless($c->session->{user}{admin}) {
         $c->response->redirect($c->uri_for('/desktop'));
@@ -157,7 +157,7 @@ sub doaddgroup : Local
 sub delgroup : Local
 {
     my ( $self, $c) = @_;
-    $c->stash->{active_number} = 0 . $c->session->{user}{data}{ac} . " " . $c->session->{user}{data}{sn};
+    $c->stash->{active_number} = csc::Utils::get_active_number_string($c);
 
     unless($c->session->{user}{admin}) {
         $c->response->redirect($c->uri_for('/desktop'));
@@ -205,7 +205,7 @@ sub delgroup : Local
 
 sub doaddext : Local {
     my ( $self, $c ) = @_;
-    $c->stash->{active_number} = 0 . $c->session->{user}{data}{ac} . " " . $c->session->{user}{data}{sn};
+    $c->stash->{active_number} = csc::Utils::get_active_number_string($c);
     
     $c->log->debug('***autosubscriber::doaddext called');
 
@@ -318,7 +318,7 @@ sub doaddext : Local {
 
 sub delsubscriber : Local {
     my ( $self, $c ) = @_;
-    $c->stash->{active_number} = 0 . $c->session->{user}{data}{ac} . " " . $c->session->{user}{data}{sn};
+    $c->stash->{active_number} = csc::Utils::get_active_number_string($c);
 
     $c->log->debug('***autosubscriber::delsubscriber called');
 

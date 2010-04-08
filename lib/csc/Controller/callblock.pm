@@ -3,6 +3,7 @@ package csc::Controller::callblock;
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
+use csc::Utils;
 
 =head1 NAME
 
@@ -36,7 +37,7 @@ sub index : Private {
         }
     }
 
-    $c->stash->{subscriber}{active_number} = '0'. $c->session->{user}{data}{ac} .' '. $c->session->{user}{data}{sn};
+    $c->stash->{subscriber}{active_number} = csc::Utils::get_active_number_string($c);
     if($c->session->{user}{extension}) {
         my $ext = $c->session->{user}{preferences}{extension};
         $c->stash->{subscriber}{active_number} =~ s/$ext$/ - $ext/;
@@ -58,8 +59,7 @@ sub index : Private {
         my @block_in_list_to_sort;
         foreach my $blockentry (@$block_in_list) {
             my $active = $blockentry =~ s/^#// ? 0 : 1;
-            $blockentry =~ s/^$subscriber_cc/0/;
-            $blockentry =~ s/^([1-9])/00$1/;
+            $blockentry =~ s/^([1-9])/+$1/;
             push @block_in_list_to_sort, { entry => $blockentry, active => $active };
         }
         my $bg = '';
@@ -103,8 +103,7 @@ sub index : Private {
         my @block_out_list_to_sort;
         foreach my $blockentry (@$block_out_list) {
             my $active = $blockentry =~ s/^#// ? 0 : 1;
-            $blockentry =~ s/^$subscriber_cc/0/;
-            $blockentry =~ s/^([1-9])/00$1/;
+            $blockentry =~ s/^([1-9])/+$1/;
             push @block_out_list_to_sort, { entry => $blockentry, active => $active };
         }
         my $bg = '';
@@ -148,14 +147,8 @@ sub save : Local {
     my $inadd = $c->request->params->{block_in_add};
     if(defined $inadd) {
         $keeppreferences{blockinaddtxt} = $inadd;
-        if($inadd =~ /^\+?[?*0-9]+$/) {
-            if($inadd =~ /^[1-9]/) {
-                $messages{msginadd} = 'Client.Voip.MalformedNumberPattern';
-            } elsif($inadd =~ /^0[1-9?*]/) {
-                $inadd =~ s/^0/$c->session->{user}{data}{cc}/e;
-            }
-            $inadd =~ s/^\+/00/;
-            $inadd =~ s/^00+//;
+        if($inadd =~ /^\+?[?*0-9\[\]-]+$/) {
+            $inadd = csc::Utils::normalize_blockentry_for_subscriber($c, $inadd);
             my $blockinlist = $c->session->{user}{preferences}{block_in_list};
             $blockinlist = [] unless defined $blockinlist;
             $blockinlist = [ $blockinlist ] unless ref $blockinlist;
@@ -175,8 +168,7 @@ sub save : Local {
         } else {
             my $blockinlist = $c->session->{user}{preferences}{block_in_list};
             if(defined $blockinlist) {
-                $indel =~ s/^00//;
-                $indel =~ s/^0/$c->session->{user}{data}{cc}/e;
+                $indel = csc::Utils::normalize_blockentry_for_subscriber($c, $indel);
                 $blockinlist = [ $blockinlist ] unless ref $blockinlist;
                 if($c->request->params->{block_in_stat}) {
                     $preferences{block_in_list} = [ grep { $_ ne $indel } @$blockinlist ];
@@ -192,8 +184,7 @@ sub save : Local {
     if(defined $inact) {
         my $blockinlist = $c->session->{user}{preferences}{block_in_list};
         if(defined $blockinlist) {
-            $inact =~ s/^00//;
-            $inact =~ s/^0/$c->session->{user}{data}{cc}/e;
+            $inact = csc::Utils::normalize_blockentry_for_subscriber($c, $inact);
             $blockinlist = [ $blockinlist ] unless ref $blockinlist;
             if($c->request->params->{block_in_stat}) {
                 $preferences{block_in_list} = [ grep { $_ ne $inact } @$blockinlist ];
@@ -224,13 +215,7 @@ sub save : Local {
     if(defined $outadd) {
         $keeppreferences{blockoutaddtxt} = $outadd;
         if($outadd =~ /^\+?[?*0-9]+$/) {
-            if($outadd =~ /^[1-9]/) {
-                $messages{msgoutadd} = 'Client.Voip.MalformedNumberPattern';
-            } elsif($outadd =~ /^0[1-9?*]/) {
-                $outadd =~ s/^0/$c->session->{user}{data}{cc}/e;
-            }
-            $outadd =~ s/^\+/00/;
-            $outadd =~ s/^00+//;
+            $outadd = csc::Utils::normalize_blockentry_for_subscriber($c, $outadd);
             my $blockoutlist = $c->session->{user}{preferences}{block_out_list};
             $blockoutlist = [] unless defined $blockoutlist;
             $blockoutlist = [ $blockoutlist ] unless ref $blockoutlist;
@@ -245,9 +230,7 @@ sub save : Local {
     if(defined $outdel) {
         my $blockoutlist = $c->session->{user}{preferences}{block_out_list};
         if(defined $blockoutlist) {
-            $outdel =~ s/^00//;
-            $outdel =~ s/^0/$c->session->{user}{data}{cc}/e;
-            use Data::Dumper;
+            $outdel = csc::Utils::normalize_blockentry_for_subscriber($c, $outdel);
             $blockoutlist = [ $blockoutlist ] unless ref $blockoutlist;
             if($c->request->params->{block_out_stat}) {
                 $preferences{block_out_list} = [ grep { $_ ne $outdel } @$blockoutlist ];
@@ -262,8 +245,7 @@ sub save : Local {
     if(defined $outact) {
         my $blockoutlist = $c->session->{user}{preferences}{block_out_list};
         if(defined $blockoutlist) {
-            $outact =~ s/^00//;
-            $outact =~ s/^0/$c->session->{user}{data}{cc}/e;
+            $outact = csc::Utils::normalize_blockentry_for_subscriber($c, $outact);
             $blockoutlist = [ $blockoutlist ] unless ref $blockoutlist;
             if($c->request->params->{block_out_stat}) {
                 $preferences{block_out_list} = [ grep { $_ ne $outact } @$blockoutlist ];

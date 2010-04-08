@@ -1,4 +1,4 @@
-[% META title = 'desktop' %]
+[% META title = 'Desktop' %]
 
     <div id="headimg">
       <img src="/grafik/area.jpg" width="869" height="69" alt="" />
@@ -73,7 +73,7 @@
           <div class="status">
             <p>
               [% IF show_cash_balance %]
-                <strong>[% Catalyst.loc('[_1] [_2] credit', subscriber.account.currency, subscriber.account.cash_balance) %]</strong><br />
+                <strong>[% Catalyst.loc('[_1] [_2] credit', subscriber.account.billing_profile.data.currency, subscriber.account.cash_balance) %]</strong><br />
               [% END%]
               [% IF show_free_time_balance %]
                 <strong>[% Catalyst.loc('[_1] free minutes', subscriber.account.free_time_balance) %]</strong><br />

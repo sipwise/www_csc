@@ -1,4 +1,4 @@
-[% META title = 'account' %]
+[% META title = 'Account' %]
 [% META subtitle = 'account_subscriber' %]
 
           <form class="anmelden feinstellungen" action="/account/doaddsubscriber" method="post">

@@ -23,6 +23,7 @@ sub prepare_call_list {
 
     my $user_cc = $c->session->{user}{data}{cc};
     my $b = '';
+    my $ccdp = $c->config->{cc_dial_prefix};
 
     foreach my $call (@$call_list) {
         my %callentry;
@@ -62,9 +63,10 @@ sub prepare_call_list {
             } else {
                 $callentry{direction_icon} = 'anruf_aus_err_small.gif';
             }
-            if($$call{destination_user} =~ /^\d+$/) {
-                my $partner = '00'.$$call{destination_user};
-                $partner =~ s/^00$user_cc/0/;
+            if($$call{destination_user} =~ /^\+?\d+$/) {
+                my $partner = $$call{destination_user};
+                $partner =~ s/^$ccdp/+/;
+                $partner =~ s/^\+*/+/;
                 $callentry{partner} = $partner;
             } else {
                 $callentry{partner} = $$call{destination_user} .'@'. $$call{destination_domain};
@@ -81,28 +83,31 @@ sub prepare_call_list {
                 $callentry{direction_icon} = 'anruf_ein_err_small.gif';
             }
             if(!defined $$call{source_cli} or !length $$call{source_cli}
-               or $$call{source_cli} !~ /^\d+$/)
+               or $$call{source_cli} !~ /^\+?\d+$/)
             {
                 if(!defined $$call{source_user} or !length $$call{source_user}) {
                     $callentry{partner} = 'anonym';
-                } elsif($$call{source_user} =~ /^\d+$/) {
-                    my $partner = '00'.$$call{source_user};
-                    $partner =~ s/^00$user_cc/0/;
+                } elsif($$call{source_user} =~ /^\+?\d+$/) {
+                    my $partner = $$call{source_user};
+                    $partner =~ s/^$ccdp/+/;
+                    $partner =~ s/^\+*/+/;
                     $callentry{partner} = $partner;
                 } else {
                     $callentry{partner} = $$call{source_user} .'@'. $$call{source_domain};
                 }
             } else {
-                my $partner = '00'.$$call{source_cli};
-                $partner =~ s/^00$user_cc/0/;
+                my $partner = $$call{source_cli};
+                $partner =~ s/^$ccdp/+/;
+                $partner =~ s/^\+*/+/;
                 $callentry{partner} = $partner;
             }
             $callentry{partner_number} = $callentry{partner};
 
         } elsif(defined $$call{callerid}) { # voicemail!
-            if($$call{callerid} =~ /^\d+$/) {
-                my $partner = '00'.$$call{callerid};
-                $partner =~ s/^00$user_cc/0/;
+            if($$call{callerid} =~ /^\+?\d+$/) {
+                my $partner = $$call{callerid};
+                $partner =~ s/^$ccdp/+/;
+                $partner =~ s/^\+*/+/;
                 $callentry{partner} = $partner;
             } else {
                 $callentry{partner} = $$call{callerid};
@@ -156,6 +161,50 @@ sub prepare_call_list {
     }
 
     return $callentries;
+}
+
+sub get_active_number_string {
+    my ($c) = @_;
+
+    return '+'. $c->session->{user}{data}{cc} .
+           ' '. $c->session->{user}{data}{ac} .
+           ' '. $c->session->{user}{data}{sn};
+}
+
+sub get_qualified_number_for_subscriber {
+    my ($c, $number) = @_;
+
+    my $ccdp = $c->config->{cc_dial_prefix};
+    my $acdp = $c->config->{ac_dial_prefix};
+
+    if($number =~ /^\+/ or $number =~ s/^$ccdp/+/) {
+        # nothing more to do
+    } elsif($number =~ s/^$acdp//) {
+        $number = '+'. $c->session->{user}{data}{cc} . $number;
+    } else {
+        $number = '+' . $c->session->{user}{data}{cc} . $c->session->{user}{data}{ac} . $number;
+    }
+
+    return $number;
+}
+
+sub normalize_blockentry_for_subscriber {
+    my ($c, $entry) = @_;
+
+    my $ccdp = $c->config->{cc_dial_prefix};
+    my $acdp = $c->config->{ac_dial_prefix};
+
+    if($entry =~ /^\*/ or $entry =~ /^\?/ or $entry =~ /^\[/) {
+        # do nothing
+    } elsif($entry =~ s/^\+// or $entry =~ s/^$ccdp//) {
+        # nothing more to do
+    } elsif($entry =~ s/^$acdp//) {
+        $entry = $c->session->{user}{data}{cc} . $entry;
+    } else {
+        $entry = $c->session->{user}{data}{cc} . $c->session->{user}{data}{ac} . $entry;
+    }
+
+    return $entry;
 }
 
 # finito, l'amore

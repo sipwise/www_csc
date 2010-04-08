@@ -6,7 +6,10 @@
       Tel. [% Catalyst.config.site_config.company.phone %] <span>|</span>
       Fax [% Catalyst.config.site_config.company.fax %] <span>|</span>
       E-Mail <a href="mailto:[% Catalyst.config.site_config.company.email %]" class="link">[% Catalyst.config.site_config.company.email %]</a><br />
-          <a href="http://www.sipwise.com" target="_blank" class="sipwise"><img src="/grafik/sipwise-powered.png" width="131" height="29" alt="Powered by Sipwise" /></a>
+          <a href="http://www.sipwise.com" target="_blank" class="sipwise">
+            <img src="/grafik/sipwise-powered.png" width="131" height="29" alt=" " />
+            <img src="/grafik/sip_provider.png" width="145" height="29" alt=" " />
+          </a>
     </div>
 
     <script type="text/javascript">

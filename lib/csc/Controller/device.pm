@@ -57,7 +57,7 @@ sub spa : Local
 	
 	$c->stash->{dev} = $c->session->{dev};
 
-    $c->stash->{subscriber}{active_number} = '0'. $c->session->{user}{data}{ac} .' '. $c->session->{user}{data}{sn};
+    $c->stash->{subscriber}{active_number} = csc::Utils::get_active_number_string($c);
     if($c->session->{user}{extension}) {
         my $ext = $c->session->{user}{preferences}{extension};
         $c->stash->{subscriber}{active_number} =~ s/$ext$/ - $ext/;
@@ -400,7 +400,7 @@ sub phone : Local
 	
 	$c->stash->{dev} = $c->session->{dev};
 
-    $c->stash->{subscriber}{active_number} = '0'. $c->session->{user}{data}{ac} .' '. $c->session->{user}{data}{sn};
+    $c->stash->{subscriber}{active_number} = csc::Utils::get_active_number_string($c);
     if($c->session->{user}{extension}) {
         my $ext = $c->session->{user}{preferences}{extension};
         $c->stash->{subscriber}{active_number} =~ s/$ext$/ - $ext/;
@@ -1086,8 +1086,8 @@ Provisioning model, Catalyst
 
 =head1 COPYRIGHT
 
-The voicebox controller is Copyright (c) 2007-2010 Sipwise GmbH,
-Austria. All rights reserved.
+The device controller is Copyright (c) 2007-2010 Sipwise GmbH, Austria.
+All rights reserved.
 
 =cut
 

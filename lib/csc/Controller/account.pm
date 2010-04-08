@@ -3,6 +3,7 @@ package csc::Controller::account;
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
+use csc::Utils;
 
 =head1 NAME
 
@@ -55,9 +56,7 @@ sub info : Local {
         return 1;
     }
 
-    $c->stash->{subscriber}{active_number} = '+'. $c->session->{user}{data}{cc} .
-                                             ' (0)'. $c->session->{user}{data}{ac} .
-                                             ' '. $c->session->{user}{data}{sn};
+    $c->stash->{subscriber}{active_number} = csc::Utils::get_active_number_string($c);
     if($c->session->{user}{extension}) {
         my $ext = $c->session->{user}{preferences}{extension};
         $c->stash->{subscriber}{active_number} =~ s/$ext$/ - $ext/;

@@ -10,7 +10,7 @@ Vcs-Browser: https://dev.sipwise.com/svn/www_csc
 
 Package: sipwise-www-csc
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, sipwise-ossbss-billing (>= 2.0.2), sipwise-ossbss-voip (>= 2.0.2), libcatalyst-perl, libcatalyst-modules-perl, libcatalyst-engine-apache-perl
+Depends: ${shlibs:Depends}, ${misc:Depends}, sipwise-ossbss-billing (>= 2.0.2), sipwise-ossbss-voip (>= 2.0.2), libcatalyst-perl, libcatalyst-modules-perl, libcatalyst-engine-apache-perl, librpc-xml-perl
 Suggests: liblocale-maketext-lexicon-perl
 Description: frontend for endusers to configure their accounts on the Sipwise NGCP
   The csc framework is used by endusers to configure their accounts on the

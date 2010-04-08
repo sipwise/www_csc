@@ -17,31 +17,31 @@
 [% IF subscriber.username %]
       <ul id="menu">
       [% IF Catalyst.config.main_menu.desktop %]
-        <li [% 'class="on"' IF template.title == "desktop" %]><a href="/desktop">[% Catalyst.loc('Desktop') %]</a></li>
+        <li [% 'class="on"' IF template.title == 'Desktop' %]><a href="/desktop">[% Catalyst.loc('Desktop') %]</a></li>
       [% END %]
       [% IF Catalyst.config.main_menu.calllist %]
-        <li [% 'class="on"' IF template.title == "calllist" %]><a href="/calllist">[% Catalyst.loc('Calls') %]</a></li>
+        <li [% 'class="on"' IF template.title == 'Calls' %]><a href="/calllist">[% Catalyst.loc('Calls') %]</a></li>
       [% END %]
       [% IF Catalyst.config.main_menu.voicebox %]
-        <li [% 'class="on"' IF template.title == "voicebox" %]><a href="/voicebox">[% Catalyst.loc('Voicemails') %]</a></li>
+        <li [% 'class="on"' IF template.title == 'Voicemails' %]><a href="/voicebox">[% Catalyst.loc('Voicemails') %]</a></li>
       [% END %]
       [% IF Catalyst.config.main_menu.addressbook %]
-        <li [% 'class="on"' IF template.title == "addressbook" %]><a href="/addressbook">[% Catalyst.loc('Addressbook') %]</a></li>
+        <li [% 'class="on"' IF template.title == 'Addressbook' %]><a href="/addressbook">[% Catalyst.loc('Addressbook') %]</a></li>
       [% END %]
       [% IF Catalyst.config.main_menu.callforward %]
-        <li [% 'class="on"' IF template.title == "callforward" %]><a href="/callforward">[% Catalyst.loc('Call forward') %]</a></li>
+        <li [% 'class="on"' IF template.title == 'Call forward' %]><a href="/callforward">[% Catalyst.loc('Call forward') %]</a></li>
       [% END %]
       [% IF Catalyst.config.main_menu.callblock %]
-        <li [% 'class="on"' IF template.title == "callblock" %]><a href="/callblock">[% Catalyst.loc('Call barring') %]</a></li>
+        <li [% 'class="on"' IF template.title == 'Call barring' %]><a href="/callblock">[% Catalyst.loc('Call barring') %]</a></li>
       [% END %]
       [% IF Catalyst.config.main_menu.reminder %]
-        <li [% 'class="on"' IF template.title == "reminder" %]><a href="/reminder">[% Catalyst.loc('Reminder') %]</a></li>
+        <li [% 'class="on"' IF template.title == 'Reminder' %]><a href="/reminder">[% Catalyst.loc('Reminder') %]</a></li>
       [% END %]
       [% IF Catalyst.config.main_menu.device && Catalyst.session.user.admin %]
-        <li [% 'class="on"' IF template.title == "device" %]><a href="/autosubscriber">[% Catalyst.loc('Devices') %]</a></li>
+        <li [% 'class="on"' IF template.title == 'Devices' %]><a href="/autosubscriber">[% Catalyst.loc('Devices') %]</a></li>
       [% END %]
       [% IF Catalyst.config.main_menu.account && Catalyst.session.user.username != "demonstration" %]
-        <li [% 'class="on"' IF template.title == "account" %]><a href="/account">[% Catalyst.loc('Account') %]</a></li>
+        <li [% 'class="on"' IF template.title == 'Account' %]><a href="/account">[% Catalyst.loc('Account') %]</a></li>
       [% END %]
       </ul>
 [% END %]
