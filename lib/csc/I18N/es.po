@@ -638,4 +638,18 @@ msgstr "web"
 msgid "yesterday"
 msgstr "ayer"
 
+#: root/tt/error.tt:6
+msgid "An Error has occured"
+msgstr "Ha ocurrido un error"
 
+#: root/tt/error.tt:11
+msgid "An internal error has occured. Please try again later, or contact "
+msgstr "Ha ocurrido un error interno. Por favor, inténtelo de nuevo más tarde o contacte con"
+
+#: root/layout/html:30
+msgid "Actions"
+msgstr "Acciones"
+
+#: root/layout/html:31
+msgid "Call"
+msgstr "Llamar"
