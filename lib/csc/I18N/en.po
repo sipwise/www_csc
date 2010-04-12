@@ -624,3 +624,20 @@ msgstr "web"
 #: root/tt/calllist.tt:71 root/tt/voicebox.tt:63
 msgid "yesterday"
 msgstr "yesterday"
+
+#: root/tt/error.tt:6
+msgid "An Error has occured"
+msgstr "An Error has occured"
+
+#: root/tt/error.tt:11
+msgid "An internal error has occured. Please try again later, or contact "
+msgstr "An internal error has occured. Please try again later, or contact "
+
+#: root/layout/html:30
+msgid "Actions"
+msgstr "Actions"
+
+#: root/layout/html:31
+msgid "Call"
+msgstr "Call"
+

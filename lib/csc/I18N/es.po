@@ -229,7 +229,7 @@ msgstr "Búsqueda"
 
 #: root/tt/login.tt:17
 msgid "Self-Administration Login"
-msgstr "Acceso a panel de administración"
+msgstr "Acceso al panel de administración"
 
 #: root/tt/voicebox.tt:176
 msgid "Send notification of new messages to the following e-mail address:"
@@ -481,7 +481,7 @@ msgstr "entrantes"
 
 #: root/tt/calllist.tt:74 root/tt/voicebox.tt:66
 msgid "last week"
-msgstr "semana pasada"
+msgstr "última semana"
 
 #: root/tt/addressbook.tt:47 root/tt/addressedit.tt:39
 msgid "lastname"
@@ -549,7 +549,7 @@ msgstr "contraseña:"
 
 #: root/tt/calllist.tt:78 root/tt/voicebox.tt:70
 msgid "past"
-msgstr "pasado"
+msgstr "anteriores"
 
 #: root/tt/addressedit.tt:35
 msgid "person"
@@ -612,7 +612,7 @@ msgstr "hora del día:"
 
 #: root/tt/calllist.tt:117 root/tt/voicebox.tt:117
 msgid "time range (DD.MM.YYYY)"
-msgstr "rango de hora (DD.MM.AAAA)"
+msgstr "rango de días (DD.MM.AAAA)"
 
 #: root/tt/calllist.tt:119 root/tt/voicebox.tt:119
 msgid "to"
@@ -638,4 +638,18 @@ msgstr "web"
 msgid "yesterday"
 msgstr "ayer"
 
+#: root/tt/error.tt:6
+msgid "An Error has occured"
+msgstr "Ha ocurrido un error"
 
+#: root/tt/error.tt:11
+msgid "An internal error has occured. Please try again later, or contact "
+msgstr "Ha ocurrido un error interno. Por favor, inténtelo de nuevo más tarde o contacte con"
+
+#: root/layout/html:30
+msgid "Actions"
+msgstr "Acciones"
+
+#: root/layout/html:31
+msgid "Call"
+msgstr "Llamar"
