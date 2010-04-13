@@ -177,7 +177,8 @@
 
 /* hidden post label images */
 .hidden {
-   display: none !important;
+   position: relative;
+   left: -90000px;
 }
 
 /* position for Login post link */
@@ -528,6 +529,11 @@
    border: none;
 }
 
+/* suppress border if requested */
+.no_border {
+   border: none !important;
+}
+
 /* override label width and spacing from default "anmelden" labels */
 #main .anmelden label.as_above {
    width: auto;
@@ -705,6 +711,10 @@
 #reminder .lleft {
    float: left;
    width: 100px !important;
+}
+
+#reminder_save {
+   float: left;
 }
 
 /* add to cart link next to product images */

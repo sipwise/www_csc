@@ -27,8 +27,8 @@
     cl_panel = new YAHOO.widget.Panel("p", {visible:false, draggable:false});
     YAHOO.util.Event.addListener(window,'load', cl_panel);
     function cl_pop(cid, num) {
-      cl_panel.setHeader('Aktionen');
-      cl_panel.setBody('Rufe <a href="/call/click2dial?d=' + num + '">' + num + '</a>');
+      cl_panel.setHeader('[% Catalyst.loc('Actions') %]');
+      cl_panel.setBody('[% Catalyst.loc('call') %] <a href="/call/click2dial?d=' + num + '">' + num + '</a>');
       cl_panel.render(cid);
       cl_panel.show();
     }

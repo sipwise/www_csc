@@ -33,29 +33,29 @@
               <p>
                 <label class="lleft">[% Catalyst.loc('recurrence:') %]</label>
                 <p class="recur">
-                  <input type="radio" id="reminder_recur_never" value="never" name="recur" class="radio"
+                  <input type="radio" id="reminder_recur_never" value="never" name="recur" class="no_border"
                          [% IF subscriber.reminder.recur == "never" %]checked="checked"[% END %] />
                   <label for="reminder_recur_never">[% Catalyst.loc('never') %]</label><br />
-                  <input type="radio" id="reminder_recur_weekdays" value="weekdays" name="recur" class="radio"
+                  <input type="radio" id="reminder_recur_weekdays" value="weekdays" name="recur" class="no_border"
                          [% IF subscriber.reminder.recur == "weekdays" %]checked="checked"[% END %] />
                   <label for="reminder_recur_weekdays">[% Catalyst.loc('on weekdays (monday - saturday)') %]</label><br />
-                  <input type="radio" id="reminder_recur_always" value="always" name="recur" class="radio"
+                  <input type="radio" id="reminder_recur_always" value="always" name="recur" class="no_border"
                          [% IF subscriber.reminder.recur == "always" %]checked="checked"[% END %] />
                   <label for="reminder_recur_always">[% Catalyst.loc('every day') %]</label><br />
                 </p>
               </p>
 
-            <p class="save">
+            <span id="reminder_save" class="save">
               <label for="save_settings">[% Catalyst.loc('enable reminder') %]</label>
               <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_settings">
-            </p>
+            </span>
           </form>
 
           <form action="/reminder/save" method="post">
-            <p class="save">
+            <span class="save">
               <label for="clear_settings">[% Catalyst.loc('disable reminder') %]</label>
               <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="clear_settings">
-            </p>
+            </span>
           </form>
           
           <br clear="all" />

@@ -50,6 +50,10 @@ msgstr ""
 msgid "Account Balance"
 msgstr ""
 
+#: root/layout/html:30
+msgid "Actions"
+msgstr ""
+
 #: root/layout/header:29
 msgid "Addressbook"
 msgstr ""
@@ -338,6 +342,10 @@ msgstr ""
 
 #: root/tt/voicebox.tt:184
 msgid "attach recording"
+msgstr ""
+
+#: root/layout/html:31
+msgid "call"
 msgstr ""
 
 #: root/tt/callforward.tt:90 root/tt/desktop.tt:135
