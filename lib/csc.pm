@@ -55,7 +55,7 @@ sub begin : Private {
     # set default language
     $c->session->{lang} = $c->config->{site_config}{default_language} unless $c->session->{lang};
 
-    if($c->request->params->{lang} =~ /^\w+$/) {
+    if(defined $c->request->params->{lang} and $c->request->params->{lang} =~ /^\w+$/) {
         $c->languages([$c->request->params->{lang}]);
         if($c->language eq 'i_default') {
             $c->languages([$c->session->{lang}]);
