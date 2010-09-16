@@ -70,14 +70,17 @@ sub default : Private {
     my ( $self, $c ) = @_;
 
     $c->log->debug("***Root::default path is: ". $c->req->path);
-    if($c->req->path =~ m#/#) {
-        $c->response->redirect($c->uri_for('/'));
-    }
 
-    if($c->req->path =~ /\.html$/) {
+    if($c->req->path =~ /\.html$/
+       and -e $c->config->{home} . '/root/' . $c->req->path)
+    {
         $c->stash->{template} = $c->req->path;
     } else {
-        $c->stash->{template} = 'index.html';
+        if('/'.$c->req->path eq $c->config->{site_config}{default_uri}) {
+            $c->log->error("***Root::default invalid default_uri setting in csc.conf");
+        } else {
+            $c->response->redirect($c->uri_for($c->config->{site_config}{default_uri}));
+        }
     }
 }
 

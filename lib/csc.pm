@@ -36,6 +36,7 @@ our $VERSION = '2';
 my $xs = new XML::Simple;
 my $xc = $xs->XMLin( '/usr/local/etc/csc.conf', ForceArray => 0);
 $$xc{site_config}{default_language} = 'en' unless $$xc{site_config}{default_language} =~ /^\w+$/;
+$$xc{site_config}{default_uri} = '/desktop' unless $$xc{site_config}{default_uri};
 
 __PACKAGE__->config( authentication => {}, %$xc );
 

@@ -32,7 +32,7 @@ sub index : Local
     $c->log->debug('***autodevice::index called');
 
     unless($c->session->{user}{admin}) {
-        $c->response->redirect($c->uri_for('/desktop'));
+        $c->response->redirect($c->uri_for($c->config->{site_config}{default_uri}));
         return;
     }
     my %messages;
@@ -59,7 +59,7 @@ sub savespa : Local
     $c->log->debug('***autodevice::savespa called');
 
     unless($c->session->{user}{admin}) {
-        $c->response->redirect($c->uri_for('/desktop'));
+        $c->response->redirect($c->uri_for($c->config->{site_config}{default_uri}));
         return;
     }
 
@@ -236,7 +236,7 @@ sub savephone: Local
     $c->log->debug('***autodevice::savephone called');
 
     unless($c->session->{user}{admin}) {
-        $c->response->redirect($c->uri_for('/desktop'));
+        $c->response->redirect($c->uri_for($c->config->{site_config}{default_uri}));
         return;
     }
 
@@ -361,7 +361,7 @@ sub deldev : Local
     $c->log->debug('***autodevice::deldev called');
 
     unless($c->session->{user}{admin}) {
-        $c->response->redirect($c->uri_for('/desktop'));
+        $c->response->redirect($c->uri_for($c->config->{site_config}{default_uri}));
         return;
     }
 

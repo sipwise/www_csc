@@ -47,7 +47,7 @@ sub info : Local {
     $c->log->debug('***account::info called');
 
     if($c->session->{user}{username} eq 'demonstration' or ! $c->config->{display_account_info}) {
-        $c->response->redirect($c->uri_for('/desktop'));
+        $c->response->redirect($c->uri_for($c->config->{site_config}{default_uri}));
         return;
     }
 
@@ -81,7 +81,7 @@ sub pass : Local {
     $c->log->debug('***account::pass called');
 
     if($c->session->{user}{username} eq 'demonstration') {
-        $c->response->redirect($c->uri_for('/desktop'));
+        $c->response->redirect($c->uri_for($c->config->{site_config}{default_uri}));
         return;
     }
 
@@ -100,7 +100,7 @@ sub savepass : Local {
     $c->log->debug('***account::savepass called');
 
     if($c->session->{user}{username} eq 'demonstration') {
-        $c->response->redirect($c->uri_for('/desktop'));
+        $c->response->redirect($c->uri_for($c->config->{site_config}{default_uri}));
         return;
     }
 
