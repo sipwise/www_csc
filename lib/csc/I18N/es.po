@@ -11,13 +11,14 @@ msgstr ""
 "PO-Revision-Date: 2010-04-01 08:15+0200\n"
 "Last-Translator: Jon Bonilla <jbonilla@sipwise.com>\n"
 "Language-Team: Spanish <>\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 1.0\n"
 
-#. (subscriber.account.currency, subscriber.account.cash_balance)
+#. (subscriber.account.billing_profile.data.currency, subscriber.account.cash_balance)
 #: root/tt/desktop.tt:76
 msgid "%1 %2 credit"
 msgstr "%1 %2 credit"
@@ -55,7 +56,6 @@ msgstr "Balance de cuenta"
 #: root/layout/html:30
 msgid "Actions"
 msgstr "Acciones"
-
 
 #: root/layout/header:29
 msgid "Addressbook"
@@ -102,7 +102,7 @@ msgstr "Registro de llamadas para %1"
 msgid "Calls"
 msgstr "Llamadas"
 
-#: root/tt/calllist.tt:148
+#: root/tt/calllist.tt:159
 msgid "Calls by month"
 msgstr "Llamadas por mes"
 
@@ -134,6 +134,10 @@ msgstr "Destino"
 #: root/layout/header:41
 msgid "Devices"
 msgstr "Dispositivos"
+
+#: root/tt/calllist.tt:94
+msgid "Fax2Mail"
+msgstr ""
 
 #: root/tt/addressbook.tt:35 root/tt/calllist.tt:28 root/tt/voicebox.tt:28
 msgid "Filter:"
@@ -223,7 +227,7 @@ msgstr "SIP URI:"
 msgid "SIP proxy server:"
 msgstr "SIP proxy:"
 
-#: root/tt/addressbook.tt:173 root/tt/calllist.tt:114 root/tt/voicebox.tt:114
+#: root/tt/addressbook.tt:173 root/tt/calllist.tt:125 root/tt/voicebox.tt:114
 msgid "Search"
 msgstr "Búsqueda"
 
@@ -268,7 +272,7 @@ msgstr "Completar"
 msgid "Top up automatically"
 msgstr "Autocompletar"
 
-#: root/tt/callforward.tt:31
+#: root/tt/callforward.tt:31 root/tt/calllist.tt:92
 msgid "Voicebox"
 msgstr "Buzón de voz"
 
@@ -343,7 +347,7 @@ msgstr "todos los mensajes de voz"
 msgid "amount to charge:"
 msgstr "cantidad a cargar:"
 
-#: root/tt/addressbook.tt:180 root/tt/calllist.tt:129 root/tt/voicebox.tt:129
+#: root/tt/addressbook.tt:180 root/tt/calllist.tt:140 root/tt/voicebox.tt:129
 msgid "apply filter"
 msgstr "aplicar filtro"
 
@@ -375,7 +379,7 @@ msgstr "cancelar"
 msgid "change password"
 msgstr "cambiar contraseña"
 
-#: root/tt/calllist.tt:51
+#: root/tt/calllist.tt:52
 msgid "charges"
 msgstr "cargos"
 
@@ -395,7 +399,7 @@ msgstr "crear nuevo contacto"
 msgid "current balance:"
 msgstr "saldo actual:"
 
-#: root/tt/calllist.tt:52 root/tt/voicebox.tt:43
+#: root/tt/calllist.tt:54 root/tt/voicebox.tt:43
 msgid "date"
 msgstr "fecha"
 
@@ -479,7 +483,7 @@ msgstr "si el saldo baja de"
 msgid "incoming"
 msgstr "entrantes"
 
-#: root/tt/calllist.tt:74 root/tt/voicebox.tt:66
+#: root/tt/calllist.tt:76 root/tt/voicebox.tt:66
 msgid "last week"
 msgstr "última semana"
 
@@ -547,7 +551,7 @@ msgstr "salientes"
 msgid "password:"
 msgstr "contraseña:"
 
-#: root/tt/calllist.tt:78 root/tt/voicebox.tt:70
+#: root/tt/calllist.tt:80 root/tt/voicebox.tt:70
 msgid "past"
 msgstr "anteriores"
 
@@ -579,7 +583,7 @@ msgstr "la alarma está activa"
 msgid "repeat:"
 msgstr "repetir:"
 
-#: root/tt/calllist.tt:141 root/tt/voicebox.tt:141
+#: root/tt/calllist.tt:152 root/tt/voicebox.tt:141
 msgid "reset filter"
 msgstr "borrar filtros"
 
@@ -592,7 +596,7 @@ msgstr "guardar contacto"
 msgid "save settings"
 msgstr "guardar preferencias"
 
-#: root/tt/addressbook.tt:176 root/tt/calllist.tt:124 root/tt/voicebox.tt:124
+#: root/tt/addressbook.tt:176 root/tt/calllist.tt:135 root/tt/voicebox.tt:124
 msgid "search term"
 msgstr "buscar término"
 
@@ -601,8 +605,9 @@ msgid "seconds of ringing"
 msgstr "segundos de ring"
 
 #: root/tt/addressbook.tt:112 root/tt/addressbook.tt:125
-#: root/tt/addressbook.tt:138 root/tt/addressbook.tt:82 root/tt/calllist.tt:96
-#: root/tt/desktop.tt:111 root/tt/desktop.tt:52 root/tt/voicebox.tt:91
+#: root/tt/addressbook.tt:138 root/tt/addressbook.tt:82
+#: root/tt/calllist.tt:105 root/tt/desktop.tt:111 root/tt/desktop.tt:52
+#: root/tt/voicebox.tt:91
 msgid "show actions"
 msgstr "mostrar acciones"
 
@@ -610,15 +615,15 @@ msgstr "mostrar acciones"
 msgid "time of day:"
 msgstr "hora del día:"
 
-#: root/tt/calllist.tt:117 root/tt/voicebox.tt:117
+#: root/tt/calllist.tt:128 root/tt/voicebox.tt:117
 msgid "time range (DD.MM.YYYY)"
 msgstr "rango de días (DD.MM.AAAA)"
 
-#: root/tt/calllist.tt:119 root/tt/voicebox.tt:119
+#: root/tt/calllist.tt:130 root/tt/voicebox.tt:119
 msgid "to"
 msgstr "a"
 
-#: root/tt/calllist.tt:68 root/tt/voicebox.tt:60
+#: root/tt/calllist.tt:70 root/tt/voicebox.tt:60
 msgid "today"
 msgstr "hoy"
 
@@ -634,22 +639,7 @@ msgstr "ver preferencias"
 msgid "web"
 msgstr "web"
 
-#: root/tt/calllist.tt:71 root/tt/voicebox.tt:63
+#: root/tt/calllist.tt:73 root/tt/voicebox.tt:63
 msgid "yesterday"
 msgstr "ayer"
 
-#: root/tt/error.tt:6
-msgid "An Error has occured"
-msgstr "Ha ocurrido un error"
-
-#: root/tt/error.tt:11
-msgid "An internal error has occured. Please try again later, or contact "
-msgstr "Ha ocurrido un error interno. Por favor, inténtelo de nuevo más tarde o contacte con"
-
-#: root/layout/html:30
-msgid "Actions"
-msgstr "Acciones"
-
-#: root/layout/html:31
-msgid "Call"
-msgstr "Llamar"

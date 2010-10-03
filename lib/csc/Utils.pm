@@ -68,6 +68,10 @@ sub prepare_call_list {
                 $partner =~ s/^$ccdp/+/;
                 $partner =~ s/^\+*/+/;
                 $callentry{partner} = $partner;
+            } elsif($$call{destination_domain} eq $c->config->{voicebox_domain}) {
+                $callentry{is_voicebox} = 1;
+            } elsif($$call{destination_domain} eq $c->config->{fax2mail_domain}) {
+                $callentry{is_fax2mail} = 1;
             } else {
                 $callentry{partner} = $$call{destination_user} .'@'. $$call{destination_domain};
             }

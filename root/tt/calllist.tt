@@ -87,10 +87,17 @@
                 [% c2di = c2di + 1 %]
                 <tr class="[% callentry.background %]">
                   <td class="anruftyp"><img src="/grafik/[% callentry.direction_icon %]" width="14" height="13" alt=""></td>
-                  <td class="anrufnummer">[% callentry.partner %]
-                                          [% IF callentry.partner_info %]
-                                            <span>([% callentry.partner_info %])</span>
-                                          [% END %]
+                  <td class="anrufnummer">
+                    [% IF callentry.is_voicebox %]
+                      [% Catalyst.loc('Voicebox') %]
+                    [% ELSIF callentry.is_fax2mail %]
+                      [% Catalyst.loc('Fax2Mail') %]
+                    [% ELSE %]
+                      [% callentry.partner %]
+                      [% IF callentry.partner_info %]
+                        <span>([% callentry.partner_info %])</span>
+                      [% END %]
+                    [% END %]
                   </td>
                   <td class="anrufanruf">
                     <div class="yui-skin-sam" id="ca[%c2di%]">
