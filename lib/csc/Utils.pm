@@ -59,9 +59,17 @@ sub prepare_call_list {
            and $$call{source_domain} eq $c->session->{user}{domain})
         {
             if($$call{call_status} eq 'ok') {
-                $callentry{direction_icon} = 'anruf_aus_small.gif';
+                if($$call{call_type} =~ /^cf/) { # any kind of call forwarding
+                    $callentry{direction_icon} = 'anruf_cf_small.gif';
+                } else {
+                    $callentry{direction_icon} = 'anruf_aus_small.gif';
+                }
             } else {
-                $callentry{direction_icon} = 'anruf_aus_err_small.gif';
+                if($$call{call_type} =~ /^cf/) { # any kind of call forwarding
+                    $callentry{direction_icon} = 'anruf_cf_err_small.gif';
+                } else {
+                    $callentry{direction_icon} = 'anruf_aus_err_small.gif';
+                }
             }
             if($$call{destination_user} =~ /^\+?\d+$/) {
                 my $partner = $$call{destination_user};

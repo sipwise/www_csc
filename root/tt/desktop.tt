@@ -23,9 +23,8 @@
 
           <p class="anruflistesymbole">
             <img src="/grafik/anruf_ein_small.gif" width="14" height="13" alt=""> [% Catalyst.loc('incoming') %] 
-            <img src="/grafik/anruf_ein_err_small.gif" width="14" height="13" alt=""> [% Catalyst.loc('missed') %] 
             <img src="/grafik/anruf_aus_small.gif" width="14" height="13" alt=""> [% Catalyst.loc('outgoing') %] 
-            <img src="/grafik/anruf_aus_err_small.gif" width="14" height="13" alt=""> [% Catalyst.loc('failed') %] 
+            <img src="/grafik/anruf_cf_small.gif" width="14" height="13" alt=""> [% Catalyst.loc('forwarded') %] 
           </p>
 
           <table class="anrufliste">
