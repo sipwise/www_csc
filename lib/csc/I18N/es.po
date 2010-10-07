@@ -19,17 +19,17 @@ msgstr ""
 "X-Generator: Lokalize 1.0\n"
 
 #. (subscriber.account.billing_profile.data.currency, subscriber.account.cash_balance)
-#: root/tt/desktop.tt:76
+#: root/tt/desktop.tt:83
 msgid "%1 %2 credit"
 msgstr "%1 %2 credit"
 
 #. (subscriber.contacts.size)
-#: root/tt/desktop.tt:87
+#: root/tt/desktop.tt:94
 msgid "%1 client devices registered"
 msgstr "%1 terminales de cliente registrados"
 
 #. (subscriber.account.free_time_balance)
-#: root/tt/desktop.tt:79
+#: root/tt/desktop.tt:86
 msgid "%1 free minutes"
 msgstr "%1 minutos gratis"
 
@@ -49,7 +49,7 @@ msgstr "... si ya existe una llamada saliente en curso"
 msgid "Account"
 msgstr "Cuenta"
 
-#: root/tt/account_wrapper.tt:26 root/tt/desktop.tt:72
+#: root/tt/account_wrapper.tt:26 root/tt/desktop.tt:79
 msgid "Account Balance"
 msgstr "Balance de cuenta"
 
@@ -69,7 +69,7 @@ msgstr "Permitir todo excepto ..."
 msgid "Block everything except ..."
 msgstr "Bloquear todo excepto ..."
 
-#: root/tt/desktop.tt:130
+#: root/tt/desktop.tt:137
 msgid "Call Forwards"
 msgstr "Desvío de llamadas"
 
@@ -102,11 +102,11 @@ msgstr "Registro de llamadas para %1"
 msgid "Calls"
 msgstr "Llamadas"
 
-#: root/tt/calllist.tt:159
+#: root/tt/calllist.tt:158
 msgid "Calls by month"
 msgstr "Llamadas por mes"
 
-#: root/tt/desktop.tt:85
+#: root/tt/desktop.tt:92
 msgid "Clients"
 msgstr "Clientes"
 
@@ -135,7 +135,7 @@ msgstr "Destino"
 msgid "Devices"
 msgstr "Dispositivos"
 
-#: root/tt/calllist.tt:94
+#: root/tt/calllist.tt:93 root/tt/desktop.tt:51
 msgid "Fax2Mail"
 msgstr ""
 
@@ -171,11 +171,11 @@ msgstr "Sesión iniciada como"
 msgid "Login"
 msgstr "Iniciar sesión"
 
-#: root/tt/desktop.tt:92
+#: root/tt/desktop.tt:99
 msgid "New Voicemails"
 msgstr "Nuevos mensajes de voz"
 
-#: root/tt/calllist.tt:43
+#: root/tt/calllist.tt:42
 msgid "No matching calls found."
 msgstr "No se han encontrado llamadas coincidentes."
 
@@ -215,7 +215,7 @@ msgstr "Por favor, use dígitos exclusivamente e incluya el código de área."
 msgid "Received voicemails"
 msgstr "Mensajes de voz recibidos"
 
-#: root/layout/header:38 root/tt/desktop.tt:148 root/tt/reminder.tt:19
+#: root/layout/header:38 root/tt/desktop.tt:155 root/tt/reminder.tt:19
 msgid "Reminder"
 msgstr "Alarma"
 
@@ -227,7 +227,7 @@ msgstr "SIP URI:"
 msgid "SIP proxy server:"
 msgstr "SIP proxy:"
 
-#: root/tt/addressbook.tt:173 root/tt/calllist.tt:125 root/tt/voicebox.tt:114
+#: root/tt/addressbook.tt:173 root/tt/calllist.tt:124 root/tt/voicebox.tt:114
 msgid "Search"
 msgstr "Búsqueda"
 
@@ -256,7 +256,7 @@ msgstr "Preferencias para %1"
 msgid "TFTP boot server:"
 msgstr "Servidor TFTP:"
 
-#: root/tt/desktop.tt:39
+#: root/tt/desktop.tt:38
 msgid "There are no calls recorded."
 msgstr "No hay llamadas registradas."
 
@@ -272,7 +272,7 @@ msgstr "Completar"
 msgid "Top up automatically"
 msgstr "Autocompletar"
 
-#: root/tt/callforward.tt:31 root/tt/calllist.tt:92
+#: root/tt/callforward.tt:31 root/tt/calllist.tt:91 root/tt/desktop.tt:49
 msgid "Voicebox"
 msgstr "Buzón de voz"
 
@@ -335,11 +335,11 @@ msgstr "añadir número"
 msgid "all"
 msgstr "todos"
 
-#: root/tt/desktop.tt:64
+#: root/tt/desktop.tt:71
 msgid "all calls"
 msgstr "todas las llamadas"
 
-#: root/tt/desktop.tt:121
+#: root/tt/desktop.tt:128
 msgid "all voicemails"
 msgstr "todos los mensajes de voz"
 
@@ -347,7 +347,7 @@ msgstr "todos los mensajes de voz"
 msgid "amount to charge:"
 msgstr "cantidad a cargar:"
 
-#: root/tt/addressbook.tt:180 root/tt/calllist.tt:140 root/tt/voicebox.tt:129
+#: root/tt/addressbook.tt:180 root/tt/calllist.tt:139 root/tt/voicebox.tt:129
 msgid "apply filter"
 msgstr "aplicar filtro"
 
@@ -359,11 +359,11 @@ msgstr "adjuntar grabación"
 msgid "call"
 msgstr "llamada"
 
-#: root/tt/callforward.tt:90 root/tt/desktop.tt:135
+#: root/tt/callforward.tt:90 root/tt/desktop.tt:142
 msgid "call forward active"
 msgstr "desvío de llamadas activo"
 
-#: root/tt/callforward.tt:93 root/tt/desktop.tt:138
+#: root/tt/callforward.tt:93 root/tt/desktop.tt:145
 msgid "call forward inactive"
 msgstr "desvío de llamadas desactivado"
 
@@ -379,7 +379,7 @@ msgstr "cancelar"
 msgid "change password"
 msgstr "cambiar contraseña"
 
-#: root/tt/calllist.tt:52
+#: root/tt/calllist.tt:51
 msgid "charges"
 msgstr "cargos"
 
@@ -399,7 +399,7 @@ msgstr "crear nuevo contacto"
 msgid "current balance:"
 msgstr "saldo actual:"
 
-#: root/tt/calllist.tt:54 root/tt/voicebox.tt:43
+#: root/tt/calllist.tt:53 root/tt/voicebox.tt:43
 msgid "date"
 msgstr "fecha"
 
@@ -423,7 +423,7 @@ msgstr "desactivar alarma"
 msgid "do not forward any calls"
 msgstr "no desviar ninguna llamada"
 
-#: root/tt/calllist.tt:50 root/tt/voicebox.tt:42
+#: root/tt/calllist.tt:49 root/tt/voicebox.tt:42
 msgid "duration"
 msgstr "duración"
 
@@ -443,10 +443,6 @@ msgstr "activar alarma"
 msgid "every day"
 msgstr "todos los días"
 
-#: root/tt/calllist.tt:35 root/tt/desktop.tt:28
-msgid "failed"
-msgstr "fallidas"
-
 #: root/tt/addressbook.tt:145 root/tt/addressedit.tt:58
 msgid "fax:"
 msgstr "fax:"
@@ -462,6 +458,11 @@ msgstr "desviar todas las llamadas"
 #: root/tt/callforward.tt:58
 msgid "forward calls ..."
 msgstr "desviar llamadas ..."
+
+#: root/tt/calllist.tt:34 root/tt/desktop.tt:27
+#, fuzzy
+msgid "forwarded"
+msgstr "Desvío de llamada"
 
 #: root/tt/callblock.tt:107
 msgid "hide own number on outgoing calls"
@@ -483,7 +484,7 @@ msgstr "si el saldo baja de"
 msgid "incoming"
 msgstr "entrantes"
 
-#: root/tt/calllist.tt:76 root/tt/voicebox.tt:66
+#: root/tt/calllist.tt:75 root/tt/voicebox.tt:66
 msgid "last week"
 msgstr "última semana"
 
@@ -491,17 +492,13 @@ msgstr "última semana"
 msgid "lastname"
 msgstr "apellido"
 
-#: root/tt/desktop.tt:99 root/tt/voicebox.tt:80
+#: root/tt/desktop.tt:106 root/tt/voicebox.tt:80
 msgid "listen to voicemail"
 msgstr "escuchar mensaje de voz"
 
 #: root/layout/header:11
 msgid "logout"
 msgstr "desconexión"
-
-#: root/tt/calllist.tt:33 root/tt/desktop.tt:26
-msgid "missed"
-msgstr "perdidas"
 
 #: root/tt/addressbook.tt:133 root/tt/addressedit.tt:55
 msgid "mobile:"
@@ -519,15 +516,15 @@ msgstr "nueva entrada:"
 msgid "new password:"
 msgstr "nueva contraseña:"
 
-#: root/tt/desktop.tt:118
+#: root/tt/desktop.tt:125
 msgid "no new voicemails"
 msgstr "no hay nuevos mensajes"
 
-#: root/tt/desktop.tt:156 root/tt/reminder.tt:72
+#: root/tt/desktop.tt:163 root/tt/reminder.tt:72
 msgid "no reminder set"
 msgstr "no hay alarmas configuradas"
 
-#: root/tt/calllist.tt:48
+#: root/tt/calllist.tt:47
 msgid "number"
 msgstr "número"
 
@@ -543,7 +540,7 @@ msgstr "contraseña antigua:"
 msgid "on weekdays (monday - saturday)"
 msgstr "en días laborables (lunes - sábado)"
 
-#: root/tt/calllist.tt:34 root/tt/desktop.tt:27
+#: root/tt/calllist.tt:33 root/tt/desktop.tt:26
 msgid "outgoing"
 msgstr "salientes"
 
@@ -551,7 +548,7 @@ msgstr "salientes"
 msgid "password:"
 msgstr "contraseña:"
 
-#: root/tt/calllist.tt:80 root/tt/voicebox.tt:70
+#: root/tt/calllist.tt:79 root/tt/voicebox.tt:70
 msgid "past"
 msgstr "anteriores"
 
@@ -575,7 +572,7 @@ msgstr "llamadas recientes"
 msgid "recurrence:"
 msgstr "recurrencia:"
 
-#: root/tt/desktop.tt:153 root/tt/reminder.tt:69
+#: root/tt/desktop.tt:160 root/tt/reminder.tt:69
 msgid "reminder is active"
 msgstr "la alarma está activa"
 
@@ -583,7 +580,7 @@ msgstr "la alarma está activa"
 msgid "repeat:"
 msgstr "repetir:"
 
-#: root/tt/calllist.tt:152 root/tt/voicebox.tt:141
+#: root/tt/calllist.tt:151 root/tt/voicebox.tt:141
 msgid "reset filter"
 msgstr "borrar filtros"
 
@@ -596,7 +593,7 @@ msgstr "guardar contacto"
 msgid "save settings"
 msgstr "guardar preferencias"
 
-#: root/tt/addressbook.tt:176 root/tt/calllist.tt:135 root/tt/voicebox.tt:124
+#: root/tt/addressbook.tt:176 root/tt/calllist.tt:134 root/tt/voicebox.tt:124
 msgid "search term"
 msgstr "buscar término"
 
@@ -606,7 +603,7 @@ msgstr "segundos de ring"
 
 #: root/tt/addressbook.tt:112 root/tt/addressbook.tt:125
 #: root/tt/addressbook.tt:138 root/tt/addressbook.tt:82
-#: root/tt/calllist.tt:105 root/tt/desktop.tt:111 root/tt/desktop.tt:52
+#: root/tt/calllist.tt:104 root/tt/desktop.tt:118 root/tt/desktop.tt:59
 #: root/tt/voicebox.tt:91
 msgid "show actions"
 msgstr "mostrar acciones"
@@ -615,15 +612,15 @@ msgstr "mostrar acciones"
 msgid "time of day:"
 msgstr "hora del día:"
 
-#: root/tt/calllist.tt:128 root/tt/voicebox.tt:117
+#: root/tt/calllist.tt:127 root/tt/voicebox.tt:117
 msgid "time range (DD.MM.YYYY)"
 msgstr "rango de días (DD.MM.AAAA)"
 
-#: root/tt/calllist.tt:130 root/tt/voicebox.tt:119
+#: root/tt/calllist.tt:129 root/tt/voicebox.tt:119
 msgid "to"
 msgstr "a"
 
-#: root/tt/calllist.tt:70 root/tt/voicebox.tt:60
+#: root/tt/calllist.tt:69 root/tt/voicebox.tt:60
 msgid "today"
 msgstr "hoy"
 
@@ -631,7 +628,7 @@ msgstr "hoy"
 msgid "username:"
 msgstr "nombre de usuario:"
 
-#: root/tt/desktop.tt:142 root/tt/desktop.tt:160
+#: root/tt/desktop.tt:149 root/tt/desktop.tt:167
 msgid "view settings"
 msgstr "ver preferencias"
 
@@ -639,7 +636,6 @@ msgstr "ver preferencias"
 msgid "web"
 msgstr "web"
 
-#: root/tt/calllist.tt:73 root/tt/voicebox.tt:63
+#: root/tt/calllist.tt:72 root/tt/voicebox.tt:63
 msgid "yesterday"
 msgstr "ayer"
-
