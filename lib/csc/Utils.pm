@@ -59,15 +59,27 @@ sub prepare_call_list {
            and $$call{source_domain} eq $c->session->{user}{domain})
         {
             if($$call{call_status} eq 'ok') {
-                $callentry{direction_icon} = 'anruf_aus_small.gif';
+                if($$call{call_type} =~ /^cf/) { # any kind of call forwarding
+                    $callentry{direction_icon} = 'anruf_cf_small.gif';
+                } else {
+                    $callentry{direction_icon} = 'anruf_aus_small.gif';
+                }
             } else {
-                $callentry{direction_icon} = 'anruf_aus_err_small.gif';
+                if($$call{call_type} =~ /^cf/) { # any kind of call forwarding
+                    $callentry{direction_icon} = 'anruf_cf_err_small.gif';
+                } else {
+                    $callentry{direction_icon} = 'anruf_aus_err_small.gif';
+                }
             }
             if($$call{destination_user} =~ /^\+?\d+$/) {
                 my $partner = $$call{destination_user};
                 $partner =~ s/^$ccdp/+/;
                 $partner =~ s/^\+*/+/;
                 $callentry{partner} = $partner;
+            } elsif($$call{destination_domain} eq $c->config->{voicebox_domain}) {
+                $callentry{is_voicebox} = 1;
+            } elsif($$call{destination_domain} eq $c->config->{fax2mail_domain}) {
+                $callentry{is_fax2mail} = 1;
             } else {
                 $callentry{partner} = $$call{destination_user} .'@'. $$call{destination_domain};
             }
@@ -82,6 +94,13 @@ sub prepare_call_list {
             } else {
                 $callentry{direction_icon} = 'anruf_ein_err_small.gif';
             }
+
+            if($$call{source_user} eq $c->config->{reminder_user}
+               and $$call{source_domain} eq $c->config->{reminder_domain})
+            {
+                $callentry{is_reminder} = 1;
+            }
+
             if(!defined $$call{source_cli} or !length $$call{source_cli}
                or $$call{source_cli} !~ /^\+?\d+$/)
             {

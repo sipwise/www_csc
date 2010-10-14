@@ -57,7 +57,7 @@ sub click2dial : Local {
             $c->log->error('***call::click2dial with invalid callee ' . $callee);
 
             # TODO: Error handling, invalid uri or number
-            $c->response->redirect($c->uri_for('/desktop'));
+            $c->response->redirect($c->uri_for($c->config->{site_config}{default_uri}));
             return;
         }
         $callee_user = $callee;
@@ -73,7 +73,7 @@ sub click2dial : Local {
             $c->log->error('***call::click2dial with invalid callee ' . $callee);
 
             # TODO: Error handling, invalid uri or number
-            $c->response->redirect($c->uri_for('/desktop'));
+            $c->response->redirect($c->uri_for($c->config->{site_config}{default_uri}));
             return;
         }
     }

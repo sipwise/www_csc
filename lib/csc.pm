@@ -16,12 +16,12 @@ use XML::Simple;
 
 use Catalyst::Log::Log4perl;
 
-use Catalyst qw/-Debug ConfigLoader Static::Simple Unicode I18N
+use Catalyst qw/ConfigLoader Static::Simple Unicode I18N
                 Authentication Authentication::Store::Minimal Authentication::Credential::Password
                 Session Session::Store::FastMmap Session::State::Cookie
                /;
 
-our $VERSION = '2';
+our $VERSION = '2.0';
 
 # Configure the application. 
 #
@@ -36,6 +36,7 @@ our $VERSION = '2';
 my $xs = new XML::Simple;
 my $xc = $xs->XMLin( '/usr/local/etc/csc.conf', ForceArray => 0);
 $$xc{site_config}{default_language} = 'en' unless $$xc{site_config}{default_language} =~ /^\w+$/;
+$$xc{site_config}{default_uri} = '/desktop' unless $$xc{site_config}{default_uri};
 
 __PACKAGE__->config( authentication => {}, %$xc );
 
@@ -55,7 +56,7 @@ sub begin : Private {
     # set default language
     $c->session->{lang} = $c->config->{site_config}{default_language} unless $c->session->{lang};
 
-    if($c->request->params->{lang} =~ /^\w+$/) {
+    if(defined $c->request->params->{lang} and $c->request->params->{lang} =~ /^\w+$/) {
         $c->languages([$c->request->params->{lang}]);
         if($c->language eq 'i_default') {
             $c->languages([$c->session->{lang}]);
@@ -71,6 +72,9 @@ sub begin : Private {
     return;
 }
 
+sub debug {
+  return __PACKAGE__->config->{debugging} ? 1 : 0;
+}
 
 # Start the application
 __PACKAGE__->setup;

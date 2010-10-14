@@ -1,15 +1,35 @@
 <!-- BEGIN layout/footer -->
     <div id="footer">
-      [% Catalyst.config.site_config.company.name %] <span>|</span>
-      [% Catalyst.config.site_config.company.city %] <span>|</span>
+      [% Catalyst.config.site_config.company.name %]
+      [% IF Catalyst.config.site_config.company.name AND Catalyst.config.site_config.company.city %]
+        <span>|</span>
+      [% END %]
+      [% Catalyst.config.site_config.company.city %]
+      [% IF Catalyst.config.site_config.company.street AND (Catalyst.config.site_config.company.city OR Catalyst.config.site_config.company.name) %]
+        <span>|</span>
+      [% END %]
       [% Catalyst.config.site_config.company.street %] <br />
-      Tel. [% Catalyst.config.site_config.company.phone %] <span>|</span>
-      Fax [% Catalyst.config.site_config.company.fax %] <span>|</span>
-      E-Mail <a href="mailto:[% Catalyst.config.site_config.company.email %]" class="link">[% Catalyst.config.site_config.company.email %]</a><br />
-          <a href="http://www.sipwise.com" target="_blank" class="sipwise">
-            <img src="/grafik/sipwise-powered.png" width="131" height="29" alt=" " />
-            <img src="/grafik/sip_provider.png" width="145" height="29" alt=" " />
-          </a>
+
+      [% IF Catalyst.config.site_config.company.phone %]
+        Tel. [% Catalyst.config.site_config.company.phone %]
+        [% IF Catalyst.config.site_config.company.fax %]
+          <span>|</span>
+        [% END %]
+      [% END %]
+      [% IF Catalyst.config.site_config.company.fax %]
+        Fax [% Catalyst.config.site_config.company.fax %]
+      [% END %]
+      [% IF Catalyst.config.site_config.company.email %]
+        [% IF Catalyst.config.site_config.company.fax OR Catalyst.config.site_config.company.phone %]
+          <span>|</span>
+        [% END %]
+        E-Mail <a href="mailto:[% Catalyst.config.site_config.company.email %]" class="link">[% Catalyst.config.site_config.company.email %]</a><br />
+      [% END %]
+
+      <a href="http://www.sipwise.com" target="_blank" class="sipwise">
+        <img src="/grafik/sipwise-powered.png" width="131" height="29" alt=" " />
+        <img src="/grafik/sip_provider.png" width="145" height="29" alt=" " />
+      </a>
     </div>
 
     <script type="text/javascript">

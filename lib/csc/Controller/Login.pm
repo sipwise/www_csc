@@ -58,8 +58,8 @@ sub do_login : Local {
 #        if ($c->login($username, $password)) {
         $username .= '@'. $c->config->{site_domain} if $username !~ /\@/;
         if($c->model('Provisioning')->login($c, $username, $password)) {
-            $c->log->debug('***Login::do_login login successfull, redirecting to /desktop');
-            $c->response->redirect($c->uri_for('/desktop'));
+            $c->log->debug('***Login::do_login login successfull, redirecting to default URI');
+            $c->response->redirect($c->uri_for($c->config->{site_config}{default_uri}));
             return;
         }
     } else {

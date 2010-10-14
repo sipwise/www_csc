@@ -33,7 +33,7 @@ sub index : Local
     $c->log->debug('***autosubscriber::index called');
 
     unless($c->session->{user}{admin}) {
-        $c->response->redirect($c->uri_for('/desktop'));
+        $c->response->redirect($c->uri_for($c->config->{site_config}{default_uri}));
         return;
     }
 
@@ -103,7 +103,7 @@ sub doaddgroup : Local
     $c->stash->{active_number} = csc::Utils::get_active_number_string($c);
 
     unless($c->session->{user}{admin}) {
-        $c->response->redirect($c->uri_for('/desktop'));
+        $c->response->redirect($c->uri_for($c->config->{site_config}{default_uri}));
         return;
     }
 
@@ -160,7 +160,7 @@ sub delgroup : Local
     $c->stash->{active_number} = csc::Utils::get_active_number_string($c);
 
     unless($c->session->{user}{admin}) {
-        $c->response->redirect($c->uri_for('/desktop'));
+        $c->response->redirect($c->uri_for($c->config->{site_config}{default_uri}));
         return;
     }
 
@@ -213,7 +213,7 @@ sub doaddext : Local {
 #    return;
 
     unless($c->session->{user}{admin}) {
-        $c->response->redirect($c->uri_for('/desktop'));
+        $c->response->redirect($c->uri_for($c->config->{site_config}{default_uri}));
         return;
     }
     
@@ -323,7 +323,7 @@ sub delsubscriber : Local {
     $c->log->debug('***autosubscriber::delsubscriber called');
 
     unless($c->session->{user}{admin}) {
-        $c->response->redirect($c->uri_for('/desktop'));
+        $c->response->redirect($c->uri_for($c->config->{site_config}{default_uri}));
         return;
     }
 

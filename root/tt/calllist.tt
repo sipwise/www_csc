@@ -30,9 +30,8 @@
 
         <p class="anruflisteordnen">
           <img src="/grafik/anruf_ein_small.gif" width="14" height="13" alt=""> [% Catalyst.loc('incoming') %]
-          <img src="/grafik/anruf_ein_err_small.gif" width="14" height="13" alt=""> [% Catalyst.loc('missed') %]
           <img src="/grafik/anruf_aus_small.gif" width="14" height="13" alt=""> [% Catalyst.loc('outgoing') %]
-          <img src="/grafik/anruf_aus_err_small.gif" width="14" height="13" alt=""> [% Catalyst.loc('failed') %]
+          <img src="/grafik/anruf_cf_small.gif" width="14" height="13" alt=""> [% Catalyst.loc('forwarded') %]
         </p>
           
         <table class="anrufliste">
@@ -87,10 +86,19 @@
                 [% c2di = c2di + 1 %]
                 <tr class="[% callentry.background %]">
                   <td class="anruftyp"><img src="/grafik/[% callentry.direction_icon %]" width="14" height="13" alt=""></td>
-                  <td class="anrufnummer">[% callentry.partner %]
-                                          [% IF callentry.partner_info %]
-                                            <span>([% callentry.partner_info %])</span>
-                                          [% END %]
+                  <td class="anrufnummer">
+                    [% IF callentry.is_voicebox %]
+                      [% Catalyst.loc('Voicebox') %]
+                    [% ELSIF callentry.is_fax2mail %]
+                      [% Catalyst.loc('Fax2Mail') %]
+                    [% ELSIF callentry.is_reminder %]
+                      [% Catalyst.loc('Reminder') %]
+                    [% ELSE %]
+                      [% callentry.partner %]
+                      [% IF callentry.partner_info %]
+                        <span>([% callentry.partner_info %])</span>
+                      [% END %]
+                    [% END %]
                   </td>
                   <td class="anrufanruf">
                     <div class="yui-skin-sam" id="ca[%c2di%]">
