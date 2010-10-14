@@ -94,6 +94,13 @@ sub prepare_call_list {
             } else {
                 $callentry{direction_icon} = 'anruf_ein_err_small.gif';
             }
+
+            if($$call{source_user} eq $c->config->{reminder_user}
+               and $$call{source_domain} eq $c->config->{reminder_domain})
+            {
+                $callentry{is_reminder} = 1;
+            }
+
             if(!defined $$call{source_cli} or !length $$call{source_cli}
                or $$call{source_cli} !~ /^\+?\d+$/)
             {

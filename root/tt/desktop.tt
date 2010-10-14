@@ -49,6 +49,8 @@
                   [% Catalyst.loc('Voicebox') %]
                 [% ELSIF callentry.is_fax2mail %]
                   [% Catalyst.loc('Fax2Mail') %]
+                [% ELSIF callentry.is_reminder %]
+                  [% Catalyst.loc('Reminder') %]
                 [% ELSE %]
                   [% callentry.partner %]
                 [% END %]
