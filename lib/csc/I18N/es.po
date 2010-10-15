@@ -137,7 +137,7 @@ msgstr "Dispositivos"
 
 #: root/tt/calllist.tt:93 root/tt/desktop.tt:51
 msgid "Fax2Mail"
-msgstr ""
+msgstr "Fax a Email"
 
 #: root/tt/addressbook.tt:35 root/tt/calllist.tt:28 root/tt/voicebox.tt:28
 msgid "Filter:"
@@ -461,9 +461,8 @@ msgid "forward calls ..."
 msgstr "desviar llamadas ..."
 
 #: root/tt/calllist.tt:34 root/tt/desktop.tt:27
-#, fuzzy
 msgid "forwarded"
-msgstr "Desvío de llamada"
+msgstr "Llamada deviada"
 
 #: root/tt/callblock.tt:107
 msgid "hide own number on outgoing calls"
