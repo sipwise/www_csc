@@ -27,20 +27,20 @@ install: build
 	dh_testdir
 	dh_testroot
 	dh_clean -k
-	dh_installdirs usr/local/csc usr/local/csc/script usr/local/etc usr/share/doc/sipwise-www-csc
+	dh_installdirs usr/local/csc usr/local/csc/script usr/local/etc usr/share/doc/ngcp-www-csc
 
-	# Add here commands to install the package into debian/sipwise-www-csc.
-	cp -a lib  debian/sipwise-www-csc/usr/local/csc/
-	cp -a root debian/sipwise-www-csc/usr/local/csc/lib/csc/
-	install -m 644 csc.yml debian/sipwise-www-csc/usr/local/csc/lib/csc/
-	install -m 644 etc/csc.conf debian/sipwise-www-csc/usr/local/etc/csc.conf
-	install -m 644 etc/apache.site debian/sipwise-www-csc/usr/share/doc/sipwise-www-csc/apache.site
+	# Add here commands to install the package into debian/ngcp-www-csc.
+	cp -a lib  debian/ngcp-www-csc/usr/local/csc/
+	cp -a root debian/ngcp-www-csc/usr/local/csc/lib/csc/
+	install -m 644 csc.yml debian/ngcp-www-csc/usr/local/csc/lib/csc/
+	install -m 644 etc/csc.conf debian/ngcp-www-csc/usr/local/etc/csc.conf
+	install -m 644 etc/apache.site debian/ngcp-www-csc/usr/share/doc/ngcp-www-csc/apache.site
 	# we don't need csc_create.pl and csc_test.pl:
-	install -m 755 script/csc_cgi.pl     debian/sipwise-www-csc/usr/local/csc/script/
-	install -m 755 script/csc_fastcgi.pl debian/sipwise-www-csc/usr/local/csc/script/
-	install -m 755 script/csc_server.pl  debian/sipwise-www-csc/usr/local/csc/script/
+	install -m 755 script/csc_cgi.pl     debian/ngcp-www-csc/usr/local/csc/script/
+	install -m 755 script/csc_fastcgi.pl debian/ngcp-www-csc/usr/local/csc/script/
+	install -m 755 script/csc_server.pl  debian/ngcp-www-csc/usr/local/csc/script/
 	# make sure we don't have any svn files inside the .deb:
-	find debian/sipwise-www-csc -name \.svn -print0 | xargs -0 rm -rf
+	find debian/ngcp-www-csc -name \.svn -print0 | xargs -0 rm -rf
 
 
 # Build architecture-dependent files here.
