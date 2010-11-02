@@ -1,17 +1,33 @@
 Source: ngcp-www-csc
 Section: admin
 Priority: extra
-Maintainer: Michael Prokop <mprokop@sipwise.com>
-Build-Depends: debhelper (>= 5)
-Standards-Version: 3.8.3
+Maintainer: iel Tiefnig <dtiefnig@sipwise.com>
+Build-Depends: debhelper (>= 5), libtemplate-perl
+Standards-Version: 3.9.1
 Homepage: http://sipwise.com/
-Vcs-svn: https://dev.sipwise.com/svn/www_csc
-Vcs-Browser: https://dev.sipwise.com/svn/www_csc
+
+Package: ngcp-templates-ce-www-csc
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, ngcp-templates-ce-config
+Conflicts: ngcp-templates-pro-www-csc
+Provides: ngcp-templates-www-csc
+Description: Configuration templates for the web-based CSC interface
+ The package contains configuration file templates for the customer
+ webinterface.
+
+Package: ngcp-templates-pro-www-csc
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, ngcp-templates-pro-config
+Conflicts: ngcp-templates-ce-www-csc
+Provides: ngcp-templates-www-csc
+Description: Configuration templates for the web-based CSC interface
+ The package contains configuration file templates for the customer
+ webinterface.
 
 Package: ngcp-www-csc
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, ngcp-ossbss-billing (>= 2.0.2), ngcp-ossbss-voip (>= 2.0.2), libcatalyst-perl, libcatalyst-modules-perl, libcatalyst-engine-apache-perl, librpc-xml-perl
+Depends: ${shlibs:Depends}, ${misc:Depends}, ngcp-ossbss-billing (>= 2.0.2), ngcp-ossbss-voip (>= 2.0.2), libcatalyst-perl, libcatalyst-modules-perl, libcatalyst-engine-apache-perl, librpc-xml-perl, ngcp-templates-www-csc
 Suggests: liblocale-maketext-lexicon-perl
 Description: frontend for endusers to configure their accounts on the Sipwise NGCP
-  The csc framework is used by endusers to configure their accounts on the
+  The CSC framework is used by endusers to configure their accounts on the
   Sipwise NGCP.

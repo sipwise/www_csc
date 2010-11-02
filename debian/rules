@@ -9,61 +9,94 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
+b=$(CURDIR)/debian/build
+
 build: build-stamp
 
 build-stamp:
 	dh_testdir
-
+	mkdir -p pro/etc/ngcp-www-csc pro/etc/apache2/sites-available
+	mkdir -p ce/etc/ngcp-www-csc ce/etc/apache2/sites-available
+	tpage --define PRO=true   etc/csc.conf > pro/etc/ngcp-www-csc/csc.conf.tt2
+	tpage                     etc/csc.conf > ce/etc/ngcp-www-csc/csc.conf.tt2
+	tpage --define PRO=true   etc/apache.site > pro/etc/apache2/sites-available/ngcp-www-csc.tt2
+	tpage                     etc/apache.site > ce/etc/apache2/sites-available/ngcp-www-csc.tt2
 	touch $@
 
 clean: 
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp
-
+	rm -rf $(b) pro ce
 	dh_clean 
 
 install: build
 	dh_testdir
 	dh_testroot
 	dh_clean -k
-	dh_installdirs usr/local/csc usr/local/csc/script usr/local/etc usr/share/doc/ngcp-www-csc
+	dh_installdirs
 
-	# Add here commands to install the package into debian/ngcp-www-csc.
-	cp -a lib  debian/ngcp-www-csc/usr/local/csc/
-	cp -a root debian/ngcp-www-csc/usr/local/csc/lib/csc/
-	install -m 644 csc.yml debian/ngcp-www-csc/usr/local/csc/lib/csc/
-	install -m 644 etc/csc.conf debian/ngcp-www-csc/usr/local/etc/csc.conf
-	install -m 644 etc/apache.site debian/ngcp-www-csc/usr/share/doc/ngcp-www-csc/apache.site
-	# we don't need csc_create.pl and csc_test.pl:
-	install -m 755 script/csc_cgi.pl     debian/ngcp-www-csc/usr/local/csc/script/
-	install -m 755 script/csc_fastcgi.pl debian/ngcp-www-csc/usr/local/csc/script/
-	install -m 755 script/csc_server.pl  debian/ngcp-www-csc/usr/local/csc/script/
-	# make sure we don't have any svn files inside the .deb:
-	find debian/ngcp-www-csc -name \.svn -print0 | xargs -0 rm -rf
+ngcp-www-csc:
+	@echo "--- Building: $@"
+	dh_installdirs       -p$@ -P$(b)/$@
+	dh_installdocs       -p$@ -P$(b)/$@
+	dh_installchangelogs -p$@ -P$(b)/$@
+	dh_install           -p$@ -P$(b)/$@
+	dh_installexamples   -p$@ -P$(b)/$@
+	dh_installman        -p$@ -P$(b)/$@
+	dh_link              -p$@ -P$(b)/$@
+	dh_strip             -p$@ -P$(b)/$@
+	dh_compress          -p$@ -P$(b)/$@
+	dh_fixperms          -p$@ -P$(b)/$@
+	#dh_perl              -p$@ -P$(b)/$@
+	dh_makeshlibs        -p$@ -P$(b)/$@ -V
+	dh_installdeb        -p$@ -P$(b)/$@
+	dh_shlibdeps         -p$@ -P$(b)/$@
+	dh_installdebconf    -p$@ -P$(b)/$@
+	dh_gencontrol        -p$@ -P$(b)/$@
+	dh_md5sums           -p$@ -P$(b)/$@
+	dh_builddeb          -p$@ -P$(b)/$@
 
+ngcp-templates-ce-www-csc:
+	@echo "--- Building: $@"
+	dh_installdirs       -p$@ -P$(b)/$@
+	dh_link              -p$@ -P$(b)/$@
+	dh_installdocs       -p$@ -P$(b)/$@
+	dh_installchangelogs -p$@ -P$(b)/$@
+	dh_install           -p$@ -P$(b)/$@
+	dh_strip             -p$@ -P$(b)/$@
+	dh_compress          -p$@ -P$(b)/$@
+	dh_fixperms          -p$@ -P$(b)/$@
+	dh_makeshlibs        -p$@ -P$(b)/$@ -V
+	dh_installdeb        -p$@ -P$(b)/$@
+	dh_shlibdeps         -p$@ -P$(b)/$@
+	dh_installdebconf    -p$@ -P$(b)/$@
+	dh_gencontrol        -p$@ -P$(b)/$@
+	dh_md5sums           -p$@ -P$(b)/$@
+	dh_builddeb          -p$@ -P$(b)/$@
 
-# Build architecture-dependent files here.
-binary-arch: install
-# We have nothing to do by default.
+ngcp-templates-pro-www-csc:
+	@echo "--- Building: $@"
+	dh_installdirs       -p$@ -P$(b)/$@
+	dh_link              -p$@ -P$(b)/$@
+	dh_installdocs       -p$@ -P$(b)/$@
+	dh_installchangelogs -p$@ -P$(b)/$@
+	dh_install           -p$@ -P$(b)/$@
+	dh_strip             -p$@ -P$(b)/$@
+	dh_compress          -p$@ -P$(b)/$@
+	dh_fixperms          -p$@ -P$(b)/$@
+	dh_makeshlibs        -p$@ -P$(b)/$@ -V
+	dh_installdeb        -p$@ -P$(b)/$@
+	dh_shlibdeps         -p$@ -P$(b)/$@
+	dh_installdebconf    -p$@ -P$(b)/$@
+	dh_gencontrol        -p$@ -P$(b)/$@
+	dh_md5sums           -p$@ -P$(b)/$@
+	dh_builddeb          -p$@ -P$(b)/$@
 
-# Build architecture-independent files here.
-binary-indep: install
-	dh_testdir
-	dh_testroot
-	dh_installchangelogs 
-	dh_installdocs
-	dh_installexamples
-	dh_installman
-	dh_link
-	dh_strip
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
+binary-all: build install
+
+binary-indep: build install ngcp-www-csc \
+	ngcp-templates-ce-www-csc ngcp-templates-pro-www-csc
 
 binary: binary-indep binary-arch
 .PHONY: build clean binary-indep binary-arch binary install

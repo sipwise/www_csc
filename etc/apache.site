@@ -1,15 +1,17 @@
-# Listen 443
+[% IF www_csc.apache.port != 443 %]
+Listen [% www_csc.apache.port %]
+[% END %]
 
-PerlSwitches -I/usr/local/csc/lib -I/usr/local/admin/lib
+PerlSwitches -I/usr/share/ngcp-www-csc/lib
 
 # ExtendedStatus On
 
-<VirtualHost *:443>
-        ServerAdmin office@sipwise.com
-        ServerName CSC.CHANGE.ME
+<VirtualHost *:[% www_csc.apache.port %]>
+        ServerAdmin [% www_csc.apache.serveradmin %]
+        ServerName [% www_csc.apache.servername %]
         SSLEngine on
-        SSLCertificateFile /etc/apache2/ssl/CSC.CHANGE.ME.crt
-        SSLCertificateKeyFile /etc/apache2/ssl/CSC.CHANGE.ME.pem
+        SSLCertificateFile [% www_csc.apache.sslcertfile %]
+        SSLCertificateKeyFile [% www_csc.apache.sslcertkeyfile %]
 
         PerlModule Apache2::RequestUtil csc
 
@@ -20,53 +22,12 @@ PerlSwitches -I/usr/local/csc/lib -I/usr/local/admin/lib
                 PerlResponseHandler csc
         </Location>
 
-#        <Location /server-status>
-#                SetHandler server-status
-#                Order allow,deny
-#                Allow from all
-#        </Location> 
+        # requires module dumpio
+        # LogLevel debug
+        # DumpIOInput Off
+        # DumpIOOutput Off
 
-        LogLevel info
-        DumpIOInput Off
-        DumpIOOutput Off
-
-        ErrorLog syslog
-        CustomLog "|/usr/bin/logger -p daemon.info -t csc" combined
+        LogLevel [% www_csc.logging.apache.err.level %]
+        ErrorLog syslog:[% www_csc.logging.apache.err.facility %]
+        CustomLog "|/usr/bin/logger -p [% www_csc.logging.apache.acc.facility %].[% www_csc.logging.apache.acc.level %] -t [% www_csc.logging.apache.acc.identity %]" combined
 </VirtualHost>
-
-Listen 1443
-
-<VirtualHost *:1443>
-        ServerAdmin office@sipwise.com
-        ServerName PROV.CHANGE.ME
-        SSLEngine on
-        SSLCertificateFile /etc/apache2/ssl/PROV.CHANGE.ME.crt
-        SSLCertificateKeyFile /etc/apache2/ssl/PROV.CHANGE.ME.pem
-
-        PerlModule Apache2::RequestUtil admin
-
-        # always keep "Location /" at the top!
-        # it will be overridden by later more specific locations
-        <Location />
-                SetHandler modperl
-                PerlResponseHandler admin
-        </Location>
-
-        <Location /SOAP>
-                AuthName "Sipwise Test Provisioning"
-                AuthType Basic
-                AuthUserFile /usr/local/etc/provisioning.htpasswd
-                Require valid-user
-
-                SetHandler perl-script
-                PerlHandler Sipwise::Provisioning::SOAP
-        </Location>
-
-        LogLevel info
-        DumpIOInput Off
-        DumpIOOutput Off
-
-        ErrorLog syslog
-        CustomLog "|/usr/bin/logger -p daemon.info -t oss" combined
-</VirtualHost>
-
