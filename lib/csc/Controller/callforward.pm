@@ -48,58 +48,19 @@ sub index : Private {
 
     my $subscriber_cc = $c->session->{user}{data}{cc};
 
-    $c->stash->{subscriber}{fw}{active} = 1;
-    my $target;
+    $c->stash->{subscriber}{fw}{active} = 0;
 
-    if(defined $c->session->{user}{preferences}{cfu}) {
-        $target = $c->session->{user}{preferences}{cfu};
-        $c->stash->{subscriber}{fw}{allways_checked} = 'checked="checked"';
-
-    } elsif(defined $c->session->{user}{preferences}{cfb}
-            or defined $c->session->{user}{preferences}{cfna}
-            or defined $c->session->{user}{preferences}{cft})
-    {
-        $c->stash->{subscriber}{fw}{condition_checked} = 'checked="checked"';
-
-        if(defined $c->session->{user}{preferences}{cfb}) {
-            $target = $c->session->{user}{preferences}{cfb};
-            $c->stash->{subscriber}{fw}{busy_checked} = 'checked="checked"';
-        }
-        if(defined $c->session->{user}{preferences}{cfna}) {
-            $target = $c->session->{user}{preferences}{cfna};
-            $c->stash->{subscriber}{fw}{na_checked} = 'checked="checked"';
-        } 
-        if(defined $c->session->{user}{preferences}{cft}) {
-            $target = $c->session->{user}{preferences}{cft};
-            $c->stash->{subscriber}{fw}{timeout_checked} = 'checked="checked"';
-        }
-    } else {
-        $c->stash->{subscriber}{fw}{never_checked} = 'checked="checked"';
-        $c->stash->{subscriber}{fw}{active} = 0;
-    }
-
-    if(defined $target) {
-        if($target =~ /voicebox.local$/) {
-            $c->stash->{subscriber}{fw}{voicebox_checked} = 'checked="checked"';
+    for(qw(cfu cfna cft cfb)) {
+        if(defined $c->session->{user}{preferences}{$_}) {
+            $c->stash->{subscriber}{fw}{$_} = _parse_forward($c, $c->session->{user}{preferences}{$_});
+            $c->stash->{subscriber}{fw}{active} = 1;
         } else {
-            $c->stash->{subscriber}{fw}{sipuri} = $target;
-            $c->stash->{subscriber}{fw}{sipuri_checked} = 'checked="checked"';
+            $c->stash->{subscriber}{fw}{$_}{disabled_checked} = 'checked="checked"';
         }
     }
 
     if(defined $c->session->{user}{preferences}{ringtimeout}) {
         $c->stash->{subscriber}{fw}{ringtimeout} = $c->session->{user}{preferences}{ringtimeout};
-    }
-
-    if(defined $c->stash->{subscriber}{fw}{sipuri}
-       and length $c->stash->{subscriber}{fw}{sipuri}
-       and ! $c->session->{messages}{target})
-    {
-        $c->stash->{subscriber}{fw}{sipuri} =~  s/^sip://i;
-        if($c->stash->{subscriber}{fw}{sipuri} =~ /^\+?\d+\@/) {
-            $c->stash->{subscriber}{fw}{sipuri} =~ s/\@.*$//;
-        }
-        $c->stash->{subscriber}{fw}{sipuri_checked} = 'checked="checked"';
     }
 
     $c->stash->{template} = 'tt/callforward.tt';
@@ -115,81 +76,49 @@ sub save : Local {
     my ( $self, $c ) = @_;
     my (%preferences, %messages);
     	
-    my $fw_target_select = $c->request->params->{fw_target};
-    unless($fw_target_select) {
-        $messages{target} = 'Client.Voip.MalformedTargetClass';
-    }
-    my $fw_target;
-    if($fw_target_select eq 'sipuri') {
-        $fw_target = $c->request->params->{fw_sipuri};
-
-        # normalize, so we can do some checks.
-        $fw_target =~ s/^sip://i;
-        if($fw_target =~ /^\+?\d+\@[a-z0-9.-]+$/i) {
-            $fw_target =~ s/\@.+$//;
+    foreach my $fwtype (qw(cfu cfna cft cfb)) {
+        my $fw_target_select = $c->request->params->{$fwtype .'_fw_target'};
+        unless($fw_target_select) {
+            $messages{$fwtype .'_target'} = 'Client.Voip.MalformedTargetClass';
         }
 
-        if($fw_target =~ /^\+?\d+$/) {
-            $fw_target = csc::Utils::get_qualified_number_for_subscriber($c, $fw_target);
-            my $checkresult;
-            return unless $c->model('Provisioning')->call_prov( $c, 'voip', 'check_E164_number', $fw_target, \$checkresult);
-            $messages{target} = 'Client.Voip.MalformedNumber'
-                unless $checkresult;
-        } elsif($fw_target =~ /^[a-z0-9&=+\$,;?\/_.!~*'()-]+\@[a-z0-9.-]+$/i) {
-            $fw_target = 'sip:'. lc $fw_target;
-        } elsif($fw_target =~ /^[a-z0-9&=+\$,;?\/_.!~*'()-]+$/) {
-            $fw_target = 'sip:'. lc($fw_target) .'@'. $c->session->{user}{domain};
-        } else {
-            $messages{target} = 'Client.Voip.MalformedTarget';
-            $fw_target = $c->request->params->{fw_sipuri};
-        }
-    } elsif($fw_target_select eq 'voicebox') {
-        $fw_target = 'sip:vmu'.$c->session->{user}{data}{cc}.$c->session->{user}{data}{ac}.$c->session->{user}{data}{sn}.'@voicebox.local';
-    } else {
-        # wtf?
-    }
+        if($fw_target_select eq 'disabled') {
+            $preferences{$fwtype} = undef;
+            next;
+        } elsif($fw_target_select eq 'voicebox') {
+            $preferences{$fwtype} = 'sip:vmu'.$c->session->{user}{data}{cc}.$c->session->{user}{data}{ac}.$c->session->{user}{data}{sn}.'@'.$c->config->{voicebox_domain};
+        } elsif($fw_target_select eq 'fax2mail') {
+            $preferences{$fwtype} = 'sip:'.$c->session->{user}{data}{cc}.$c->session->{user}{data}{ac}.$c->session->{user}{data}{sn}.'@'.$c->config->{fax2mail_domain};
+        } elsif($fw_target_select eq 'conference') {
+            $preferences{$fwtype} = 'sip:conf='.$c->session->{user}{data}{cc}.$c->session->{user}{data}{ac}.$c->session->{user}{data}{sn}.'@'.$c->config->{conference_domain};
+        } elsif($fw_target_select eq 'sipuri') {
+            my $fw_target;
+            $fw_target = $c->request->params->{$fwtype .'_fw_sipuri'};
 
-    my $fw_active = $c->request->params->{fw_active};
-    $fw_active = '' unless defined $fw_active;
-    if($fw_active eq 'no') {
-        # clear all forwards
-        $preferences{cfu} = undef;
-        $preferences{cft} = undef;
-        $preferences{cfb} = undef;
-        $preferences{cfna} = undef;
-        $preferences{ringtimeout} = undef;
-        delete $messages{target} if exists $messages{target} and !$fw_target;
-    } elsif($fw_active eq 'yes') {
-        # forward unconditionally
-        $preferences{cfu} = $fw_target;
-        $preferences{cft} = undef;
-        $preferences{cfb} = undef;
-        $preferences{cfna} = undef;
-        $preferences{ringtimeout} = undef;
-    } elsif($fw_active eq 'conditional') {
-        # forward at specified confitions
-        $preferences{cfu} = undef;
-        $preferences{cft} = undef;
-        $preferences{cfb} = undef;
-        $preferences{cfna} = undef;
-        $preferences{ringtimeout} = undef;
-        my $fw_conditions = $c->request->params->{fw_condition};
-        if(defined $fw_conditions) {
-            $fw_conditions = [ $fw_conditions ] unless ref $fw_conditions;
-            foreach my $fw_condition (@$fw_conditions) {
-                if($fw_condition eq 'timeout') {
-                    $preferences{cft} = $fw_target;
-                } elsif($fw_condition eq 'busy') {
-                    $preferences{cfb} = $fw_target;
-                } elsif($fw_condition eq 'na') {
-                    $preferences{cfna} = $fw_target;
-                } else {
-#                    die "Unknown conditional forward: '$fw_condition'\n";
-                }
+            # normalize, so we can do some checks.
+            $fw_target =~ s/^sip://i;
+            if($fw_target =~ /^\+?\d+\@[a-z0-9.-]+$/i) {
+                $fw_target =~ s/\@.+$//;
             }
+
+            if($fw_target =~ /^\+?\d+$/) {
+                $fw_target = csc::Utils::get_qualified_number_for_subscriber($c, $fw_target);
+                my $checkresult;
+                return unless $c->model('Provisioning')->call_prov( $c, 'voip', 'check_E164_number', $fw_target, \$checkresult);
+                $messages{$fwtype .'_target'} = 'Client.Voip.MalformedNumber'
+                    unless $checkresult;
+            } elsif($fw_target =~ /^[a-z0-9&=+\$,;?\/_.!~*'()-]+\@[a-z0-9.-]+$/i) {
+                $fw_target = 'sip:'. lc $fw_target;
+            } elsif($fw_target =~ /^[a-z0-9&=+\$,;?\/_.!~*'()-]+$/) {
+                $fw_target = 'sip:'. lc($fw_target) .'@'. $c->session->{user}{domain};
+            } else {
+                $messages{$fwtype .'_target'} = 'Client.Voip.MalformedTarget';
+            }
+            $preferences{$fwtype} = $messages{$fwtype .'_target'} ? $c->request->params->{$fwtype .'_fw_sipuri'}
+                                                                  : $fw_target;
+        } else {
+            # wtf?
         }
-    } else {
-        $messages{condition} = 'Client.Voip.ForwardSelect';
     }
 
     if(defined $preferences{cft}) {
@@ -215,6 +144,37 @@ sub save : Local {
     $c->session->{messages} = \%messages;
     $self->index($c, \%preferences);
 #    $c->response->redirect($c->uri_for('/callforward'));
+}
+
+sub _parse_forward : Private {
+    my ($c, $target) = @_;
+    my $return;
+
+    if(defined $target and length $target) { # FIXME: "and ! $c->session->{messages}{target}"?
+        my $vbdom = $c->config->{voicebox_domain};
+        my $fmdom = $c->config->{fax2mail_domain};
+        my $confdom = $c->config->{conference_domain};
+        if($target =~ /$vbdom$/) {
+            $$return{voicebox_checked} = 'checked="checked"';
+        } elsif($target =~ /$fmdom$/) {
+            $$return{fax2mail_checked} = 'checked="checked"';
+        } elsif($target =~ /$confdom$/) {
+            $$return{conference_checked} = 'checked="checked"';
+        } else {
+            $$return{sipuri_checked} = 'checked="checked"';
+
+            $target =~ s/^sip://i;
+            $target =~ s/\@.*$// if $target =~ /^\+?\d+\@/;
+            if($target =~ /^\+?\d+$/) {
+                $$return{sipuri} = csc::Utils::get_qualified_number_for_subscriber($c, $target);
+            } else {
+                $$return{sipuri} = $target;
+            }
+        }
+        return $return;
+    }
+
+    return;
 }
 
 

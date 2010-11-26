@@ -9,6 +9,11 @@
    color: #8B949A;
 }
 
+/* disable margin-bottom */
+.no_margin_bottom {
+	margin-bottom: 0 !important;
+}
+
 /* display sipwise logo bottom right */
 #footer .sipwise {
    position: absolute;

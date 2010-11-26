@@ -1,0 +1,21 @@
+                   I18N support for Sipwise NGCP CSC
+
+To update the language strings in this directory you'll first need
+xgettext.pl from the liblocale-maketext-lexicon-perl package.
+   NOTE: 'xgettext' from the gettext package won't work! Don't try to
+         use it here.
+
+Start with running
+  xgettext.pl -o lib/csc/I18N/messages.pot root/layout/* root/tt/*
+in the CSC trunk (or branch) directory. This will update messages.pot
+with all new, changed and removed strings.
+
+Then change to lib/csc/I18N/ and run
+  msgmerge --update $LANG.po messages.pot
+for all the .po files. (replace $LANG with the language code)
+
+Finally edit the .po files and do the translation. Remove old strings
+by deleting the "#~ " quoted lines.
+   NOTE: To find strings which require attention, look for empty msgstr
+         entries and for entries marked "fuzzy". Don' forget to remove
+         the "fuzzy" marks when you're done.
