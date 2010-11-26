@@ -19,6 +19,8 @@ build-stamp:
 	mkdir -p ce/etc/ngcp-www-csc ce/etc/apache2/sites-available
 	tpage --define PRO=true   etc/csc.conf > pro/etc/ngcp-www-csc/csc.conf.tt2
 	tpage                     etc/csc.conf > ce/etc/ngcp-www-csc/csc.conf.tt2
+	tpage --define PRO=true   etc/csc.conf.services > pro/etc/ngcp-www-csc/csc.conf.services
+	tpage                     etc/csc.conf.services > ce/etc/ngcp-www-csc/csc.conf.services
 	tpage --define PRO=true   etc/apache.site > pro/etc/apache2/sites-available/ngcp-www-csc.tt2
 	tpage                     etc/apache.site > ce/etc/apache2/sites-available/ngcp-www-csc.tt2
 	touch $@
