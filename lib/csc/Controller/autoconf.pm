@@ -357,7 +357,8 @@ Andreas Granig <agranig@sipwise.com>
 =head1 COPYRIGHT
 
 The autoconf controller is Copyright (c) 2007-2010 Sipwise GmbH,
-Austria. All rights reserved.
+Austria. You should have received a copy of the licences terms together
+with the software.
 
 =cut
 
