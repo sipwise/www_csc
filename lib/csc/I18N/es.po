@@ -105,7 +105,7 @@ msgstr "Clientes"
 #: root/tt/callforward.tt:117 root/tt/callforward.tt:170
 #: root/tt/callforward.tt:229 root/tt/callforward.tt:64
 msgid "Conference room"
-msgstr ""
+msgstr "Sala de conferencias"
 
 #: root/tt/addressbook.tt:19 root/tt/addressedit.tt:19
 msgid "Contacts"
@@ -130,9 +130,8 @@ msgstr "Dispositivos"
 
 #: root/tt/callforward.tt:141 root/tt/callforward.tt:200
 #: root/tt/callforward.tt:35 root/tt/callforward.tt:88
-#, fuzzy
 msgid "Disabled"
-msgstr "desactivar"
+msgstr "Desactivado"
 
 #: root/tt/callforward.tt:107 root/tt/callforward.tt:160
 #: root/tt/callforward.tt:219 root/tt/callforward.tt:54 root/tt/calllist.tt:93
@@ -457,21 +456,20 @@ msgid "forward all calls"
 msgstr "desviar todas las llamadas"
 
 #: root/tt/callforward.tt:195
-#, fuzzy
 msgid "forward if busy"
-msgstr "desviar todas las llamadas"
+msgstr "desvío si ocupado"
 
 #: root/tt/callforward.tt:136
 msgid "forward if call is not answered"
-msgstr ""
+msgstr "desvío si no contesta"
 
 #: root/tt/callforward.tt:83
 msgid "forward if phone is not reachable"
-msgstr ""
+msgstr "desvío si destino no disponible"
 
 #: root/tt/calllist.tt:34 root/tt/desktop.tt:27
 msgid "forwarded"
-msgstr "Llamada deviada"
+msgstr "llamada desviada"
 
 #: root/tt/callblock.tt:107
 msgid "hide own number on outgoing calls"
