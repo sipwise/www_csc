@@ -5,8 +5,10 @@ ngcp-www-csc (3.0.0) unstable; urgency=medium
   * renamed packages to comply with our global naming policy
   * couple of smaller packaging and installer bugfixes
   * packaging not compatible with last release, forced new major version
+  * completely new call forward handling which separates settings
+  * GPLv3+ licensing!
 
- -- Daniel Tiefnig <dtiefnig@sipwise.com>  Fri, 29 Oct 2010 17:59:24 +0200
+ -- Daniel Tiefnig <dtiefnig@sipwise.com>  Thu, 02 Dec 2010 00:35:03 +0100
 
 ngcp-www-csc (2.0.0) unstable; urgency=medium
 
