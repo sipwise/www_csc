@@ -14,6 +14,7 @@ messages.pot with all new, changed and removed strings.
 
 2) Update or create $LANG.po files for translation:
 
+You'll need msgmerge from the xgettext package.
 Change to the I18N directory and run
   msgmerge --update $LANG.po messages.pot
 for all the existing .po files. (replace $LANG with the language code)
