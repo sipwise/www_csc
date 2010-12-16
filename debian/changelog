@@ -3,6 +3,7 @@ ngcp-www-csc (3.0.1) unstable; urgency=low
   * only minor bugfixes, mainly documentation changes
   * copyright files are now included in the package correctly
   * dependencies for I18N support fixed
+  * apache now redirects port 80 to www_csc
 
  -- Daniel Tiefnig <dtiefnig@sipwise.com>  Thu, 16 Dec 2010 13:28:36 +0100
 
