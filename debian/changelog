@@ -1,3 +1,11 @@
+ngcp-www-csc (3.0.1) unstable; urgency=low
+
+  * only minor bugfixes, mainly documentation changes
+  * copyright files are now included in the package correctly
+  * dependencies for I18N support fixed
+
+ -- Daniel Tiefnig <dtiefnig@sipwise.com>  Thu, 16 Dec 2010 13:28:36 +0100
+
 ngcp-www-csc (3.0.0) unstable; urgency=medium
 
   * moved framework from /usr/local to /usr/share
