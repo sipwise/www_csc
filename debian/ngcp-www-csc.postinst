@@ -26,4 +26,7 @@ a2enmod dump_io || echo "Missing some optional Apache module(s), ignoring."
 # disable debian's default Apache site
 a2dissite default
 
+# enable mod_rewrite for port 80 redirection
+a2enmod rewrite
+
 exit 0

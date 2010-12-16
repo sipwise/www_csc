@@ -7,6 +7,13 @@ PerlSwitches -I/usr/share/ngcp-www-csc/lib
 
 # ExtendedStatus On
 
+[% IF www_csc.apache.port != 80 && www_admin.apache.port != 80 && ossbss.apache.port != 80 %]
+<VirtualHost *:80>
+        RewriteEngine On
+        RewriteRule ^/(.*) https://%{HTTP_HOST}:[% www_csc.apache.port %]/$1 [L,R]
+</VirtualHost>
+[% END %]
+
 <VirtualHost *:[% www_csc.apache.port %]>
         ServerAdmin [% www_csc.apache.serveradmin %]
         ServerName [% www_csc.apache.servername %]

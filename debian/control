@@ -26,8 +26,7 @@ Description: Configuration templates for the web-based CSC interface
 
 Package: ngcp-www-csc
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, ngcp-ossbss-billing (>= 2.0.2), ngcp-ossbss-voip (>= 2.0.2), libcatalyst-perl, libcatalyst-modules-perl, libcatalyst-engine-apache-perl, librpc-xml-perl, ngcp-templates-www-csc
-Suggests: liblocale-maketext-lexicon-perl
+Depends: ${shlibs:Depends}, ${misc:Depends}, ngcp-ossbss-billing (>= 2.0.2), ngcp-ossbss-voip (>= 2.0.2), libcatalyst-perl, libcatalyst-modules-perl, libcatalyst-engine-apache-perl, librpc-xml-perl, ngcp-templates-www-csc, liblocale-maketext-lexicon-perl, gettext
 Description: frontend for endusers to configure their accounts on the Sipwise NGCP
   The CSC framework is used by endusers to configure their accounts on the
   Sipwise NGCP.
