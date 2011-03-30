@@ -38,7 +38,15 @@ my $xc = $xs->XMLin( '/etc/ngcp-www-csc/csc.conf', ForceArray => 0);
 $$xc{site_config}{default_language} = 'en' unless $$xc{site_config}{default_language} =~ /^\w+$/;
 $$xc{site_config}{default_uri} = '/desktop' unless $$xc{site_config}{default_uri};
 
-__PACKAGE__->config( authentication => {}, %$xc );
+__PACKAGE__->config( 'Plugin::Authentication' => {
+        default_realm => 'default',
+        default => {
+                credential => {
+                },
+                store => {
+                }
+        },
+});
 
 if(__PACKAGE__->config->{log4perlconf}) {
   __PACKAGE__->log( Catalyst::Log::Log4perl->new(
