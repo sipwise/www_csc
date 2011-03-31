@@ -1,6 +1,7 @@
 package csc::View::Plain;
 
 use strict;
+use base 'Catalyst::View';
 
 =head1 NAME
 
