@@ -5,7 +5,7 @@
             <fieldset class="alt">
               <p>[% Catalyst.loc('You may change the password for your self-administration login here.') %]</p><br />
               <label for="fusername">[% Catalyst.loc('username:') %]</label>
-              <p><strong>[% subscriber.username %]</strong></p>
+              <p><strong>[% Catalyst.session.user.webusername %]</strong></p>
               <label for="foldpass">[% Catalyst.loc('old password:') %]</label>
               <input type="password" size="20" class="input20" id="foldpass" name="oldpass" value="[% refill.oldpass %]"><br />
               [% IF messages.msgoldpass %]<div id="errormsg"><p>[% messages.msgoldpass %]</p></div><br clear="all"/>[% END %]

@@ -1180,8 +1180,8 @@ sub _get_user {
 
     my ($loc, $dom) = split /\@/, $user;
     my $user_obj = eval {
-        my $tmpobj = $$self{prov}->get_subscriber({username => $loc, domain => $dom});
-        my $tmpref = $$self{prov}->get_subscriber_preferences({username => $loc, domain => $dom});
+        my $tmpobj = $$self{prov}->get_subscriber_by_webuser({webusername => $loc, domain => $dom});
+        my $tmpref = $$self{prov}->get_subscriber_preferences({username => $$tmpobj{username}, domain => $dom});
         $$tmpobj{extension} = $$tmpref{extension};
         return $tmpobj;
     };
@@ -1196,8 +1196,8 @@ sub _get_user {
         }
         return;
     }
-    my $return = { id => $user, store => $self,
-                   username => $loc, domain => $dom,
+    my $return = { id => $user, store => $self, webusername => $loc,
+                   username => $$user_obj{username}, domain => $dom,
                    admin => $$user_obj{admin}, account_id => $$user_obj{account_id},
                    extension => $$user_obj{extension}
                  };
@@ -1211,7 +1211,7 @@ sub _get_user {
 sub _auth_user {
     my ($self, $c, $user, $pass) = @_;
 
-    eval { $$self{prov}->authenticate_webuser({ webusername => $$user{username},
+    eval { $$self{prov}->authenticate_webuser({ webusername => $$user{webusername},
                                                 domain      => $$user{domain},
                                                 webpassword => $pass,
                                              });

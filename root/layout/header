@@ -11,7 +11,7 @@
         <li class="kundenbereichon"><a href="/logout">[% Catalyst.loc('logout') %]</a></li>
       </ul>
       <ul id="specialmenu">
-        <li>[% Catalyst.loc('Logged in as') %] <strong>[% subscriber.username %]</strong></li>
+        <li>[% Catalyst.loc('Logged in as') %] <strong>[% Catalyst.session.user.webusername %]</strong></li>
       </ul>
 
 [% IF subscriber.username %]

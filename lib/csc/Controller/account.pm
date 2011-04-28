@@ -134,7 +134,7 @@ sub savepass : Local {
 
     unless(keys %messages) {
         unless($c->model('Provisioning')->call_prov($c, 'voip', 'authenticate_webuser',
-                                                    { webusername => $c->session->{user}{username},
+                                                    { webusername => $c->session->{user}{webusername},
                                                       domain      => $c->session->{user}{domain},
                                                       webpassword => $oldpass,
                                                     },
@@ -156,7 +156,7 @@ sub savepass : Local {
         }
 
         if($c->model('Provisioning')->call_prov($c, 'voip', 'update_webuser_password',
-                                                { webusername => $c->session->{user}{username},
+                                                { webusername => $c->session->{user}{webusername},
                                                   domain      => $c->session->{user}{domain},
                                                   webpassword => $passwd1
                                                 }
