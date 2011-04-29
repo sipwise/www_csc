@@ -36,7 +36,7 @@
                 </label>
                 <br clear="all" />
               </p>
-              [% IF Catalyst.config.voicemail_features %]
+              [% IF Catalyst.config.voicemail_features and Catalyst.session.user.data.sn %]
               <p class="wohinp">
                 <label for="cfu_fw_voicebox">
                   <input type="radio" id="cfu_fw_voicebox" value="voicebox" name="cfu_fw_target"
@@ -46,7 +46,7 @@
                 <br clear="all" />
               </p>
               [% END %]
-              [% IF Catalyst.config.fax2mail_features %]
+              [% IF Catalyst.config.fax2mail_features and Catalyst.session.user.data.sn %]
               <p class="wohinp">
                 <label for="cfu_fw_fax2mail">
                   <input type="radio" id="cfu_fw_fax2mail" value="fax2mail" name="cfu_fw_target"
@@ -56,7 +56,7 @@
                 <br clear="all" />
               </p>
               [% END %]
-              [% IF Catalyst.config.conference_features %]
+              [% IF Catalyst.config.conference_features and Catalyst.session.user.data.sn %]
               <p class="wohinp">
                 <label for="cfu_fw_conference">
                   <input type="radio" id="cfu_fw_conference" value="conference" name="cfu_fw_target"
@@ -89,7 +89,7 @@
                 </label>
                 <br clear="all" />
               </p>
-              [% IF Catalyst.config.voicemail_features %]
+              [% IF Catalyst.config.voicemail_features and Catalyst.session.user.data.sn %]
               <p class="wohinp">
                 <label for="cfna_fw_voicebox">
                   <input type="radio" id="cfna_fw_voicebox" value="voicebox" name="cfna_fw_target"
@@ -99,7 +99,7 @@
                 <br clear="all" />
               </p>
               [% END %]
-              [% IF Catalyst.config.fax2mail_features %]
+              [% IF Catalyst.config.fax2mail_features and Catalyst.session.user.data.sn %]
               <p class="wohinp">
                 <label for="cfna_fw_fax2mail">
                   <input type="radio" id="cfna_fw_fax2mail" value="fax2mail" name="cfna_fw_target"
@@ -109,7 +109,7 @@
                 <br clear="all" />
               </p>
               [% END %]
-              [% IF Catalyst.config.conference_features %]
+              [% IF Catalyst.config.conference_features and Catalyst.session.user.data.sn %]
               <p class="wohinp">
                 <label for="cfna_fw_conference">
                   <input type="radio" id="cfna_fw_conference" value="conference" name="cfna_fw_target"
@@ -142,7 +142,7 @@
                 </label>
                 <br clear="all" />
               </p>
-              [% IF Catalyst.config.voicemail_features %]
+              [% IF Catalyst.config.voicemail_features and Catalyst.session.user.data.sn %]
               <p class="wohinp">
                 <label for="cft_fw_voicebox">
                   <input type="radio" id="cft_fw_voicebox" value="voicebox" name="cft_fw_target"
@@ -152,7 +152,7 @@
                 <br clear="all" />
               </p>
               [% END %]
-              [% IF Catalyst.config.fax2mail_features %]
+              [% IF Catalyst.config.fax2mail_features and Catalyst.session.user.data.sn %]
               <p class="wohinp">
                 <label for="cft_fw_fax2mail">
                   <input type="radio" id="cft_fw_fax2mail" value="fax2mail" name="cft_fw_target"
@@ -162,7 +162,7 @@
                 <br clear="all" />
               </p>
               [% END %]
-              [% IF Catalyst.config.conference_features %]
+              [% IF Catalyst.config.conference_features and Catalyst.session.user.data.sn %]
               <p class="wohinp">
                 <label for="cft_fw_conference">
                   <input type="radio" id="cft_fw_conference" value="conference" name="cft_fw_target"
@@ -201,7 +201,7 @@
                 </label>
                 <br clear="all" />
               </p>
-              [% IF Catalyst.config.voicemail_features %]
+              [% IF Catalyst.config.voicemail_features and Catalyst.session.user.data.sn %]
               <p class="wohinp">
                 <label for="cfb_fw_voicebox">
                   <input type="radio" id="cfb_fw_voicebox" value="voicebox" name="cfb_fw_target"
@@ -211,7 +211,7 @@
                 <br clear="all" />
               </p>
               [% END %]
-              [% IF Catalyst.config.fax2mail_features %]
+              [% IF Catalyst.config.fax2mail_features and Catalyst.session.user.data.sn %]
               <p class="wohinp">
                 <label for="cfb_fw_fax2mail">
                   <input type="radio" id="cfb_fw_fax2mail" value="fax2mail" name="cfb_fw_target"
@@ -221,7 +221,7 @@
                 <br clear="all" />
               </p>
               [% END %]
-              [% IF Catalyst.config.conference_features %]
+              [% IF Catalyst.config.conference_features and Catalyst.session.user.data.sn %]
               <p class="wohinp">
                 <label for="cfb_fw_conference">
                   <input type="radio" id="cfb_fw_conference" value="conference" name="cfb_fw_target"

@@ -22,7 +22,7 @@
       [% IF Catalyst.config.main_menu.calllist %]
         <li [% 'class="on"' IF template.title == 'Calls' %]><a href="/calllist">[% Catalyst.loc('Calls') %]</a></li>
       [% END %]
-      [% IF Catalyst.config.main_menu.voicebox %]
+      [% IF Catalyst.config.main_menu.voicebox and Catalyst.session.user.data.sn %]
         <li [% 'class="on"' IF template.title == 'Voicemails' %]><a href="/voicebox">[% Catalyst.loc('Voicemails') %]</a></li>
       [% END %]
       [% IF Catalyst.config.main_menu.addressbook %]

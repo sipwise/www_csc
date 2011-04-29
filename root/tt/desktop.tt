@@ -97,7 +97,7 @@
           </p>
           <br clear="all" />
 
-        [% IF Catalyst.config.main_menu.voicebox %]
+        [% IF Catalyst.config.main_menu.voicebox  and Catalyst.session.user.data.sn %]
           <h3>[% Catalyst.loc('New Voicemails') %]</h3>
           [% IF subscriber.voicemail_list %]
             <ul class="voicemailliste">
