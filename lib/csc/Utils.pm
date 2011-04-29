@@ -185,9 +185,13 @@ sub prepare_call_list {
 sub get_active_number_string {
     my ($c) = @_;
 
-    return '+'. $c->session->{user}{data}{cc} .
-           ' '. $c->session->{user}{data}{ac} .
-           ' '. $c->session->{user}{data}{sn};
+    if($c->session->{user}{data}{sn}) {
+        return '+'. $c->session->{user}{data}{cc} .
+               ' '. $c->session->{user}{data}{ac} .
+               ' '. $c->session->{user}{data}{sn};
+    } else {
+        return $c->session->{user}{webusername};
+    }
 }
 
 sub get_qualified_number_for_subscriber {
