@@ -1,3 +1,15 @@
+ngcp-www-csc (3.1.0) unstable; urgency=low
+
+  [ Daniel Tiefnig ]
+  * Redirecting port 80 to www_csc if port is unused.
+  * Fix use of webusername for authentication.
+
+  [ Andreas Granig ]
+  * Changed authentication part to work on Debian Squeeze.
+  * Make non-TT views work on Debian Squeeze.
+
+ -- Michael Prokop <mprokop@sipwise.com>  Fri, 29 Apr 2011 02:28:29 +0200
+
 ngcp-www-csc (3.0.1) unstable; urgency=low
 
   * only minor bugfixes, mainly documentation changes
