@@ -564,7 +564,7 @@ msgstr "nouveau mot de passe:"
 
 #: root/tt/desktop.tt:127
 msgid "no new voicemails"
-msgstr "pas de nouveaux messages vocuaux"
+msgstr "pas de nouveaux messages vocaux"
 
 #: root/tt/desktop.tt:165
 #: root/tt/reminder.tt:72
