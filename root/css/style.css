@@ -187,7 +187,7 @@ body.hp {
 	color: #8B949A;
 	float: left;
 	margin: 0px;
-	padding: 9px 10px 0 10px;
+	padding: 9px 8px 0 8px;
 	height: 27px; /* falsch für ie */
 	voice-family: "\"}\"";
 	voice-family:inherit;

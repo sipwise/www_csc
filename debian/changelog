@@ -1,3 +1,9 @@
+ngcp-www-csc (3.1.2) unstable; urgency=low
+
+  * added french translation by Sebastien Lesimple
+
+ -- Daniel Tiefnig <dtiefnig@sipwise.com>  Mon, 23 May 2011 21:51:12 +0200
+
 ngcp-www-csc (3.1.1) unstable; urgency=low
 
   * some fixes for subscribers without E.164 number

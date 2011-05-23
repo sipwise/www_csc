@@ -7,7 +7,7 @@
               <label for="fusername">[% Catalyst.loc('username:') %]</label>
               <p><strong>[% Catalyst.session.user.webusername %]</strong></p>
               <label for="foldpass">[% Catalyst.loc('old password:') %]</label>
-              <input type="password" size="20" class="input20" id="foldpass" name="oldpass" value="[% refill.oldpass %]"><br />
+              <input type="password" size="20" class="input20" id="foldpass" name="oldpass" value="[% refill.oldpass %]"><br clear="all" />
               [% IF messages.msgoldpass %]<div id="errormsg"><p>[% messages.msgoldpass %]</p></div><br clear="all"/>[% END %]
               <p class="left">
                 <label for="fnewpass1">[% Catalyst.loc('new password:') %]</label>
