@@ -29,4 +29,7 @@ a2dissite default
 # enable mod_rewrite for port 80 redirection
 a2enmod rewrite
 
+# reload perl and/or apache modules
+/etc/init.d/apache2 reload
+
 exit 0
