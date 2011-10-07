@@ -108,7 +108,7 @@
                   </td>
                   <td class="anrufdauer">[% callentry.duration %]</td>
                   [% IF subscriber.account.billing_profile %]
-                  <td class="anrufkosten">[% callentry.call_fee %]</td>
+                  <td class="anrufkosten">[% subscriber.account.billing_profile.data.currency %] [% callentry.call_fee %]</td>
                   [% END %]
                   <td class="anrufzeit">[% callentry.date %]</td>
                 </tr>

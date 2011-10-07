@@ -43,6 +43,13 @@ sub index : Private {
                                                          { id => $c->session->{user}{data}{account_id} },
                                                          \$c->stash->{subscriber}{account}
                                                         );
+    if(eval { defined $c->stash->{subscriber}{account}{billing_profile} }) {
+        return 1 unless $c->model('Provisioning')->call_prov($c, 'billing', 'get_billing_profile',
+                                                             { handle => $c->stash->{subscriber}{account}{billing_profile} },
+                                                             \$c->stash->{subscriber}{account}{billing_profile}
+                                                            );
+    }
+
 
     my $cts = $c->session->{user}{data}{create_timestamp};
     if($cts =~ s/^(\d{4}-\d\d)-\d\d \d\d:\d\d:\d\d/$1/) {

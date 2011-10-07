@@ -48,8 +48,8 @@ sub prepare_call_list {
         }
 
         if(defined $$call{call_fee}) {
-            # money is allways returned as euro cents
-            $callentry{call_fee} = sprintf "&euro; %.04f", $$call{call_fee}/100;
+            # money is allways returned as a hundredth of whatever currency
+            $callentry{call_fee} = sprintf "%.04f", $$call{call_fee}/100;
         } else {
             $callentry{call_fee} = '';
         }
