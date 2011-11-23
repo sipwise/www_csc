@@ -3,6 +3,7 @@ use strict;
 use warnings;
 
 use Time::Local;
+use POSIX;
 
 # takes a catalyst session with a call list as returned
 # by the prov. interface and returns a reference to an
@@ -35,7 +36,7 @@ sub prepare_call_list {
         $callentry{date} = sprintf("%02d.%02d.%04d %02d:%02d:%02d", @date[3,4,5,2,1,0]);
 
         if($$call{duration}) {
-            my $duration = $$call{duration};
+            my $duration = ceil($$call{duration});
             while($duration > 59) {
                 my $left = sprintf("%02d", $duration % 60);
                 $callentry{duration} = ":$left". (defined $callentry{duration} ? $callentry{duration} : '');
