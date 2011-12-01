@@ -88,7 +88,7 @@ sub save : Local {
         } elsif($fw_target_select eq 'voicebox') {
             $preferences{$fwtype} = 'sip:vmu'.$c->session->{user}{data}{cc}.$c->session->{user}{data}{ac}.$c->session->{user}{data}{sn}.'@'.$c->config->{voicebox_domain};
         } elsif($fw_target_select eq 'fax2mail') {
-            $preferences{$fwtype} = 'sip:'.$c->session->{user}{data}{cc}.$c->session->{user}{data}{ac}.$c->session->{user}{data}{sn}.'@'.$c->config->{fax2mail_domain};
+            $preferences{$fwtype} = 'sip:+'.$c->session->{user}{data}{cc}.$c->session->{user}{data}{ac}.$c->session->{user}{data}{sn}.'@'.$c->config->{fax2mail_domain};
         } elsif($fw_target_select eq 'conference') {
             $preferences{$fwtype} = 'sip:conf='.$c->session->{user}{data}{cc}.$c->session->{user}{data}{ac}.$c->session->{user}{data}{sn}.'@'.$c->config->{conference_domain};
         } elsif($fw_target_select eq 'sipuri') {
