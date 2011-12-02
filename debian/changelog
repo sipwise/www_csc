@@ -1,3 +1,11 @@
+ngcp-www-csc (3.2.0) unstable; urgency=low
+
+  * german translation by Carsten Bock
+  * automatically disabling various feature forms if they are not used
+  * some minor fixes and improvements
+
+ -- Daniel Tiefnig <dtiefnig@sipwise.com>  Fri, 02 Dec 2011 15:43:50 +0100
+
 ngcp-www-csc (3.1.2) unstable; urgency=low
 
   * added french translation by Sebastien Lesimple
