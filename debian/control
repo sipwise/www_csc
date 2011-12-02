@@ -1,7 +1,7 @@
 Source: ngcp-www-csc
 Section: admin
 Priority: extra
-Maintainer: iel Tiefnig <dtiefnig@sipwise.com>
+Maintainer: Sipwise Development Team <support@sipwise.com>
 Build-Depends: debhelper (>= 5), libtemplate-perl
 Standards-Version: 3.9.1
 Homepage: http://sipwise.com/
