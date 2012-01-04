@@ -30,6 +30,8 @@ a2dissite default
 a2enmod rewrite
 
 # reload perl and/or apache modules
-/etc/init.d/apache2 reload
+if [ -x /etc/init.d/apache2 ] ; then
+  invoke-rc.d apache2 reload
+fi
 
 exit 0
