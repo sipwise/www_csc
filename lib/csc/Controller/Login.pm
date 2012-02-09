@@ -44,7 +44,8 @@ sub do_login : Local {
 
     my $username = $c->request->params->{benutzer} || "";
     my $password = $c->request->params->{passwort} || "";
-    # strip trailing whitespaces
+    # strip leading/trailing whitespaces
+    $username =~ s/^\s+//;
     $username =~ s/\s+$//;
 
     $c->log->debug('***Login::do_login username: >>'. $username .'<< password: >>'. $password .'<<');
