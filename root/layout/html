@@ -22,6 +22,9 @@
   <link rel="stylesheet" type="text/css" href="/js/yui/build/container/assets/skins/sam/container.css" />
   <script type="text/javascript" src="/js/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
   <script type="text/javascript" src="/js/yui/build/container/container.js"></script>
+  <script type="text/javascript" src="/js/jquery-1.4.4.min.js"></script>
+  <script type="text/javascript" src="/js/csc.js"></script>
+
   <script type="text/javascript">
     <!--
     cl_panel = new YAHOO.widget.Panel("p", {visible:false, draggable:false});

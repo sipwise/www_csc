@@ -1,0 +1,127 @@
+[% META title = 'Callforwards' %]
+
+[% PROCESS tt/callforward_head.tt %]
+
+<div id="main">
+
+    <div id="topmsg">
+        <p> [% messages.topmsg %] </p>
+    </div>
+    <div id="toperr">
+        <p> [% messages.toperr %] </p>
+        <p> [% messages.prov_error %] </p>
+    </div>
+    
+    <div class="sperrehead">
+      <h3>[% Catalyst.loc('Mappings') %]</h2>
+      <h2 class="umleitungfuer">[% Catalyst.loc('Settings for [_1]', subscriber.active_number) %]</h2>
+    </div>
+    
+    <div id="spalten31">
+      <div class="spalte1">
+
+[% FOREACH cf_type IN cf_types %]
+
+    <div class="span-16">
+        [% cf_map = cf_maps.${cf_type.name} %]
+        
+        [% IF cf_map == '' %]
+            [% cf_map = [{ id=0, type=cf_type.name }] %]
+        [% ELSE %]
+            [% cf_map.push({ id=0, type=cf_type.name }) %]
+        [% END %]
+
+        [% first = 1 %]
+
+        [% FOREACH map IN cf_map %]
+            [% IF first %]
+                <div class="span-4">[% cf_type.description %]</div>
+                [% first = 0 %]
+            [% ELSE %]
+                <div class="span-4">&nbsp</div>
+            [% END %]
+
+            [% PROCESS map_edit %]
+
+            <br clear="all" /> 
+        [% END %]
+    </div>
+    <br clear="all" /> 
+
+[% END %]
+
+[% BLOCK map_edit %]
+
+    [% IF map_id == map.id or map.id == 0%]
+        <form action="/callforward/mapping/save" method="post">
+    [% ELSE %]
+        <form action="/callforward/mapping/delete" method="post">
+    [% END %]
+    
+    <input type="hidden" name="subscriber_id" value="[% subscriber.subscriber_id %]"/>
+    <input type="hidden" name="map_id" value="[% map.id %]"/>
+    <input type="hidden" name="type" value="[% map.type %]"/>
+
+    <div class="span-1">[% Catalyst.loc('to') %]</div>
+    <select name="destset_id" class="span-3"[% UNLESS map_id == map.id or map.id == 0 %]disabled="disabled"[% END %]>
+        <option value="0" [% UNLESS map.destination_set_id.defined %]selected="selected"[% END %]>&lt;none&gt;</option>
+        [% FOREACH dset IN destination_sets %]
+            [% IF dset.destinations.size > 0 %]
+                <option value="[% dset.id %]" [% IF map.destination_set_id == dset.id %]selected="selected"[% END %]>[% dset.name %]</option>
+            [% END %]
+        [% END %]
+    </select>
+ 
+    <div class="span-1">[% Catalyst.loc('during') %]</div>
+    <select name="timeset_id" class="span-3"[% UNLESS map_id == map.id or map.id == 0 %]disabled="disabled"[% END %]>
+        <option value="0" [% UNLESS map.time_set_id.defined %]selected="selected"[% END %]>&lt;always&gt;</option>
+        [% FOREACH tset IN time_sets %]
+            [% IF tset.periods.size > 0 %]
+                <option value="[% tset.id %]" [% IF map.time_set_id == tset.id %]selected="selected"[% END %]>[% tset.name %]</option>
+            [% END %]
+        [% END %]
+    </select>
+    
+    [% IF map_id == map.id %]
+        <div class="prepend-1 span-1">
+            <p class="link_button">
+                <label for="save_map_[% map.type %]_[% map.id %]">[% Catalyst.loc('Save')%]</label>
+                <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_map_[% map.type %]_[% map.id %]">
+            </p>
+        </div>
+        <div class="span-1">
+            <a href="/callforward/mapping">[% Catalyst.loc('Cancel')%]</a>
+        </div>
+    [% ELSIF map.id == 0 %]
+        <div class="prepend-1 span-1">
+            <p class="link_button">
+                <label for="add_map_[% map.type %]_[% map.id %]">[% Catalyst.loc('Add')%]</label>
+                <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="add_map_[% map.type %]_[% map.id %]">
+            </p>
+        </div>
+    [% ELSE %]
+        <div class="prepend-1 span-1">
+            <a href="/callforward/mapping/[% map.id %]/edit">[% Catalyst.loc('Edit')%]</a>
+        </div>
+        <div class="span-1">
+            <p class="link_button">
+                <label for="delete_map_[% map.type %]_[% map.id %]">[% Catalyst.loc('Delete')%]</label>
+                <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="delete_map_[% map.type %]_[% map.id %]">
+            </p>
+        </div>
+    [% END %]
+
+    </form>
+
+[% END %]
+
+      </div> <!-- spalte1 -->
+
+      <div class="spalte2">
+        [% PROCESS tt/callforward_navi.tt %]
+      </div> <!-- spalte2 -->
+
+    </div> <!-- spalte31 -->
+
+</div> <!-- main --> 
+<br clear="all" />

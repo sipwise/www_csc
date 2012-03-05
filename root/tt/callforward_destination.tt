@@ -1,0 +1,258 @@
+[% META title = 'Callforwards' %]
+[% PROCESS tt/callforward_head.tt %]
+
+<div id="main">
+    
+    <div id="topmsg">
+        <p> [% messages.topmsg %] </p>
+    </div>
+    <div id="toperr">
+        <p> [% messages.toperr %] </p>
+        <p> [% messages.prov_error %] </p>
+    </div>
+
+<div class="sperrehead">
+    <h3>[% Catalyst.loc('Destination sets') %]</h2>
+    <h2 class="umleitungfuer">[% Catalyst.loc('Settings for [_1]', subscriber.active_number) %]</h2>
+</div>
+
+<div id="spalten31">
+    <div class="spalte1">
+        
+        [% FOREACH dset IN destination_sets %]
+            <div id="dset-[% dset.id %]" class="set-container">
+            <a name="anchor-dset-[% dset.id %]">&nbsp;</a>
+            <div class="set-item">
+                [% IF dset_id == dset.id %]
+                    [% PROCESS set action = 'edit' %]
+                [% ELSE %]
+                    [% PROCESS set action = 'view' %]
+                [% END %]
+                &nbsp;
+            </div> <!--set-item" -->
+ 
+            [% priority = 0 %]
+            <div>
+            [% FOREACH dest IN dset.destinations %]
+                
+                [%# this one is not yet in the db but is being created 
+                    will be displayed below %]
+                [% NEXT IF (dest.id == 0) %] 
+
+                <div id="dest-[% dest.id %]" class="sub-container">
+                <a name="anchor-dest-[% dest.id %]">&nbsp;</a>
+                [% IF dtarget_id == dest.id %]
+                    [% PROCESS target action = 'edit' %]
+                    </div> <!-- dest-item -->
+                    <br clear="all" />
+                [% ELSE %]
+                    [% PROCESS target action = 'view' %]
+                    </div> <!-- dest-item -->
+                [% END %]
+                [% priority = priority + 1 %]
+            [% END %]
+
+            </div>
+
+            [%# dest is still available. this is expected behaviour 
+                see: http://template-toolkit.org/docs/manual/Directives.html#section_FOREACH %]
+            [% IF (dest.id == 0) or (dset_id == dset.id) or (dset.destinations.size == 0) %]
+                <div class="sub-container">
+                    [% PROCESS target action = 'add' %]&nbsp;
+                </div>
+                <br clear="all" />
+            [% END %]
+
+            </div> <!-- set-container -->
+        [% END %]
+
+        <div class="set-container">&nbsp;
+        <div class="set-item">
+            [% PROCESS set action = 'add' %]&nbsp;
+        </div></div>
+
+        </div> <!-- spalte1 -->
+
+        <div class="spalte2">
+            [% PROCESS tt/callforward_navi.tt %]
+        </div> <!-- spalte2 -->
+
+    </div> <!-- spalten31 -->
+</div> <!-- main -->
+  
+<br clear="all" />
+
+[%# ================================= %]
+[% BLOCK set %]
+    [% IF action == 'edit' or action == 'add' %]
+        <form action="/callforward/destination/set/save" method="post">
+        [% IF action == 'edit' %]
+            <div class="prepend-1 span-3"> <input type="text" size="20" name="dsetname" value="[% dset.name %]"/> </div>
+            [% FOREACH dest IN dset.destinations %]
+                <input type="hidden" name="priority-[% dest.id %]" value="[% dest.priority %]"/>
+            [% END %]
+            <input type="hidden" name="priority_changed" value="0"/>
+        [% ELSE %]
+            <div class="prepend-1 span-3"> <input type="text" size="20" name="dsetname" value=""/> </div>
+        [% END %]
+    [% ELSE %]
+        <form action="/callforward/destination/set/delete" method="post">
+        <div class="prepend-1 span-3">[% dset.name %]</div>
+    [% END %]
+    
+    <input type="hidden" name="subscriber_id" value="[% subscriber.subscriber_id %]"/>
+    
+    [% IF action == 'edit' or action == 'view' %]
+        <input type="hidden" name="dset_id" value="[% dset.id %]"/>
+    [% END %]
+
+    [% IF action == 'edit' %]
+        <div class="prepend-1 span-1">
+            <p class="link_button">
+                <label for="save_dset_[% dset.id %]">[% Catalyst.loc('Save') %]</label>
+                <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_dset_[% dset.id %]">
+            </p>
+        </div>
+        <div class="span-1">
+            <a href="/callforward/destination">[% Catalyst.loc('Cancel') %]</a>
+        </div>
+    [% ELSIF action == 'add' %]
+        <div class="span-1"></div>
+        <div class="prepend-1 span-3">
+            <p class="link_button">
+                <label for="add_dset_[% dset.id %]">[% Catalyst.loc('Add destinationset') %]</label>
+                <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="add_dset_[% dset.id %]">
+            </p>
+        </div>
+    [% ELSIF action == 'view' %]
+        <div class="prepend-1 span-1"><a href="/callforward/destination/set/[% dset.id %]/edit#dset-[% dset.id %]"><span class="button-edit">[% Catalyst.loc('Edit') %]</span></a></div>
+        <div class="span-4">
+            [% IF mapped.${dset.id} %]
+                <p>[% mapped.${dset.id} %] [% Catalyst.loc('times(s) mapped') %]</p>
+            [% ELSE %]
+                <p class="link_button">
+                    <label for="delete_dset_[% tset.id %]">[% Catalyst.loc('Delete') %]</label>
+                    <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="delete_dset_[% tset.id %]">
+                </p>
+            [% END %]
+        </div>
+    [% END %]
+
+    </form>
+
+[% END %]
+
+[%# ================================= %]
+[% BLOCK target %]
+
+    [% IF action == 'edit' or action == 'add' %]
+        <form action="/callforward/destination/target/save" method="post">
+    [% ELSIF action == 'view' %]
+        <form action="/callforward/destination/target/delete" method="post">
+    [% END %]
+        
+    <input type="hidden" name="subscriber_id" value="[% subscriber.subscriber_id %]"/>
+    <input type="hidden" name="dset_id" value="[% dset.id %]"/>
+    
+    [% IF action == 'edit' or action == 'view' %]
+        <input type="hidden" name="dtarget_id" value="[% dest.id %]"/>
+    [% END %]          
+
+    [% IF action == 'edit' or action == 'add' %] 
+        <div class="span-12">
+            [% IF Catalyst.config.voicemail_features %]
+                <input type="radio" id="dest_voicebox" value="voicebox" name="dest_target" class="radio" 
+                    [% IF dest.destination == "voicebox" %] checked="checked"[% END %]/>
+                <label for="dest_voicebox">[% Catalyst.loc('Voicebox') %]</label>
+                <br clear="all" />
+            [% END %]
+            [% IF Catalyst.config.fax_features %]
+                <input type="radio" id="dest_faxserver" value="fax2mail" name="dest_target" class="radio"
+                    [% IF dest.destination == "fax2mail" %] checked="checked"[% END %]/>
+                <label for="[% preference.key %]faxserver">[% Catalyst.loc('Fax2Mail') %]</label>
+                <br clear="all" />
+            [% END %]
+
+            [% IF Catalyst.config.conference_features %]
+                <input type="radio" id="dest_conference" value="conference" name="dest_target" class="radio"
+                    [% IF dest.destination == "conference" %] checked="checked"[% END %]/>
+                <label for="[% preference.key %]conference">[% Catalyst.loc('Conference room') %]</label>
+                <br clear="all" />
+            [% END %]
+
+            <input type="radio" id="dest_sipuri" value="sipuri" name="dest_target" class="radio"
+                [% IF dest.destination != "conference" && dest.destination != "voicebox" && dest.destination != "fax2mail" %] 
+                    checked="checked"[% END %]/>
+            <label for="[% preference.key %]sipuri">[% Catalyst.loc('Number or SIP-URI:') %]</label>
+            
+            [% value = '' %]
+            [% IF dest.destination != "conference" && dest.destination != "voicebox" && dest.destination != "fax2mail" %]
+                [% value = dest.destination %]
+            [% END %]
+            <input type="text" id="dest_sipuritxt" name="dest_sipuri" size="20" value="[% value %]"/>
+            <label for="[% preference.key %]timeout">[% Catalyst.loc('for') %]</label>
+
+            [% value = '' %]
+            [% IF dest.timeout.defined %]
+                [% value = dest.timeout %]
+            [% ELSE %]
+                [% value = 300 %]
+            [% END %]
+            <input type="text" id="dest_timeout" name="dest_timeout" size="2" value="[% value %]" /><span>&nbsp;[% Catalyst.loc('seconds') %]</span>
+            [% IF messages.err_target %] <div id="errormsg"><p>[% messages.err_target %]</p></div> [% END %]
+            [% IF messages.err_timeout %] <div id="errormsg"><p>[% messages.err_timeout %]</p></div> [% END %]
+        </div>
+
+        [% IF action == 'edit' %]
+            <div class="span-1">
+                <p class="link_button">
+                    <label for="save_dest_[% dest.id %]">[% Catalyst.loc('Save') %]</label>
+                    <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_dest_[% dest.id %]">
+                </p>
+            </div>
+            <div class="span-1">
+                <a href="/callforward/destination"><span class="button-cancel">[% Catalyst.loc('Cancel') %]</span></a>
+            </div>
+        [% ELSIF action == 'add' %]
+            <div class="span-1">
+                <p class="link_button">
+                    <label for="add_dest_[% dest.id %]">[% Catalyst.loc('Add destination') %]</label>
+                    <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="add_dest_[% dest.id %]">
+                </p>
+            </div>
+            <div></div>
+        [% END %]
+    
+    [% ELSIF action == 'view' %]
+        [% IF dset.id == dset_id %]
+            <div class="span-1">
+                <a href="javascript:void(0)" onclick="move_up('dest-' + [% dest.id %])">&uarr;</a>
+                <a href="javascript:void(0)" onclick="move_down('dest-' + [% dest.id %])">&darr;</a>
+            </div>
+        [% ELSE %]
+            <div class="span-1"></div>
+        [% END %]
+
+        <div class="span-12">
+            [% IF Catalyst.config.voicemail_features and dest.destination == "voicebox" %]
+                [% Catalyst.loc('Voicebox') %]
+            [% ELSIF Catalyst.config.fax_features and dest.destination == "fax2mail" %]
+                [% Catalyst.loc('Fax2Mail') %]
+            [% ELSIF Catalyst.config.conference_features and dest.destination == "conference" %]
+                [% Catalyst.loc('Conference room') %]
+            [% ELSE %]
+                [% dest.destination %] [% Catalyst.loc('for') %] [% dest.timeout %]<span>&nbsp;[% Catalyst.loc('seconds') %]</span>
+            [% END %]
+        </div>
+        <div class="prepand-9 span-1"><a href="/callforward/destination/target/[% dest.id %]/edit#dest-[% dest.id %]"><span class="button-edit">[% Catalyst.loc('Edit') %]</span></a></div>
+        <div class="span-1">
+            <p class="link_button">
+                <label for="delete_dtarget_[% dest.id %]">[% Catalyst.loc('Delete') %]</label>
+                <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="delete_dtarget_[% dest.id %]">
+            </p>
+        </div>
+    [% END %]
+        
+    </form>        
+    
+[% END %]

@@ -4,203 +4,769 @@ use strict;
 use warnings;
 use base 'Catalyst::Controller';
 use csc::Utils;
+use HTML::Entities;
+use POSIX;
 
-=head1 NAME
-
-csc::Controller::callforward - Catalyst Controller
-
-=head1 DESCRIPTION
-
-Catalyst Controller.
-
-=head1 METHODS
-
-=cut
-
-
-=head2 index 
-
-Displays call forward settings.
-
-=cut
-
-sub index : Private {
-    my ( $self, $c, $preferences ) = @_;
-
-    $c->log->debug('***callforward::index called');
-
-    if(defined $preferences and ref $preferences eq 'HASH') {
-        for(keys %$preferences) {
-            $c->session->{user}{preferences}{$_} = $$preferences{$_};
-        }
-    } else {
-        unless($c->model('Provisioning')->get_usr_preferences($c)) {
-            $c->stash->{template} = 'tt/callforward.tt';
-            return 1;
-        }
-    }
-
+sub base :Chained('/') PathPrefix CaptureArgs(0) {
+    my ( $self, $c ) = @_;    
+    return unless ( $c->stash->{subscriber} = $c->forward ('load_subscriber') );
+    return unless ( $c->stash->{cf_maps} = $c->forward ('load_maps') );
     $c->stash->{subscriber}{active_number} = csc::Utils::get_active_number_string($c);
-    if($c->session->{user}{extension}) {
-        my $ext = $c->session->{user}{preferences}{extension};
-        $c->stash->{subscriber}{active_number} =~ s/$ext$/ - $ext/;
-    }
-
-    my $subscriber_cc = $c->session->{user}{data}{cc};
-
-    $c->stash->{subscriber}{fw}{active} = 0;
-
-    for(qw(cfu cfna cft cfb)) {
-        if(defined $c->session->{user}{preferences}{$_}) {
-            $c->stash->{subscriber}{fw}{$_} = _parse_forward($c, $c->session->{user}{preferences}{$_});
-            $c->stash->{subscriber}{fw}{active} = 1;
-        } else {
-            $c->stash->{subscriber}{fw}{$_}{disabled_checked} = 'checked="checked"';
-        }
-    }
-
-    if(defined $c->session->{user}{preferences}{ringtimeout}) {
-        $c->stash->{subscriber}{fw}{ringtimeout} = $c->session->{user}{preferences}{ringtimeout};
-    }
-
-    $c->stash->{template} = 'tt/callforward.tt';
 }
 
-=head2 save
+##############################################################################
+### mapping ###
 
-Stores call forward settings.
-
-=cut
-
-sub save : Local {
+# 302 to old callforward-link 
+sub mapping_oldskool : Chained('base') PathPart('') Args(0) {
     my ( $self, $c ) = @_;
-    my (%preferences, %messages);
-    	
-    foreach my $fwtype (qw(cfu cfna cft cfb)) {
-        my $fw_target_select = $c->request->params->{$fwtype .'_fw_target'};
-        unless($fw_target_select) {
-            $messages{$fwtype .'_target'} = 'Client.Voip.MalformedTargetClass';
-        }
-
-        if($fw_target_select eq 'disabled') {
-            $preferences{$fwtype} = undef;
-            next;
-        } elsif($fw_target_select eq 'voicebox') {
-            $preferences{$fwtype} = 'sip:vmu'.$c->session->{user}{data}{cc}.$c->session->{user}{data}{ac}.$c->session->{user}{data}{sn}.'@'.$c->config->{voicebox_domain};
-        } elsif($fw_target_select eq 'fax2mail') {
-            $preferences{$fwtype} = 'sip:+'.$c->session->{user}{data}{cc}.$c->session->{user}{data}{ac}.$c->session->{user}{data}{sn}.'@'.$c->config->{fax2mail_domain};
-        } elsif($fw_target_select eq 'conference') {
-            $preferences{$fwtype} = 'sip:conf='.$c->session->{user}{data}{cc}.$c->session->{user}{data}{ac}.$c->session->{user}{data}{sn}.'@'.$c->config->{conference_domain};
-        } elsif($fw_target_select eq 'sipuri') {
-            my $fw_target;
-            $fw_target = $c->request->params->{$fwtype .'_fw_sipuri'};
-
-            # normalize, so we can do some checks.
-            $fw_target =~ s/^sip://i;
-            if($fw_target =~ /^\+?\d+\@[a-z0-9.-]+$/i) {
-                $fw_target =~ s/\@.+$//;
-            }
-
-            if($fw_target =~ /^\+?\d+$/) {
-                $fw_target = csc::Utils::get_qualified_number_for_subscriber($c, $fw_target);
-                my $checkresult;
-                return unless $c->model('Provisioning')->call_prov( $c, 'voip', 'check_E164_number', $fw_target, \$checkresult);
-                $messages{$fwtype .'_target'} = 'Client.Voip.MalformedNumber'
-                    unless $checkresult;
-            } elsif($fw_target =~ /^[a-z0-9&=+\$,;?\/_.!~*'()-]+\@[a-z0-9.-]+$/i) {
-                $fw_target = 'sip:'. lc $fw_target;
-            } elsif($fw_target =~ /^[a-z0-9&=+\$,;?\/_.!~*'()-]+$/) {
-                $fw_target = 'sip:'. lc($fw_target) .'@'. $c->session->{user}{domain};
-            } else {
-                $messages{$fwtype .'_target'} = 'Client.Voip.MalformedTarget';
-            }
-            $preferences{$fwtype} = $messages{$fwtype .'_target'} ? $c->request->params->{$fwtype .'_fw_sipuri'}
-                                                                  : $fw_target;
-        } else {
-            # wtf?
-        }
-    }
-
-    if(defined $preferences{cft}) {
-        my $fw_ringtimeout = $c->request->params->{fw_ringtimeout};
-        $preferences{ringtimeout} = $fw_ringtimeout;
-        unless(defined $fw_ringtimeout and length $fw_ringtimeout
-           and $fw_ringtimeout =~ /^\d+$/ and $fw_ringtimeout < 301 and $fw_ringtimeout > 4)
-        {
-            $messages{ringtimeout} = 'Client.Voip.MissingRingtimeout';
-        }
-    }
-
-    unless(keys %messages) {
-        if($c->model('Provisioning')->set_subscriber_preferences($c, $c->session->{user}{username},
-                                                                 $c->session->{user}{domain}, \%preferences))
-        {
-            $messages{topmsg} = 'Server.Voip.SavedSettings';
-        }
-    } else {
-        $messages{toperr} = 'Client.Voip.InputErrorFound';
-    }
-
-    $c->session->{messages} = \%messages;
-    $self->index($c, \%preferences);
-#    $c->response->redirect($c->uri_for('/callforward'));
+    $c->response->redirect($c->uri_for ('/callforward/mapping'), 301);
 }
 
-sub _parse_forward : Private {
-    my ($c, $target) = @_;
-    my $return;
+sub mapping : Chained('base') PathPart('mapping') CaptureArgs(0) {
+    my ( $self, $c ) = @_;
+    $c->stash->{template} = 'tt/callforward_mapping.tt';
+    
+    return unless ( $c->stash->{cf_types} = $c->forward ('load_cf_types') );
+    return unless ( $c->stash->{time_sets} = $c->forward ('load_time_sets') );
+    return unless ( $c->stash->{destination_sets} = $c->forward ('load_destination_sets') );
+}
 
-    if(defined $target and length $target) { # FIXME: "and ! $c->session->{messages}{target}"?
-        my $vbdom = $c->config->{voicebox_domain};
-        my $fmdom = $c->config->{fax2mail_domain};
-        my $confdom = $c->config->{conference_domain};
-        if($target =~ /$vbdom$/) {
-            $$return{voicebox_checked} = 'checked="checked"';
-        } elsif($target =~ /$fmdom$/) {
-            $$return{fax2mail_checked} = 'checked="checked"';
-        } elsif($target =~ /$confdom$/) {
-            $$return{conference_checked} = 'checked="checked"';
-        } else {
-            $$return{sipuri_checked} = 'checked="checked"';
+sub mapping_list : Chained('mapping') PathPart('') Args(0) {
+    my ( $self, $c ) = @_;
+}
 
-            $target =~ s/^sip://i;
-            $target =~ s/\@.*$// if $target =~ /^\+?\d+\@/;
-            if($target =~ /^\+?\d+$/) {
-                $$return{sipuri} = csc::Utils::get_qualified_number_for_subscriber($c, $target);
-            } else {
-                $$return{sipuri} = $target;
-            }
-        }
-        return $return;
+sub mapping_id : Chained('mapping') PathPart('') CaptureArgs(1) {
+    my ( $self, $c, $map_id ) = @_;
+    $c->stash->{map_id} = $map_id;
+}
+
+sub mapping_edit : Chained('mapping_id') PathPart('edit') Args(0) {
+    my ( $self, $c ) = @_;
+}
+
+sub mapping_save : Chained('mapping') PathPart('save') Args(0) {
+    my ( $self, $c ) = @_;
+
+    my $map = {
+        id => $c->request->params->{map_id},
+        type => $c->request->params->{type},
+        destination_set_id => $c->request->params->{destset_id},
+        time_set_id => $c->request->params->{timeset_id},
+    };
+
+    my $ret;
+    if ($map->{id}) {
+        $ret = $c->model('Provisioning')->call_prov( $c, 'voip', 'update_subscriber_cf_map',
+            { username => $c->stash->{subscriber}->{username},
+              domain => $c->stash->{subscriber}->{domain},
+              data => $map,
+            },
+            undef,
+        );
+    }
+    else {
+        delete $map->{id};
+        $ret = $c->model('Provisioning')->call_prov( $c, 'voip', 'create_subscriber_cf_map',
+            { username => $c->stash->{subscriber}->{username},
+              domain => $c->stash->{subscriber}->{domain},
+              data => $map,
+            },
+            undef,
+        );
     }
 
-    return;
+    if ($ret) {
+        $c->session->{messages} = { topmsg => 'Server.Voip.SavedSettings' }; 
+    }
+    else {
+        $c->session->{messages} = { toperr => 'Client.Voip.InputErrorFound' }; 
+    }
+    
+    $c->response->redirect($c->uri_for ('/callforward/mapping'));
+}
+
+sub mapping_delete : Chained('mapping') PathPart('delete') Args(0) {
+    my ( $self, $c ) = @_;
+    
+    if ($c->model('Provisioning')->call_prov( $c, 'voip', 'delete_subscriber_cf_map',
+        { username => $c->stash->{subscriber}->{username},
+          domain => $c->stash->{subscriber}->{domain},
+          id => $c->request->params->{map_id},
+        },
+        undef,
+    )) {
+      $c->session->{messages} =  { topmsg => 'Server.Voip.SavedSettings' } ;
+    }
+    else {
+      $c->session->{messages} =  { toperr => 'Client.Voip.InputErrorFound' } ;
+    }
+
+    $c->response->redirect($c->uri_for ('/callforward/mapping'));
+}
+
+##############################################################################
+### destination ###
+
+sub destination : Chained('base') PathPart('destination') CaptureArgs(0) {
+    my ( $self, $c ) = @_;
+    $c->stash->{template} = 'tt/callforward_destination.tt';
+    return unless ( $c->stash->{destination_sets} = $c->forward ('load_destination_sets') );
+
+    # collect data about different sets being mapped
+    my $mapped = {};
+    foreach my $set (@{$c->stash->{destination_sets}}) {
+        $mapped->{$set->{id}} = 0; 
+       
+        if ($c->stash->{cf_maps}) {
+            foreach my $map (values %{$c->stash->{cf_maps}}) {
+                foreach my $part (@$map) {
+                    $mapped->{$set->{id}}++ if ($part->{destination_set_id} == $set->{id});
+                }
+            }
+        }
+    }
+    $c->stash->{mapped} = $mapped;
+
+    # refill/update datastructure presented to template. necessary if user
+    # edits, errs and form is redisplayed.
+    #
+    if (defined $c->session->{refill}) {
+        
+        foreach my $set (@{$c->stash->{destination_sets}}) {
+            next if ($set->{id} != $c->session->{refill}->{set_id});
+            delete $c->session->{refill}->{set_id};
+
+            if ($c->session->{refill}->{item_id}) {
+                foreach my $item (@{$set->{destinations}}) {
+                    next if ($item->{id} != $c->session->{refill}->{item_id});
+                    delete $c->session->{refill}->{item_id};
+                
+                    foreach my $key (keys %{$c->session->{refill}}) {
+                        $item->{$key} = $c->session->{refill}->{$key};
+                    }
+                }
+
+                # all new item
+                if (exists $c->session->{refill}->{item_id}) {
+                    delete $c->session->{refill}->{item_id};
+                    
+                    my $item = { id => 0}; # indicate that this is not yet in the database
+                    foreach my $key (keys %{$c->session->{refill}}) {
+                        $item->{$key} = $c->session->{refill}->{$key};
+                    }
+                    push @{$set->{destinations}}, $item;
+                }
+            }
+
+            foreach my $key (keys %{$c->session->{refill}}) {
+                $set->{$key} = $c->session->{refill}->{$key};
+            }
+        }
+
+        delete $c->session->{refill};
+    }
+}
+
+sub destination_list : Chained('destination') PathPart('') Args(0) {
+    my ( $self, $c ) = @_;
+}
+
+sub destination_set_get : Chained('destination') PathPart('set') CaptureArgs(1) {
+    my ( $self, $c, $dset_id ) = @_;
+    $c->stash->{dset_id} = $dset_id;
+}
+
+sub destination_set_post : Chained('destination') PathPart('set') CaptureArgs(0) {
+    my ( $self, $c, $dset_id ) = @_;
+    $c->stash->{dset_id} = $c->request->params->{dset_id};
+}
+
+### join with destination_set_get? 
+sub destination_set_edit : Chained('destination_set_get') PathPart('edit') Args(0) {
+    my ( $self, $c ) = @_;
+}
+
+sub destination_set_save : Chained('destination_set_post') PathPart('save') Args(0) {
+    my ( $self, $c ) = @_;
+
+    my $ret;
+    if ($c->stash->{dset_id}) {
+        $ret = $c->model('Provisioning')->call_prov( $c, 'voip', 'update_subscriber_cf_destination_set',
+            { username => $c->stash->{subscriber}->{username},
+              domain   => $c->stash->{subscriber}->{domain},
+              data     => { 
+                name => $c->request->params->{dsetname}, 
+                id => $c->stash->{dset_id},
+              },
+            },
+            undef,
+        );
+
+        # only if user fiddeled with priorities
+        if ($c->request->params->{priority_changed}) {
+            foreach my $s (@{$c->stash->{destination_sets}}) {
+                next if ($s->{id} != $c->stash->{dset_id});
+
+                foreach my $d (@{$s->{destinations}}) {
+                    my $prio = $c->request->params->{'priority-' . $d->{id}};
+                    my $id = $d->{id};
+
+                    $c->model('Provisioning')->call_prov( $c, 'voip', 'update_subscriber_cf_destination_by_id',
+                        { id   => $id,
+                          data => {  priority => $prio },
+                        },
+                        undef
+                    );
+                }
+            }
+        }
+    }
+    else {
+        $ret = $c->model('Provisioning')->call_prov( $c, 'voip', 'create_subscriber_cf_destination_set',
+            { username => $c->stash->{subscriber}->{username},
+              domain   => $c->stash->{subscriber}->{domain},
+              data     => { 
+                name => $c->request->params->{dsetname}, 
+              },
+            },
+            undef,
+        )
+    } 
+
+    if ($ret) {
+        $c->session->{messages} = { topmsg => 'Server.Voip.SavedSettings'};
+        $c->response->redirect($c->uri_for ('/callforward/destination'));
+    }
+    else {
+        $c->session->{messages} = { toperr => 'Client.Voip.InputErrorFound'};
+        $c->response->redirect($c->uri_for('/callforward/destination/set/' . $c->stash->{dset_id} . '/edit'));
+    }
+}
+
+sub destination_set_delete : Chained('destination_set_post') PathPart('delete') Args(0) {
+    my ( $self, $c )  = @_;
+
+    if ($c->model('Provisioning')->call_prov( $c, 'voip', 'delete_subscriber_cf_destination_set',
+        { username => $c->stash->{subscriber}->{username},
+          domain   => $c->stash->{subscriber}->{domain},
+          id       => $c->stash->{dset_id},
+        },
+        undef,
+    )) {
+        $c->session->{messages} = { topmsg => 'Server.Voip.SavedSettings' };
+    }
+    else {
+        $c->session->{messages} = { toperr => 'Server.Voip.SavedSettings' };
+    }
+
+    $c->response->redirect($c->uri_for('/callforward/destination'));
+}
+
+### destination target ###
+
+sub destination_target_get : Chained('destination') PathPart('target') CaptureArgs(1) {
+    my ( $self, $c, $dtarget_id ) = @_;
+    $c->stash->{dtarget_id} = $dtarget_id;
+}
+
+sub destination_target_post : Chained('destination') PathPart('target') CaptureArgs(0) {
+    my ( $self, $c ) = @_;
+    $c->stash->{dset_id} = $c->request->params->{dset_id};
+    $c->stash->{dtarget_id} = $c->request->params->{dtarget_id};
+}
+
+sub destination_target_edit : Chained('destination_target_get') PathPart('edit') Args(0) {
+    my ( $self, $c ) = @_;
+}
+
+# does save and create
+sub destination_target_save : Chained('destination_target_post') PathPart('save') Args(0) {
+    my ( $self, $c ) = @_;
+
+    my $prio = $c->request->params->{priority};
+    my $fwtype = $c->request->params->{fwtype}; ###
+    $c->stash->{type} = $fwtype;
+
+    my %messages;
+    my %dest;
+
+    my $vbdom = $c->config->{voicebox_domain};
+    my $fmdom = $c->config->{fax2mail_domain};
+    my $confdom = $c->config->{conference_domain};
+
+    my $fw_timeout = $c->request->params->{'dest_timeout'} || 300;
+    my $fw_target_select = $c->request->params->{'dest_target'} || 'disable';
+    my $fw_target;
+    if ($fw_target_select eq 'sipuri') {
+        $dest{timeout} = $fw_timeout;
+        $fw_target = $c->request->params->{'dest_sipuri'};
+  
+        # normalize, so we can do some checks.
+        $fw_target =~ s/^sip://i;
+  
+        if($fw_target =~ /^\+?\d+$/) {
+            $fw_target = csc::Utils::get_qualified_number_for_subscriber($c, $fw_target);
+            my $checkresult;
+            return unless $c->model('Provisioning')->call_prov( $c, 'voip', 'check_E164_number', $fw_target, \$checkresult);
+            unless($checkresult) {
+                $messages{toperr} = 'Client.Voip.MalformedNumber'
+            } else {
+                $fw_target = 'sip:'.$fw_target.'@'.$c->stash->{subscriber}->{domain};
+            }
+        } elsif($fw_target =~ /^[a-z0-9&=+\$,;?\/_.!~*'()-]+\@[a-z0-9.-]+(:\d{1,5})?$/i) {
+            $fw_target = 'sip:'. lc $fw_target;
+        } elsif($fw_target =~ /^[a-z0-9&=+\$,;?\/_.!~*'()-]+$/) {
+            $fw_target = 'sip:'. lc($fw_target) .'@'. $c->stash->{subscriber}->{domain};
+        } else {
+            $messages{err_target} = 'Client.Voip.MalformedTarget';
+            $fw_target = $c->request->params->{'dest_sipuri'};
+        } 
+        
+        if ($fw_timeout !~ /^\d+$/) {
+            $messages{err_timeout} = 'Client.Voip.MalformedTimeout';
+            $fw_timeout = $c->request->params->{'dest_timeout'};
+        }
+    } 
+    elsif($fw_target_select eq 'voicebox') {
+        $fw_target = 'sip:vmu'.$c->stash->{subscriber}->{cc}.$c->stash->{subscriber}->{ac}.$c->stash->{subscriber}->{sn}."\@$vbdom";
+    } 
+    elsif($fw_target_select eq 'fax2mail') {
+        $fw_target = 'sip:'.$c->stash->{subscriber}->{cc}.$c->stash->{subscriber}->{ac}.$c->stash->{subscriber}->{sn}."\@$fmdom";
+    } 
+    elsif($fw_target_select eq 'conference') {
+        $fw_target = 'sip:conf='.$c->stash->{subscriber}->{cc}.$c->stash->{subscriber}->{ac}.$c->stash->{subscriber}->{sn}."\@$confdom";
+    }
+
+    if (keys %messages) {
+        $messages{topterr} = 'Client.Voip.InputErrorFound';
+        $c->session->{messages} = \%messages;
+        $c->session->{refill} = { set_id => $c->stash->{dset_id}, item_id => $c->stash->{dtarget_id}, destination => $fw_target, timeout => $fw_timeout };
+
+        if ($c->stash->{dtarget_id}) {
+            $c->response->redirect($c->uri_for('/callforward/destination/target/'.$c->stash->{dtarget_id}.'/edit#dest-'.$c->stash->{dtarget_id}));
+        } else { # XXX create a new target "inside" existing set
+            $c->session->{refill}->{item_id} = -1;
+            $c->response->redirect($c->uri_for('/callforward/destination/set/'.$c->stash->{dset_id}.'/edit#dest-'.$c->stash->{dset_id}));
+        }
+        return;
+    }
+
+    $dest{destination} = $fw_target;
+    $dest{priority} = $prio;
+    
+    my $ret;
+    if ($c->stash->{dtarget_id})
+    {
+        $dest{id} = $c->stash->{dtarget_id};
+        $ret = $c->model('Provisioning')->call_prov( $c, 'voip', 'update_subscriber_cf_destination',
+            { username => $c->stash->{subscriber}->{username},
+              domain   => $c->stash->{subscriber}->{domain},
+              set_id   => $c->stash->{dset_id},
+              data     => \%dest,
+            },
+            undef,
+        )
+    }
+    else {
+        $ret = $c->model('Provisioning')->call_prov( $c, 'voip', 'create_subscriber_cf_destination',
+            { username => $c->stash->{subscriber}->{username},
+              domain   => $c->stash->{subscriber}->{domain},
+              set_id   => $c->stash->{dset_id},
+              data     => \%dest,
+            },
+            undef,
+        )
+    }
+    
+    if ($ret) {
+        $c->session->{messages} = { topmsg => 'Server.Voip.SavedSettings' };
+    }
+    else {
+        $c->session->{messages} = { toperr => 'Client.Voip.InputErrorFound' } ;
+    }
+    
+    $c->response->redirect($c->uri_for('/callforward/destination'));
+}
+
+sub destination_target_delete : Chained('destination_target_post') PathPart('delete') Args(0) {
+    my ( $self, $c )  = @_;
+
+    if ($c->model('Provisioning')->call_prov( $c, 'voip', 'delete_subscriber_cf_destination',
+        { username => $c->stash->{subscriber}->{username},
+          domain   => $c->stash->{subscriber}->{domain},
+          set_id   => $c->stash->{dset_id},
+          id       => $c->stash->{dtarget_id},
+        },
+        undef,
+    )) {
+        $c->session->{messages} = { topmsg => 'Server.Voip.SavedSettings' };
+    }
+    else {
+        $c->session->{messages} = { toperr => 'Client.Voip.InputErrorFound' };
+    }
+    
+    $c->response->redirect($c->uri_for('/callforward/destination'));
+}
+
+##############################################################################
+### period ###
+
+sub time : Chained('base') PathPart('time') CaptureArgs(0) {
+    my ( $self, $c ) = @_;
+    
+    $c->stash->{template} = 'tt/callforward_time.tt';
+    return unless ( $c->stash->{time_sets} = $c->forward ('load_time_sets') );
+    
+    foreach my $tset (@{$c->stash->{time_sets}}) {
+        foreach my $period (@{$tset->{periods}}) {
+            $self->period_expand($period);
+        }
+    }
+    
+    my $year = strftime("%Y", localtime(time()));
+    $c->stash->{years} = [ $year .. $year + 10 ];
+
+    my $mapped = {};
+    foreach my $set (@{$c->stash->{time_sets}}) {
+        $mapped->{$set->{id}} = 0; 
+       
+        if ($c->stash->{cf_maps}) {
+            foreach my $map (values %{$c->stash->{cf_maps}}) {
+                foreach my $part (@$map) {
+                    $mapped->{$set->{id}}++ if ($part->{time_set_id} == $set->{id});
+                }
+            }
+        }
+    }
+        
+    $c->stash->{mapped} = $mapped;
+}
+
+# sub time_list : Chained('time') PathPart('list') Args(0) {
+sub time_list : Chained('time') PathPart('') Args(0) {
+    my ( $self, $c ) = @_;
+}
+
+sub time_set_get : Chained('time') PathPart('set') CaptureArgs(1) {
+    my ( $self, $c, $tset_id ) = @_;
+    $c->stash->{tset_id} = $tset_id;
+}
+
+sub time_set_post : Chained('time') PathPart('set') CaptureArgs(0) {
+    my ( $self, $c ) = @_;
+    $c->stash->{tset_id} = $c->request->params->{tset_id}; 
+}
+
+sub time_set_edit : Chained('time_set_get') PathPart('edit') Args(0) {
+    my ( $self, $c ) = @_;
+}
+
+sub time_set_save : Chained('time_set_post') PathPart('save') Args(0) {
+    my ( $self, $c ) = @_;
+    my $ret;
+
+    if (defined $c->stash->{tset_id}) {
+        $ret = $c->model('Provisioning')->call_prov( $c, 'voip', 'update_subscriber_cf_time_set',
+            { username => $c->stash->{subscriber}->{username},
+              domain => $c->stash->{subscriber}->{domain},
+              data => {
+                name => $c->request->params->{tsetname}, 
+                id =>   $c->request->params->{tset_id},
+              }
+            },
+            undef,
+        )    
+    } 
+    else {
+        $ret = $c->model('Provisioning')->call_prov( $c, 'voip', 'create_subscriber_cf_time_set',
+            { username => $c->stash->{subscriber}->{username},
+              domain => $c->stash->{subscriber}->{domain},
+              data => {
+                  name => $c->request->params->{tsetname}, 
+              }
+            },
+            undef,
+        )
+    }
+    if ($ret) {
+        $c->session->{messages} = { topmsg => 'Server.Voip.SavedSettings' }
+    }
+    else {
+        $c->session->{messages} = { toperr => 'Client.Voip.Client.Voip.InputErrorFound' }
+    }
+    
+    $c->response->redirect($c->uri_for('/callforward/time'));
+}
+
+sub time_set_delete : Chained('time_set_post') PathPart('delete') Args(0) {
+    my ( $self, $c ) = @_;
+
+    if ($c->model('Provisioning')->call_prov( $c, 'voip', 'delete_subscriber_cf_time_set',
+        { username => $c->stash->{subscriber}->{username},
+          domain   => $c->stash->{subscriber}->{domain},
+          id       => $c->stash->{tset_id},
+        },
+        undef,
+    )) {
+        $c->session->{messages} = { topmsg => 'Server.Voip.SavedSettings' }
+    }
+    else {
+        $c->session->{messages} = { toperr => 'Client.Voip.Client.Voip.InputErrorFound' }
+    }
+    
+    $c->response->redirect($c->uri_for('/callforward/time'));
+}
+
+sub time_period_get : Chained('time') PathPart('period') CaptureArgs(1) {
+    my ( $self, $c, $tperiod_id ) = @_;
+    $c->stash->{tperiod_id} = $tperiod_id;
+}
+
+sub time_period_post : Chained('time') PathPart('period') CaptureArgs(0) {
+    my ( $self, $c ) = @_;
+    $c->stash->{tset_id} = $c->request->params->{tset_id}; 
+    $c->stash->{tperiod_id} = $c->request->params->{tperiod_id}; 
+}
+
+sub time_period_edit : Chained('time_period_get') PathPart('edit') Args(0) {
+    my ( $self, $c ) = @_;
+    # done that's it
+    # maybe join with time_period_get() ?
+}
+
+sub time_period_save : Chained('time_period_post') PathPart('save') Args(0) {
+    my ( $self, $c ) = @_;
+
+    my %period;
+    $period{year} = $c->request->params->{year};
+    $period{from_year} = $c->request->params->{from_year};
+    $period{to_year} = $c->request->params->{to_year};
+    $period{month} = $c->request->params->{month};
+    $period{from_month} = $c->request->params->{from_month};
+    $period{to_month} = $c->request->params->{to_month};
+    $period{mday} = $c->request->params->{mday};
+    $period{from_mday} = $c->request->params->{from_mday};
+    $period{to_mday} = $c->request->params->{to_mday};
+    $period{wday} = $c->request->params->{wday};
+    $period{from_wday} = $c->request->params->{from_wday};
+    $period{to_wday} = $c->request->params->{to_wday};
+    $period{hour} = $c->request->params->{hour};
+    $period{from_hour} = $c->request->params->{from_hour};
+    $period{to_hour} = $c->request->params->{to_hour};
+    $period{minute} = $c->request->params->{minute};
+    $period{from_minute} = $c->request->params->{from_minute};
+    $period{to_minute} = $c->request->params->{to_minute};
+
+    $self->period_collapse(\%period);
+
+    $period{id} = $c->stash->{tperiod_id} if ($c->stash->{tperiod_id});
+
+    my $ret;
+    if ($c->stash->{tperiod_id}) {
+        $ret = $c->model('Provisioning')->call_prov( $c, 'voip', 'update_subscriber_cf_time_period',
+            { username => $c->stash->{subscriber}->{username},
+              domain   => $c->stash->{subscriber}->{domain},
+              set_id   => $c->stash->{tset_id},
+              data     => \%period,
+            },
+            undef,
+        );
+    } 
+    else {
+        $ret = $c->model('Provisioning')->call_prov( $c, 'voip', 'create_subscriber_cf_time_period',
+            { username => $c->stash->{subscriber}->{username},
+              domain   => $c->stash->{subscriber}->{domain},
+              set_id   => $c->stash->{tset_id},
+              data     => \%period,
+            },
+            undef,
+        );
+    }
+
+    if ($ret) {
+        $c->session->{messages} = { topmsg => 'Server.Voip.SavedSettings' }
+    }
+    else {
+        $c->session->{messages} = { toperr => 'Client.Voip.InputErrorFound' }
+    }
+    
+    $c->response->redirect($c->uri_for('/callforward/time'));
+}
+
+sub time_period_delete : Chained('time_period_post') PathPart('delete') Args(0) {
+    my ( $self, $c ) = @_;
+
+    if ($c->model('Provisioning')->call_prov( $c, 'voip', 'delete_subscriber_cf_time_period',
+        { username => $c->stash->{subscriber}->{username},
+          domain   => $c->stash->{subscriber}->{domain},
+          set_id => $c->stash->{tset_id},
+          id => $c->stash->{tperiod_id},
+        },
+        undef,
+    )) {
+        $c->session->{messages} = { topmsg => 'Server.Voip.SavedSettings' };
+    }
+    else {
+        $c->session->{messages} = { toperr => 'Client.Voip.InputErrorFound' };
+    }
+    
+    $c->response->redirect($c->uri_for('/callforward/time'));
+}
+
+### helpers ###
+
+sub load_destination_sets :Private {
+    my ( $self, $c ) = @_;
+
+    my $destination_sets;
+
+    return unless $c->model('Provisioning')->call_prov( $c, 'voip', 'get_subscriber_cf_destination_sets',
+        { username => $c->stash->{subscriber}->{username},
+          domain => $c->stash->{subscriber}->{domain},
+        },
+        \$destination_sets,
+    );
+    
+    my $vbdom = $c->config->{voicebox_domain};
+    my $fmdom = $c->config->{fax2mail_domain};
+    my $confdom = $c->config->{conference_domain};
+
+    foreach my $set (@{$destination_sets}) {
+        foreach my $dest (@{$set->{destinations}}) {
+            if($dest->{destination} =~ /\@$vbdom$/) {
+                $dest->{destination} = 'voicebox';
+            } 
+            elsif ($dest->{destination} =~ /\@$fmdom$/) {
+                $dest->{destination} = 'fax2mail';
+            } 
+            elsif ($dest->{destination} =~ /\@$confdom$/) {
+                $dest->{destination} = 'conference';
+            } 
+            elsif ($dest->{destination} =~ /^sip:\+?[0-9]+\@/) {
+                $dest->{destination} =~ s/^sip:([^\@]+)\@.+$/$1/;
+            }
+            #else {
+            #    die;
+            #}
+        }
+    }
+
+    return $destination_sets;
+}
+
+sub load_time_sets :Private {
+    my ( $self, $c ) = @_;
+
+    my $time_sets;
+
+    return unless $c->model('Provisioning')->call_prov( $c, 'voip', 'get_subscriber_cf_time_sets',
+        { username => $c->session->{user}->{data}->{username},
+          domain =>   $c->session->{user}->{data}->{domain},
+        },
+        \$time_sets,
+    );
+
+    return $time_sets;    
+}
+
+sub load_subscriber :Private {
+    my ( $self, $c ) = @_;
+
+    my $subscriber;
+
+    return unless $c->model('Provisioning')->call_prov( $c, 'voip', 'get_subscriber_by_id',
+        { subscriber_id => $c->session->{user}->{data}->{subscriber_id} },
+        \$subscriber,
+    );
+    return $subscriber;
+}
+
+sub load_maps :Private {
+    my ( $self, $c ) = @_;
+
+    my $maps;
+    return unless $c->model('Provisioning')->call_prov( $c, 'voip', 'get_subscriber_cf_maps',
+        { username => $c->stash->{subscriber}->{username},
+          domain =>   $c->stash->{subscriber}->{domain},
+        },
+        \$maps,
+    );
+    return $maps;
+}
+
+sub load_cf_types :Private {
+    my ( $self, $c ) = @_;
+
+    return [ 
+        { name => 'cfu', description => 'Call Forward Unconditional' },
+        { name => 'cfb', description => 'Call Forward Busy' },
+        { name => 'cft', description => 'Call Forward Timeout' },
+        { name => 'cfna', description => 'Call Forward Unavailable' },
+    ];
 }
 
 
-=head1 BUGS AND LIMITATIONS
+sub period_expand : Private {
+    my ($self, $period) = @_;
+    
+    foreach my $part ('year', 'month', 'mday', 'wday', 'hour', 'minute') {
+    
+        if (defined $period->{$part} && $period->{$part} =~ /^(\d+)$/) {
+            $period->{'from_' . $part} = $1;
+        }
+        elsif(defined $period->{$part} && $period->{$part} =~ /^(\d+)\-(\d+)$/) {
+            $period->{'from_' . $part} = $1;
+            $period->{'to_' . $part} = $2;
+        }
+        
+        delete $period->{$part};
+    }
 
-=over
+    return 0;
+}
 
-=item none
+sub period_collapse : Private {
+    my ($self, $period) = @_;
 
-=back
+    foreach my $part ('year', 'month', 'mday', 'wday', 'hour', 'minute') {
+        my $from = $period->{'from_' . $part};
+        my $to = $period->{'to_' . $part};
+        my $collapsed;
 
-=head1 SEE ALSO
+        if ($from) {
+            $collapsed = $from;
+            if ($to) {
+                if ($from < $to) {
+                    $collapsed .= '-' . $to;
+                }
+                elsif ($from > $to) {
+                    return -1;
+                }
+            }
+        }
+        delete $period->{'from_' . $part};
+        delete $period->{'to_' . $part};
+        $period->{$part} = $collapsed;
+    }
 
-Provisioning model, Catalyst
+    return 0;
+}
+    
+sub dbg {
+    my ($thing, $msg) = @_;
+    use Data::Dumper;
 
-=head1 AUTHORS
+    my @c = caller (1);
+    my $subname = $c[3];
 
-Daniel Tiefnig <dtiefnig@sipwise.com>
-
-=head1 COPYRIGHT
-
-The callforward controller is Copyright (c) 2007-2010 Sipwise GmbH,
-Austria. You should have received a copy of the licences terms together
-with the software.
-
-=cut
-
-# over and out
+    if (ref $thing eq 'ARRAY' or ref $thing eq 'HASH') {
+        warn ' ===DBG===  ' . $msg if ($msg); 
+        warn ' ===DBG===  ' . $subname . '(): '. Dumper $thing;
+    }
+    else {
+        warn ' ===DBG===  ' . $msg if ($msg); 
+        warn ' ===DBG===  ' . $subname . '(): '. $thing;;
+    }
+}
 1;

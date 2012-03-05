@@ -29,7 +29,7 @@
         <li [% 'class="on"' IF template.title == 'Addressbook' %]><a href="/addressbook">[% Catalyst.loc('Addressbook') %]</a></li>
       [% END %]
       [% IF Catalyst.config.main_menu.callforward %]
-        <li [% 'class="on"' IF template.title == 'Call forward' %]><a href="/callforward">[% Catalyst.loc('Call forward') %]</a></li>
+        <li [% 'class="on"' IF template.title == 'Call forward' %]><a href="/callforward/mapping">[% Catalyst.loc('Call forward') %]</a></li>
       [% END %]
       [% IF Catalyst.config.main_menu.callblock %]
         <li [% 'class="on"' IF template.title == 'Call barring' %]><a href="/callblock">[% Catalyst.loc('Call barring') %]</a></li>
