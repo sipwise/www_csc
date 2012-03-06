@@ -1,3 +1,14 @@
+ngcp-www-csc (3.3.0) unstable; urgency=low
+
+  [cveigl]
+  * serial call forwarding in CSC
+  * strip leading/trailing whitespaces from login
+
+  [mprokop]
+  * postinst script: use invoke-rc.d instead of directly invoking init script
+
+ -- Andrew Pogrebennyk <apogrebennyk@sipwise.com>  Tue, 06 Mar 2012 18:01:40 +0100
+
 ngcp-www-csc (3.2.0) unstable; urgency=low
 
   * german translation by Carsten Bock
