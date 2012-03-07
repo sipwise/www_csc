@@ -531,30 +531,25 @@ sub time_period_post : Chained('time') PathPart('period') CaptureArgs(0) {
 
 sub time_period_edit : Chained('time_period_get') PathPart('edit') Args(0) {
     my ( $self, $c ) = @_;
-    # done that's it
-    # maybe join with time_period_get() ?
 }
 
 sub time_period_save : Chained('time_period_post') PathPart('save') Args(0) {
     my ( $self, $c ) = @_;
+    
+    warn 'from_year: ' . $c->request->params->{from_year};
+    warn 'to_year : . ' . $c->request->params->{to_year};
 
     my %period;
-    $period{year} = $c->request->params->{year};
     $period{from_year} = $c->request->params->{from_year};
     $period{to_year} = $c->request->params->{to_year};
-    $period{month} = $c->request->params->{month};
     $period{from_month} = $c->request->params->{from_month};
     $period{to_month} = $c->request->params->{to_month};
-    $period{mday} = $c->request->params->{mday};
     $period{from_mday} = $c->request->params->{from_mday};
     $period{to_mday} = $c->request->params->{to_mday};
-    $period{wday} = $c->request->params->{wday};
     $period{from_wday} = $c->request->params->{from_wday};
     $period{to_wday} = $c->request->params->{to_wday};
-    $period{hour} = $c->request->params->{hour};
     $period{from_hour} = $c->request->params->{from_hour};
     $period{to_hour} = $c->request->params->{to_hour};
-    $period{minute} = $c->request->params->{minute};
     $period{from_minute} = $c->request->params->{from_minute};
     $period{to_minute} = $c->request->params->{to_minute};
 
@@ -566,19 +561,19 @@ sub time_period_save : Chained('time_period_post') PathPart('save') Args(0) {
     if ($c->stash->{tperiod_id}) {
         $ret = $c->model('Provisioning')->call_prov( $c, 'voip', 'update_subscriber_cf_time_period',
             { username => $c->stash->{subscriber}->{username},
-              domain   => $c->stash->{subscriber}->{domain},
-              set_id   => $c->stash->{tset_id},
-              data     => \%period,
+            domain   => $c->stash->{subscriber}->{domain},
+            set_id   => $c->stash->{tset_id},
+            data     => \%period,
             },
             undef,
         );
-    } 
+    }
     else {
         $ret = $c->model('Provisioning')->call_prov( $c, 'voip', 'create_subscriber_cf_time_period',
             { username => $c->stash->{subscriber}->{username},
-              domain   => $c->stash->{subscriber}->{domain},
-              set_id   => $c->stash->{tset_id},
-              data     => \%period,
+            domain   => $c->stash->{subscriber}->{domain},
+            set_id   => $c->stash->{tset_id},
+            data     => \%period,
             },
             undef,
         );
@@ -588,9 +583,9 @@ sub time_period_save : Chained('time_period_post') PathPart('save') Args(0) {
         $c->session->{messages} = { topmsg => 'Server.Voip.SavedSettings' }
     }
     else {
-        $c->session->{messages} = { toperr => 'Client.Voip.InputErrorFound' }
+            $c->session->{messages} = { toperr => 'Client.Voip.InputErrorFound' }
     }
-    
+
     $c->response->redirect($c->uri_for('/callforward/time'));
 }
 
@@ -706,7 +701,6 @@ sub load_cf_types :Private {
     ];
 }
 
-
 sub period_expand : Private {
     my ($self, $period) = @_;
     
@@ -730,43 +724,25 @@ sub period_collapse : Private {
     my ($self, $period) = @_;
 
     foreach my $part ('year', 'month', 'mday', 'wday', 'hour', 'minute') {
-        my $from = $period->{'from_' . $part};
-        my $to = $period->{'to_' . $part};
+        my $from = ( $period->{'from_' . $part} >= 0 ) ? $period->{'from_' . $part} : undef;
+        my $to = ( $period->{'to_' . $part} >= 0 ) ? $period->{'to_' . $part} : undef;
         my $collapsed;
 
-        if ($from) {
+        if (defined $from) {
             $collapsed = $from;
-            if ($to) {
-                if ($from < $to) {
-                    $collapsed .= '-' . $to;
-                }
-                elsif ($from > $to) {
-                    return -1;
-                }
+            if (defined $to) {
+                $collapsed .= '-' . $to;
             }
         }
+
         delete $period->{'from_' . $part};
         delete $period->{'to_' . $part};
         $period->{$part} = $collapsed;
+        
+        warn $part . ': '  . $collapsed;
     }
 
-    return 0;
+    1;
 }
     
-sub dbg {
-    my ($thing, $msg) = @_;
-    use Data::Dumper;
-
-    my @c = caller (1);
-    my $subname = $c[3];
-
-    if (ref $thing eq 'ARRAY' or ref $thing eq 'HASH') {
-        warn ' ===DBG===  ' . $msg if ($msg); 
-        warn ' ===DBG===  ' . $subname . '(): '. Dumper $thing;
-    }
-    else {
-        warn ' ===DBG===  ' . $msg if ($msg); 
-        warn ' ===DBG===  ' . $subname . '(): '. $thing;;
-    }
-}
 1;

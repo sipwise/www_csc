@@ -53,6 +53,7 @@ function create_period_part (kind, disabled, selected, name) {
    
     var function_name = 'get_' + name + 's';
     var steps = window[function_name] ();
+
     var html = '';
 
     if (disabled == 1) {
@@ -62,14 +63,18 @@ function create_period_part (kind, disabled, selected, name) {
         html += '<select class="dateform-elem" name="' + kind + '_' + name.toLowerCase() + '">';
     }
     
-    html += '<option style="text-transform:capitalize" value="0">' + name + '</option>';
+    html += '<option style="text-transform:capitalize" value="-1">' + name + '</option>';
 
-    for (var i = 1; i <= steps.length; i++) {
-        if (i == selected) { 
-            html += '<option selected="selected" value="' + i + '">' + steps[i-1] + '</option>';
+    for (var i = 0; i < steps.length; i++) {
+
+        var value = steps[i].value;
+        var label = steps[i].label;
+
+        if (value == selected) { 
+            html += '<option selected="selected" value="' + value + '">' + label + '</option>';
         }
         else {
-            html += '<option value="' + i + '">' + steps[i-1] + '</option>';
+            html += '<option value="' + value + '">' + label + '</option>';
         }
     }
     html += '</select>';
@@ -78,40 +83,37 @@ function create_period_part (kind, disabled, selected, name) {
 }
 
 function get_years () {
-    var years = Array();
+    var years = Array(); 
     var d = new Date();
     var current_year = d.getFullYear();
     
     for (var i = 0; i < 10 ; i++) {
-        years.push (current_year + i)
+        years.push ( {value: current_year+i, label: current_year+i} );
     }
 
     return years;
 }
 
-function get_mdays () {
-    var stuff = Array(31);
-
-    console.log ('length:   ' + stuff.length);
-
-    for (var i = 0; i < stuff.length; i++) {
-        stuff[i] = i+1;
+function get_mdays () { 
+    var stuff = Array ();
+    for (var i = 0; i < 31; i++) {
+        stuff.push ( {value: i+1, label: i+1 } );
     }
     return stuff;
 }
 
-function get_hours () {
-    var stuff = Array(24);
-    for (var i = 0; i < stuff.length; i++) {
-        stuff[i] = i;
+function get_hours () { 
+    var stuff = Array ();
+    for (var i = 0; i < 24; i++) {
+        stuff.push ( {value: i, label: i } );
     }
     return stuff;
 }
 
-function get_minutes () {
-    var stuff = Array(60);
-    for (var i = 0; i < stuff.length; i++) {
-        stuff[i] = i;
+function get_minutes () { 
+    var stuff = Array ();
+    for (var i = 0; i < 60; i++) {
+        stuff.push ( {value: i, label: i } );
     }
     return stuff;
 }
@@ -130,7 +132,7 @@ function print_html (target, html, disabled) {
 
 function remove_html (target, disabled) {
     
-    $("#" + target).empty()
+    $("#" + target).empty().append('<p>any</p>');
     
     if (disabled == 1) {
         $("#" + target + "-foot").empty();

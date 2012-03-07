@@ -896,10 +896,16 @@ select.dateform-elem {
 }
 
 div.dateform-elem {
-    width: 67px;
+    width: 60px;
     height: 60px;
-    margin: 0;
+    border: 1px solid #c3dae8;
+    margin: 5px 0px 5px 0px;
+    padding: 7px;
     text-align: center;
+}
+
+a {
+    font-size: 12px;
 }
 
 /* basic grid-layout */

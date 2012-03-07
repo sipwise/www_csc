@@ -191,32 +191,40 @@
     });
 
     function get_months () {
-        return [
-            "[% Catalyst.loc('Jan') %]",
-            "[% Catalyst.loc('Feb') %]",
-            "[% Catalyst.loc('Mar') %]",
-            "[% Catalyst.loc('Apr') %]",
-            "[% Catalyst.loc('May') %]",
-            "[% Catalyst.loc('Jun') %]",
-            "[% Catalyst.loc('Jul') %]",
-            "[% Catalyst.loc('Aug') %]",
-            "[% Catalyst.loc('Sep') %]",
-            "[% Catalyst.loc('Oct') %]",
-            "[% Catalyst.loc('Nov') %]",
-            "[% Catalyst.loc('Dec') %]"
-        ];
+
+        var stuff = Array ();
+        var i = 1;
+
+        stuff.push ({ value: i++, label: '[% Catalyst.loc("Jan") %]' });
+        stuff.push ({ value: i++, label: '[% Catalyst.loc("Feb") %]' });
+        stuff.push ({ value: i++, label: '[% Catalyst.loc("Mar") %]' });
+        stuff.push ({ value: i++, label: '[% Catalyst.loc("Apr") %]' });
+        stuff.push ({ value: i++, label: '[% Catalyst.loc("May") %]' });
+        stuff.push ({ value: i++, label: '[% Catalyst.loc("Jun") %]' });
+        stuff.push ({ value: i++, label: '[% Catalyst.loc("Jul") %]' });
+        stuff.push ({ value: i++, label: '[% Catalyst.loc("Aug") %]' });
+        stuff.push ({ value: i++, label: '[% Catalyst.loc("Sep") %]' });
+        stuff.push ({ value: i++, label: '[% Catalyst.loc("Oct") %]' });
+        stuff.push ({ value: i++, label: '[% Catalyst.loc("Nov") %]' });
+        stuff.push ({ value: i++, label: '[% Catalyst.loc("Dec") %]' });
+
+        return stuff;
     }
 
     function get_wdays () {
-        return [
-            "[% Catalyst.loc('Mon') %]",
-            "[% Catalyst.loc('Tue') %]",
-            "[% Catalyst.loc('Wed') %]",
-            "[% Catalyst.loc('Thu') %]",
-            "[% Catalyst.loc('Fri') %]",
-            "[% Catalyst.loc('Sat') %]",
-            "[% Catalyst.loc('Sun') %]",
-        ];
+
+        var stuff = Array ();
+        var i = 1;
+
+        stuff.push ({ value: i++, label: '[% Catalyst.loc("Mon") %]' });
+        stuff.push ({ value: i++, label: '[% Catalyst.loc("Tue") %]' });
+        stuff.push ({ value: i++, label: '[% Catalyst.loc("Wed") %]' });
+        stuff.push ({ value: i++, label: '[% Catalyst.loc("Thu") %]' });
+        stuff.push ({ value: i++, label: '[% Catalyst.loc("Fri") %]' });
+        stuff.push ({ value: i++, label: '[% Catalyst.loc("Sat") %]' });
+        stuff.push ({ value: i++, label: '[% Catalyst.loc("Sun") %]' });
+
+        return stuff;
     }
 
 </script>
@@ -234,13 +242,12 @@
                     [% from = 'from_' _ part %] 
                     [% to = 'to_' _ part %] 
                     
-                    [% selected = (period.$part.defined) ? period.$part : 0 %]
-                    [% selected_from = (period.$from.defined) ? period.$from : 0 %]
-                    [% selected_to = (period.$to.defined) ? period.$to : 0 %]
+                    [% selected_from = (period.$from.defined) ? period.$from : -1 %]
+                    [% selected_to = (period.$to.defined) ? period.$to : -1 %]
 
-                    [% selected_option = (selected_from) ? selected_from : selected %]
+                    [% selected_option = (selected_from >= 0) ? selected_from : -1 %]
 
-                    [% IF selected or selected_from %]
+                    [% IF (selected_from >= 0) %]
                         [% f = "create_period_part ('from', $disabled, $selected_option , '$part') " %]
                         [% t = "create_period_part ('to', $disabled, $selected_to, '$part') " %]
                         [% html = html _ "print_html ('$target', $f + ' through<br/> ' + $t, $disabled);\n" %]
