@@ -51,9 +51,15 @@ sub mapping_save : Chained('mapping') PathPart('save') Args(0) {
     my $map = {
         id => $c->request->params->{map_id},
         type => $c->request->params->{type},
-        destination_set_id => $c->request->params->{destset_id},
-        time_set_id => $c->request->params->{timeset_id},
+        destination_set_id => ($c->request->params->{destset_id} != 0) ? $c->request->params->{destset_id}: undef,
+        time_set_id => ($c->request->params->{timeset_id} != 0) ? $c->request->params->{timeset_id} : undef,
     };
+
+    unless (defined $map->{destination_set_id}) {
+        $c->session->{messages} = { toperr => 'Client.Syntax.MissingDestinationSet' }; 
+        $c->response->redirect($c->uri_for ('/callforward/mapping'));
+        $c->detach;
+    }
 
     my $ret;
     if ($map->{id}) {
@@ -137,21 +143,26 @@ sub destination : Chained('base') PathPart('destination') CaptureArgs(0) {
             next if ($set->{id} != $c->session->{refill}->{set_id});
             delete $c->session->{refill}->{set_id};
 
-            if ($c->session->{refill}->{item_id}) {
+            if (defined $c->session->{refill}->{item_id}) {
                 foreach my $item (@{$set->{destinations}}) {
                     next if ($item->{id} != $c->session->{refill}->{item_id});
                     delete $c->session->{refill}->{item_id};
                 
+                    $c->stash->{dtarget_id} = $item->{id};
                     foreach my $key (keys %{$c->session->{refill}}) {
                         $item->{$key} = $c->session->{refill}->{$key};
                     }
+
                 }
 
                 # all new item
                 if (exists $c->session->{refill}->{item_id}) {
                     delete $c->session->{refill}->{item_id};
                     
-                    my $item = { id => 0}; # indicate that this is not yet in the database
+                    # indicate that this is not yet in the database
+                    my $item = { id => -1 }; 
+                    $c->stash->{dtarget_id} = $item->{id};
+
                     foreach my $key (keys %{$c->session->{refill}}) {
                         $item->{$key} = $c->session->{refill}->{$key};
                     }
@@ -164,6 +175,7 @@ sub destination : Chained('base') PathPart('destination') CaptureArgs(0) {
             }
         }
 
+        
         delete $c->session->{refill};
     }
 }
@@ -311,7 +323,7 @@ sub destination_target_save : Chained('destination_target_post') PathPart('save'
             return unless $c->model('Provisioning')->call_prov( $c, 'voip', 'check_E164_number', $fw_target, \$checkresult);
             unless($checkresult) {
                 $messages{toperr} = 'Client.Voip.MalformedNumber'
-            } else {
+                } else {
                 $fw_target = 'sip:'.$fw_target.'@'.$c->stash->{subscriber}->{domain};
             }
         } elsif($fw_target =~ /^[a-z0-9&=+\$,;?\/_.!~*'()-]+\@[a-z0-9.-]+(:\d{1,5})?$/i) {
@@ -347,9 +359,10 @@ sub destination_target_save : Chained('destination_target_post') PathPart('save'
             $c->response->redirect($c->uri_for('/callforward/destination/target/'.$c->stash->{dtarget_id}.'/edit#dest-'.$c->stash->{dtarget_id}));
         } else { # XXX create a new target "inside" existing set
             $c->session->{refill}->{item_id} = -1;
-            $c->response->redirect($c->uri_for('/callforward/destination/set/'.$c->stash->{dset_id}.'/edit#dest-'.$c->stash->{dset_id}));
+            $c->response->redirect($c->uri_for('/callforward/destination#dset-'.$c->stash->{dset_id}));
         }
-        return;
+
+        $c->detach; 
     }
 
     $dest{destination} = $fw_target;
@@ -439,8 +452,45 @@ sub time : Chained('base') PathPart('time') CaptureArgs(0) {
             }
         }
     }
-        
     $c->stash->{mapped} = $mapped;
+    
+    if (defined $c->session->{refill}) {
+        
+        foreach my $set (@{$c->stash->{time_sets}}) {
+            next if ($set->{id} != $c->session->{refill}->{set_id});
+            delete $c->session->{refill}->{set_id};
+
+            if (defined $c->session->{refill}->{item_id}) {
+                foreach my $item (@{$set->{periods}}) {
+                    next if ($item->{id} != $c->session->{refill}->{item_id});
+                    delete $c->session->{refill}->{item_id};
+                
+                    foreach my $key (keys %{$c->session->{refill}}) {
+                        $item->{$key} = $c->session->{refill}->{$key};
+                    }
+                }
+
+                # all new item
+                if (exists $c->session->{refill}->{item_id}) {
+                    delete $c->session->{refill}->{item_id};
+
+                    my $item = { id => -1 }; # indicate that this is not yet in the database
+                    $c->stash->{tperiod_id} = $item->{id};
+
+                    foreach my $key (keys %{$c->session->{refill}}) {
+                        $item->{$key} = $c->session->{refill}->{$key};
+                    }
+                    push @{$set->{periods}}, $item;
+                }
+            }
+
+            foreach my $key (keys %{$c->session->{refill}}) {
+                $set->{$key} = $c->session->{refill}->{$key};
+            }
+        }
+
+        delete $c->session->{refill};
+    }
 }
 
 # sub time_list : Chained('time') PathPart('list') Args(0) {
@@ -535,9 +585,6 @@ sub time_period_edit : Chained('time_period_get') PathPart('edit') Args(0) {
 
 sub time_period_save : Chained('time_period_post') PathPart('save') Args(0) {
     my ( $self, $c ) = @_;
-    
-    warn 'from_year: ' . $c->request->params->{from_year};
-    warn 'to_year : . ' . $c->request->params->{to_year};
 
     my %period;
     $period{from_year} = $c->request->params->{from_year};
@@ -553,7 +600,36 @@ sub time_period_save : Chained('time_period_post') PathPart('save') Args(0) {
     $period{from_minute} = $c->request->params->{from_minute};
     $period{to_minute} = $c->request->params->{to_minute};
 
-    $self->period_collapse(\%period);
+    $c->session->{messages} = $self->period_collapse(\%period);
+
+    if (keys %{$c->session->{messages}}) {
+        $c->session->{refill} = {
+            set_id => $c->stash->{tset_id},
+            item_id => $c->stash->{tperiod_id},
+
+            from_year => $c->request->params->{from_year},
+            to_year => $c->request->params->{to_year},
+            from_month => $c->request->params->{from_month},
+            to_month => $c->request->params->{to_month},
+            from_mday => $c->request->params->{from_mday},
+            to_mday => $c->request->params->{to_mday},
+            from_wday => $c->request->params->{from_wday},
+            to_wday => $c->request->params->{to_wday},
+            from_hour => $c->request->params->{from_hour},
+            to_hour => $c->request->params->{to_hour},
+            from_minute => $c->request->params->{from_minute},
+            to_minute => $c->request->params->{to_minute},
+        };
+
+        if ($c->stash->{tperiod_id}) {
+            $c->response->redirect($c->uri_for('/callforward/time/period/' . $c->stash->{tperiod_id} . '/edit#tperiod-'.$c->stash->{tperiod_id}));
+        } else {
+            $c->session->{refill}->{item_id} = -1;
+            $c->response->redirect($c->uri_for('/callforward/time#tset-'.$c->stash->{tset_id}));
+        }
+        
+        $c->detach;
+    }
 
     $period{id} = $c->stash->{tperiod_id} if ($c->stash->{tperiod_id});
 
@@ -561,9 +637,9 @@ sub time_period_save : Chained('time_period_post') PathPart('save') Args(0) {
     if ($c->stash->{tperiod_id}) {
         $ret = $c->model('Provisioning')->call_prov( $c, 'voip', 'update_subscriber_cf_time_period',
             { username => $c->stash->{subscriber}->{username},
-            domain   => $c->stash->{subscriber}->{domain},
-            set_id   => $c->stash->{tset_id},
-            data     => \%period,
+              domain   => $c->stash->{subscriber}->{domain},
+              set_id   => $c->stash->{tset_id},
+              data     => \%period,
             },
             undef,
         );
@@ -571,19 +647,19 @@ sub time_period_save : Chained('time_period_post') PathPart('save') Args(0) {
     else {
         $ret = $c->model('Provisioning')->call_prov( $c, 'voip', 'create_subscriber_cf_time_period',
             { username => $c->stash->{subscriber}->{username},
-            domain   => $c->stash->{subscriber}->{domain},
-            set_id   => $c->stash->{tset_id},
-            data     => \%period,
+              domain   => $c->stash->{subscriber}->{domain},
+              set_id   => $c->stash->{tset_id},
+              data     => \%period,
             },
             undef,
         );
     }
 
     if ($ret) {
-        $c->session->{messages} = { topmsg => 'Server.Voip.SavedSettings' }
+        $c->session->{messages}{topmsg} = 'Server.Voip.SavedSettings';
     }
     else {
-            $c->session->{messages} = { toperr => 'Client.Voip.InputErrorFound' }
+        $c->session->{messages}{toperr} = 'Client.Voip.InputErrorFound';
     }
 
     $c->response->redirect($c->uri_for('/callforward/time'));
@@ -722,6 +798,7 @@ sub period_expand : Private {
 
 sub period_collapse : Private {
     my ($self, $period) = @_;
+    my %messages;
 
     foreach my $part ('year', 'month', 'mday', 'wday', 'hour', 'minute') {
         my $from = ( $period->{'from_' . $part} >= 0 ) ? $period->{'from_' . $part} : undef;
@@ -731,18 +808,23 @@ sub period_collapse : Private {
         if (defined $from) {
             $collapsed = $from;
             if (defined $to) {
+                if ($part eq 'year' && $from > $to) {
+                    $messages{err_year} = 'Client.Syntax.FromAfterTo';
+                }
                 $collapsed .= '-' . $to;
             }
         }
+        elsif (defined $to) {
+            $messages{'err_'.$part} = 'Client.Syntax.FromMissing'; 
+        }
+
 
         delete $period->{'from_' . $part};
         delete $period->{'to_' . $part};
         $period->{$part} = $collapsed;
-        
-        warn $part . ': '  . $collapsed;
     }
-
-    1;
+    
+    return \%messages;
 }
     
 1;

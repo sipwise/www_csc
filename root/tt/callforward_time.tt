@@ -1,8 +1,7 @@
 [% META title = 'Callforwards' %]
-
 [% PROCESS tt/callforward_head.tt %]
 
-    <div id="main">
+<div id="main">
 
     <div id="topmsg">
         <p> [% messages.topmsg %] </p>
@@ -12,59 +11,61 @@
         <p> [% messages.prov_error %] </p>
     </div>
     
-    <div class="sperrehead">
-        <h3>[% Catalyst.loc('Time sets') %]</h2>
-        <h2 class="umleitungfuer">[% Catalyst.loc('Settings for [_1]', subscriber.active_number) %]</h2>
-    </div>
+<div class="sperrehead">
+    <h3>[% Catalyst.loc('Time sets') %]</h2>
+    <h2 class="umleitungfuer">[% Catalyst.loc('Settings for [_1]', subscriber.active_number) %]</h2>
+</div>
 
-    <div id="spalten31">
+<div id="spalten31">
     <div class="spalte1">
         
-        [% FOREACH tset IN time_sets %]
-            <a name="tset-[% tset.id %]">&nbsp;</a>
-            <div class="set-container">
-                <div class="set-item">
-                    [% IF tset_id == tset.id %]
-                        [% PROCESS set action = 'edit' %]
-                    [% ELSE %]
-                        [% PROCESS set action = 'view' %]
-                    [% END %]
-                    &nbsp;
-                </div> <!--set-item-->
+    [% FOREACH tset IN time_sets %]
+        <div class="set-container">
+        <a name="tset-[% tset.id %]">&nbsp;</a>
+        <div class="set-item">
+            [% IF tset_id == tset.id %]
+                [% PROCESS set action = 'edit' %]
+            [% ELSE %]
+                [% PROCESS set action = 'view' %]
+            [% END %]
+            &nbsp;
+        </div> <!--set-item-->
+        <br clear="all" />
 
-                [% priority = 0 %]
-                [% FOREACH period IN tset.periods %]
-                    <a name="tperiod-[% period.id %]">&nbsp;</a>
-                    [% IF priority % 2 == 0%]
-                        <div class="prepend-1 sub-container even-container">&nbsp;
-                    [% ELSE %]
-                        <div class="prepend-1 sub-container odd-container">&nbsp;
-                    [% END %]
-                        [% IF tperiod_id == period.id %]
-                            [% PROCESS period action = 'edit' %]
-                        [% ELSE %]
-                            [% PROCESS period action = 'view' %]
-                        [% END %]
-                    </div> <!--period-item-->
-                    <br clear="all" />
-                    [% priority = priority + 1 %]
-                [% END %]
+        [% priority = 0 %]
+        [% FOREACH period IN tset.periods %]
 
-                [% IF (tset_id == tset.id) or (tset.periods.size == 0) %]
-                    <div class="prepend-1 sub-container">&nbsp;
-                        [% PROCESS period action = 'add' %]
-                    </div> <!--period-item-->
-                    <!-- <br clear="all" /> -->
-                [% END %]
+            <div class="prepend-1 sub-container">
+            
+            [% IF period.id == -1 %]
+                [% PROCESS period action = 'add' %]
+            [% ELSIF tperiod_id == period.id %]
+                [% PROCESS period action = 'edit' %]
+            [% ELSE %]
+                [% PROCESS period action = 'view' %]
+            [% END %]
 
-            </div> <!--set-container-->
+            [% priority = priority + 1 %]
+            </div> <!--period-item-->
             <br clear="all" />
         [% END %]
         
-        <div class="set-container">&nbsp;
-        <div class="set-item">
-            [% PROCESS set action = 'add' %]&nbsp;
-        </div></div>
+        [% IF priority == 0 or tset_id == tset.id %]
+            [% period = undef %]
+            <div class="prepend-1 sub-container">
+                [% PROCESS period action = 'add' %]
+            </div>
+            <br clear="all" />
+        [% END %]
+        
+        </div> <!--set-container-->
+        <br clear="all" />
+    [% END %]
+        
+    <div class="set-container">&nbsp;
+    <div class="set-item">
+        [% PROCESS set action = 'add' %]
+    </div></div>
 
     </div> <!-- spalte1 -->
 
@@ -105,8 +106,8 @@
         <div class="span-1"><a href="/callforward/time"><span class="button-cancel">[% Catalyst.loc('Cancel') %]</span></a></div>
     [% ELSIF action == 'add' %]
         <div class="prepend-1 span-1"><p class="link_button">
-            <label for="add_tset[% tset.id %]">[% Catalyst.loc('Add timeset') %]</label>
-            <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="add_tset[% tset.id %]">
+            <label for="add_tset_[% tset.id %]">[% Catalyst.loc('Add timeset') %]</label>
+            <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="add_tset_[% tset.id %]">
         </p></div>
         <div class="span-1"></div>
     [% ELSIF action == 'view' %]
@@ -128,6 +129,7 @@
 
 [%# ================================= %]
 [% BLOCK period %]
+    
     [% IF action == 'edit' or action == 'add' %]
         <form action="/callforward/time/period/save" method="post">
     [% ELSIF action == 'view' %]
@@ -145,12 +147,22 @@
         <div class="span-2">
             <div class="ui-widget-header drophead" style="text-transform:capitalize"><p class="ui-widget-header drophead">[% part %]</p></div>
             [% IF action == 'add' %]
-                <div class="ui-widget-header dateform-elem" id="[% part %]-[% tset.id %]-0"></div> 
-                <div class="ui-widget-header dropfoot"      id="[% part %]-[% tset.id %]-0-foot"></div>
+                <div class="ui-widget-header dateform-elem"     id="[% part %]-[% tset.id %]--1"></div> 
+                <div class="ui-widget-header dropfoot"          id="[% part %]-[% tset.id %]--1-foot"></div>
             [% ELSE %]
-                <div class="ui-widget-header dateform-elem" id="[% part %]-[% tset.id %]-[% period.id %]"></div>
-                <div class="ui-widget-header dropfoot"      id="[% part %]-[% tset.id %]-[% period.id %]-foot"></div>
+                <div class="ui-widget-header dateform-elem"     id="[% part %]-[% tset.id %]-[% period.id %]"></div>
+                <div class="ui-widget-header dropfoot"          id="[% part %]-[% tset.id %]-[% period.id %]-foot"></div>
             [% END %]
+            
+            <div class="dateform-errormsg" id="[% part %]-[% tset.id %]-[% period.id %]-errormsg">
+            [% IF (action == 'edit' or action == 'add') and tperiod_id == period.id %]
+                [% error = 'err_' _ part %]
+                [% IF messages.$error %]
+                    <p>[% messages.$error %] </p>
+                [% END %]
+            [% END %]
+            </div>
+                
         </div>
     [% END %]
 
@@ -162,8 +174,8 @@
         <div class="span-1"><a href="/callforward/time"><span class="button-cancel">[% Catalyst.loc('Cancel') %]</span></a></div>
     [% ELSIF action == 'add' %]
         <div class="span-1"><p class="link_button">
-            <label for="add_period_0">[% Catalyst.loc('Add period') %]</label>
-            <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="add_period_0">
+            <label for="add_period_[% tset.id %]">[% Catalyst.loc('Add period') %]</label>
+            <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="add_period_[% tset.id %]">
         </p></div>
         <div class="span-1"></div>
     [% ELSIF action == 'view' %]
@@ -234,32 +246,32 @@
         [% FOREACH tset IN time_sets %]
             [% FOREACH period IN tset.periods %]
                
-                [% disabled = (period.id == tperiod_id) ? 0 : 1 %]
+                [% disabled = ((period.id == tperiod_id) or (period.id == 0)) ? 0 : 1 %]
                 
                 [% FOREACH part IN ['year', 'month', 'mday', 'wday', 'hour', 'minute'] %]
                     
                     [% target = part _ '-' _ tset.id _ '-' _ period.id %]
                     [% from = 'from_' _ part %] 
                     [% to = 'to_' _ part %] 
-                    
+
                     [% selected_from = (period.$from.defined) ? period.$from : -1 %]
                     [% selected_to = (period.$to.defined) ? period.$to : -1 %]
 
-                    [% selected_option = (selected_from >= 0) ? selected_from : -1 %]
-
-                    [% IF (selected_from >= 0) %]
-                        [% f = "create_period_part ('from', $disabled, $selected_option , '$part') " %]
+                    [% IF (selected_from >= 0) or (selected_to >= 0) %]
+                        [% f = "create_period_part ('from', $disabled, $selected_from , '$part') " %]
                         [% t = "create_period_part ('to', $disabled, $selected_to, '$part') " %]
                         [% html = html _ "print_html ('$target', $f + ' through<br/> ' + $t, $disabled);\n" %]
                     [% ELSE %]
                         [% html = html _ "remove_html ('$target', '$disabled');\n" %]
                     [% END %]
+
                 [% END %]
+                
             [% END %]
                 
             [% IF (tset_id == tset.id) or (tset.periods.size == 0) %]
                 [% FOREACH part IN ['year', 'month', 'mday', 'wday', 'hour', 'minute'] %]
-                    [% target = part _ '-' _ tset.id _ '-0' %]
+                    [% target = part _ '-' _ tset.id _ '--1' %]
                     [% html = html _ "remove_html ('$target');" %]
                 [% END %]
             [% END %]

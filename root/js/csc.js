@@ -133,6 +133,7 @@ function print_html (target, html, disabled) {
 function remove_html (target, disabled) {
     
     $("#" + target).empty().append('<p>any</p>');
+    $("#" + target + '-errormsg').empty().append('&nbsp;');
     
     if (disabled == 1) {
         $("#" + target + "-foot").empty();
