@@ -65,6 +65,7 @@
     <div class="set-container">&nbsp;
     <div class="set-item">
         [% PROCESS set action = 'add' %]
+        &nbsp;
     </div></div>
 
     </div> <!-- spalte1 -->
