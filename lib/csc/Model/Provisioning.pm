@@ -129,28 +129,6 @@ sub add_subscriber {
     return 1;
 }
 
-sub get_subscriber_byid {
-    my ($self, $c, $subscriber_id) = @_;
-
-    $c->log->debug("***Provisioning::get_subscriber_byid: called");
-
-    eval {
-        $c->session->{user}{data} =
-            $$self{prov}->get_subscriber_byid({subscriber_id => $subscriber_id});
-    };
-    if($@) {
-        if(ref $@ eq 'SOAP::Fault') {
-            $c->log->error("***Provisioning::get_subscriber_byid failed to get subscriber for id $subscriber_id: ". $@->faultstring);
-            $c->session->{prov_error} = $@->faultcode;
-        } else {
-            $c->log->error("***Provisioning::get_subscriber_byid failed to get subscriber for id $subscriber_id: $@.");
-            $c->session->{prov_error} = 'Server.Internal';
-        }
-        return;
-    }
-    return 1;
-}
-
 sub get_usr_preferences {
     my ($self, $c) = @_;
 
