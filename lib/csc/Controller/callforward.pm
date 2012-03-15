@@ -746,7 +746,7 @@ sub load_subscriber :Private {
 
     my $subscriber;
 
-    return unless $c->model('Provisioning')->call_prov( $c, 'voip', 'get_voip_account_subscriber_by_id',
+    return unless $c->model('Provisioning')->call_prov( $c, 'billing', 'get_voip_account_subscriber_by_id',
         { subscriber_id => $c->session->{user}->{data}->{subscriber_id} },
         \$subscriber,
     );
