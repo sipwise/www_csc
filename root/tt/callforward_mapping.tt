@@ -35,15 +35,16 @@
 
         [% FOREACH map IN cf_map %]
             [% IF first %]
-                <div class="span-4">[% cf_type.description %]</div>
+                <br clear="all" /> 
+                <div class="set-item span-15">[% cf_type.description %]</div>
+                <br clear="all" /> 
                 [% first = 0 %]
-            [% ELSE %]
-                <div class="span-4">&nbsp</div>
             [% END %]
-
-            [% PROCESS map_edit %]
-
             <br clear="all" /> 
+
+            <div class="prepend-2">
+                [% PROCESS map_edit %]
+            </div>
         [% END %]
     </div>
     <br clear="all" /> 
@@ -62,8 +63,8 @@
     <input type="hidden" name="map_id" value="[% map.id %]"/>
     <input type="hidden" name="type" value="[% map.type %]"/>
 
-    <div class="span-1">[% Catalyst.loc('to') %]</div>
-    <select name="destset_id" class="span-3"[% UNLESS map_id == map.id or map.id == 0 %]disabled="disabled"[% END %]>
+    <div class="span-05">[% Catalyst.loc('to') %]</div>
+    <select name="destset_id" class="span-4"[% UNLESS map_id == map.id or map.id == 0 %]disabled="disabled"[% END %]>
         <option value="0" [% UNLESS map.destination_set_id.defined %]selected="selected"[% END %]>&lt;none&gt;</option>
         [% FOREACH dset IN destination_sets %]
             [% IF dset.destinations.size > 0 %]
@@ -73,7 +74,7 @@
     </select>
  
     <div class="span-1">[% Catalyst.loc('during') %]</div>
-    <select name="timeset_id" class="span-3"[% UNLESS map_id == map.id or map.id == 0 %]disabled="disabled"[% END %]>
+    <select name="timeset_id" class="span-4"[% UNLESS map_id == map.id or map.id == 0 %]disabled="disabled"[% END %]>
         <option value="0" [% UNLESS map.time_set_id.defined %]selected="selected"[% END %]>&lt;always&gt;</option>
         [% FOREACH tset IN time_sets %]
             [% IF tset.periods.size > 0 %]
@@ -98,6 +99,7 @@
                 <label for="add_map_[% map.type %]_[% map.id %]">[% Catalyst.loc('Add')%]</label>
                 <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="add_map_[% map.type %]_[% map.id %]">
             </p>
+        <br clear="all" /> 
         </div>
     [% ELSE %]
         <div class="prepend-1 span-1">

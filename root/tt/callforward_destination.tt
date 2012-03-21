@@ -21,7 +21,7 @@
         
         [% FOREACH dset IN destination_sets %]
             <div id="dset-[% dset.id %]" class="set-container">
-            <a name="anchor-dset-[% dset.id %]">&nbsp;</a>
+            <a name="dset-[% dset.id %]">&nbsp;</a>
             <div class="set-item">
                 [% IF dset_id == dset.id %]
                     [% PROCESS set action = 'edit' %]
@@ -34,41 +34,43 @@
             [% priority = 0 %]
             <div>
             [% FOREACH dest IN dset.destinations %]
-                
-                [%# this one is not yet in the db but is being created 
-                    will be displayed below %]
-                [% NEXT IF (dest.id == 0) %] 
 
                 <div id="dest-[% dest.id %]" class="sub-container">
-                <a name="anchor-dest-[% dest.id %]">&nbsp;</a>
-                [% IF dtarget_id == dest.id %]
+                <a name="dest-[% dest.id %]">&nbsp;</a>
+                
+                [% IF (dest.id == -1) %]
+                    [% PROCESS target action = 'add' %]
+                [% ELSIF dtarget_id == dest.id %]
                     [% PROCESS target action = 'edit' %]
-                    </div> <!-- dest-item -->
-                    <br clear="all" />
+                <br clear="all" />
                 [% ELSE %]
                     [% PROCESS target action = 'view' %]
-                    </div> <!-- dest-item -->
                 [% END %]
+
                 [% priority = priority + 1 %]
+                </div> <!-- dest-item -->
             [% END %]
 
             </div>
 
             [%# dest is still available. this is expected behaviour 
                 see: http://template-toolkit.org/docs/manual/Directives.html#section_FOREACH %]
-            [% IF (dest.id == 0) or (dset_id == dset.id) or (dset.destinations.size == 0) %]
+
+            [% IF priority == 0 or dset_id == dset.id %] [%# either editing set or nothing here so far, offer empty one %]
+                [% dest = undef %] [%# dest still holds the last one %]
                 <div class="sub-container">
-                    [% PROCESS target action = 'add' %]&nbsp;
+                    [% PROCESS target action = 'add' %]
                 </div>
-                <br clear="all" />
             [% END %]
 
             </div> <!-- set-container -->
+            <br clear="all" />
         [% END %]
 
         <div class="set-container">&nbsp;
         <div class="set-item">
-            [% PROCESS set action = 'add' %]&nbsp;
+            [% PROCESS set action = 'add' %]
+            &nbsp;
         </div></div>
 
         </div> <!-- spalte1 -->
@@ -83,6 +85,7 @@
 <br clear="all" />
 
 [%# ================================= %]
+
 [% BLOCK set %]
     [% IF action == 'edit' or action == 'add' %]
         <form action="/callforward/destination/set/save" method="post">
@@ -143,6 +146,7 @@
 [% END %]
 
 [%# ================================= %]
+
 [% BLOCK target %]
 
     [% IF action == 'edit' or action == 'add' %]
@@ -199,8 +203,11 @@
                 [% value = 300 %]
             [% END %]
             <input type="text" id="dest_timeout" name="dest_timeout" size="2" value="[% value %]" /><span>&nbsp;[% Catalyst.loc('seconds') %]</span>
-            [% IF messages.err_target %] <div id="errormsg"><p>[% messages.err_target %]</p></div> [% END %]
-            [% IF messages.err_timeout %] <div id="errormsg"><p>[% messages.err_timeout %]</p></div> [% END %]
+           
+            [% IF dest.id == dtarget_id %]
+                [% IF messages.err_target %] <div id="errormsg"><p>[% messages.err_target %]</p></div> [% END %]
+                [% IF messages.err_timeout %] <div id="errormsg"><p>[% messages.err_timeout %]</p></div> [% END %]
+            [% END %]
         </div>
 
         [% IF action == 'edit' %]
@@ -216,8 +223,8 @@
         [% ELSIF action == 'add' %]
             <div class="span-1">
                 <p class="link_button">
-                    <label for="add_dest_[% dest.id %]">[% Catalyst.loc('Add destination') %]</label>
-                    <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="add_dest_[% dest.id %]">
+                    <label for="add_dest_[% dset.id %]">[% Catalyst.loc('Add destination') %]</label>
+                    <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="add_dest_[% dset.id %]">
                 </p>
             </div>
             <div></div>

@@ -129,28 +129,6 @@ sub add_subscriber {
     return 1;
 }
 
-sub get_subscriber_byid {
-    my ($self, $c, $subscriber_id) = @_;
-
-    $c->log->debug("***Provisioning::get_subscriber_byid: called");
-
-    eval {
-        $c->session->{user}{data} =
-            $$self{prov}->get_subscriber_byid({subscriber_id => $subscriber_id});
-    };
-    if($@) {
-        if(ref $@ eq 'SOAP::Fault') {
-            $c->log->error("***Provisioning::get_subscriber_byid failed to get subscriber for id $subscriber_id: ". $@->faultstring);
-            $c->session->{prov_error} = $@->faultcode;
-        } else {
-            $c->log->error("***Provisioning::get_subscriber_byid failed to get subscriber for id $subscriber_id: $@.");
-            $c->session->{prov_error} = 'Server.Internal';
-        }
-        return;
-    }
-    return 1;
-}
-
 sub get_usr_preferences {
     my ($self, $c) = @_;
 
@@ -163,8 +141,9 @@ sub get_usr_preferences {
 
     eval {
         $c->session->{user}{data} =
-            $$self{prov}->get_subscriber({username => $c->session->{user}{username},
-                                          domain => $c->session->{user}{domain}});
+            $$self{billing}->get_voip_account_subscriber({id       => $c->session->{user}{account_id},
+                                                          username => $c->session->{user}{username},
+                                                          domain   => $c->session->{user}{domain} });
         $c->session->{user}{preferences} =
             $$self{prov}->get_subscriber_preferences({username => $c->session->{user}{username},
                                                       domain => $c->session->{user}{domain}});
@@ -460,11 +439,7 @@ sub get_voip_account_subscribers {
             $$self{prov}->get_voip_account_subscribers({ id => $c->session->{user}{account_id} });
 
         foreach my $subscriber (@{$c->session->{user}{subscribers}}) {
-            $subscriber =
-                $$self{prov}->get_subscriber({
-                                               username => $$subscriber{username},
-                                               domain   => $$subscriber{domain}
-                                            });
+
             $$subscriber{preferences} =
                 $$self{prov}->get_subscriber_preferences({
                                                            username => $$subscriber{username},
@@ -1180,7 +1155,7 @@ sub _get_user {
 
     my ($loc, $dom) = split /\@/, $user;
     my $user_obj = eval {
-        my $tmpobj = $$self{prov}->get_subscriber_by_webuser({webusername => $loc, domain => $dom});
+        my $tmpobj = $$self{billing}->get_voip_account_subscriber_by_webuser({webusername => $loc, domain => $dom});
         my $tmpref = $$self{prov}->get_subscriber_preferences({username => $$tmpobj{username}, domain => $dom});
         $$tmpobj{extension} = $$tmpref{extension};
         return $tmpobj;

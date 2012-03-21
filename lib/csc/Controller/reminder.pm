@@ -30,8 +30,9 @@ sub index : Private {
     $c->log->debug('***reminder::index called');
     $c->stash->{template} = 'tt/reminder.tt';
 
-    return 1 unless $c->model('Provisioning')->call_prov($c, 'voip', 'get_subscriber',
-                                                         { username => $c->session->{user}{username},
+    return 1 unless $c->model('Provisioning')->call_prov($c, 'billing', 'get_voip_account_subscriber',
+                                                         { id       => $c->session->{user}{account_id},
+                                                           username => $c->session->{user}{username},
                                                            domain   => $c->session->{user}{domain},
                                                          },
                                                          \$c->session->{user}{data}
