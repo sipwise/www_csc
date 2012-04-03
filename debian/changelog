@@ -1,3 +1,23 @@
+ngcp-www-csc (3.3.1) unstable; urgency=low
+
+  [ dtiefnig ]
+  * Provisioning.pm: drop obsolete get_subscriber_byid method
+  * callforward.pm,reminder.pm,Provisioning.pm: avoid Voip::get_subscriber functions where possible
+  * callforward.pm: adapt get_voip_account_subscriber_by_id parameter
+  * callforward.pm: fix load_subscriber provisioning call
+
+  [ apogrebennyk ]
+  * csc.pm: restore correct $VERSION
+
+  [ cveigl ]
+  * callforward.pm,sipwise.css,csc.js,callforward_time.tt: optical fixes for callforward
+  * 7764.down,7764.up,db: moved up/down scripts to proper place
+  * callforward.pm,sipwise.css,csc.js,callforward_destination.tt,callforward_mapping.tt,
+    callforward_time.tt: bugfix, optics for mapping (mantis:1059)
+  * callforward_destination.tt,callforward_time.tt: minor/optic
+
+ -- Andrew Pogrebennyk <apogrebennyk@sipwise.com>  Tue, 03 Apr 2012 16:38:14 +0200
+
 ngcp-www-csc (3.3.0) unstable; urgency=low
 
   [cveigl]
