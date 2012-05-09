@@ -23,6 +23,7 @@
 [% FOREACH cf_type IN cf_types %]
 
     <div class="span-16">
+
         [% cf_map = cf_maps.${cf_type.name} %]
         
         [% IF cf_map == '' %]
@@ -39,13 +40,39 @@
                 <div class="set-item span-15">[% cf_type.description %]</div>
                 <br clear="all" /> 
                 [% first = 0 %]
-            [% END %]
+
+                [%# just a very small form for editing the ring timeout %]
+                [% IF cf_type.name == 'cft' %]
+                    <br clear="all" /> 
+                    <form action="/callforward/set_ringtimeout" method="post">
+                        <input type="hidden" name="subscriber_id" value="[% subscriber.subscriber_id %]"/>
+                        <div class="prepend-2 span-1">
+                            <input size="3" align="right" type="text" name="ringtimeout" value="[% preferences.ringtimeout %]"/>
+                        </div>
+                        <div class="span-1">
+                            <p class="link_button">
+                                <label for="save_ringtimeout">[% Catalyst.loc('Set ringtimeout')%]</label>
+                                <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_ringtimeout">
+                            </p>
+                        </div>
+                    </form>
+                    <br clear="all" /> 
+                    [% IF messages.ringtimeout_error %]
+                        <div class="prepend-2">
+                            <div id="errormsg">[% messages.ringtimeout_error %]</div>
+                        </div>
+                        <br clear="all" /> 
+                    [% END %]
+                [% END %]
+
+            [% END %] [%# first %]
             <br clear="all" /> 
 
             <div class="prepend-2">
                 [% PROCESS map_edit %]
             </div>
         [% END %]
+                
     </div>
     <br clear="all" /> 
 
