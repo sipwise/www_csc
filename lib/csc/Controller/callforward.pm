@@ -697,7 +697,7 @@ sub set_ringtimeout : Chained('base') PathPart('set_ringtimeout') Args(0) {
 
     my $ringtimeout = $c->request->params->{ringtimeout} || 666;
 
-    if ($ringtimeout =~ /^\d+$/ and $ringtimeout ~~ [4..301]) {
+    if ($ringtimeout =~ /^\d+$/ and $ringtimeout ~~ [5..300]) {
         if ($c->model('Provisioning')->call_prov( $c, 'voip', 
            'set_subscriber_preferences',
            { username => $c->session->{user}->{data}->{username},
