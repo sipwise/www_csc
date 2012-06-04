@@ -30,10 +30,16 @@ sub mapping : Chained('base') PathPart('mapping') CaptureArgs(0) {
     return unless ( $c->stash->{cf_types} = $c->forward ('load_cf_types') );
     return unless ( $c->stash->{time_sets} = $c->forward ('load_time_sets') );
     return unless ( $c->stash->{destination_sets} = $c->forward ('load_destination_sets') );
+    return unless ( $c->stash->{preferences} = $c->forward ('load_preferences') );
 }
 
 sub mapping_list : Chained('mapping') PathPart('') Args(0) {
     my ( $self, $c ) = @_;
+
+    if (defined $c->session->{refill}) {
+        $c->stash->{preferences}->{ringtimeout} = $c->session->{refill}->{ringtimeout};
+        $c->session->{refill} = undef;
+    }
 }
 
 sub mapping_id : Chained('mapping') PathPart('') CaptureArgs(1) {
@@ -685,6 +691,35 @@ sub time_period_delete : Chained('time_period_post') PathPart('delete') Args(0) 
     $c->response->redirect($c->uri_for('/callforward/time'));
 }
 
+sub set_ringtimeout : Chained('base') PathPart('set_ringtimeout') Args(0) {
+    my ($self, $c) = @_;
+    my %messages;
+
+    my $ringtimeout = $c->request->params->{ringtimeout} || 666;
+
+    if ($ringtimeout =~ /^\d+$/ and $ringtimeout ~~ [5..300]) {
+        if ($c->model('Provisioning')->call_prov( $c, 'voip', 
+           'set_subscriber_preferences',
+           { username => $c->session->{user}->{data}->{username},
+             domain =>   $c->session->{user}->{data}->{domain},
+             preferences => { ringtimeout => $ringtimeout }
+           })) 
+        {
+            $c->session->{messages} = { topmsg => 'Server.Voip.SavedSettings' };
+        }
+    }
+    else {
+        $c->session->{messages} =  { 
+            toperr => 'Client.Voip.InputErrorFound',
+            ringtimeout_error => 'Client.Voip.MissingRingtimeout',
+        };
+
+        $c->session->{refill} = { ringtimeout => $ringtimeout };
+    }
+
+    $c->response->redirect($c->uri_for('/callforward/mapping'));
+}
+
 ### helpers ###
 
 sub load_destination_sets :Private {
@@ -826,5 +861,18 @@ sub period_collapse : Private {
     
     return \%messages;
 }
-    
+
+sub load_preferences :Private {
+    my ( $self, $c ) = @_;
+
+    my $prefs;
+    return unless $c->model('Provisioning')->call_prov( $c, 'voip', 'get_subscriber_preferences',
+        { username => $c->stash->{subscriber}->{username},
+          domain =>   $c->stash->{subscriber}->{domain},
+        },
+        \$prefs,
+    );
+    return $prefs;
+}
+
 1;
