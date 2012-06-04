@@ -1,3 +1,11 @@
+ngcp-www-csc (3.3.2) unstable; urgency=low
+
+  [cveigl]
+  * enabled setting of ringtimeout (mantis:1557)
+  * set ringtimeout boundry to previous implementation 
+
+ -- Andrew Pogrebennyk <apogrebennyk@sipwise.com>  Mon, 04 Jun 2012 15:47:03 +0200
+
 ngcp-www-csc (3.3.1) unstable; urgency=low
 
   [ dtiefnig ]
