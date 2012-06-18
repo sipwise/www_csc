@@ -1,3 +1,9 @@
+ngcp-www-csc (3.2.1) unstable; urgency=low
+
+  * Remove google analytics. 
+
+ -- Andrew Pogrebennyk <apogrebennyk@sipwise.com>  Mon, 18 Jun 2012 10:35:29 +0200
+
 ngcp-www-csc (3.2.0) unstable; urgency=low
 
   * german translation by Carsten Bock
