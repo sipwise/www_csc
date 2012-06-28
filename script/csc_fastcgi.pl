@@ -1,4 +1,5 @@
 #!/usr/bin/perl -w
+use strict;
 
 BEGIN { $ENV{CATALYST_ENGINE} ||= 'FastCGI' }
 

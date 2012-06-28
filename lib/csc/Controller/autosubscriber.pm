@@ -349,7 +349,7 @@ sub _load_subscribers : Private
     my %groups;
     
     my %subscribers;
-    return undef unless $c->model('Provisioning')->get_voip_account_subscribers($c);
+    return unless $c->model('Provisioning')->get_voip_account_subscribers($c);
     foreach my $subscriber (@{$c->session->{user}{subscribers}}) {
         if($$subscriber{preferences}{base_cli}) {
             push @{$subscribers{$$subscriber{preferences}{base_cli}}{extensions}}, $subscriber;
@@ -359,7 +359,7 @@ sub _load_subscribers : Private
                      @{$subscribers{$$subscriber{preferences}{base_cli}}{extensions}};
 
                 my $tmpext = $subscriber->{preferences}{base_cli} . $subscriber->{preferences}{extension};
-                return undef unless $c->model('Provisioning')->call_prov($c, 'voip', 'get_autoconf_unit', 
+                return unless $c->model('Provisioning')->call_prov($c, 'voip', 'get_autoconf_unit', 
                     { 
                         username => $subscriber->{username},
                         domain => $c->session->{user}{domain},
@@ -373,7 +373,7 @@ sub _load_subscribers : Private
                 if exists $subscribers{$tmp_num};
             $subscribers{$tmp_num} = $subscriber;
 
-            return undef unless $c->model('Provisioning')->call_prov($c, 'voip', 'get_autoconf_unit', 
+            return unless $c->model('Provisioning')->call_prov($c, 'voip', 'get_autoconf_unit', 
                 { 
                     username => $subscriber->{username},
                     domain => $c->session->{user}{domain},
@@ -383,7 +383,7 @@ sub _load_subscribers : Private
             #TODO: subscribers without number?
             $c->log->error('***account::subscriber: subscriber without E.164 number found: '.
                            $$subscriber{username} .'@'. $$subscriber{domain});
-            return undef;
+            return;
         }
         
         #if($gid > 0)

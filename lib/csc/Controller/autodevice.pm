@@ -96,14 +96,14 @@ sub savespa : Local
         $messages{toperr} = 'Client.Voip.InputErrorFound';
         $c->session->{messages} = \%messages;
         $c->log->debug('***device::savespa has two identical fxs subscriber ids');
-        return undef;
+        return;
     }
     unless(defined $c->request->params->{fmodel} && length($c->request->params->{fmodel}) > 0)
     {
         $messages{toperr} = 'Client.Voip.InputErrorFound';
         $c->session->{messages} = \%messages;
         $c->log->debug('***device::savespa has no model');
-        return undef;
+        return;
     }
     my $model = $c->request->params->{fmodel};
 
@@ -261,7 +261,7 @@ sub savephone: Local
         $messages{toperr} = 'Client.Voip.InputErrorFound';
         $c->session->{messages} = \%messages;
         $c->log->debug('***device::savephone has no extension username');
-        return undef;
+        return;
     }
     my $usr = $c->request->params->{fdw};
 
@@ -397,7 +397,7 @@ sub _check_mac : Private
         $m->{toperr} = 'Client.Voip.InputErrorFound';
         $c->session->{messages} = $m;
         $c->log->debug('***device::_check_mac has invalid mac '.$mac);
-        return undef;
+        return;
     }
     return 1;
 }
@@ -412,7 +412,7 @@ sub _check_ip : Private
         $m->{toperr} = 'Client.Voip.InputErrorFound';
         $c->session->{messages} = $m;
         $c->log->debug('***device::_check_ip has invalid ip '.$ip);
-        return undef;
+        return;
     }
     return 1;
 }
@@ -425,11 +425,11 @@ sub _load_subscribers : Private
     
     my %subscribers;
     $c->session->{user}{subscribers} = undef;
-    return undef unless $c->model('Provisioning')->get_voip_account_subscribers($c);
+    return unless $c->model('Provisioning')->get_voip_account_subscribers($c);
     foreach my $subscriber (@{$c->session->{user}{subscribers}}) {
         if($$subscriber{preferences}{base_cli}) {
                 
-		return undef unless $c->model('Provisioning')->call_prov($c, 'voip', 'get_autoconf_unit', 
+		return unless $c->model('Provisioning')->call_prov($c, 'voip', 'get_autoconf_unit', 
                     { 
                         username => $subscriber->{username},
                         domain => $c->session->{user}{domain},
@@ -450,7 +450,7 @@ sub _load_subscribers : Private
 
         } elsif($$subscriber{sn}) {
             
-	    return undef unless $c->model('Provisioning')->call_prov($c, 'voip', 'get_autoconf_unit', 
+	    return unless $c->model('Provisioning')->call_prov($c, 'voip', 'get_autoconf_unit', 
                 { 
                     username => $subscriber->{username},
                     domain => $c->session->{user}{domain},
@@ -471,7 +471,7 @@ sub _load_subscribers : Private
             #TODO: subscribers without number?
             $c->log->error('***account::subscriber: subscriber without E.164 number found: '.
                            $$subscriber{username} .'@'. $$subscriber{domain});
-            return undef;
+            return;
         }
     }
 

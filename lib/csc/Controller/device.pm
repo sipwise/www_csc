@@ -669,7 +669,7 @@ sub _check_mac : Private
    	    $m->{toperr} = 'Client.Voip.InputErrorFound';
        	$c->session->{messages} = $m;
         $c->log->debug('***device::_check_mac has invalid mac '.$mac);
-   	    return undef;
+   	    return;
    	}
 	return 1;
 }
@@ -684,7 +684,7 @@ sub _check_ip : Private
    	    $m->{toperr} = 'Client.Voip.InputErrorFound';
         $c->session->{messages} = $m;
    	    $c->log->debug('***device::_check_ip has invalid ip '.$ip);
-       	return undef;
+       	return;
     }
 	return 1;
 }
@@ -698,7 +698,7 @@ sub _check_uniqueness_nofxs : Private
    	    	$m->{toperr} = 'Client.Voip.InputErrorFound';
 			$c->session->{messages} = $m;
 			$c->log->debug('***device::_check_uniqueness detected input starting with 9 - not allowed');
-   	    	return undef;
+   	    	return;
 		}
 
 		foreach my $g($c->session->{dev}{spa}{groups})
@@ -710,7 +710,7 @@ sub _check_uniqueness_nofxs : Private
    	    			$m->{toperr} = 'Client.Voip.InputErrorFound';
 			        $c->session->{messages} = $m;
 			   	    $c->log->debug('***device::_check_uniqueness detected group with ext '.$x);
-   	    			return undef;
+   	    			return;
 				}
 			}
 		}
@@ -723,7 +723,7 @@ sub _check_uniqueness_nofxs : Private
    	    			$m->{toperr} = 'Client.Voip.InputErrorFound';
 			        $c->session->{messages} = $m;
 			   	    $c->log->debug('***device::_check_uniqueness detected phone with ext '.$x);
-   	    			return undef;
+   	    			return;
 				}
 			}
 		}
@@ -741,7 +741,7 @@ sub _check_uniqueness : Private
    	    	$m->{toperr} = 'Client.Voip.InputErrorFound';
 			$c->session->{messages} = $m;
 			$c->log->debug('***device::_check_uniqueness detected input starting with 9 - not allowed');
-   	    	return undef;
+   	    	return;
 		}
 
 		if(defined $c->session->{dev}{spa}{fxs1} && 
@@ -750,7 +750,7 @@ sub _check_uniqueness : Private
    	    	$m->{toperr} = 'Client.Voip.InputErrorFound';
 			$c->session->{messages} = $m;
 			$c->log->debug('***device::_check_uniqueness detected fxs1 with ext '.$x);
-   	    	return undef;
+   	    	return;
 		}
 		if(defined $c->session->{dev}{spa}{fxs2} && 
 						$x eq $c->session->{dev}{spa}{fxs2}{ext})
@@ -758,7 +758,7 @@ sub _check_uniqueness : Private
    	    	$m->{toperr} = 'Client.Voip.InputErrorFound';
 			$c->session->{messages} = $m;
 			$c->log->debug('***device::_check_uniqueness detected fxs2 with ext '.$x);
-   	    	return undef;
+   	    	return;
 		}
 
 		return $self->_check_uniqueness_nofxs($c, $x, $m);
