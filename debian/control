@@ -8,7 +8,7 @@ Homepage: http://sipwise.com/
 
 Package: ngcp-templates-ce-www-csc
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, ngcp-templates-ce-config
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Conflicts: ngcp-templates-pro-www-csc
 Provides: ngcp-templates-www-csc
 Description: Configuration templates for the web-based CSC interface
@@ -17,7 +17,7 @@ Description: Configuration templates for the web-based CSC interface
 
 Package: ngcp-templates-pro-www-csc
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, ngcp-templates-pro-config
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Conflicts: ngcp-templates-ce-www-csc
 Provides: ngcp-templates-www-csc
 Description: Configuration templates for the web-based CSC interface
