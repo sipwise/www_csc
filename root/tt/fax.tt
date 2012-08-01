@@ -10,6 +10,7 @@
     </div>
     <div id="toperr">
         <p> [% messages.toperr %] </p>
+        <p> [% messages.pwerr %] </p>
         <p> [% messages.prov_error %] </p>
     </div>
 
@@ -42,16 +43,16 @@
             <br clear="all" />
 
             <div class="span-2">[% Catalyst.loc('Active') %]</div>
-            <div class="prepend-1 span-2"><input [% IF mode == 'view' %]disabled="disabled"[% END %] type="checkbox" size="20" name="active" checked="[% IF fax_preferences.active %]checked[% END %]"/></div>
+            <div class="prepend-1 span-2"><input [% IF mode == 'view' %]disabled="disabled"[% END %] type="checkbox" size="20" name="active" [% IF fax_preferences.active == 1 %]checked="checked"[% END %]/></div>
             <br clear="all" />
 
             <div class="span-2">[% Catalyst.loc('Send status') %]</div>
-            <div class="prepend-1 span-2"><input [% IF mode == 'view' %]disabled="disabled"[% END %] type="checkbox" size="20" name="send_status" checked="[% IF fax_preferences.send_status %]checked[% END %]"/></div>
+            <div class="prepend-1 span-2"><input [% IF mode == 'view' %]disabled="disabled"[% END %] type="checkbox" size="20" name="send_status" [% IF fax_preferences.send_status == 1 %]checked="checked"[% END %]/></div>
             <br clear="all" />
 
             <div class="span-2">[% Catalyst.loc('Send copy') %]</div>
-            <div class="prepend-1 span-2"><input [% IF mode == 'view' %]disabled="disabled"[% END %] type="checkbox" size="20" name="send_copy" checked="[% IF fax_preferences.send_copy %]checked[% END %]"/></div>
-            <br clear="all" />
+            <div class="prepend-1 span-2"><input [% IF mode == 'view' %]disabled="disabled"[% END %] type="checkbox" size="20" name="send_copy" [% IF fax_preferences.send_copy == 1 %]checked="checked"[% END %]/></div>
+            <br clear="all" /> 
             
             <br clear="all" />
             

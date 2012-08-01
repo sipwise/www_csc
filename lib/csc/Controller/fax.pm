@@ -9,18 +9,19 @@ use Data::Dumper;
 sub base :Chained('/') PathPrefix CaptureArgs(0) {
     my ($self, $c) = @_;
     return unless ($c->stash->{subscriber} = $c->forward('_load_subscriber'));
-    return unless ($c->stash->{fax_preferences} = $c->forward ('_load_fax_preferences'));
     $c->stash->{filetypes} = [qw/PS PDF PDF14 TIFF/];
 }
 
 sub view_preferences : Chained('base') PathPart('view') Args(0) {
     my ($self, $c) = @_;
+    return unless ($c->stash->{fax_preferences} = $c->forward ('_load_fax_preferences'));
     $c->stash->{template} = 'tt/fax.tt';
     $c->stash->{mode} = 'view';
 }
 
 sub edit_preferences : Chained('base') PathPart('edit') Args(0) {
     my ($self, $c) = @_;
+    return unless ($c->stash->{fax_preferences} = $c->forward ('_load_fax_preferences'));
     $c->stash->{template} = 'tt/fax.tt';
     $c->stash->{mode} = 'edit';
 }
@@ -30,16 +31,16 @@ sub save_preferences : Chained('base') PathPart('save') Args(0) {
 
     my $messages;
     my $password = undef;
-
+    
     if (defined $c->req->params->{password}) {
         if (defined $c->req->params->{password2}) {
             if ($c->req->params->{password} eq $c->req->params->{password2}) {
                 $password = $c->req->params->{password};
             } else {
-                $messages->{toperr} = 'Client.Voip.PassNoMatch';
+                $c->session->{messages}->{pwerr} = 'Client.Voip.PassNoMatch';
             }
         } else {
-            $messages->{toperr} = 'Client.Voip.MissingPass2';
+            $c->session->{messages}->{pwerr} = 'Client.Voip.MissingPass2';
         }
     }
 
@@ -72,8 +73,12 @@ sub save_preferences : Chained('base') PathPart('save') Args(0) {
         unless $c->req->params->{delete_destination} eq $i;
     }
 
-    $c->session->{messages} = $messages;
-    unless ($messages) {
+
+    if ($c->session->{messages}) {
+        $c->session->{messages}->{toperr} = 'Client.Voip.InputErrorFound';
+        $c->response->redirect($c->uri_for ('edit'));
+    }
+    else {
         if ($c->model('Provisioning')->call_prov( $c, 'voip', 'set_subscriber_fax_preferences',
             { username => $c->stash->{subscriber}->{username},
               domain =>   $c->stash->{subscriber}->{domain},
@@ -81,10 +86,10 @@ sub save_preferences : Chained('base') PathPart('save') Args(0) {
             },
             undef,
         )) {
-            $c->session->{messages} =  { topmsg => 'Server.Voip.SavedSettings' } ;
+            $c->session->{messages}->{topmsg} = 'Server.Voip.SavedSettings';
             $c->response->redirect($c->uri_for ('view'));
         } else {
-            $c->session->{messages} =  { toperr => 'Client.Voip.InputErrorFound' } ;
+            $c->session->{messages}->{toperr} = 'Client.Voip.InputErrorFound';
             $c->response->redirect($c->uri_for ('edit'));
         }
     }
