@@ -1,7 +1,7 @@
 [% META title = 'Account' %]
 [% META subtitle = 'account_pass' %]
 
-          <form class="anmelden feinstellungen" action="/account/savepass" method="post">
+          <form class="anmelden feinstellungen" action="/account/savepass" method="post" autocomplete="off">
             <fieldset class="alt">
               <p>[% Catalyst.loc('You may change the password for your self-administration login here.') %]</p><br />
               <label for="fusername">[% Catalyst.loc('username:') %]</label>
