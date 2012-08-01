@@ -868,6 +868,22 @@
    text-decoration: none;
 }
 
+/* text only button */
+.astext {
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    font-size: 12px;
+    white-space: nowrap;
+    color: #2D91DF;
+    padding: 0;
+    width: auto;
+    float: left;
+    cursor: pointer;
+    text-decoration: none;
+}
+
 /* callforwads */
 div.set-container {
     padding: 2px;
