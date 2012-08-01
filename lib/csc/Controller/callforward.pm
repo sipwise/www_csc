@@ -785,6 +785,8 @@ sub load_subscriber :Private {
         { subscriber_id => $c->session->{user}->{data}->{subscriber_id} },
         \$subscriber,
     );
+    
+    $subscriber->{active_number} = csc::Utils::get_active_number_string($c);
     return $subscriber;
 }
 
