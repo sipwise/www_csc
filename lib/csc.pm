@@ -16,8 +16,7 @@ use XML::Simple;
 
 use Catalyst::Log::Log4perl;
 
-use Catalyst qw/-Debug
-                ConfigLoader Static::Simple Unicode I18N
+use Catalyst qw/ConfigLoader Static::Simple Unicode I18N
                 Authentication Authentication::Store::Minimal Authentication::Credential::Password
                 Session Session::Store::FastMmap Session::State::Cookie
                /;
