@@ -54,25 +54,25 @@ sub save_preferences : Chained('base') PathPart('save') Args(0) {
     # only if given
     $preferences->{password} = $password if (defined $password);
 
-    my $i = 0;
-    my $count = scalar @{$c->req->params->{destination}};
-    
-    ($c->req->params->{destination}->[$count - 1] eq '') and $count--; # this would be the 'add-line'
+    $preferences->{destinations} = []; # will be ignored by ossbss unless set
 
-    for (my $i = 0; $i < $count; $i++) {
-        push @{ $preferences->{destinations} }, {
-            destination => $c->req->params->{destination}->[$i],
-            filetype    => $c->req->params->{filetype}->[$i],
-            # checkboxes mustn't be present if not checked
-            cc          => $c->req->params->{"cc_$i"}       eq 'on' ? 1 : 0,
-            incoming    => $c->req->params->{"incoming_$i"} eq 'on' ? 1 : 0,
-            outgoing    => $c->req->params->{"outgoing_$i"} eq 'on' ? 1 : 0,
-            status      => $c->req->params->{"status_$i"}   eq 'on' ? 1 : 0,
-        } 
+    my $idx = 1;
+    while (exists $c->req->params->{"destination_$idx"}) {
+
         # remove from %$preferences if that delete-button was clicked
-        unless $c->req->params->{delete_destination} eq $i;
-    }
+        if (not exists $c->req->params->{"delete_destination_$idx"} and $c->req->params->{"destination_$idx"} ne '') {
+            push @{ $preferences->{destinations} }, {
+                destination => $c->req->params->{"destination_$idx"},
+                filetype    => $c->req->params->{"filetype_$idx"},
+                cc          => $c->req->params->{"cc_$idx"}       eq 'on' ? 1 : 0,
+                incoming    => $c->req->params->{"incoming_$idx"} eq 'on' ? 1 : 0,
+                outgoing    => $c->req->params->{"outgoing_$idx"} eq 'on' ? 1 : 0,
+                status      => $c->req->params->{"status_$idx"}   eq 'on' ? 1 : 0,
+            }
+        }
 
+        $idx++;
+    }
 
     if ($c->session->{messages}) {
         $c->session->{messages}->{toperr} = 'Client.Voip.InputErrorFound';
