@@ -1,6 +1,6 @@
+csc.yml     usr/share/ngcp-www-csc/lib/csc/
 lib         usr/share/ngcp-www-csc/
 root        usr/share/ngcp-www-csc/lib/csc/
-csc.yml     usr/share/ngcp-www-csc/lib/csc/
 script/csc_cgi.pl      usr/share/ngcp-www-csc/script/
 script/csc_fastcgi.pl  usr/share/ngcp-www-csc/script/
 script/csc_server.pl   usr/share/ngcp-www-csc/script/
