@@ -26,10 +26,18 @@
         E-Mail <a href="mailto:[% Catalyst.config.site_config.company.email %]" class="link">[% Catalyst.config.site_config.company.email %]</a><br />
       [% END %]
 
-      <a href="http://www.sipwise.com" target="_blank" class="sipwise">
-        <img src="/grafik/sipwise-powered.png" width="131" height="29" alt=" " />
-        <img src="/grafik/sip_provider.png" width="145" height="29" alt=" " />
+      <a class="sipwise" target="_blank" href="http://www.sipwise.com/">
+        <img width="131" height="29" alt="Sipwise" src="/grafik/sipwise-powered.png" title="Sipwise">
       </a>
+      [% IF Catalyst.config.ngcp_flavor == "sppro" %]
+      <a class="ngcp" target="_blank" href="http://www.sipwise.com/products/sppro/">
+        <img width="145" height="29" alt="sip:provider PRO" src="/grafik/sip_provider.png" title="sip:provider PRO">
+      </a>
+      [% ELSE %]
+      <a class="ngcp" target="_blank" href="http://www.sipwise.com/products/spce/">
+        <img width="145" height="29" alt="sip:provider CE" src="/grafik/sip_provider.png" title="sip:provider CE">
+      </a>
+      [% END %]
     </div>
 
 <!-- END layout/footer -->

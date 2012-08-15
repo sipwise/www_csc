@@ -14,11 +14,18 @@
 	margin-bottom: 0 !important;
 }
 
+/* display ngcp logo bottom right */
+#footer .ngcp {
+   position: absolute;
+   top: 75px;
+   right: 12px;
+}
+
 /* display sipwise logo bottom right */
 #footer .sipwise {
    position: absolute;
    top: 75px;
-   right: 12px;
+   right: 162px;
 }
 
 /* error and success messages at the top of the page */
