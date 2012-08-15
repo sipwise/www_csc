@@ -1,5 +1,3 @@
-[% META title = 'Callforwards' %]
-
 [% PROCESS tt/callforward_head.tt %]
 
 <div id="main">
