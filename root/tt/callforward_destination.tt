@@ -89,17 +89,17 @@
     [% IF action == 'edit' or action == 'add' %]
         <form action="/callforward/destination/set/save" method="post">
         [% IF action == 'edit' %]
-            <div class="prepend-1 span-3"> <input type="text" size="20" name="dsetname" value="[% dset.name %]"/> </div>
+            <div class="prepend-1 span-8"> <input type="text" size="20" name="dsetname" value="[% dset.name %]"/> </div>
             [% FOREACH dest IN dset.destinations %]
                 <input type="hidden" name="priority-[% dest.id %]" value="[% dest.priority %]"/>
             [% END %]
             <input type="hidden" name="priority_changed" value="0"/>
         [% ELSE %]
-            <div class="prepend-1 span-3"> <input type="text" size="20" name="dsetname" value=""/> </div>
+            <div class="prepend-1 span-8"> <input type="text" size="20" name="dsetname" value=""/> </div>
         [% END %]
     [% ELSE %]
         <form action="/callforward/destination/set/delete" method="post">
-        <div class="prepend-1 span-3">[% dset.name %]</div>
+        <div class="prepend-1 span-8">[% dset.name %]</div>
     [% END %]
     
     <input type="hidden" name="subscriber_id" value="[% subscriber.subscriber_id %]"/>
@@ -116,7 +116,7 @@
             </p>
         </div>
         <div class="span-1">
-            <a href="/callforward/destination">[% Catalyst.loc('Cancel') %]</a>
+            <a class="link" href="/callforward/destination">[% Catalyst.loc('Cancel') %]</a>
         </div>
     [% ELSIF action == 'add' %]
         <div class="span-1"></div>
@@ -127,7 +127,7 @@
             </p>
         </div>
     [% ELSIF action == 'view' %]
-        <div class="prepend-1 span-1"><a href="/callforward/destination/set/[% dset.id %]/edit#dset-[% dset.id %]"><span class="button-edit">[% Catalyst.loc('Edit') %]</span></a></div>
+        <div class="prepend-1 span-1"><a class="link" href="/callforward/destination/set/[% dset.id %]/edit#dset-[% dset.id %]"><span class="button-edit">[% Catalyst.loc('Edit') %]</span></a></div>
         <div class="span-4">
             [% IF mapped.${dset.id} %]
                 <p>[% mapped.${dset.id} %] [% Catalyst.loc('times(s) mapped') %]</p>
@@ -217,7 +217,7 @@
                 </p>
             </div>
             <div class="span-1">
-                <a href="/callforward/destination"><span class="button-cancel">[% Catalyst.loc('Cancel') %]</span></a>
+                <a class="link" href="/callforward/destination"><span class="button-cancel">[% Catalyst.loc('Cancel') %]</span></a>
             </div>
         [% ELSIF action == 'add' %]
             <div class="span-1">
@@ -250,7 +250,7 @@
                 [% dest.destination %] [% Catalyst.loc('for') %] [% dest.timeout %]<span>&nbsp;[% Catalyst.loc('seconds') %]</span>
             [% END %]
         </div>
-        <div class="prepand-9 span-1"><a href="/callforward/destination/target/[% dest.id %]/edit#dest-[% dest.id %]"><span class="button-edit">[% Catalyst.loc('Edit') %]</span></a></div>
+        <div class="prepand-9 span-1"><a class="link" href="/callforward/destination/target/[% dest.id %]/edit#dest-[% dest.id %]"><span class="button-edit">[% Catalyst.loc('Edit') %]</span></a></div>
         <div class="span-1">
             <p class="link_button">
                 <label for="delete_dtarget_[% dest.id %]">[% Catalyst.loc('Delete') %]</label>

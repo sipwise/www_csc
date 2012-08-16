@@ -44,11 +44,9 @@
                     <br clear="all" /> 
                     <form action="/callforward/set_ringtimeout" method="post">
                         <input type="hidden" name="subscriber_id" value="[% subscriber.subscriber_id %]"/>
-                        <div class="prepend-2 span-1">
-                            <input size="3" align="right" type="text" name="ringtimeout" value="[% preferences.ringtimeout %]"/>
-                        </div>
-                        <div class="span-1">
-                            <p class="link_button">
+                        <div class="prepend-2 span-5">
+                            <input size="3" style="float:left;" align="right" type="text" name="ringtimeout" value="[% preferences.ringtimeout %]"/>
+                            <p class="link_button" style="float:left;margin-left:10px;">
                                 <label for="save_ringtimeout">[% Catalyst.loc('Set ringtimeout')%]</label>
                                 <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_ringtimeout">
                             </p>
@@ -116,7 +114,7 @@
             </p>
         </div>
         <div class="span-1">
-            <a href="/callforward/mapping">[% Catalyst.loc('Cancel')%]</a>
+            <a class="link" href="/callforward/mapping">[% Catalyst.loc('Cancel')%]</a>
         </div>
     [% ELSIF map.id == 0 %]
         <div class="prepend-1 span-1">
@@ -128,7 +126,7 @@
         </div>
     [% ELSE %]
         <div class="prepend-1 span-1">
-            <a href="/callforward/mapping/[% map.id %]/edit">[% Catalyst.loc('Edit')%]</a>
+            <a class="link" href="/callforward/mapping/[% map.id %]/edit">[% Catalyst.loc('Edit')%]</a>
         </div>
         <div class="span-1">
             <p class="link_button">

@@ -126,7 +126,7 @@ function print_html (target, html, disabled) {
         $("#" + target + "-foot").empty();
     }
     else {
-        $("#" + target + "-foot").empty().append('<a href="javascript:void(0)" onclick="remove_html(\'' + target + '\', \'' + disabled + '\')">Remove</a>');
+        $("#" + target + "-foot").empty().append('<a class="link" href="javascript:void(0)" onclick="remove_html(\'' + target + '\', \'' + disabled + '\')">Remove</a>');
     }
 }
 
@@ -139,7 +139,7 @@ function remove_html (target, disabled) {
         $("#" + target + "-foot").empty();
     }
     else {
-        $("#" + target + "-foot").empty().append('<a href="javascript:void(0)" onclick="put(\'' + target + '\')">Add</a>');
+        $("#" + target + "-foot").empty().append('<a class="link" href="javascript:void(0)" onclick="put(\'' + target + '\')">Add</a>');
     }
 }
 

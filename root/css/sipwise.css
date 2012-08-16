@@ -866,7 +866,9 @@
 
 /* make buttons look like ordinary links for consistency */
 #main .link_button label  {
+   background: url("/grafik/dot_blue.gif") repeat-x scroll left bottom transparent;
    font-size: 12px;
+   font-weight: bold;
    white-space: nowrap;
    color: #2D91DF;
    padding: 0;
@@ -874,6 +876,11 @@
    float: left;
    cursor: pointer;
    text-decoration: none;
+}
+
+#main .link_button label:hover  {
+   background: url("/grafik/dot_orange.gif") repeat-x scroll left bottom transparent;
+   color: #FF8A00;
 }
 
 /* text only button */
