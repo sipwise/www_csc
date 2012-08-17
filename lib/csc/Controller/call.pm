@@ -43,7 +43,6 @@ both of them.
 sub click2dial : Local {
     my ( $self, $c ) = @_;
 
-    my $announce_file = "click2dial";
     my %calldata = ();
 
     my ($callee_user, $callee_domain);
@@ -78,14 +77,11 @@ sub click2dial : Local {
         }
     }
 
-    $calldata{username} = $c->session->{user}{username};
-    $calldata{domain} = $c->session->{user}{domain};
     $calldata{callee_user} = $callee_user;
     $calldata{callee_domain} = $callee_domain;
-    $calldata{caller_user} =  $c->session->{user}{data}{username};
-    $calldata{caller_domain} = $c->session->{user}{data}{domain};
-    $calldata{caller_pass} =  $c->session->{user}{data}{password};
-    $calldata{announcement} =  $announce_file;
+    $calldata{username} =  $c->session->{user}{data}{username};
+    $calldata{domain} = $c->session->{user}{data}{domain};
+    $calldata{password} =  $c->session->{user}{data}{password};
 
     return 1 unless $c->model('Provisioning')->call_prov($c, 'voip', 'dial_out',
                                                          \%calldata
@@ -114,7 +110,7 @@ Andreas Granig <agranig@sipwise.com>
 
 =head1 COPYRIGHT
 
-The call controller is Copyright (c) 2007-2010 Sipwise GmbH, Austria.
+The call controller is Copyright (c) 2007-2012 Sipwise GmbH, Austria.
 You should have received a copy of the licences terms together with the
 software.
 
