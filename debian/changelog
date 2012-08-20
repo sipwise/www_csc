@@ -1,3 +1,32 @@
+ngcp-www-csc (3.4.0) unstable; urgency=low
+
+  [ dtiefnig ]
+  * de.po,en.po,es.po,fr.po,messages.pot: add new strings to pot/po files
+  * fix top menu higlighting for call forwards
+  * remove transparency from PNGs, separate links to website and product
+  * sipwise.css: add some space to the footer
+  * fix some layout/style issues in call forward templates
+  * call.pm: follow new dial_out parameters from ossbss r10321
+
+  [ mprokop ]
+  * control: Bump Standards-Version to 3.9.3
+  * control,ngcp-www-csc.install: wrap and sort items in Debian packaging files
+
+  [ jbonilla ]
+  * control: Remove depends on deprecated packages
+
+  [ cveigl ]
+  * make perlcritic happy
+  * account_pass.tt: turn off autocomplete when changing the password
+  * callforward.pm: show subscribers active number
+  * fax.pm,sipwise.css,header,fax.tt: add fax features to csc
+  * fax.pm,fax.tt: fix display of bools; show error-message on mismatching passwords
+  * fax.pm,csc.pm,fax.tt: fix nasty bug when creating first destination (discovered 
+    by apogrebennyk); make access to form fields more coherent.
+  * csc.pm: remove catalysts -Debug flag
+
+ -- Andrew Pogrebennyk <apogrebennyk@sipwise.com>  Mon, 20 Aug 2012 15:07:48 +0200
+
 ngcp-www-csc (3.3.3) unstable; urgency=low
 
   * Remove google analytics.
