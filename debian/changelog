@@ -1,3 +1,9 @@
+ngcp-www-csc (3.4.1) unstable; urgency=low
+
+  * Set www_csc version to 3.4.1. 
+
+ -- Andrew Pogrebennyk <apogrebennyk@sipwise.com>  Mon, 20 Aug 2012 15:45:47 +0200
+
 ngcp-www-csc (3.4.0) unstable; urgency=low
 
   [ dtiefnig ]
