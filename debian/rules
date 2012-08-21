@@ -10,11 +10,14 @@
 #export DH_VERBOSE=1
 
 b=$(CURDIR)/debian/build
+VERSION:=$(shell dpkg-parsechangelog | awk '/Version: / { print $$2 }')
 
 build: build-stamp
 
 build-stamp:
 	dh_testdir
+	egrep -q "VERSION = 'UNRELEASED'" lib/csc.pm || \
+                          (echo "Wrong version in lib/csc.pm" && exit 2)
 	mkdir -p pro/etc/ngcp-www-csc pro/etc/apache2/sites-available
 	mkdir -p ce/etc/ngcp-www-csc ce/etc/apache2/sites-available
 	tpage --define PRO=true   etc/csc.conf > pro/etc/ngcp-www-csc/csc.conf.tt2
@@ -44,6 +47,7 @@ ngcp-www-csc:
 	dh_installdocs       -p$@ -P$(b)/$@
 	dh_installchangelogs -p$@ -P$(b)/$@
 	dh_install           -p$@ -P$(b)/$@
+	sed -i -e "s/VERSION = 'UNRELEASED'/VERSION = '$(VERSION)'/" $(b)/$@/usr/share/ngcp-www-csc/lib/csc.pm
 	dh_installexamples   -p$@ -P$(b)/$@
 	dh_installman        -p$@ -P$(b)/$@
 	dh_link              -p$@ -P$(b)/$@
