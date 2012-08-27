@@ -18,7 +18,7 @@ esac
 . /usr/share/debconf/confmodule
 
 # enable required modules
-a2enmod ssl perl
+a2enmod ssl perl apreq
 
 # enable optional modules
 a2enmod dump_io || echo "Missing some optional Apache module(s), ignoring."
