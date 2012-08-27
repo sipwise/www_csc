@@ -31,9 +31,16 @@ sub handler {
 
 	my $acc = 'accngcp'.$uuid.$user.$domain;
 	$acc =~ s/[^a-zA-Z0-9]//g;
-	my $server_ip = $domain;
-	my $server_port = 5061;
-	my $server_proto = 'TLS';
+	my $server_ip = $cfg->{uaprovisioning}->{sip}->{host};
+	my $server_port;
+	my $server_proto;
+	if($cfg->{uaprovisioning}->{sip}->{tls_enabled} eq 'yes') {
+		$server_port = $cfg->{uaprovisioning}->{sip}->{tls_port};
+		$server_proto = 'TLS';
+	} else {
+		$server_port = $cfg->{uaprovisioning}->{sip}->{plain_port};
+		$server_proto = 'UDP';
+	}
 	my $xcap_proto = $cfg->{uaprovisioning}->{xcap}->{proto};
 	my $xcap_ip = $cfg->{uaprovisioning}->{xcap}->{host};
 	my $xcap_port = $cfg->{uaprovisioning}->{xcap}->{port};
@@ -47,11 +54,11 @@ net.java.sip.communicator.impl.protocol.sip.$acc.IS_ACCOUNT_DISABLED=false
 net.java.sip.communicator.impl.protocol.sip.$acc.USER_ID=$user\@$domain
 net.java.sip.communicator.impl.protocol.sip.$acc.PASSWORD=$pass
 net.java.sip.communicator.impl.protocol.sip.$acc.DISPLAY_NAME=
+net.java.sip.communicator.impl.protocol.sip.$acc.SERVER_ADDRESS=$domain
 
 net.java.sip.communicator.impl.protocol.sip.$acc.PROXY_AUTO_CONFIG=false
-net.java.sip.communicator.impl.protocol.sip.$acc.PROXY_PORT=$server_port
 net.java.sip.communicator.impl.protocol.sip.$acc.PROXY_ADDRESS=$server_ip
-net.java.sip.communicator.impl.protocol.sip.$acc.SERVER_ADDRESS=$server_ip
+net.java.sip.communicator.impl.protocol.sip.$acc.PROXY_PORT=$server_port
 net.java.sip.communicator.impl.protocol.sip.$acc.PREFERRED_TRANSPORT=$server_proto
 
 net.java.sip.communicator.impl.protocol.sip.$acc.VOICEMAIL_CHECK_URI=sip\:voicebox\@$domain
