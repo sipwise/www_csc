@@ -9,10 +9,10 @@ use Apache2::RequestIO;
 use Apache2::Const;
 use XML::Simple;
 
-my $config = '/etc/ngcp-www-csc/csc.conf';
+my $cfg_file = '/etc/ngcp-www-csc/csc.conf';
 
-my $cfg = XML::Simple->new()->XMLin($config)
-	or die "Failed to read config file '$config'";
+my $cfg = XML::Simple->new()->XMLin($cfg_file)
+	or die "Failed to read config file '$cfg_file'";
 
 sub handler {
 	my $r = shift;
@@ -34,9 +34,9 @@ sub handler {
 	my $server_ip = $domain;
 	my $server_port = 5061;
 	my $server_proto = 'TLS';
-	my $xcap_proto = $config->{uaprovisioning}->{xcap}->{proto};
-	my $xcap_ip = $config->{uaprovisioning}->{xcap}->{host};
-	my $xcap_port = $config->{uaprovisioning}->{xcap}->{port};
+	my $xcap_proto = $cfg->{uaprovisioning}->{xcap}->{proto};
+	my $xcap_ip = $cfg->{uaprovisioning}->{xcap}->{host};
+	my $xcap_port = $cfg->{uaprovisioning}->{xcap}->{port};
 
 	my $config = <<"EOF";
 net.java.sip.communicator.impl.protocol.sip.$acc=$acc
