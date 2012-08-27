@@ -30,6 +30,13 @@ PerlSwitches -I/usr/share/ngcp-www-csc/lib
                 PerlResponseHandler csc
         </Location>
 
+        <Location /jitsi>
+                SetEnv no-gzip 1
+                SetHandler perl-script
+                PerlResponseHandler Sipwise::JitsiProvisioning
+                Allow from all
+        </Location>
+
         # requires module dumpio
         # LogLevel debug
         # DumpIOInput Off
