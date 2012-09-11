@@ -70,11 +70,21 @@ sub index : Private {
     $c->stash->{subscriber}{call_list} = csc::Utils::prepare_call_list($c, $c->session->{user}{call_list}, 0)
         if @{$c->session->{user}{call_list}};
     delete $c->session->{user}{call_list} if exists $c->session->{user}{call_list};
+   
+    my $callforward_maps;
+    return unless $c->model('Provisioning')->call_prov($c, 'voip', 'get_subscriber_cf_maps',
+        { username => $c->session->{user}{username},
+          domain   => $c->session->{user}{domain},
+        },
+        \$callforward_maps,
+    );
+
     $c->stash->{subscriber}{fw}{active} = 1
-        if defined $c->session->{user}{preferences}{cfu}
-           or defined $c->session->{user}{preferences}{cfb}
-           or defined $c->session->{user}{preferences}{cfna}
-           or defined $c->session->{user}{preferences}{cft};
+        if defined $$callforward_maps{cfu}
+           or defined $$callforward_maps{cfb}
+           or defined $$callforward_maps{cfna}
+           or defined $$callforward_maps{cft};
+
     $c->stash->{subscriber}{contacts} = 
         $c->model('Provisioning')->get_registered_contacts($c);
 
