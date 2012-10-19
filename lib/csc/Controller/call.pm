@@ -51,7 +51,7 @@ sub click2dial : Local {
     {
         $callee = csc::Utils::get_qualified_number_for_subscriber($c, $callee);
         my $checkresult;
-        return unless $c->model('Provisioning')->call_prov( $c, 'voip', 'check_E164_number', $callee, \$checkresult);
+        return unless $c->model('Provisioning')->call_prov( $c, 'voip', 'check_E164_number', { e164number => $callee }, \$checkresult);
         unless($checkresult) {
             $c->log->error('***call::click2dial with invalid callee ' . $callee);
 

@@ -160,7 +160,7 @@ sub save : Local {
         if(defined $contact{$_} and length $contact{$_}) {
             $contact{$_} = csc::Utils::get_qualified_number_for_subscriber($c, $contact{$_});
             my $checkresult;
-            return unless $c->model('Provisioning')->call_prov( $c, 'voip', 'check_E164_number', $contact{$_}, \$checkresult);
+            return unless $c->model('Provisioning')->call_prov( $c, 'voip', 'check_E164_number', { e164number => $contact{$_} }, \$checkresult);
             $messages{$_} = 'Client.Voip.MalformedNumber'
                 unless $checkresult;
         } else {

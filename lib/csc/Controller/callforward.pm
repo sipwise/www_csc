@@ -326,7 +326,7 @@ sub destination_target_save : Chained('destination_target_post') PathPart('save'
         if($fw_target =~ /^\+?\d+$/) {
             $fw_target = csc::Utils::get_qualified_number_for_subscriber($c, $fw_target);
             my $checkresult;
-            return unless $c->model('Provisioning')->call_prov( $c, 'voip', 'check_E164_number', $fw_target, \$checkresult);
+            return unless $c->model('Provisioning')->call_prov( $c, 'voip', 'check_E164_number', { e164number => $fw_target }, \$checkresult);
             unless($checkresult) {
                 $messages{toperr} = 'Client.Voip.MalformedNumber'
                 } else {
