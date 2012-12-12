@@ -19,794 +19,796 @@ msgstr ""
 #. (subscriber.account.billing_profile.data.currency, subscriber.account.cash_balance)
 #: root/tt/desktop.tt:85
 msgid "%1 %2 credit"
-msgstr ""
+msgstr "%1 %2 credito"
 
 #. (subscriber.contacts.size)
 #: root/tt/desktop.tt:96
 msgid "%1 client devices registered"
-msgstr ""
+msgstr "%1 dispositivi registrati"
 
 #. (subscriber.account.free_time_balance)
 #: root/tt/desktop.tt:88
 msgid "%1 free minutes"
-msgstr ""
+msgstr "%1 minuti gratis"
 
 #: root/layout/header:47
 msgid "Account"
-msgstr ""
+msgstr "Utente"
 
 #: root/tt/account_wrapper.tt:26 root/tt/desktop.tt:81
 msgid "Account Balance"
-msgstr ""
+msgstr "Saldo Utente"
 
 #: root/layout/html:33
 msgid "Actions"
-msgstr ""
+msgstr "Azioni"
 
 #: root/tt/fax.tt:45
 msgid "Active"
-msgstr ""
+msgstr "Attivo"
 
 #: root/tt/callforward_mapping.tt:122
 msgid "Add"
-msgstr ""
+msgstr "Aggiugi"
 
 #: root/tt/callforward_destination.tt:225
 msgid "Add destination"
-msgstr ""
+msgstr "Aggiungi destinazione"
 
 #: root/tt/callforward_destination.tt:125
 msgid "Add destinationset"
-msgstr ""
+msgstr "Aggiungi tipologia di destinazione"
 
 #: root/tt/callforward_time.tt:177
 msgid "Add period"
-msgstr ""
+msgstr "Aggiungi periodo"
 
 #: root/tt/callforward_time.tt:109
 msgid "Add timeset"
-msgstr ""
+msgstr "Aggiungi impostazione temporale"
 
 #: root/layout/header:29
 msgid "Addressbook"
-msgstr ""
+msgstr "Rubrica"
 
 #: root/tt/callblock.tt:109 root/tt/callblock.tt:32
 msgid "Allow everything except ..."
-msgstr ""
+msgstr "Abilita tutto eccetto ..."
 
 #: root/tt/callforward_time.tt:213
 msgid "Apr"
-msgstr ""
+msgstr "Apr"
 
 #: root/tt/callforward_time.tt:217
 msgid "Aug"
-msgstr ""
+msgstr "Ago"
 
 #: root/tt/callblock.tt:111 root/tt/callblock.tt:34
 msgid "Block everything except ..."
-msgstr ""
+msgstr "Blocca tutto eccetto ..."
 
 #: root/tt/fax.tt:130
 msgid "CC"
-msgstr ""
+msgstr "CC"
 
 #: root/tt/desktop.tt:139
 msgid "Call Forwards"
-msgstr ""
+msgstr "Deviazioni di Chiamata"
 
 #: root/layout/header:35 root/tt/callblock.tt:19
 msgid "Call barring"
-msgstr ""
+msgstr "Blocco Chiamate"
 
 #: root/tt/callblock.tt:6
 msgid "Call barring for incoming and outgoing calls."
-msgstr ""
+msgstr "Blocco per chiamate entranti e chiamate uscenti."
 
 #: root/layout/header:32
 msgid "Call forward"
-msgstr ""
+msgstr "Deviazione di chiamata"
 
 #: root/tt/calllist.tt:19
 msgid "Call list"
-msgstr ""
+msgstr "Lista Chiamate"
 
 #. (subscriber.active_number)
 #: root/tt/calllist.tt:20
 msgid "Call list for %1"
-msgstr ""
+msgstr "Lista chiamate per %1"
 
 #: root/layout/header:23
 msgid "Calls"
-msgstr ""
+msgstr "Chiamate"
 
 #: root/tt/calllist.tt:160
 msgid "Calls by month"
-msgstr ""
+msgstr "Chiamate per mese"
 
 #: root/tt/callforward_destination.tt:119
 #: root/tt/callforward_destination.tt:220 root/tt/callforward_mapping.tt:117
 #: root/tt/callforward_time.tt:106 root/tt/callforward_time.tt:174
 #: root/tt/fax.tt:83
 msgid "Cancel"
-msgstr ""
+msgstr "Annulla"
 
 #: root/tt/desktop.tt:94
 msgid "Clients"
-msgstr ""
+msgstr "Dispositivi"
 
 #: root/tt/callforward_destination.tt:182
 #: root/tt/callforward_destination.tt:248
 msgid "Conference room"
-msgstr ""
+msgstr "Stanza di conferenza"
 
 #: root/tt/addressbook.tt:19 root/tt/addressedit.tt:19
 msgid "Contacts"
-msgstr ""
+msgstr "Contatti"
 
 #. (subscriber.active_number)
 #: root/tt/addressbook.tt:20 root/tt/addressedit.tt:20
 msgid "Contacts for %1"
-msgstr ""
+msgstr "Contatti per %1"
 
 #: root/tt/addressedit.tt:27
 msgid "Create new contact"
-msgstr ""
+msgstr "Crea nuovo contatto"
 
 #: root/tt/callforward_time.tt:221
 msgid "Dec"
-msgstr ""
+msgstr "Dic"
 
 #: root/tt/callforward_destination.tt:136
 #: root/tt/callforward_destination.tt:256 root/tt/callforward_mapping.tt:133
 #: root/tt/callforward_time.tt:120 root/tt/callforward_time.tt:184
 msgid "Delete"
-msgstr ""
+msgstr "Elimina"
 
 #: root/layout/header:20
 msgid "Desktop"
-msgstr ""
+msgstr "Pagina di Amministrazione"
 
 #: root/tt/fax.tt:128
 msgid "Destination"
-msgstr ""
+msgstr "Destinazione"
 
 #: root/tt/callforward_destination.tt:14 root/tt/callforward_navi.tt:3
 msgid "Destination sets"
-msgstr ""
+msgstr "Tipologia di destinazione"
 
 #: root/tt/fax.tt:59
 msgid "Destinations"
-msgstr ""
+msgstr "Destinazioni"
 
 #: root/layout/header:44
 msgid "Devices"
-msgstr ""
+msgstr "Dispositivi"
 
 #: root/tt/callforward_destination.tt:130
 #: root/tt/callforward_destination.tt:253 root/tt/callforward_mapping.tt:129
 #: root/tt/callforward_time.tt:114 root/tt/callforward_time.tt:182
 #: root/tt/fax.tt:73
 msgid "Edit"
-msgstr ""
+msgstr "Modifica"
 
 #: root/layout/header:41
 msgid "Fax"
-msgstr ""
+msgstr "Fax"
 
 #: root/tt/fax.tt:18
 msgid "Fax preferences"
-msgstr ""
+msgstr "Preferenze Fax"
 
 #: root/tt/callforward_destination.tt:175
 #: root/tt/callforward_destination.tt:246 root/tt/calllist.tt:93
 #: root/tt/desktop.tt:51
 msgid "Fax2Mail"
-msgstr ""
+msgstr "Fax2Mail"
 
 #: root/tt/callforward_time.tt:211
 msgid "Feb"
-msgstr ""
+msgstr "Feb"
 
 #: root/tt/fax.tt:129
 msgid "Filetype"
-msgstr ""
+msgstr "Tipo di File"
 
 #: root/tt/addressbook.tt:35 root/tt/calllist.tt:28 root/tt/voicebox.tt:28
 msgid "Filter:"
-msgstr ""
+msgstr "Filtro:"
 
 #: root/tt/callforward_time.tt:235
 msgid "Fri"
-msgstr ""
+msgstr "Ven"
 
 #: root/layout/fp_header:24
 msgid "Homepage"
-msgstr ""
+msgstr "Pagina Iniziale"
 
 #: root/layout/fp_header:19
 msgid "Hotline:"
-msgstr ""
+msgstr "Hotline:"
 
 #: root/tt/fax.tt:131
 msgid "Incoming"
-msgstr ""
+msgstr "Ingresso"
 
 #: root/tt/calllist.tt:6
 msgid "Incoming and outgoing calls."
-msgstr ""
+msgstr "Chiamate in entrata e in uscita."
 
 #: root/tt/callblock.tt:27
 msgid "Incoming calls"
-msgstr ""
+msgstr "Chiamate in entrata"
 
 #: root/tt/account_wrapper.tt:22
 msgid "Information"
-msgstr ""
+msgstr "Informazioni"
 
 #: root/tt/callforward_time.tt:210
 msgid "Jan"
-msgstr ""
+msgstr "Gen"
 
 #: root/tt/callforward_time.tt:216
 msgid "Jul"
-msgstr ""
+msgstr "Lug"
 
 #: root/tt/callforward_time.tt:215
 msgid "Jun"
-msgstr ""
+msgstr "Giu"
 
 #: root/layout/header:14
 msgid "Logged in as"
-msgstr ""
+msgstr "Connesso come"
 
 #: root/tt/login.tt:31
 msgid "Login"
-msgstr ""
+msgstr "Connetti"
 
 #: root/tt/callforward_navi.tt:1
 msgid "Mapping"
-msgstr ""
+msgstr "Imposta deviazioni"
 
 #: root/tt/callforward_mapping.tt:14
 msgid "Mappings"
-msgstr ""
+msgstr "Deviazioni"
 
 #: root/tt/callforward_time.tt:212
 msgid "Mar"
-msgstr ""
+msgstr "Mar"
 
 #: root/tt/callforward_time.tt:214
 msgid "May"
-msgstr ""
+msgstr "Mag"
 
 #: root/tt/callforward_time.tt:231
 msgid "Mon"
-msgstr ""
+msgstr "Lun"
 
 #: root/tt/fax.tt:41
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 #: root/tt/desktop.tt:101
 msgid "New Voicemails"
-msgstr ""
+msgstr "Nuovi Messaggi Vocali"
 
 #: root/tt/calllist.tt:42
 msgid "No matching calls found."
-msgstr ""
+msgstr "Nessuna chiamata trovata."
 
 #: root/tt/voicebox.tt:36
 msgid "No matching voicemails found."
-msgstr ""
+msgstr "Nessun messaggio vocale trovato."
 
 #: root/tt/callforward_time.tt:220
 msgid "Nov"
-msgstr ""
+msgstr "Nov"
 
 #: root/tt/callforward_destination.tt:189
 msgid "Number or SIP-URI:"
-msgstr ""
+msgstr "Numero o SIP-URI:"
 
 #: root/tt/callforward_time.tt:219
 msgid "Oct"
-msgstr ""
+msgstr "Ott"
 
 #: root/tt/addressbook.tt:45
 msgid "Order by"
-msgstr ""
+msgstr "Ordina per"
 
 #: root/tt/fax.tt:132
 msgid "Outgoing"
-msgstr ""
+msgstr "Uscita"
 
 #: root/tt/callblock.tt:99
 msgid "Outgoing calls"
-msgstr ""
+msgstr "Chiamate in uscita"
 
 #: root/tt/voicebox.tt:187
 msgid "PIN code"
-msgstr ""
+msgstr "Codice PIN"
 
 #: root/tt/account_wrapper.tt:24 root/tt/fax.tt:33
 msgid "Password"
-msgstr ""
+msgstr "Password"
 
 #: root/tt/login.tt:6
 msgid "Please enter your username and password."
-msgstr ""
+msgstr "Prego inserire le vostre credenziali di accesso."
 
 #: root/tt/callblock.tt:163 root/tt/callblock.tt:87
 msgid "Please use digits only and include the area code of the number."
-msgstr ""
+msgstr "Prego utilizzare solo numeri ed includere il prefisso."
 
 #: root/tt/fax.tt:31
 msgid "Preferences"
-msgstr ""
+msgstr "Preferenze"
 
 #: root/tt/voicebox.tt:19
 msgid "Received voicemails"
-msgstr ""
+msgstr "Messaggi vocali ricevuti"
 
 #: root/layout/header:38 root/tt/calllist.tt:95 root/tt/desktop.tt:157
 #: root/tt/desktop.tt:53 root/tt/reminder.tt:19
 msgid "Reminder"
-msgstr ""
+msgstr "Promemoria"
 
 #: root/tt/fax.tt:37
 msgid "Repeat password"
-msgstr ""
+msgstr "Ripeti password"
 
 #: root/tt/account_info.tt:10
 msgid "SIP URI:"
-msgstr ""
+msgstr "SIP URI:"
 
 #: root/tt/account_info.tt:12
 msgid "SIP proxy server:"
-msgstr ""
+msgstr "Proxy SIP:"
 
 #: root/tt/callforward_time.tt:236
 msgid "Sat"
-msgstr ""
+msgstr "Sab"
 
 #: root/tt/callforward_destination.tt:114
 #: root/tt/callforward_destination.tt:215 root/tt/callforward_mapping.tt:112
 #: root/tt/callforward_time.tt:103 root/tt/fax.tt:81
 msgid "Save"
-msgstr ""
+msgstr "Salva"
 
 #: root/tt/addressbook.tt:173 root/tt/calllist.tt:126 root/tt/voicebox.tt:114
 msgid "Search"
-msgstr ""
+msgstr "Cerca"
 
 #: root/tt/login.tt:17
 msgid "Self-Administration Login"
-msgstr ""
+msgstr "Connessione all'Area di Amministrazione"
 
 #: root/tt/fax.tt:53
 msgid "Send copy"
-msgstr ""
+msgstr "Invia una copia"
 
 #: root/tt/voicebox.tt:176
 msgid "Send notification of new messages to the following e-mail address:"
-msgstr ""
+msgstr "Invia notifica di nuovi messaggi al seguente indirizzo e-mail:"
 
 #: root/tt/fax.tt:49
 msgid "Send status"
-msgstr ""
+msgstr "Invia stato"
 
 #: root/tt/callforward_time.tt:218
 msgid "Sep"
-msgstr ""
+msgstr "Set"
 
 #: root/tt/callforward_mapping.tt:50
 msgid "Set ringtimeout"
-msgstr ""
+msgstr "Imposta tempo di squillo"
 
 #: root/tt/reminder.tt:6
 msgid "Set your personal alarm."
-msgstr ""
+msgstr "Definisci il tuo allarme personale."
 
 #: root/tt/voicebox.tt:170
 msgid "Settings"
-msgstr ""
+msgstr "Impostazioni"
 
 #. (subscriber.active_number)
 #: root/tt/callblock.tt:20 root/tt/callforward_destination.tt:15
 #: root/tt/callforward_mapping.tt:15 root/tt/callforward_time.tt:15
 #: root/tt/fax.tt:19 root/tt/reminder.tt:20
 msgid "Settings for %1"
-msgstr ""
+msgstr "Impostazioni per %1"
 
 #: root/tt/fax.tt:133
 msgid "Status"
-msgstr ""
+msgstr "Stato"
 
 #: root/tt/callforward_time.tt:237
 msgid "Sun"
-msgstr ""
+msgstr "Dom"
 
 #: root/tt/account_info.tt:14
 msgid "TFTP boot server:"
-msgstr ""
+msgstr "TFTP boot server:"
 
 #: root/tt/desktop.tt:38
 msgid "There are no calls recorded."
-msgstr ""
+msgstr "Non ci sono chiamate registrate."
 
 #: root/tt/callforward_time.tt:234
 msgid "Thu"
-msgstr ""
+msgstr "Gio"
 
 #: root/tt/callforward_navi.tt:5 root/tt/callforward_time.tt:14
 msgid "Time sets"
-msgstr ""
+msgstr "Impostationi temporali"
 
 #: root/tt/callblock.tt:89
 msgid "To block anonymous calls you may just submit the empty string."
-msgstr ""
+msgstr "Per bloccare ile chiamate anonime basta lasciare il campo vuoto."
 
 #: root/tt/account_balance.tt:6
 msgid "Top up"
-msgstr ""
+msgstr "Riempi"
 
 #: root/tt/account_balance.tt:19
 msgid "Top up automatically"
-msgstr ""
+msgstr "Riempi automaticamente"
 
 #: root/tt/callforward_time.tt:232
 msgid "Tue"
-msgstr ""
+msgstr "Mar"
 
 #: root/tt/callforward_destination.tt:169
 #: root/tt/callforward_destination.tt:244 root/tt/calllist.tt:91
 #: root/tt/desktop.tt:49
 msgid "Voicebox"
-msgstr ""
+msgstr "Casella Vocale"
 
 #: root/layout/header:26
 msgid "Voicemails"
-msgstr ""
+msgstr "Messaggi Vocali"
 
 #: root/tt/voicebox.tt:148
 msgid "Voicemails by month"
-msgstr ""
+msgstr "Messaggi Vocali mensili"
 
 #. (subscriber.active_number)
 #: root/tt/voicebox.tt:20
 msgid "Voicemails for %1"
-msgstr ""
+msgstr "Messaggi Vocali di %1"
 
 #: root/tt/callforward_time.tt:233
 msgid "Wed"
-msgstr ""
+msgstr "Mer"
 
 #: root/tt/desktop.tt:6
 msgid "Welcome to your personal desktop."
-msgstr ""
+msgstr "Benvenuti nella vostra pagina di amministrazione."
 
 #: root/tt/reminder.tt:27
 msgid "When"
-msgstr ""
+msgstr "Quando"
 
 #: root/tt/voicebox.tt:192
 msgid "With your 4-digit PIN you may query your voicebox from any telephone."
-msgstr ""
+msgstr "Con il vostro PIN a 4 cifre potete accedere alla vostra casella vocala da qualsiasi telefono."
 
 #: root/tt/account_pass.tt:6
 msgid "You may change the password for your self-administration login here."
-msgstr ""
+msgstr "Potete modificare la vostra password di accesso all'area di amministrazione qui."
 
 #: root/tt/callblock.tt:164 root/tt/callblock.tt:88
 msgid ""
 "You may use the wildcard characters \"?\" for one and \"*\" for an "
 "indefinite number of arbitrary digits."
-msgstr ""
+msgstr "" 
+"Potete utilizzare il carattere jolly \"?\" per uno e \"*\" per un "
+"numero indefinito di cifre arbitrarie."
 
 #: root/tt/fax.tt:4
 msgid "Your fax preferences"
-msgstr ""
+msgstr "Le vostre preferenze Fax"
 
 #: root/tt/addressbook.tt:6 root/tt/addressedit.tt:6
 msgid "Your personal addressbook."
-msgstr ""
+msgstr "La vostra rubrica personale."
 
 #: root/tt/callforward_head.tt:6
 msgid "Your personal callforwards."
-msgstr ""
+msgstr "Le vostre deviazioni di chiamata."
 
 #: root/tt/account_wrapper.tt:5
 msgid "Your personal settings."
-msgstr ""
+msgstr "Le vostre impostazioni personali."
 
 #: root/tt/voicebox.tt:6
 msgid "Your voicemail recordings."
-msgstr ""
+msgstr "I vostri messaggi vocali."
 
 #: root/tt/callblock.tt:159 root/tt/callblock.tt:83
 msgid "add number"
-msgstr ""
+msgstr "aggiungi numero"
 
 #: root/tt/addressbook.tt:36
 msgid "all"
-msgstr ""
+msgstr "tutti"
 
 #: root/tt/desktop.tt:73
 msgid "all calls"
-msgstr ""
+msgstr "tutte le chiamate"
 
 #: root/tt/desktop.tt:130
 msgid "all voicemails"
-msgstr ""
+msgstr "tutti i messaggi vocali"
 
 #: root/tt/account_balance.tt:12
 msgid "amount to charge:"
-msgstr ""
+msgstr "importo da pagare:"
 
 #: root/tt/addressbook.tt:180 root/tt/calllist.tt:141 root/tt/voicebox.tt:129
 msgid "apply filter"
-msgstr ""
+msgstr "applica filtro"
 
 #: root/tt/voicebox.tt:184
 msgid "attach recording"
-msgstr ""
+msgstr "allega registrazione"
 
 #: root/layout/html:34
 msgid "call"
-msgstr ""
+msgstr "chiamata"
 
 #: root/tt/desktop.tt:144
 msgid "call forward active"
-msgstr ""
+msgstr "deviazione di chiamata attiva"
 
 #: root/tt/desktop.tt:147
 msgid "call forward inactive"
-msgstr ""
+msgstr "deviazione di chiamata non attiva"
 
 #: root/tt/voicebox.tt:40
 msgid "caller"
-msgstr ""
+msgstr "chiamante"
 
 #: root/tt/addressedit.tt:30
 msgid "cancel"
-msgstr ""
+msgstr "annulla"
 
 #: root/tt/account_pass.tt:24
 msgid "change password"
-msgstr ""
+msgstr "modifica password"
 
 #: root/tt/calllist.tt:51
 msgid "charges"
-msgstr ""
+msgstr "addebiti"
 
 #: root/tt/addressbook.tt:48 root/tt/addressedit.tt:42
 msgid "company"
-msgstr ""
+msgstr "azienda"
 
 #: root/tt/account_balance.tt:25
 msgid "continue"
-msgstr ""
+msgstr "continua"
 
 #: root/tt/addressbook.tt:28
 msgid "create new contact"
-msgstr ""
+msgstr "crea nuovo contatto"
 
 #: root/tt/account_balance.tt:8
 msgid "current balance:"
-msgstr ""
+msgstr "saldo corrente:"
 
 #: root/tt/calllist.tt:53 root/tt/voicebox.tt:43
 msgid "date"
-msgstr ""
+msgstr "data"
 
 #: root/tt/callblock.tt:128 root/tt/callblock.tt:51
 msgid "delete"
-msgstr ""
+msgstr "elimina"
 
 #: root/tt/voicebox.tt:99
 msgid "delete voicemail"
-msgstr ""
+msgstr "elimina messaggio vocale"
 
 #: root/tt/callblock.tt:139 root/tt/callblock.tt:62
 msgid "disable"
-msgstr ""
+msgstr "disabilita"
 
 #: root/tt/reminder.tt:56
 msgid "disable reminder"
-msgstr ""
+msgstr "disabilita promemoria"
 
 #: root/tt/calllist.tt:49 root/tt/voicebox.tt:42
 msgid "duration"
-msgstr ""
+msgstr "durata"
 
 #: root/tt/callforward_mapping.tt:99
 msgid "during"
-msgstr ""
+msgstr "durante"
 
 #: root/tt/addressbook.tt:153 root/tt/addressedit.tt:66
 msgid "e-mail:"
-msgstr ""
+msgstr "e-mail:"
 
 #: root/tt/callblock.tt:144 root/tt/callblock.tt:67
 msgid "enable"
-msgstr ""
+msgstr "abilita"
 
 #: root/tt/reminder.tt:49
 msgid "enable reminder"
-msgstr ""
+msgstr "abilita promemoria"
 
 #: root/tt/reminder.tt:44
 msgid "every day"
-msgstr ""
+msgstr "tutti i giorni"
 
 #: root/tt/addressbook.tt:145 root/tt/addressedit.tt:58
 msgid "fax:"
-msgstr ""
+msgstr "fax:"
 
 #: root/tt/addressbook.tt:46 root/tt/addressedit.tt:37
 msgid "firstname"
-msgstr ""
+msgstr "nome"
 
 #: root/tt/callforward_destination.tt:196
 #: root/tt/callforward_destination.tt:250
 msgid "for"
-msgstr ""
+msgstr "per"
 
 #: root/tt/calllist.tt:34 root/tt/desktop.tt:27
 msgid "forwarded"
-msgstr ""
+msgstr "deviata"
 
 #: root/tt/callblock.tt:107
 msgid "hide own number on outgoing calls"
-msgstr ""
+msgstr "nascondi il numero per chiamate in uscita"
 
 #: root/tt/addressbook.tt:107 root/tt/addressedit.tt:49
 msgid "home:"
-msgstr ""
+msgstr "casa:"
 
 #: root/tt/addressbook.tt:156 root/tt/addressedit.tt:68
 msgid "homepage:"
-msgstr ""
+msgstr "sito internet:"
 
 #: root/tt/account_balance.tt:20
 msgid "if balance falls below"
-msgstr ""
+msgstr "se il saldo scende al di sotto"
 
 #: root/tt/calllist.tt:32 root/tt/desktop.tt:25
 msgid "incoming"
-msgstr ""
+msgstr "ingresso"
 
 #: root/tt/calllist.tt:75 root/tt/voicebox.tt:66
 msgid "last week"
-msgstr ""
+msgstr "ultima settimana"
 
 #: root/tt/addressbook.tt:47 root/tt/addressedit.tt:39
 msgid "lastname"
-msgstr ""
+msgstr "cognome"
 
 #: root/tt/desktop.tt:108 root/tt/voicebox.tt:80
 msgid "listen to voicemail"
-msgstr ""
+msgstr "ascolta messagio vocale"
 
 #: root/layout/header:11
 msgid "logout"
-msgstr ""
+msgstr "disconnetti"
 
 #: root/tt/addressbook.tt:133 root/tt/addressedit.tt:55
 msgid "mobile:"
-msgstr ""
+msgstr "cellulare:"
 
 #: root/tt/reminder.tt:38
 msgid "never"
-msgstr ""
+msgstr "mai"
 
 #: root/tt/callblock.tt:155 root/tt/callblock.tt:79
 msgid "new entry:"
-msgstr ""
+msgstr "nuova voce:"
 
 #: root/tt/account_pass.tt:13
 msgid "new password:"
-msgstr ""
+msgstr "nuova password:"
 
 #: root/tt/desktop.tt:127
 msgid "no new voicemails"
-msgstr ""
+msgstr "nessun nuovo messaggio vocale"
 
 #: root/tt/desktop.tt:165 root/tt/reminder.tt:72
 msgid "no reminder set"
-msgstr ""
+msgstr "nessun promemoria impostato"
 
 #: root/tt/calllist.tt:47
 msgid "number"
-msgstr ""
+msgstr "numero"
 
 #: root/tt/addressbook.tt:120 root/tt/addressedit.tt:52
 msgid "office:"
-msgstr ""
+msgstr "ufficio:"
 
 #: root/tt/account_pass.tt:9
 msgid "old password:"
-msgstr ""
+msgstr "vecchia password:"
 
 #: root/tt/reminder.tt:41
 msgid "on weekdays (monday - saturday)"
-msgstr ""
+msgstr "nei giorni feriali (lunedi - sabato)"
 
 #: root/tt/calllist.tt:33 root/tt/desktop.tt:26
 msgid "outgoing"
-msgstr ""
+msgstr "uscita"
 
 #: root/tt/login.tt:26
 msgid "password:"
-msgstr ""
+msgstr "password:"
 
 #: root/tt/calllist.tt:79 root/tt/voicebox.tt:70
 msgid "past"
-msgstr ""
+msgstr "passato"
 
 #: root/tt/addressedit.tt:35
 msgid "person"
-msgstr ""
+msgstr "persona"
 
 #: root/tt/account_info.tt:8
 msgid "phone number:"
-msgstr ""
+msgstr "numero di telefono:"
 
 #: root/tt/addressbook.tt:104 root/tt/addressedit.tt:47
 msgid "phone numbers"
-msgstr ""
+msgstr "numeri di telefono"
 
 #: root/tt/desktop.tt:22
 msgid "recent calls"
-msgstr ""
+msgstr "chiamate recenti"
 
 #: root/tt/reminder.tt:34
 msgid "recurrence:"
-msgstr ""
+msgstr "ricorrenza:"
 
 #: root/tt/desktop.tt:162 root/tt/reminder.tt:69
 msgid "reminder is active"
-msgstr ""
+msgstr "promemoria attivo"
 
 #: root/tt/account_pass.tt:17
 msgid "repeat:"
-msgstr ""
+msgstr "ripeti:"
 
 #: root/tt/calllist.tt:153 root/tt/voicebox.tt:141
 msgid "reset filter"
-msgstr ""
+msgstr "annulla filtro"
 
 #: root/tt/addressedit.tt:76
 msgid "save contact"
-msgstr ""
+msgstr "salva contatti"
 
 #: root/tt/callblock.tt:113 root/tt/callblock.tt:36 root/tt/voicebox.tt:196
 msgid "save settings"
-msgstr ""
+msgstr "salva impostazioni"
 
 #: root/tt/addressbook.tt:176 root/tt/calllist.tt:136 root/tt/voicebox.tt:124
 msgid "search term"
-msgstr ""
+msgstr "ricerca termine"
 
 #: root/tt/callforward_destination.tt:204
 #: root/tt/callforward_destination.tt:250
 msgid "seconds"
-msgstr ""
+msgstr "secondi"
 
 #: root/tt/addressbook.tt:112 root/tt/addressbook.tt:125
 #: root/tt/addressbook.tt:138 root/tt/addressbook.tt:82
 #: root/tt/calllist.tt:106 root/tt/desktop.tt:120 root/tt/desktop.tt:61
 #: root/tt/voicebox.tt:91
 msgid "show actions"
-msgstr ""
+msgstr "mostra azioni"
 
 #: root/tt/reminder.tt:29
 msgid "time of day:"
-msgstr ""
+msgstr "ora del giorno:"
 
 #: root/tt/calllist.tt:129 root/tt/voicebox.tt:117
 msgid "time range (DD.MM.YYYY)"
-msgstr ""
+msgstr "intervallo temporale (DD.MM.YYYY)"
 
 #: root/tt/callforward_destination.tt:133 root/tt/callforward_time.tt:117
 msgid "times(s) mapped"
@@ -815,24 +817,24 @@ msgstr ""
 #: root/tt/callforward_mapping.tt:89 root/tt/calllist.tt:131
 #: root/tt/voicebox.tt:119
 msgid "to"
-msgstr ""
+msgstr "a"
 
 #: root/tt/calllist.tt:69 root/tt/voicebox.tt:60
 msgid "today"
-msgstr ""
+msgstr "oggi"
 
 #: root/tt/account_info.tt:6 root/tt/account_pass.tt:7 root/tt/login.tt:24
 msgid "username:"
-msgstr ""
+msgstr "username:"
 
 #: root/tt/desktop.tt:151 root/tt/desktop.tt:169
 msgid "view settings"
-msgstr ""
+msgstr "mostra impostazioni"
 
 #: root/tt/addressbook.tt:151
 msgid "web"
-msgstr ""
+msgstr "web"
 
 #: root/tt/calllist.tt:72 root/tt/voicebox.tt:63
 msgid "yesterday"
-msgstr ""
+msgstr "ieri"
