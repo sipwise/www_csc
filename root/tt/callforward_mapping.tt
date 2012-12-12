@@ -36,7 +36,7 @@
         [% FOREACH map IN cf_map %]
             [% IF first %]
                 <br clear="all" /> 
-                <div class="set-item span-15">[% cf_type.description %]</div>
+                <div class="set-item span-15">[% Catalyst.loc(cf_type.description) %]</div>
                 <br clear="all" /> 
                 [% first = 0 %]
 
