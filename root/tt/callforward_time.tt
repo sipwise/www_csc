@@ -1,4 +1,5 @@
 [% PROCESS tt/callforward_head.tt %]
+[% META title = 'Call forward' %]
 
 <div id="main">
 
