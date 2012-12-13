@@ -49,7 +49,7 @@ msgstr "Attivo"
 
 #: root/tt/callforward_mapping.tt:122
 msgid "Add"
-msgstr "Aggiugi"
+msgstr "Aggiungi"
 
 #: root/tt/callforward_destination.tt:225
 msgid "Add destination"
