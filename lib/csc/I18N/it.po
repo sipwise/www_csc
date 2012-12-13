@@ -97,11 +97,11 @@ msgstr "Deviazioni di Chiamata"
 
 #: root/layout/header:35 root/tt/callblock.tt:19
 msgid "Call barring"
-msgstr "Blocco Chiamate"
+msgstr "Blocco numerazioni"
 
 #: root/tt/callblock.tt:6
 msgid "Call barring for incoming and outgoing calls."
-msgstr "Blocco per chiamate entranti e chiamate uscenti."
+msgstr "Blocco numerazioni per chiamate entranti e uscenti."
 
 #: root/layout/header:32
 msgid "Call forward"
@@ -334,7 +334,7 @@ msgstr "Password"
 
 #: root/tt/login.tt:6
 msgid "Please enter your username and password."
-msgstr "Prego inserire le vostre credenziali di accesso."
+msgstr "Prego inserire le credenziali di accesso."
 
 #: root/tt/callblock.tt:163 root/tt/callblock.tt:87
 msgid "Please use digits only and include the area code of the number."
@@ -444,7 +444,7 @@ msgstr "Impostationi temporali"
 
 #: root/tt/callblock.tt:89
 msgid "To block anonymous calls you may just submit the empty string."
-msgstr "Per bloccare ile chiamate anonime basta lasciare il campo vuoto."
+msgstr "Per bloccare le chiamate anonime basta lasciare il campo vuoto."
 
 #: root/tt/account_balance.tt:6
 msgid "Top up"
