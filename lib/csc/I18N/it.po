@@ -93,11 +93,11 @@ msgstr "CC"
 
 #: root/tt/desktop.tt:139
 msgid "Call Forwards"
-msgstr "Deviazioni di Chiamata"
+msgstr "Deviazioni di chiamata"
 
 #: root/layout/header:35 root/tt/callblock.tt:19
 msgid "Call barring"
-msgstr "Blocco numerazioni"
+msgstr "Blocco"
 
 #: root/tt/callblock.tt:6
 msgid "Call barring for incoming and outgoing calls."
@@ -105,7 +105,7 @@ msgstr "Blocco numerazioni per chiamate entranti e uscenti."
 
 #: root/layout/header:32
 msgid "Call forward"
-msgstr "Deviazione di chiamata"
+msgstr "Deviazioni"
 
 #: root/tt/calllist.tt:19
 msgid "Call list"
@@ -165,7 +165,7 @@ msgstr "Elimina"
 
 #: root/layout/header:20
 msgid "Desktop"
-msgstr "Pagina di Amministrazione"
+msgstr "Homepage"
 
 #: root/tt/fax.tt:128
 msgid "Destination"
