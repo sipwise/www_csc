@@ -1,3 +1,30 @@
+ngcp-www-csc (3.5.0) unstable; urgency=low
+
+  [ dtiefnig ]
+  * de.po,en.po,es.po,fr.po,messages.pot: update language files with strings from the templates
+  * it.po: add italian I18N translation file
+
+  [ dgrotti ]
+  * it.po: some italian translation modified
+
+  [ agranig ]
+  * csc.conf: Migrate to new network.yml schema.
+  * callforward_destination.tt,callforward_head.tt,callforward_mapping.tt,callforward_time.tt: Fix setting page title.
+
+  [ jbonilla ]
+  * es.po: update Spanish .po file
+
+  [ cveigl ]
+  * desktop.pm: indicate existence of active callforwards in desktop (mantis:2073)
+  * addressbook.pm,call.pm,callforward.pm: public check_*() methods now also receive a %$data data structure instead of the old single scalar argument. update calls accordingly.
+
+  [ apogrebennyk ]
+  * csc.conf: add fax page to the main menu (as set by www_csc.main_menu.fax).
+  * csc.conf: hide fax option from CE (yml setting is PRO-only already)
+  * callforward_mapping.tt: localize CF type name
+
+ -- Andrew Pogrebennyk <apogrebennyk@sipwise.com>  Fri, 21 Dec 2012 12:11:12 +0100
+
 ngcp-www-csc (3.4.3) unstable; urgency=low
 
   * Make Jitsi config SRV friendly.
