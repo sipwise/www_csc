@@ -118,7 +118,7 @@ function get_minutes () {
     return stuff;
 }
 
-function print_html (target, html, disabled) {
+function print_html (target, html, disabled, rem_text) {
     
     $("#" + target).empty().append (html);
 
@@ -126,11 +126,11 @@ function print_html (target, html, disabled) {
         $("#" + target + "-foot").empty();
     }
     else {
-        $("#" + target + "-foot").empty().append('<a class="link" href="javascript:void(0)" onclick="remove_html(\'' + target + '\', \'' + disabled + '\')">Remove</a>');
+        $("#" + target + "-foot").empty().append('<a class="link" href="javascript:void(0)" onclick="remove_html(\'' + target + '\', \'' + disabled + '\')">' + rem_test + '</a>');
     }
 }
 
-function remove_html (target, disabled) {
+function remove_html (target, disabled, add_text) {
     
     $("#" + target).empty().append('<p>any</p>');
     $("#" + target + '-errormsg').empty().append('&nbsp;');
@@ -139,18 +139,18 @@ function remove_html (target, disabled) {
         $("#" + target + "-foot").empty();
     }
     else {
-        $("#" + target + "-foot").empty().append('<a class="link" href="javascript:void(0)" onclick="put(\'' + target + '\')">Add</a>');
+        $("#" + target + "-foot").empty().append('<a class="link" href="javascript:void(0)" onclick="put(\'' + target + '\')">' + add_text + '</a>');
     }
 }
 
-function put (target) {
+function put (target, through_txt) {
     
     var html;
     var part = target.substring (0, (target.indexOf('-')));
     var callback = 'get_' + part;
 
     html  = create_period_part ('from', 0, undefined, part, callback) 
-    html += 'through<br/>';
+    html += through_txt + '<br/>';
     html += create_period_part ('to', 0, undefined, part, callback) 
     print_html (target, html, 0);
 }
