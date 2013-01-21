@@ -1,5 +1,6 @@
 [% PROCESS tt/callforward_head.tt %]
 [% META title = 'Call forward' %]
+[% add_text = Catalyst.loc('Add'); rem_text = Catalyst.loc('Remove') %]
 
 <div id="main">
 
@@ -266,9 +267,10 @@
                     [% IF (selected_from >= 0) or (selected_to >= 0) %]
                         [% f = "create_period_part ('from', $disabled, $selected_from , '$part') " %]
                         [% t = "create_period_part ('to', $disabled, $selected_to, '$part') " %]
-                        [% html = html _ "print_html ('$target', $f + ' through<br/> ' + $t, $disabled);\n" %]
+                        [% add_text = Catalyst.loc('Add'); rem_text = Catalyst.loc('Remove') %]
+                        [% html = html _ "print_html ('$target', $f + ' through<br/> ' + $t, $disabled, '$rem_text');\n" %]
                     [% ELSE %]
-                        [% html = html _ "remove_html ('$target', '$disabled');\n" %]
+                        [% html = html _ "remove_html ('$target', '$disabled', '$add_text');\n" %]
                     [% END %]
 
                 [% END %]
@@ -278,7 +280,7 @@
             [% IF (tset_id == tset.id) or (tset.periods.size == 0) %]
                 [% FOREACH part IN ['year', 'month', 'mday', 'wday', 'hour', 'minute'] %]
                     [% target = part _ '-' _ tset.id _ '--1' %]
-                    [% html = html _ "remove_html ('$target');" %]
+                    [% html = html _ "remove_html ('$target', null, '$add_text');" %]
                 [% END %]
             [% END %]
 
