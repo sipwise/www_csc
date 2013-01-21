@@ -130,7 +130,7 @@ function print_html (target, html, disabled, rem_text) {
     }
 }
 
-function remove_html (target, disabled, add_text) {
+function remove_html (target, disabled, add_text, rem_text, through_text) {
     
     $("#" + target).empty().append('<p>any</p>');
     $("#" + target + '-errormsg').empty().append('&nbsp;');
@@ -139,11 +139,11 @@ function remove_html (target, disabled, add_text) {
         $("#" + target + "-foot").empty();
     }
     else {
-        $("#" + target + "-foot").empty().append('<a class="link" href="javascript:void(0)" onclick="put(\'' + target + '\')">' + add_text + '</a>');
+        $("#" + target + "-foot").empty().append('<a class="link" href="javascript:void(0)" onclick="put(\'' + target + '\',\'' + rem_text + '\',\'' + through_text + '\')">' + add_text + '</a>');
     }
 }
 
-function put (target, through_txt) {
+function put (target, rem_text, through_txt) {
     
     var html;
     var part = target.substring (0, (target.indexOf('-')));
@@ -152,5 +152,5 @@ function put (target, through_txt) {
     html  = create_period_part ('from', 0, undefined, part, callback) 
     html += through_txt + '<br/>';
     html += create_period_part ('to', 0, undefined, part, callback) 
-    print_html (target, html, 0);
+    print_html (target, html, 0, rem_text);
 }
