@@ -57,7 +57,7 @@ msgstr "Ziel hinzuf&uuml;gen"
 
 #: root/tt/callforward_destination.tt:126
 msgid "Add destinationset"
-msgstr "Ziel-Gruppe hinzuf&uuml;gen"
+msgstr "Neue Zielgruppe"
 
 #: root/tt/callforward_time.tt:178
 msgid "Add period"
@@ -283,7 +283,7 @@ msgstr "Einloggen"
 
 #: root/tt/callforward_navi.tt:1
 msgid "Mapping"
-msgstr "Zuweisung"
+msgstr "Zuweisungen"
 
 #: root/tt/callforward_mapping.tt:15
 msgid "Mappings"
