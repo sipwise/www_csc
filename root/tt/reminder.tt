@@ -38,7 +38,7 @@
                   <label for="reminder_recur_never">[% Catalyst.loc('never') %]</label><br />
                   <input type="radio" id="reminder_recur_weekdays" value="weekdays" name="recur" class="no_border"
                          [% IF subscriber.reminder.recur == "weekdays" %]checked="checked"[% END %] />
-                  <label for="reminder_recur_weekdays">[% Catalyst.loc('on weekdays (monday - saturday)') %]</label><br />
+                  <label for="reminder_recur_weekdays">[% Catalyst.loc('on weekdays') %]</label><br />
                   <input type="radio" id="reminder_recur_always" value="always" name="recur" class="no_border"
                          [% IF subscriber.reminder.recur == "always" %]checked="checked"[% END %] />
                   <label for="reminder_recur_always">[% Catalyst.loc('every day') %]</label><br />
