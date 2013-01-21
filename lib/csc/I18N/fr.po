@@ -54,7 +54,7 @@ msgstr ""
 msgid "Add destinationset"
 msgstr ""
 
-#: root/tt/callforward_time.tt:174
+#: root/tt/callforward_time.tt:180
 msgid "Add period"
 msgstr ""
 
@@ -70,11 +70,11 @@ msgstr "Répertoire"
 msgid "Allow everything except ..."
 msgstr "Tout autoriser sauf..."
 
-#: root/tt/callforward_time.tt:213
+#: root/tt/callforward_time.tt:219
 msgid "Apr"
 msgstr ""
 
-#: root/tt/callforward_time.tt:217
+#: root/tt/callforward_time.tt:223
 msgid "Aug"
 msgstr ""
 
@@ -141,7 +141,7 @@ msgstr "Appels par mois"
 
 #: root/tt/callforward_destination.tt:111
 #: root/tt/callforward_destination.tt:213 root/tt/callforward_mapping.tt:124
-#: root/tt/callforward_time.tt:100 root/tt/callforward_time.tt:170
+#: root/tt/callforward_time.tt:100 root/tt/callforward_time.tt:176
 #: root/tt/fax.tt:83
 #, fuzzy
 msgid "Cancel"
@@ -169,14 +169,14 @@ msgstr "Contacts for %1"
 msgid "Create new contact"
 msgstr "Créer un nouveau contact"
 
-#: root/tt/callforward_time.tt:221
+#: root/tt/callforward_time.tt:227
 #, fuzzy
 msgid "Dec"
 msgstr "Equipement"
 
 #: root/tt/callforward_destination.tt:128
 #: root/tt/callforward_destination.tt:247 root/tt/callforward_mapping.tt:140
-#: root/tt/callforward_time.tt:114 root/tt/callforward_time.tt:183
+#: root/tt/callforward_time.tt:114 root/tt/callforward_time.tt:189
 #, fuzzy
 msgid "Delete"
 msgstr "éffacer"
@@ -203,7 +203,7 @@ msgstr "Equipement"
 
 #: root/tt/callforward_destination.tt:122
 #: root/tt/callforward_destination.tt:244 root/tt/callforward_mapping.tt:136
-#: root/tt/callforward_time.tt:108 root/tt/callforward_time.tt:180
+#: root/tt/callforward_time.tt:108 root/tt/callforward_time.tt:186
 #: root/tt/fax.tt:73
 msgid "Edit"
 msgstr ""
@@ -222,7 +222,7 @@ msgstr ""
 msgid "Fax2Mail"
 msgstr "Fax par mél"
 
-#: root/tt/callforward_time.tt:211
+#: root/tt/callforward_time.tt:217
 #, fuzzy
 msgid "Feb"
 msgstr "web"
@@ -235,7 +235,7 @@ msgstr ""
 msgid "Filter:"
 msgstr "Filtrer:"
 
-#: root/tt/callforward_time.tt:236
+#: root/tt/callforward_time.tt:242
 msgid "Fri"
 msgstr ""
 
@@ -264,15 +264,15 @@ msgstr "Appels entrants"
 msgid "Information"
 msgstr "Information"
 
-#: root/tt/callforward_time.tt:210
+#: root/tt/callforward_time.tt:216
 msgid "Jan"
 msgstr ""
 
-#: root/tt/callforward_time.tt:216
+#: root/tt/callforward_time.tt:222
 msgid "Jul"
 msgstr ""
 
-#: root/tt/callforward_time.tt:215
+#: root/tt/callforward_time.tt:221
 msgid "Jun"
 msgstr ""
 
@@ -292,15 +292,15 @@ msgstr ""
 msgid "Mappings"
 msgstr ""
 
-#: root/tt/callforward_time.tt:212
+#: root/tt/callforward_time.tt:218
 msgid "Mar"
 msgstr ""
 
-#: root/tt/callforward_time.tt:214
+#: root/tt/callforward_time.tt:220
 msgid "May"
 msgstr ""
 
-#: root/tt/callforward_time.tt:232
+#: root/tt/callforward_time.tt:238
 msgid "Mon"
 msgstr ""
 
@@ -320,7 +320,7 @@ msgstr "Pas d'appel correspondant trouvé"
 msgid "No matching voicemails found."
 msgstr "Pas de messages vocaux trouvés"
 
-#: root/tt/callforward_time.tt:220
+#: root/tt/callforward_time.tt:226
 msgid "Nov"
 msgstr ""
 
@@ -329,7 +329,7 @@ msgstr ""
 msgid "Number or SIP-URI:"
 msgstr "Numéro de téléphone ou URI SIP"
 
-#: root/tt/callforward_time.tt:219
+#: root/tt/callforward_time.tt:225
 msgid "Oct"
 msgstr ""
 
@@ -390,13 +390,13 @@ msgstr "URI SIP:"
 msgid "SIP proxy server:"
 msgstr "Serveur proxy SIP"
 
-#: root/tt/callforward_time.tt:237
+#: root/tt/callforward_time.tt:243
 msgid "Sat"
 msgstr ""
 
 #: root/tt/callforward_destination.tt:106
 #: root/tt/callforward_destination.tt:208 root/tt/callforward_mapping.tt:119
-#: root/tt/callforward_time.tt:166 root/tt/callforward_time.tt:97
+#: root/tt/callforward_time.tt:172 root/tt/callforward_time.tt:97
 #: root/tt/fax.tt:81
 msgid "Save"
 msgstr ""
@@ -422,7 +422,7 @@ msgstr ""
 msgid "Send status"
 msgstr ""
 
-#: root/tt/callforward_time.tt:218
+#: root/tt/callforward_time.tt:224
 msgid "Sep"
 msgstr ""
 
@@ -449,7 +449,7 @@ msgstr "Paramètres pour %1"
 msgid "Status"
 msgstr ""
 
-#: root/tt/callforward_time.tt:231
+#: root/tt/callforward_time.tt:237
 msgid "Sun"
 msgstr ""
 
@@ -461,7 +461,7 @@ msgstr "Serveur de boot TFTP:"
 msgid "There are no calls recorded."
 msgstr "Il n'y a pas d'appels enregistrés"
 
-#: root/tt/callforward_time.tt:235
+#: root/tt/callforward_time.tt:241
 msgid "Thu"
 msgstr ""
 
@@ -482,7 +482,7 @@ msgstr "Reconstituer"
 msgid "Top up automatically"
 msgstr "Reconstituer automatiquement"
 
-#: root/tt/callforward_time.tt:233
+#: root/tt/callforward_time.tt:239
 msgid "Tue"
 msgstr ""
 
@@ -505,7 +505,7 @@ msgstr "Messages vocaux par mois"
 msgid "Voicemails for %1"
 msgstr "Messages vocaux pour %1"
 
-#: root/tt/callforward_time.tt:234
+#: root/tt/callforward_time.tt:240
 msgid "Wed"
 msgstr ""
 
@@ -706,6 +706,10 @@ msgstr "Accueil:"
 msgid "homepage:"
 msgstr "page d'accueil"
 
+#: root/tt/callforward_time.tt:143
+msgid "hour"
+msgstr ""
+
 #: root/tt/account_balance.tt:20
 msgid "if balance falls below"
 msgstr "si le solde descend en dessous de"
@@ -730,9 +734,21 @@ msgstr "ecouter les messages vocaux"
 msgid "logout"
 msgstr "deconnecter"
 
+#: root/tt/callforward_time.tt:142
+msgid "mday"
+msgstr ""
+
+#: root/tt/callforward_time.tt:143
+msgid "minute"
+msgstr ""
+
 #: root/tt/addressbook.tt:133 root/tt/addressedit.tt:55
 msgid "mobile:"
 msgstr "mobile:"
+
+#: root/tt/callforward_time.tt:142
+msgid "month"
+msgstr ""
 
 #: root/tt/reminder.tt:38
 msgid "never"
@@ -874,9 +890,17 @@ msgstr "identifiant:"
 msgid "view settings"
 msgstr "voir les paramètres"
 
+#: root/tt/callforward_time.tt:143
+msgid "wday"
+msgstr ""
+
 #: root/tt/addressbook.tt:151
 msgid "web"
 msgstr "web"
+
+#: root/tt/callforward_time.tt:142
+msgid "year"
+msgstr ""
 
 #: root/tt/calllist.tt:72 root/tt/voicebox.tt:63
 msgid "yesterday"

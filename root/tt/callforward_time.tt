@@ -137,9 +137,15 @@
         <input type="hidden" name="tperiod_id" value="[% period.id %]"/>
     [% END %]
 
+    [% IF 0 %]
+      <!-- dummy for auto-generate translation stubs
+      Catalyst.loc('year'); Catalyst.loc('month'); Catalyst.loc('mday');
+      Catalyst.loc('wday'); Catalyst.loc('hour'); Catalyst.loc('minute');
+      -->
+    [% END %]
     [% FOREACH part IN ['year', 'month', 'mday', 'wday', 'hour', 'minute'] %]
         <div class="span-2">
-            <div class="ui-widget-header drophead" style="text-transform:capitalize"><p class="ui-widget-header drophead">[% part %]</p></div>
+            <div class="ui-widget-header drophead" style="text-transform:capitalize"><p class="ui-widget-header drophead">[% Catalyst.loc(part) %]</p></div>
             [% IF action == 'add' %]
                 <div class="ui-widget-header dateform-elem"     id="[% part %]-[% tset.id %]--1"></div> 
                 <div class="ui-widget-header dropfoot"          id="[% part %]-[% tset.id %]--1-foot"></div>
