@@ -44,29 +44,28 @@ msgid "Actions"
 msgstr "Aktionen"
 
 #: root/tt/fax.tt:45
-#, fuzzy
 msgid "Active"
-msgstr "Aktionen"
+msgstr "Aktiv"
 
-#: root/tt/callforward_mapping.tt:123
+#: root/tt/callforward_mapping.tt:133
 msgid "Add"
-msgstr ""
+msgstr "Hinzuf&uuml;gen"
 
 #: root/tt/callforward_destination.tt:226
 msgid "Add destination"
-msgstr ""
+msgstr "Ziel hinzuf&uuml;gen"
 
 #: root/tt/callforward_destination.tt:126
 msgid "Add destinationset"
-msgstr ""
+msgstr "Ziel-Gruppe hinzuf&uuml;gen"
 
 #: root/tt/callforward_time.tt:178
 msgid "Add period"
-msgstr ""
+msgstr "Zeit-Periode hinzuf&uuml;gen"
 
 #: root/tt/callforward_time.tt:110
 msgid "Add timeset"
-msgstr ""
+msgstr "Zeit-Gruppe hinzuf&uuml;gen"
 
 #: root/layout/header:29
 msgid "Addressbook"
@@ -91,6 +90,22 @@ msgstr "Blockiere alles au&szlig;er ..."
 #: root/tt/fax.tt:130
 msgid "CC"
 msgstr ""
+
+#: root/tt/callforward_mapping.tt:40
+msgid "Call Forward Busy"
+msgstr "Anruf weiterleiten, wenn besetzt"
+
+#: root/tt/callforward_mapping.tt:41
+msgid "Call Forward Timeout"
+msgstr "Anruf weiterleiten, wenn keine Antwort"
+
+#: root/tt/callforward_mapping.tt:42
+msgid "Call Forward Unavailable"
+msgstr "Anruf weiterleiten, wenn Telefon nicht erreichbar (Offline)"
+
+#: root/tt/callforward_mapping.tt:39
+msgid "Call Forward Unconditional"
+msgstr "Alle Anrufe weiterleiten"
 
 #: root/tt/desktop.tt:139
 msgid "Call Forwards"
@@ -126,10 +141,9 @@ msgid "Calls by month"
 msgstr "Anrufe nach Monat"
 
 #: root/tt/callforward_destination.tt:120
-#: root/tt/callforward_destination.tt:221 root/tt/callforward_mapping.tt:118
+#: root/tt/callforward_destination.tt:221 root/tt/callforward_mapping.tt:128
 #: root/tt/callforward_time.tt:107 root/tt/callforward_time.tt:175
 #: root/tt/fax.tt:83
-#, fuzzy
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -156,14 +170,12 @@ msgid "Create new contact"
 msgstr "Neuen Eintrag erzeugen"
 
 #: root/tt/callforward_time.tt:222
-#, fuzzy
 msgid "Dec"
 msgstr "Endger&aauml;te"
 
 #: root/tt/callforward_destination.tt:137
-#: root/tt/callforward_destination.tt:257 root/tt/callforward_mapping.tt:134
+#: root/tt/callforward_destination.tt:257 root/tt/callforward_mapping.tt:144
 #: root/tt/callforward_time.tt:121 root/tt/callforward_time.tt:185
-#, fuzzy
 msgid "Delete"
 msgstr "L&ouml;schen"
 
@@ -173,34 +185,34 @@ msgstr "Desktop"
 
 #: root/tt/fax.tt:128
 msgid "Destination"
-msgstr ""
+msgstr "Ziel"
 
 #: root/tt/callforward_destination.tt:15 root/tt/callforward_navi.tt:3
 msgid "Destination sets"
-msgstr ""
+msgstr "Ziel-Gruppen"
 
 #: root/tt/fax.tt:59
 msgid "Destinations"
-msgstr ""
+msgstr "Ziele"
 
 #: root/layout/header:44
 msgid "Devices"
 msgstr "Endger&aauml;te"
 
 #: root/tt/callforward_destination.tt:131
-#: root/tt/callforward_destination.tt:254 root/tt/callforward_mapping.tt:130
+#: root/tt/callforward_destination.tt:254 root/tt/callforward_mapping.tt:140
 #: root/tt/callforward_time.tt:115 root/tt/callforward_time.tt:183
 #: root/tt/fax.tt:73
 msgid "Edit"
-msgstr ""
+msgstr "Bearbeiten"
 
 #: root/layout/header:41
 msgid "Fax"
-msgstr ""
+msgstr "Fax"
 
 #: root/tt/fax.tt:18
 msgid "Fax preferences"
-msgstr ""
+msgstr "Fax-Einstellungen"
 
 #: root/tt/callforward_destination.tt:176
 #: root/tt/callforward_destination.tt:247 root/tt/calllist.tt:93
@@ -209,13 +221,12 @@ msgid "Fax2Mail"
 msgstr "Fax2Mail"
 
 #: root/tt/callforward_time.tt:212
-#, fuzzy
 msgid "Feb"
-msgstr "Internet"
+msgstr ""
 
 #: root/tt/fax.tt:129
 msgid "Filetype"
-msgstr ""
+msgstr "Datei-Typ"
 
 #: root/tt/addressbook.tt:35 root/tt/calllist.tt:28 root/tt/voicebox.tt:28
 msgid "Filter:"
@@ -272,11 +283,11 @@ msgstr "Einloggen"
 
 #: root/tt/callforward_navi.tt:1
 msgid "Mapping"
-msgstr ""
+msgstr "Zuweisung"
 
 #: root/tt/callforward_mapping.tt:15
 msgid "Mappings"
-msgstr ""
+msgstr "Zuweisungen"
 
 #: root/tt/callforward_time.tt:213
 msgid "Mar"
@@ -292,7 +303,7 @@ msgstr ""
 
 #: root/tt/fax.tt:41
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 #: root/tt/desktop.tt:101
 msgid "New Voicemails"
@@ -311,9 +322,8 @@ msgid "Nov"
 msgstr ""
 
 #: root/tt/callforward_destination.tt:190
-#, fuzzy
 msgid "Number or SIP-URI:"
-msgstr "Rufnummer oder SIP-URI"
+msgstr "Rufnummer oder SIP-URI:"
 
 #: root/tt/callforward_time.tt:220
 msgid "Oct"
@@ -349,9 +359,8 @@ msgid "Please use digits only and include the area code of the number."
 msgstr "Bitte verwenden Sie nur Zahlen (inkl. Ortsvorwahl)."
 
 #: root/tt/fax.tt:31
-#, fuzzy
 msgid "Preferences"
-msgstr "Wiederholung:"
+msgstr "Einstellungen"
 
 #: root/tt/voicebox.tt:19
 msgid "Received voicemails"
@@ -360,12 +369,11 @@ msgstr "Empfangene Sprachnachrichten"
 #: root/layout/header:38 root/tt/calllist.tt:95 root/tt/desktop.tt:157
 #: root/tt/desktop.tt:53 root/tt/reminder.tt:19
 msgid "Reminder"
-msgstr "Weckrufe"
+msgstr "Weckruf"
 
 #: root/tt/fax.tt:37
-#, fuzzy
 msgid "Repeat password"
-msgstr "Neues Passwort:"
+msgstr "Passwort wiederholen"
 
 #: root/tt/account_info.tt:10
 msgid "SIP URI:"
@@ -380,10 +388,10 @@ msgid "Sat"
 msgstr ""
 
 #: root/tt/callforward_destination.tt:115
-#: root/tt/callforward_destination.tt:216 root/tt/callforward_mapping.tt:113
+#: root/tt/callforward_destination.tt:216 root/tt/callforward_mapping.tt:123
 #: root/tt/callforward_time.tt:104 root/tt/fax.tt:81
 msgid "Save"
-msgstr ""
+msgstr "Speichern"
 
 #: root/tt/addressbook.tt:173 root/tt/calllist.tt:126 root/tt/voicebox.tt:114
 msgid "Search"
@@ -395,24 +403,23 @@ msgstr "Ihr pers&ouml;nliches Portal"
 
 #: root/tt/fax.tt:53
 msgid "Send copy"
-msgstr ""
+msgstr "Kopie senden"
 
 #: root/tt/voicebox.tt:176
 msgid "Send notification of new messages to the following e-mail address:"
-msgstr ""
-"Benachrichtigungen &uuml;ber neue Nachrichten an folgende eMail-Adresse:"
+msgstr "Benachrichtigungen &uuml;ber neue Nachrichten an folgende Email-Adresse:"
 
 #: root/tt/fax.tt:49
 msgid "Send status"
-msgstr ""
+msgstr "Sende-Status"
 
 #: root/tt/callforward_time.tt:219
 msgid "Sep"
 msgstr ""
 
-#: root/tt/callforward_mapping.tt:51
+#: root/tt/callforward_mapping.tt:61
 msgid "Set ringtimeout"
-msgstr ""
+msgstr "L&auml;utdauer setzen"
 
 #: root/tt/reminder.tt:6
 msgid "Set your personal alarm."
@@ -431,7 +438,7 @@ msgstr "Einstellungen f&uuml;r %1"
 
 #: root/tt/fax.tt:133
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: root/tt/callforward_time.tt:232
 msgid "Sun"
@@ -450,15 +457,12 @@ msgid "Thu"
 msgstr ""
 
 #: root/tt/callforward_navi.tt:5 root/tt/callforward_time.tt:15
-#, fuzzy
 msgid "Time sets"
-msgstr "Einstellungen anzeigen"
+msgstr "Zeit-Gruppen"
 
 #: root/tt/callblock.tt:89
 msgid "To block anonymous calls you may just submit the empty string."
-msgstr ""
-"Um Anrufe mit unterdr&uuml;ckter Rufnummer zu sperren, geben Sie einfach "
-"eine leere Zeichenkette an."
+msgstr "Um Anrufe mit unterdr&uuml;ckter Rufnummer zu sperren, geben Sie einfach eine leere Zeichenkette an."
 
 #: root/tt/account_balance.tt:6
 msgid "Top up"
@@ -505,35 +509,27 @@ msgstr "Wann"
 
 #: root/tt/voicebox.tt:192
 msgid "With your 4-digit PIN you may query your voicebox from any telephone."
-msgstr ""
-"Mit ihrem 4 stelligen Pin k&ouml;nnen sie ihren Anrufbeantworter von einem "
-"beliebigen Telefon abfragen."
+msgstr "Mit ihrem 4 stelligen Pin k&ouml;nnen sie ihren Anrufbeantworter von einem beliebigen Telefon abfragen."
 
 #: root/tt/account_pass.tt:6
 msgid "You may change the password for your self-administration login here."
-msgstr ""
-"Hier k&ouml;nnen Sie ihr Passwort f&uuml;r das Kundenportal &auml;ndern."
+msgstr "Hier k&ouml;nnen Sie ihr Passwort f&uuml;r das Kundenportal &auml;ndern."
 
 #: root/tt/callblock.tt:164 root/tt/callblock.tt:88
-msgid ""
-"You may use the wildcard characters \"?\" for one and \"*\" for an "
-"indefinite number of arbitrary digits."
-msgstr ""
-"Sie k&ouml;nnen \"?\" f&uuml;r eine einzelne Ziffer oder \"*\" f&uuml;r eine "
-"beliebige Anzahl Ziffern verwenden."
+msgid "You may use the wildcard characters \"?\" for one and \"*\" for an indefinite number of arbitrary digits."
+msgstr "Sie k&ouml;nnen \"?\" f&uuml;r eine einzelne Ziffer oder \"*\" f&uuml;r eine beliebige Anzahl Ziffern verwenden."
 
 #: root/tt/fax.tt:4
 msgid "Your fax preferences"
-msgstr ""
+msgstr "Ihre Fax-Einstellungen"
 
 #: root/tt/addressbook.tt:6 root/tt/addressedit.tt:6
 msgid "Your personal addressbook."
 msgstr "Ihr pers&ouml;nliches Address-Buch."
 
 #: root/tt/callforward_head.tt:4
-#, fuzzy
 msgid "Your personal callforwards."
-msgstr "Konfigurieren Sie Ihren pers&ouml;nlichen Weckruf"
+msgstr "Konfigurieren Sie Ihre Rufweiterleitungen"
 
 #: root/tt/account_wrapper.tt:5
 msgid "Your personal settings."
@@ -639,9 +635,9 @@ msgstr "Weckruf deaktivieren"
 msgid "duration"
 msgstr "Dauer"
 
-#: root/tt/callforward_mapping.tt:100
+#: root/tt/callforward_mapping.tt:110
 msgid "during"
-msgstr ""
+msgstr "w&auml;hrend"
 
 #: root/tt/addressbook.tt:153 root/tt/addressedit.tt:66
 msgid "e-mail:"
@@ -670,7 +666,7 @@ msgstr "Vorname"
 #: root/tt/callforward_destination.tt:197
 #: root/tt/callforward_destination.tt:251
 msgid "for"
-msgstr ""
+msgstr "f&uuml;r"
 
 #: root/tt/calllist.tt:34 root/tt/desktop.tt:27
 msgid "forwarded"
@@ -812,7 +808,7 @@ msgstr "Suchbegriff"
 #: root/tt/callforward_destination.tt:205
 #: root/tt/callforward_destination.tt:251
 msgid "seconds"
-msgstr ""
+msgstr "Sekunden"
 
 #: root/tt/addressbook.tt:112 root/tt/addressbook.tt:125
 #: root/tt/addressbook.tt:138 root/tt/addressbook.tt:82
@@ -831,12 +827,15 @@ msgstr "Zeitraum (DD.MM.YYYY)"
 
 #: root/tt/callforward_destination.tt:134 root/tt/callforward_time.tt:118
 msgid "times(s) mapped"
-msgstr ""
+msgstr "Zeiten zugewiesen"
 
-#: root/tt/callforward_mapping.tt:90 root/tt/calllist.tt:131
-#: root/tt/voicebox.tt:119
+#: root/tt/calllist.tt:131 root/tt/voicebox.tt:119
 msgid "to"
 msgstr "bis"
+
+#: root/tt/callforward_mapping.tt:100
+msgid "to_dest"
+msgstr "an"
 
 #: root/tt/calllist.tt:69 root/tt/voicebox.tt:60
 msgid "today"
@@ -857,30 +856,3 @@ msgstr "Internet"
 #: root/tt/calllist.tt:72 root/tt/voicebox.tt:63
 msgid "yesterday"
 msgstr "Gestern"
-
-#~ msgid "on weekdays (monday - saturday)"
-#~ msgstr "Werktags (Montag bis Samstag)"
-
-#~ msgid "... after "
-#~ msgstr "... nach "
-
-#~ msgid "Call forwarding for incoming calls."
-#~ msgstr "Rufweiterleitung f&uuml;r eingehende Anrufe."
-
-#~ msgid "Disabled"
-#~ msgstr "Deaktiviert"
-
-#~ msgid "forward all calls"
-#~ msgstr "Alle Anrufe weiterleiten"
-
-#~ msgid "forward if busy"
-#~ msgstr "Weiterleiten, wenn besetzt"
-
-#~ msgid "forward if call is not answered"
-#~ msgstr "Weiterleiten, wenn keine Antwort"
-
-#~ msgid "forward if phone is not reachable"
-#~ msgstr "Weiterleiten, wenn Telefon nicht erreichbar (Offline)"
-
-#~ msgid "seconds of ringing"
-#~ msgstr "Rufdauer"

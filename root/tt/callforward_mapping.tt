@@ -33,9 +33,19 @@
 
         [% first = 1 %]
 
+	[% IF 0 %]
+	  <!-- fake for auto-create language stings: -->
+	  <!-- 
+	  Catalyst.loc('Call Forward Unconditional')
+	  Catalyst.loc('Call Forward Busy')
+	  Catalyst.loc('Call Forward Timeout')
+	  Catalyst.loc('Call Forward Unavailable')
+	  -->
+	[% END %]
+
         [% FOREACH map IN cf_map %]
             [% IF first %]
-                <br clear="all" /> 
+                <br clear="all" />
                 <div class="set-item span-15">[% Catalyst.loc(cf_type.description) %]</div>
                 <br clear="all" /> 
                 [% first = 0 %]
@@ -87,7 +97,7 @@
     <input type="hidden" name="map_id" value="[% map.id %]"/>
     <input type="hidden" name="type" value="[% map.type %]"/>
 
-    <div class="span-05">[% Catalyst.loc('to') %]</div>
+    <div class="span-05">[% Catalyst.loc('to_dest') %]</div>
     <select name="destset_id" class="span-4"[% UNLESS map_id == map.id or map.id == 0 %]disabled="disabled"[% END %]>
         <option value="0" [% UNLESS map.destination_set_id.defined %]selected="selected"[% END %]>&lt;none&gt;</option>
         [% FOREACH dset IN destination_sets %]
