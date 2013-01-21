@@ -118,7 +118,7 @@ function get_minutes () {
     return stuff;
 }
 
-function print_html (target, html, disabled, add_text, rem_text, through_text) {
+function print_html (target, html, disabled, any_text, add_text, rem_text, through_text) {
     
     $("#" + target).empty().append (html);
 
@@ -126,24 +126,24 @@ function print_html (target, html, disabled, add_text, rem_text, through_text) {
         $("#" + target + "-foot").empty();
     }
     else {
-        $("#" + target + "-foot").empty().append('<a class="link" href="javascript:void(0)" onclick="remove_html(\'' + target + '\', \'' + disabled + '\', \'' + add_text + '\', \'' + rem_text + '\', \'' + through_text + '\')">' + rem_text + '</a>');
+        $("#" + target + "-foot").empty().append('<a class="link" href="javascript:void(0)" onclick="remove_html(\'' + target + '\', \'' + disabled + '\', \'' + any_text + '\', \'' + add_text + '\', \'' + rem_text + '\', \'' + through_text + '\')">' + rem_text + '</a>');
     }
 }
 
-function remove_html (target, disabled, add_text, rem_text, through_text) {
+function remove_html (target, disabled, any_text, add_text, rem_text, through_text) {
     
-    $("#" + target).empty().append('<p>any</p>');
+    $("#" + target).empty().append('<p>' + any_text + '</p>');
     $("#" + target + '-errormsg').empty().append('&nbsp;');
     
     if (disabled == 1) {
         $("#" + target + "-foot").empty();
     }
     else {
-        $("#" + target + "-foot").empty().append('<a class="link" href="javascript:void(0)" onclick="put(\'' + target + '\',\'' + add_text + '\',\'' + rem_text + '\',\'' + through_text + '\')">' + add_text + '</a>');
+        $("#" + target + "-foot").empty().append('<a class="link" href="javascript:void(0)" onclick="put(\'' + target + '\',\'' + any_text + '\',\''  + add_text + '\',\'' + rem_text + '\',\'' + through_text + '\')">' + add_text + '</a>');
     }
 }
 
-function put (target, add_text, rem_text, through_text) {
+function put (target, any_text, add_text, rem_text, through_text) {
     
     var html;
     var part = target.substring (0, (target.indexOf('-')));
@@ -152,5 +152,5 @@ function put (target, add_text, rem_text, through_text) {
     html  = create_period_part ('from', 0, undefined, part, callback) 
     html += through_text + '<br/>';
     html += create_period_part ('to', 0, undefined, part, callback) 
-    print_html (target, html, 0, add_text, rem_text, through_text);
+    print_html (target, html, 0, any_text, add_text, rem_text, through_text);
 }

@@ -4,6 +4,7 @@
   add_text = Catalyst.loc('Add'); 
   rem_text = Catalyst.loc('Remove');
   through_text = Catalyst.loc('through');
+  any_text = Catalyst.loc('any');
 %]
 
 <div id="main">
@@ -274,7 +275,7 @@
                         [% add_text = Catalyst.loc('Add'); rem_text = Catalyst.loc('Remove') %]
                         [% html = html _ "print_html ('$target', $f + ' $through_text<br/> ' + $t, $disabled, '$add_text', '$rem_text', '$through_text');\n" %]
                     [% ELSE %]
-                        [% html = html _ "remove_html ('$target', '$disabled', '$add_text', '$rem_text', '$through_text');\n" %]
+                        [% html = html _ "remove_html ('$target', '$disabled', '$any_text', '$add_text', '$rem_text', '$through_text');\n" %]
                     [% END %]
 
                 [% END %]
@@ -284,7 +285,7 @@
             [% IF (tset_id == tset.id) or (tset.periods.size == 0) %]
                 [% FOREACH part IN ['year', 'month', 'mday', 'wday', 'hour', 'minute'] %]
                     [% target = part _ '-' _ tset.id _ '--1' %]
-                    [% html = html _ "remove_html ('$target', null, '$add_text', '$rem_text', '$through_text');" %]
+                    [% html = html _ "remove_html ('$target', null, '$any_text', '$add_text', '$rem_text', '$through_text');" %]
                 [% END %]
             [% END %]
 
