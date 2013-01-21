@@ -21,7 +21,7 @@ function move_down (item) {
 function update_priority(item) {
     
     var i = 1;
-    var form = $('#'+item).parent().siblings('.set-item').children("form");
+    var form = $('#'+item).parent().find("div form");
 
     $('#'+item).parent().children('.sub-container').each(function(index) {
         var id = $(this).children('form').children("[name='dtarget_id']").val();
