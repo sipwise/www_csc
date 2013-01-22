@@ -3,12 +3,12 @@
 # This file is distributed under the same license as the CSC package.
 #
 # Daniel Tiefnig <dtiefnig@sipwise.com>, 2010.
-# Jon Bonilla <jbonilla@sipwise.com>, 2010, 2012.
+# Jon Bonilla <jbonilla@sipwise.com>, 2010, 2012, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: I 18N\n"
 "POT-Creation-Date: 2010-03-31 03:01+0200\n"
-"PO-Revision-Date: 2012-12-11 18:18+0100\n"
+"PO-Revision-Date: 2013-01-22 16:52+0100\n"
 "Last-Translator: Jon Bonilla <jbonilla@sipwise.com>\n"
 "Language-Team: Spanish <>\n"
 "Language: es\n"
@@ -95,24 +95,20 @@ msgid "CC"
 msgstr "CC"
 
 #: root/tt/callforward_mapping.tt:40
-#, fuzzy
 msgid "Call Forward Busy"
-msgstr "Desvío de llamadas"
+msgstr "Desvío si ocupado"
 
 #: root/tt/callforward_mapping.tt:41
-#, fuzzy
 msgid "Call Forward Timeout"
-msgstr "Desvío de llamadas"
+msgstr "Desvío retardado"
 
 #: root/tt/callforward_mapping.tt:42
-#, fuzzy
 msgid "Call Forward Unavailable"
-msgstr "desvío de llamadas desactivado"
+msgstr "Desvío si no disponible"
 
 #: root/tt/callforward_mapping.tt:39
-#, fuzzy
 msgid "Call Forward Unconditional"
-msgstr "desvío de llamadas desactivado"
+msgstr "Desvío incondicional"
 
 #: root/tt/desktop.tt:139
 msgid "Call Forwards"
@@ -196,7 +192,7 @@ msgstr "Destino"
 
 #: root/tt/callforward_destination.tt:15 root/tt/callforward_navi.tt:3
 msgid "Destination sets"
-msgstr "Grupo de destinos"
+msgstr "Grupos de destinos"
 
 #: root/tt/fax.tt:59
 msgid "Destinations"
@@ -378,7 +374,7 @@ msgstr "Alarma"
 
 #: root/tt/callforward_time.tt:275 root/tt/callforward_time.tt:5
 msgid "Remove"
-msgstr ""
+msgstr "Eliminar"
 
 #: root/tt/fax.tt:37
 msgid "Repeat password"
@@ -573,16 +569,15 @@ msgstr "todos los mensajes de voz"
 
 #: root/tt/callforward_mapping.tt:108
 msgid "always"
-msgstr ""
+msgstr "siempre"
 
 #: root/tt/account_balance.tt:12
 msgid "amount to charge:"
 msgstr "cantidad a cargar:"
 
 #: root/tt/callforward_time.tt:7
-#, fuzzy
 msgid "any"
-msgstr "Ene"
+msgstr "cualquiera"
 
 #: root/tt/addressbook.tt:180 root/tt/calllist.tt:141 root/tt/voicebox.tt:129
 msgid "apply filter"
@@ -691,7 +686,7 @@ msgstr "nombre"
 #: root/tt/callforward_destination.tt:189
 #: root/tt/callforward_destination.tt:241
 msgid "for"
-msgstr "por"
+msgstr "durante"
 
 #: root/tt/calllist.tt:34 root/tt/desktop.tt:27
 msgid "forwarded"
@@ -711,7 +706,7 @@ msgstr "página de inicio: "
 
 #: root/tt/callforward_time.tt:149
 msgid "hour"
-msgstr ""
+msgstr "hora"
 
 #: root/tt/account_balance.tt:20
 msgid "if balance falls below"
@@ -739,11 +734,11 @@ msgstr "desconexión"
 
 #: root/tt/callforward_time.tt:148
 msgid "mday"
-msgstr ""
+msgstr "día mes"
 
 #: root/tt/callforward_time.tt:149
 msgid "minute"
-msgstr ""
+msgstr "minuto"
 
 #: root/tt/addressbook.tt:133 root/tt/addressedit.tt:55
 msgid "mobile:"
@@ -751,7 +746,7 @@ msgstr "móvil:"
 
 #: root/tt/callforward_time.tt:148
 msgid "month"
-msgstr ""
+msgstr "mes"
 
 #: root/tt/reminder.tt:38
 msgid "never"
@@ -775,7 +770,7 @@ msgstr "no hay alarmas configuradas"
 
 #: root/tt/callforward_mapping.tt:98
 msgid "none"
-msgstr ""
+msgstr "ninguno"
 
 #: root/tt/calllist.tt:47
 msgid "number"
@@ -863,7 +858,7 @@ msgstr "mostrar acciones"
 
 #: root/tt/callforward_time.tt:6
 msgid "through"
-msgstr ""
+msgstr "hasta"
 
 #: root/tt/reminder.tt:29
 msgid "time of day:"
@@ -883,7 +878,7 @@ msgstr "a"
 
 #: root/tt/callforward_mapping.tt:96
 msgid "to_dest"
-msgstr ""
+msgstr "a destino"
 
 #: root/tt/calllist.tt:69 root/tt/voicebox.tt:60
 msgid "today"
@@ -899,7 +894,7 @@ msgstr "ver preferencias"
 
 #: root/tt/callforward_time.tt:149
 msgid "wday"
-msgstr ""
+msgstr "día semana"
 
 #: root/tt/addressbook.tt:151
 msgid "web"
@@ -907,7 +902,7 @@ msgstr "web"
 
 #: root/tt/callforward_time.tt:148
 msgid "year"
-msgstr ""
+msgstr "año"
 
 #: root/tt/calllist.tt:72 root/tt/voicebox.tt:63
 msgid "yesterday"
