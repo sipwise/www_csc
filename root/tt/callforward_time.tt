@@ -273,7 +273,7 @@
                         [% f = "create_period_part ('from', $disabled, $selected_from , '$part') " %]
                         [% t = "create_period_part ('to', $disabled, $selected_to, '$part') " %]
                         [% add_text = Catalyst.loc('Add'); rem_text = Catalyst.loc('Remove') %]
-                        [% html = html _ "print_html ('$target', $f + ' $through_text<br/> ' + $t, $disabled, '$add_text', '$rem_text', '$through_text');\n" %]
+                        [% html = html _ "print_html ('$target', $f + ' $through_text<br/> ' + $t, $disabled, '$any_text', '$add_text', '$rem_text', '$through_text');\n" %]
                     [% ELSE %]
                         [% html = html _ "remove_html ('$target', '$disabled', '$any_text', '$add_text', '$rem_text', '$through_text');\n" %]
                     [% END %]
