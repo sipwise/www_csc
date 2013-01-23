@@ -1,4 +1,4 @@
-[% META title = 'Fax preferences' %]
+[% META title = 'Fax' %]
 
 <div id="headimg"><img src="/grafik/area.jpg" width="869" height="69" alt="" /></div>
 <div id="headtxt">[% Catalyst.loc('Your fax preferences') %]</div>

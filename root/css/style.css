@@ -172,7 +172,7 @@ body.hp {
 
 #menu {
 	position: absolute;
-	top: 90px;
+	top: 88px;
 	left: 22px;
 	width: 855px;
 	height: 27px;
@@ -193,12 +193,98 @@ body.hp {
 	voice-family:inherit;
 	height: 18px; /* richtig */
 }
-#menu .on {
-	background: url(../grafik/menu_on_start.gif) left bottom no-repeat;
+
+ul#menu ul {
+  display: none;
 }
-#menu .on a {
-	color: #0F55AB;
-	background: url(../grafik/menu_on_stop.gif) right bottom no-repeat;
+
+ul#menu li:hover > ul {
+  display: block;
+}
+
+
+ul#menu {
+  padding: 0 20px;
+  list-style: none;
+  display: inline-table;
+}
+
+ul#menu:after {
+  content: ""; clear: both; display: block;
+}
+
+ul#menu li {
+  float: left;
+}
+
+ul#menu li.on {
+  color: #2d91df;
+  background: #d7f2fb;
+  border-radius: 5px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border: 1px solid #c3e0f1;
+  border-bottom: none;
+}
+
+ul#menu li.on a {
+  color: #1157ac;
+}
+
+ul#menu li:hover {
+  background: #d7f2fb;
+}
+
+ul#menu li:hover a {
+  color: #2d91df;
+  border-radius: 5px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border: 1px solid #c3e0f1;
+  border-bottom: none;
+}
+ul#menu li.on:hover a {
+  color: #2d91df;
+  border: none;
+}
+
+ul#menu li a {
+  display: block;
+  padding: 10px 10px 0 10px;
+  color: #757575;
+  text-decoration: none;
+}
+
+ul#menu ul {
+  z-index: 3000;
+  background: #d7f2fb;
+  border-radius: 5px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border: 1px solid #c3e0f1;
+  border-top: none;
+  padding: 0;
+  position: absolute;
+  top: 100%;
+}
+
+ul#menu ul li {
+  float: none;
+  position: relative;
+}
+
+ul#menu li:hover ul a {
+  color: #2d91df;
+  border: none;
+}
+
+ul#menu ul li a {
+  padding: 5px 10px 5px 10px;
+  color: #fff;
+}
+
+ul#menu ul li a:hover {
+  text-decoration: underline;
 }
 
 /* 3.2 Kleines Menü (Kundenbereich, Kontakt, etc.) */
