@@ -37,9 +37,20 @@
       [% IF Catalyst.config.main_menu.reminder %]
         <li [% 'class="on"' IF template.title == 'Reminder' %]><a href="/reminder">[% Catalyst.loc('Reminder') %]</a></li>
       [% END %]
+
+
       [% IF Catalyst.config.main_menu.fax %]
-        <li [% 'class="on"' IF template.title == 'Fax' %]><a href="/fax/view">[% Catalyst.loc('Fax') %]</a></li>
+        <li [% 'class="on"' IF template.title == 'Fax' %]>
+          <a href="/fax/fax2mail/view">[% Catalyst.loc('Fax') %]</a>
+          <ul>
+            <li><a href="/fax/fax2mail/view">Fax2Mail</a></li>
+            <li><a href="/fax/webfax/view">WebFax</a></li>
+          </ul>
+        </li>
       [% END %]
+
+
+
       [% IF Catalyst.config.main_menu.device && Catalyst.session.user.admin %]
         <li [% 'class="on"' IF template.title == 'Devices' %]><a href="/autosubscriber">[% Catalyst.loc('Devices') %]</a></li>
       [% END %]

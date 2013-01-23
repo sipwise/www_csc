@@ -15,7 +15,7 @@
     </div>
 
     <div class="sperrehead">
-        <h3>[% Catalyst.loc('Fax preferences') %]</h2>
+        <h3>[% Catalyst.loc('Fax2Mail Settings') %]</h2>
         <h2 class="umleitungfuer">[% Catalyst.loc('Settings for [_1]', subscriber.active_number) %]</h2>
     </div>
 
@@ -24,7 +24,7 @@
         <div class="spalte1">
 
             [% IF mode == 'edit' %] 
-                <form method="post" action="/fax/save" autocomplete="off">
+                <form method="post" action="/fax/fax2mail/save" autocomplete="off">
             [% END %]
             
             <!-- <fieldset><p> -->
@@ -70,7 +70,7 @@
             <br clear="all" />
 
             [% IF mode == 'view' %] 
-                <div><a href="/fax/edit"><span class="button-edit">[% Catalyst.loc('Edit') %]</span></a></div>
+                <div><a href="/fax/fax2mail/edit"><span class="button-edit">[% Catalyst.loc('Edit') %]</span></a></div>
             [% ELSIF mode == 'edit' %] 
                 [%# unset for BLOCK destination: %]
                 [% destination = undef %]
@@ -80,7 +80,7 @@
                 <div><p class="link_button">
                     <label for="save_fax_preferences">[% Catalyst.loc('Save') %]</label>
                     <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_fax_preferences">
-                    <a href="/fax/view">[% Catalyst.loc('Cancel') %]</a>
+                    <a href="/fax/fax2mail/view">[% Catalyst.loc('Cancel') %]</a>
                 </p></div>
             
                     

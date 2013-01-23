@@ -12,21 +12,21 @@ sub base :Chained('/') PathPrefix CaptureArgs(0) {
     $c->stash->{filetypes} = [qw/PS PDF PDF14 TIFF/];
 }
 
-sub view_preferences : Chained('base') PathPart('view') Args(0) {
+sub f2m_view_preferences : Chained('base') PathPart('fax2mail/view') Args(0) {
     my ($self, $c) = @_;
     return unless ($c->stash->{fax_preferences} = $c->forward ('_load_fax_preferences'));
-    $c->stash->{template} = 'tt/fax.tt';
+    $c->stash->{template} = 'tt/fax2mail.tt';
     $c->stash->{mode} = 'view';
 }
 
-sub edit_preferences : Chained('base') PathPart('edit') Args(0) {
+sub f2m_edit_preferences : Chained('base') PathPart('fax2mail/edit') Args(0) {
     my ($self, $c) = @_;
     return unless ($c->stash->{fax_preferences} = $c->forward ('_load_fax_preferences'));
-    $c->stash->{template} = 'tt/fax.tt';
+    $c->stash->{template} = 'tt/fax2mail.tt';
     $c->stash->{mode} = 'edit';
 }
 
-sub save_preferences : Chained('base') PathPart('save') Args(0) {
+sub f2m_save_preferences : Chained('base') PathPart('fax2mail/save') Args(0) {
     my ($self, $c) = @_;
 
     my $messages;
@@ -76,7 +76,7 @@ sub save_preferences : Chained('base') PathPart('save') Args(0) {
 
     if ($c->session->{messages}) {
         $c->session->{messages}->{toperr} = 'Client.Voip.InputErrorFound';
-        $c->response->redirect($c->uri_for ('edit'));
+        $c->response->redirect($c->uri_for ('fax2mail/edit'));
     }
     else {
         if ($c->model('Provisioning')->call_prov( $c, 'voip', 'set_subscriber_fax_preferences',
@@ -87,12 +87,96 @@ sub save_preferences : Chained('base') PathPart('save') Args(0) {
             undef,
         )) {
             $c->session->{messages}->{topmsg} = 'Server.Voip.SavedSettings';
-            $c->response->redirect($c->uri_for ('view'));
+            $c->response->redirect($c->uri_for ('fax2mail/view'));
         } else {
             $c->session->{messages}->{toperr} = 'Client.Voip.InputErrorFound';
-            $c->response->redirect($c->uri_for ('edit'));
+            $c->response->redirect($c->uri_for ('fax2mail/edit'));
         }
     }
+}
+
+sub wf_view : Chained('base') PathPart('webfax/view') Args(0) {
+    my ($self, $c) = @_;
+    $c->stash->{template} = 'tt/webfax.tt';
+    $c->stash->{webfax} = $c->session->{webfax};
+    delete $c->session->{webfax};
+}
+
+sub wf_send : Chained('base') PathPart('webfax/send') Args(0) {
+    my ($self, $c) = @_;
+    $c->stash->{template} = 'tt/webfax.tt';
+    delete $c->session->{webfax};
+    my $messages;
+
+    my $ctypes = {
+      'application/pdf' => 1,
+      'application/x-pdf' => 1,
+      'application/postscript' => 1,
+      'image/tiff' => 1,
+      'text/plain' => 1,
+    };
+
+    my $subscriber;
+    return unless ($subscriber = $c->forward('_load_subscriber'));
+
+    my $notify = $c->req->params->{notify};
+    my $text = $c->req->params->{content} || '';
+    my $file = $c->req->upload('sendfile');
+
+    my $destination = $c->req->params->{destination};
+    if($destination =~ /^\+?\d+$/) {
+      $destination =  csc::Utils::get_qualified_number_for_subscriber(
+        $c, $destination);
+    }
+    my $checkresult;
+    unless($c->model('Provisioning')->call_prov($c, 'voip', 'check_E164_number',         { e164number => $destination}, \$checkresult) &&
+        $checkresult) 
+    {
+      $messages->{dsterr} = 'Client.Voip.MalformedNumber';
+    }
+
+    my $data = $text; 
+    if($data =~ /^$/) {
+      $data = $file;
+      if(!$data) {
+        $messages->{cnterr} = 'Client.Voip.NoFaxData';
+      } elsif(!exists($ctypes->{$data->type})) {
+        $messages->{cnterr} = 'Client.Voip.InvalidFaxFileType';
+      } else {
+        $data = $data->slurp;
+      }
+    }
+
+    my $source = $c->session->{user}{data}{cc}.
+                 $c->session->{user}{data}{ac}.
+                 $c->session->{user}{data}{sn};
+   
+    unless($messages) { 
+      unless($c->model('Provisioning')->call_prov($c, 'voip', 'send_fax',
+          { 
+            number => $source,
+            destination => $destination,
+            data => $data,
+            # options => { notification => $notify },
+          },
+          undef,
+      )) {
+        $messages->{toperr} = 'Client.Voip.InputErrorFound';
+      }
+    }
+
+    if($messages) {
+      $messages->{toperr} = 'Client.Voip.InputErrorFound';
+      $c->session->{webfax}->{destination} = $destination;
+      $c->session->{webfax}->{content} = $text;
+      $c->session->{webfax}->{notify} = $notify;
+    } else {
+      #$messages->{topmsg} = 'Client.Voip.FaxQeueued';
+      $messages->{topmsg} = 'Server.Voip.SavedSettings';
+    }
+    $c->session->{messages} = $messages;
+
+    $c->response->redirect($c->uri_for ('webfax/view'));
 }
 
 sub _load_subscriber :Private {
