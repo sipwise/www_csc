@@ -228,13 +228,13 @@
         var stuff = Array ();
         var i = 1;
 
+        stuff.push ({ value: i++, label: '[% Catalyst.loc("Sun") %]' });
         stuff.push ({ value: i++, label: '[% Catalyst.loc("Mon") %]' });
         stuff.push ({ value: i++, label: '[% Catalyst.loc("Tue") %]' });
         stuff.push ({ value: i++, label: '[% Catalyst.loc("Wed") %]' });
         stuff.push ({ value: i++, label: '[% Catalyst.loc("Thu") %]' });
         stuff.push ({ value: i++, label: '[% Catalyst.loc("Fri") %]' });
         stuff.push ({ value: i++, label: '[% Catalyst.loc("Sat") %]' });
-        stuff.push ({ value: i++, label: '[% Catalyst.loc("Sun") %]' });
 
         return stuff;
     }
