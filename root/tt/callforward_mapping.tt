@@ -21,7 +21,7 @@
 
 [% FOREACH cf_type IN cf_types %]
 
-    <div class="span-16">
+    <div class="span-16 last">
 
         [% cf_map = cf_maps.${cf_type.name} %]
         
@@ -33,19 +33,27 @@
 
         [% first = 1 %]
 
+	[% IF 0 %]
+	  <!-- fake for auto-create language stings: -->
+	  <!-- 
+	  Catalyst.loc('Call Forward Unconditional')
+	  Catalyst.loc('Call Forward Busy')
+	  Catalyst.loc('Call Forward Timeout')
+	  Catalyst.loc('Call Forward Unavailable')
+	  -->
+	[% END %]
+
         [% FOREACH map IN cf_map %]
             [% IF first %]
-                <br clear="all" /> 
-                <div class="set-item span-15">[% Catalyst.loc(cf_type.description) %]</div>
-                <br clear="all" /> 
+                <div class="set-item span-15 last">[% Catalyst.loc(cf_type.description) %]</div>
                 [% first = 0 %]
 
                 [%# just a very small form for editing the ring timeout %]
                 [% IF cf_type.name == 'cft' %]
-                    <br clear="all" /> 
+                  <div class="span-15 last">
                     <form action="/callforward/set_ringtimeout" method="post">
                         <input type="hidden" name="subscriber_id" value="[% subscriber.subscriber_id %]"/>
-                        <div class="prepend-2 span-5">
+                        <div class="prepend-1 span-5">
                             <input size="3" style="float:left;" align="right" type="text" name="ringtimeout" value="[% preferences.ringtimeout %]"/>
                             <p class="link_button" style="float:left;margin-left:10px;">
                                 <label for="save_ringtimeout">[% Catalyst.loc('Set ringtimeout')%]</label>
@@ -53,19 +61,17 @@
                             </p>
                         </div>
                     </form>
-                    <br clear="all" /> 
                     [% IF messages.ringtimeout_error %]
                         <div class="prepend-2">
                             <div id="errormsg">[% messages.ringtimeout_error %]</div>
                         </div>
-                        <br clear="all" /> 
                     [% END %]
+                  </div>
                 [% END %]
 
             [% END %] [%# first %]
-            <br clear="all" /> 
 
-            <div class="prepend-2">
+            <div class="span-15 last">
                 [% PROCESS map_edit %]
             </div>
         [% END %]
@@ -87,9 +93,9 @@
     <input type="hidden" name="map_id" value="[% map.id %]"/>
     <input type="hidden" name="type" value="[% map.type %]"/>
 
-    <div class="span-05">[% Catalyst.loc('to') %]</div>
-    <select name="destset_id" class="span-4"[% UNLESS map_id == map.id or map.id == 0 %]disabled="disabled"[% END %]>
-        <option value="0" [% UNLESS map.destination_set_id.defined %]selected="selected"[% END %]>&lt;none&gt;</option>
+    <div class="span-2" style="text-align:right;">[% Catalyst.loc('to_dest') %]</div>
+    <select name="destset_id" class="span-3"[% UNLESS map_id == map.id or map.id == 0 %]disabled="disabled"[% END %]>
+        <option value="0" [% UNLESS map.destination_set_id.defined %]selected="selected"[% END %]>&lt;[% Catalyst.loc('none') %]&gt;</option>
         [% FOREACH dset IN destination_sets %]
             [% IF dset.destinations.size > 0 %]
                 <option value="[% dset.id %]" [% IF map.destination_set_id == dset.id %]selected="selected"[% END %]>[% dset.name %]</option>
@@ -97,9 +103,9 @@
         [% END %]
     </select>
  
-    <div class="span-1">[% Catalyst.loc('during') %]</div>
-    <select name="timeset_id" class="span-4"[% UNLESS map_id == map.id or map.id == 0 %]disabled="disabled"[% END %]>
-        <option value="0" [% UNLESS map.time_set_id.defined %]selected="selected"[% END %]>&lt;always&gt;</option>
+    <div class="span-2" style="text-align:right;">[% Catalyst.loc('during') %]</div>
+    <select name="timeset_id" class="span-3"[% UNLESS map_id == map.id or map.id == 0 %]disabled="disabled"[% END %]>
+        <option value="0" [% UNLESS map.time_set_id.defined %]selected="selected"[% END %]>&lt;[% Catalyst.loc('always') %]&gt;</option>
         [% FOREACH tset IN time_sets %]
             [% IF tset.periods.size > 0 %]
                 <option value="[% tset.id %]" [% IF map.time_set_id == tset.id %]selected="selected"[% END %]>[% tset.name %]</option>
@@ -126,7 +132,7 @@
         <br clear="all" /> 
         </div>
     [% ELSE %]
-        <div class="prepend-1 span-1">
+        <div class="prepend-1 span-2">
             <a class="link" href="/callforward/mapping/[% map.id %]/edit">[% Catalyst.loc('Edit')%]</a>
         </div>
         <div class="span-1">

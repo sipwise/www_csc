@@ -30,28 +30,28 @@
             <!-- <fieldset><p> -->
             <h3>[% Catalyst.loc('Preferences') %]</h3>
 
-            <div class="span-2">[% Catalyst.loc('Password') %]</div>
-            <div class="prepend-1 span-2"><input [% IF mode == 'view' %]disabled="disabled"[% END %] type="password" size="20" name="password" value=""/></div>
+            <div class="span-3">[% Catalyst.loc('Password') %]</div>
+            <div class="span-2"><input [% IF mode == 'view' %]disabled="disabled"[% END %] type="password" size="20" name="password" value=""/></div>
             <br clear="all" />
 
-            <div class="span-2">[% Catalyst.loc('Repeat password') %]</div>
-            <div class="prepend-1 span-2"><input [% IF mode == 'view' %]disabled="disabled"[% END %] type="password" size="20" name="password2" value=""/></div>
+            <div class="span-3">[% Catalyst.loc('Repeat password') %]</div>
+            <div class="span-2"><input [% IF mode == 'view' %]disabled="disabled"[% END %] type="password" size="20" name="password2" value=""/></div>
             <br clear="all" />
 
-            <div class="span-2">[% Catalyst.loc('Name') %]</div>
-            <div class="prepend-1 span-2"><input [% IF mode == 'view' %]disabled="disabled"[% END %] type="text" size="20" name="name" value="[% fax_preferences.name %]"/></div>
+            <div class="span-3">[% Catalyst.loc('Name') %]</div>
+            <div class="span-2"><input [% IF mode == 'view' %]disabled="disabled"[% END %] type="text" size="20" name="name" value="[% fax_preferences.name %]"/></div>
             <br clear="all" />
 
-            <div class="span-2">[% Catalyst.loc('Active') %]</div>
-            <div class="prepend-1 span-2"><input [% IF mode == 'view' %]disabled="disabled"[% END %] type="checkbox" size="20" name="active" [% IF fax_preferences.active == 1 %]checked="checked"[% END %]/></div>
+            <div class="span-3">[% Catalyst.loc('Active') %]</div>
+            <div class="span-2"><input [% IF mode == 'view' %]disabled="disabled"[% END %] type="checkbox" size="20" name="active" [% IF fax_preferences.active == 1 %]checked="checked"[% END %]/></div>
             <br clear="all" />
 
-            <div class="span-2">[% Catalyst.loc('Send status') %]</div>
-            <div class="prepend-1 span-2"><input [% IF mode == 'view' %]disabled="disabled"[% END %] type="checkbox" size="20" name="send_status" [% IF fax_preferences.send_status == 1 %]checked="checked"[% END %]/></div>
+            <div class="span-3">[% Catalyst.loc('Send status') %]</div>
+            <div class="span-2"><input [% IF mode == 'view' %]disabled="disabled"[% END %] type="checkbox" size="20" name="send_status" [% IF fax_preferences.send_status == 1 %]checked="checked"[% END %]/></div>
             <br clear="all" />
 
-            <div class="span-2">[% Catalyst.loc('Send copy') %]</div>
-            <div class="prepend-1 span-2"><input [% IF mode == 'view' %]disabled="disabled"[% END %] type="checkbox" size="20" name="send_copy" [% IF fax_preferences.send_copy == 1 %]checked="checked"[% END %]/></div>
+            <div class="span-3">[% Catalyst.loc('Send copy') %]</div>
+            <div class="span-2"><input [% IF mode == 'view' %]disabled="disabled"[% END %] type="checkbox" size="20" name="send_copy" [% IF fax_preferences.send_copy == 1 %]checked="checked"[% END %]/></div>
             <br clear="all" /> 
             
             <br clear="all" />
@@ -101,19 +101,19 @@
 
     <div class="span-3">
     <input [% IF mode == 'view' %]disabled="disabled"[% END %] type="text" size="20" name="destination_[% idx %]" value="[% destination.destination %]"/> 
-    </div><div class="prepend-1 span-1">
+    </div><div class="prepend-1 span-2">
     <select [% IF mode == 'view' %]disabled="disabled"[% END %] name="filetype_[% idx %]" value="[% destination.filetype %]"/>
         [% FOR f IN filetypes %]
             <option [% IF destination.filetype == f %]selected="selected"[% END %] value="[% f %]">[% f %]</option>
         [% END %]
     </select>
-    </div><div class="prepend-1 span-1">
+    </div><div class="span-2">
     <input [% IF mode == 'view' %]disabled="disabled"[% END %] type="checkbox" size="20" name="cc_[% idx %]" [% IF destination.cc %]checked="checked"[% END %]/> 
-    </div><div class="prepend-1 span-1">
+    </div><div class="span-2">
     <input [% IF mode == 'view' %]disabled="disabled"[% END %] type="checkbox" size="20" name="incoming_[% idx %]" [% IF destination.incoming %]checked="checked"[% END %]/> 
-    </div><div class="prepend-1 span-1">
+    </div><div class="span-2">
     <input [% IF mode == 'view' %]disabled="disabled"[% END %] type="checkbox" size="20" name="outgoing_[% idx %]" [% IF destination.outgoing %]checked="checked"[% END %]/> 
-    </div><div class="prepend-1 span-1">
+    </div><div class="span-2">
     <input [% IF mode == 'view' %]disabled="disabled"[% END %] type="checkbox" size="20" name="status_[% idx %]" [% IF destination.status %]checked="checked"[% END %]/> 
     </div>
 
@@ -126,9 +126,9 @@
 
 [% BLOCK destination_header %]
     <div class="span-3">[% Catalyst.loc('Destination') %]</div>
-    <div class="prepend-1 span-1">[% Catalyst.loc('Filetype') %]</div>
-    <div class="prepend-1 span-1">[% Catalyst.loc('CC') %]</div>
-    <div class="prepend-1 span-1">[% Catalyst.loc('Incoming') %]</div>
-    <div class="prepend-1 span-1">[% Catalyst.loc('Outgoing') %]</div>
-    <div class="prepend-1 span-1">[% Catalyst.loc('Status') %]</div>
+    <div class="prepend-1 span-2">[% Catalyst.loc('Filetype') %]</div>
+    <div class="span-2">[% Catalyst.loc('CC') %]</div>
+    <div class="span-2">[% Catalyst.loc('Incoming') %]</div>
+    <div class="span-2">[% Catalyst.loc('Outgoing') %]</div>
+    <div class="span-2">[% Catalyst.loc('Status') %]</div>
 [% END %]

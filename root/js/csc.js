@@ -21,7 +21,7 @@ function move_down (item) {
 function update_priority(item) {
     
     var i = 1;
-    var form = $('#'+item).parent().siblings('.set-item').children("form");
+    var form = $('#'+item).parent().find("div form");
 
     $('#'+item).parent().children('.sub-container').each(function(index) {
         var id = $(this).children('form').children("[name='dtarget_id']").val();
@@ -118,7 +118,7 @@ function get_minutes () {
     return stuff;
 }
 
-function print_html (target, html, disabled) {
+function print_html (target, html, disabled, any_text, add_text, rem_text, through_text) {
     
     $("#" + target).empty().append (html);
 
@@ -126,31 +126,31 @@ function print_html (target, html, disabled) {
         $("#" + target + "-foot").empty();
     }
     else {
-        $("#" + target + "-foot").empty().append('<a class="link" href="javascript:void(0)" onclick="remove_html(\'' + target + '\', \'' + disabled + '\')">Remove</a>');
+        $("#" + target + "-foot").empty().append('<a class="link" href="javascript:void(0)" onclick="remove_html(\'' + target + '\', \'' + disabled + '\', \'' + any_text + '\', \'' + add_text + '\', \'' + rem_text + '\', \'' + through_text + '\')">' + rem_text + '</a>');
     }
 }
 
-function remove_html (target, disabled) {
+function remove_html (target, disabled, any_text, add_text, rem_text, through_text) {
     
-    $("#" + target).empty().append('<p>any</p>');
+    $("#" + target).empty().append('<p>' + any_text + '</p>');
     $("#" + target + '-errormsg').empty().append('&nbsp;');
     
     if (disabled == 1) {
         $("#" + target + "-foot").empty();
     }
     else {
-        $("#" + target + "-foot").empty().append('<a class="link" href="javascript:void(0)" onclick="put(\'' + target + '\')">Add</a>');
+        $("#" + target + "-foot").empty().append('<a class="link" href="javascript:void(0)" onclick="put(\'' + target + '\',\'' + any_text + '\',\''  + add_text + '\',\'' + rem_text + '\',\'' + through_text + '\')">' + add_text + '</a>');
     }
 }
 
-function put (target) {
+function put (target, any_text, add_text, rem_text, through_text) {
     
     var html;
     var part = target.substring (0, (target.indexOf('-')));
     var callback = 'get_' + part;
 
     html  = create_period_part ('from', 0, undefined, part, callback) 
-    html += 'through<br/>';
+    html += through_text + '<br/>';
     html += create_period_part ('to', 0, undefined, part, callback) 
-    print_html (target, html, 0);
+    print_html (target, html, 0, any_text, add_text, rem_text, through_text);
 }

@@ -1,5 +1,11 @@
 [% PROCESS tt/callforward_head.tt %]
 [% META title = 'Call forward' %]
+[% 
+  add_text = Catalyst.loc('Add'); 
+  rem_text = Catalyst.loc('Remove');
+  through_text = Catalyst.loc('through');
+  any_text = Catalyst.loc('any');
+%]
 
 <div id="main">
 
@@ -20,22 +26,19 @@
     <div class="spalte1">
         
     [% FOREACH tset IN time_sets %]
-        <div class="set-container">
-        <a name="tset-[% tset.id %]">&nbsp;</a>
-        <div class="set-item">
+        <div class="set-container span-15 last">
+        <div class="set-item span-15 last">
             [% IF tset_id == tset.id %]
                 [% PROCESS set action = 'edit' %]
             [% ELSE %]
                 [% PROCESS set action = 'view' %]
             [% END %]
-            &nbsp;
-        </div> <!--set-item-->
-        <br clear="all" />
+        </div>
 
         [% priority = 0 %]
         [% FOREACH period IN tset.periods %]
 
-            <div class="prepend-1 sub-container">
+            <div class="sub-container span-15 last">
             
             [% IF period.id == -1 %]
                 [% PROCESS period action = 'add' %]
@@ -47,29 +50,26 @@
 
             [% priority = priority + 1 %]
             </div> <!--period-item-->
-            <br clear="all" />
         [% END %]
         
         [% IF priority == 0 or tset_id == tset.id %]
             [% period = undef %]
-            <div class="prepend-1 sub-container">
+            <div class="sub-container span-15">
                 [% PROCESS period action = 'add' %]
             </div>
-            <br clear="all" />
         [% END %]
         
         </div> <!--set-container-->
-        <br clear="all" />
     [% END %]
         
-    <div class="set-container">&nbsp;
-    <div class="set-item">
+    <div class="set-container span-15 last">
+      <div class="set-item span-15 last">
         [% PROCESS set action = 'add' %]
-        &nbsp;
-    </div></div>
+      </div>
+    </div>
 
     </div> <!-- spalte1 -->
-
+    
     <div class="spalte2">
         [% PROCESS tt/callforward_navi.tt %]
     </div> <!-- spalte2 -->
@@ -77,7 +77,6 @@
     </div> <!-- spalten31 -->
 
 </div> <!-- main -->
-
 <br clear="all" />
 
 [%# ================================= %]
@@ -85,13 +84,13 @@
     [% IF action == 'edit' or action == 'add' %]
         <form action="/callforward/time/set/save" method="post">
         [% IF action == 'edit' %]
-            <div class="prepend-1 span-8"> <input type="text" size="20" name="tsetname" value="[% tset.name %]" title="enter a name for the time set" /> </div>
+            <div class="span-10"> <input type="text" size="20" name="tsetname" value="[% tset.name %]" title="enter a name for the time set" /> </div>
         [% ELSE %]
-            <div class="prepend-1 span-8"> <input type="text" size="20" name="tsetname" value="" title="enter a name for the time set" /> </div>
+            <div class="span-10"> <input type="text" size="20" name="tsetname" value="" title="enter a name for the time set" /> </div>
         [% END %]
     [% ELSE %] 
         <form action="/callforward/time/set/delete" method="post">
-        <div class="prepend-1 span-8"> [% tset.name %] </div>
+        <div class="span-10"> [% tset.name %] </div>
     [% END %]
 
     <input type="hidden" name="subscriber_id" value="[% subscriber.subscriber_id %]"/>
@@ -100,20 +99,20 @@
     [% END %]
 
     [% IF action == 'edit' %]
-        <div class="prepend-1 span-1"><p class="link_button">
+        <div class="span-2"><p class="link_button">
             <label for="save_tset_[% tset.id %]">[% Catalyst.loc('Save') %]</label>
             <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_tset_[% tset.id %]">
         </p></div>
         <div class="span-1"><a class="link" href="/callforward/time"><span class="button-cancel">[% Catalyst.loc('Cancel') %]</span></a></div>
     [% ELSIF action == 'add' %]
-        <div class="prepend-1 span-1"><p class="link_button">
+        <div class="span-2"><p class="link_button">
             <label for="add_tset_[% tset.id %]">[% Catalyst.loc('Add timeset') %]</label>
             <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="add_tset_[% tset.id %]">
         </p></div>
-        <div class="span-1"></div>
+        <div class="span-1">&nbsp;</div>
     [% ELSIF action == 'view' %]
-        <div class="prepend-1 span-1"><a class="link" href="/callforward/time/set/[% tset.id %]/edit#tset-[% tset.id %]"><span class="button-edit">[% Catalyst.loc('Edit') %]</span></a></div>
-        <div class="span-4">
+        <div class="span-2"><a class="link" href="/callforward/time/set/[% tset.id %]/edit#tset-[% tset.id %]"><span class="button-edit">[% Catalyst.loc('Edit') %]</span></a></div>
+        <div class="span-2">
         [% IF mapped.${tset.id} %]
             <p>[% mapped.${tset.id} %] [% Catalyst.loc('times(s) mapped') %]</p>
         [% ELSE %]
@@ -144,9 +143,15 @@
         <input type="hidden" name="tperiod_id" value="[% period.id %]"/>
     [% END %]
 
+    [% IF 0 %]
+      <!-- dummy for auto-generate translation stubs
+      Catalyst.loc('year'); Catalyst.loc('month'); Catalyst.loc('mday');
+      Catalyst.loc('wday'); Catalyst.loc('hour'); Catalyst.loc('minute');
+      -->
+    [% END %]
     [% FOREACH part IN ['year', 'month', 'mday', 'wday', 'hour', 'minute'] %]
         <div class="span-2">
-            <div class="ui-widget-header drophead" style="text-transform:capitalize"><p class="ui-widget-header drophead">[% part %]</p></div>
+            <div class="ui-widget-header drophead" style="text-transform:capitalize"><p class="ui-widget-header drophead">[% Catalyst.loc(part) %]</p></div>
             [% IF action == 'add' %]
                 <div class="ui-widget-header dateform-elem"     id="[% part %]-[% tset.id %]--1"></div> 
                 <div class="ui-widget-header dropfoot"          id="[% part %]-[% tset.id %]--1-foot"></div>
@@ -168,23 +173,29 @@
     [% END %]
 
     [% IF action == 'edit' %]
-        <div class="span-1"><p class="link_button">
-            <label for="save_period_[% period.id %]">Save</label>
+        <div class="span-2" style="padding:20px 0 0 10px;">
+          <p class="link_button">
+            <label for="save_period_[% period.id %]">[% Catalyst.loc('Save') %]</label>
             <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_period_[% period.id %]">
-        </p></div>
-        <div class="span-1"><a class="link" href="/callforward/time"><span class="button-cancel">[% Catalyst.loc('Cancel') %]</span></a></div>
+          </p>
+          <br/>
+          <a class="link" href="/callforward/time"><span class="button-cancel">[% Catalyst.loc('Cancel') %]</span></a>
+        </div>
     [% ELSIF action == 'add' %]
-        <div class="span-1"><p class="link_button">
+        <div class="span-1" style="padding:20px 0 0 10px;"><p class="link_button">
             <label for="add_period_[% tset.id %]">[% Catalyst.loc('Add period') %]</label>
             <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="add_period_[% tset.id %]">
         </p></div>
         <div class="span-1"></div>
     [% ELSIF action == 'view' %]
-        <div class="span-1"><a class="link" href="/callforward/time/period/[% period.id %]/edit#tperiod-[% period.id %]"><span class="button-edit">[% Catalyst.loc('Edit') %]</span></a></div>
-        <div class="span-1"><p class="link_button">
-                <label for="add_period_[% period.id %]">[% Catalyst.loc('Delete') %]</label>
-                <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="add_period_[% period.id %]">
-        </p></div>
+        <div class="span-2" style="padding:20px 0 0 10px;">
+          <a class="link" href="/callforward/time/period/[% period.id %]/edit#tperiod-[% period.id %]"><span class="button-edit">[% Catalyst.loc('Edit') %]</span></a>
+          <br/>
+          <p class="link_button">
+            <label for="add_period_[% period.id %]">[% Catalyst.loc('Delete') %]</label>
+            <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="add_period_[% period.id %]">
+          </p>
+        </div>
     [% END %] 
     </form><!-- eoperiod -->
 [% END %]
@@ -229,13 +240,13 @@
         var stuff = Array ();
         var i = 1;
 
+        stuff.push ({ value: i++, label: '[% Catalyst.loc("Sun") %]' });
         stuff.push ({ value: i++, label: '[% Catalyst.loc("Mon") %]' });
         stuff.push ({ value: i++, label: '[% Catalyst.loc("Tue") %]' });
         stuff.push ({ value: i++, label: '[% Catalyst.loc("Wed") %]' });
         stuff.push ({ value: i++, label: '[% Catalyst.loc("Thu") %]' });
         stuff.push ({ value: i++, label: '[% Catalyst.loc("Fri") %]' });
         stuff.push ({ value: i++, label: '[% Catalyst.loc("Sat") %]' });
-        stuff.push ({ value: i++, label: '[% Catalyst.loc("Sun") %]' });
 
         return stuff;
     }
@@ -261,9 +272,10 @@
                     [% IF (selected_from >= 0) or (selected_to >= 0) %]
                         [% f = "create_period_part ('from', $disabled, $selected_from , '$part') " %]
                         [% t = "create_period_part ('to', $disabled, $selected_to, '$part') " %]
-                        [% html = html _ "print_html ('$target', $f + ' through<br/> ' + $t, $disabled);\n" %]
+                        [% add_text = Catalyst.loc('Add'); rem_text = Catalyst.loc('Remove') %]
+                        [% html = html _ "print_html ('$target', $f + ' $through_text<br/> ' + $t, $disabled, '$any_text', '$add_text', '$rem_text', '$through_text');\n" %]
                     [% ELSE %]
-                        [% html = html _ "remove_html ('$target', '$disabled');\n" %]
+                        [% html = html _ "remove_html ('$target', '$disabled', '$any_text', '$add_text', '$rem_text', '$through_text');\n" %]
                     [% END %]
 
                 [% END %]
@@ -273,7 +285,7 @@
             [% IF (tset_id == tset.id) or (tset.periods.size == 0) %]
                 [% FOREACH part IN ['year', 'month', 'mday', 'wday', 'hour', 'minute'] %]
                     [% target = part _ '-' _ tset.id _ '--1' %]
-                    [% html = html _ "remove_html ('$target');" %]
+                    [% html = html _ "remove_html ('$target', null, '$any_text', '$add_text', '$rem_text', '$through_text');" %]
                 [% END %]
             [% END %]
 
