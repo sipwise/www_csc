@@ -65,6 +65,15 @@ function create_period_part (kind, disabled, selected, name) {
     
     html += '<option style="text-transform:capitalize" value="-1">' + name + '</option>';
 
+    if(name == 'year')
+    {
+      var d = new Date();
+      var y = d.getFullYear(); var py = parseInt(selected);
+      if(py > -1 && py < y) {
+        html += '<option selected="selected" value="' + py + '">' + py + '</option>';
+      }
+    }
+
     for (var i = 0; i < steps.length; i++) {
 
         var value = steps[i].value;
