@@ -1,3 +1,11 @@
+ngcp-www-csc (3.5.1) unstable; urgency=low
+
+  * Lots of localization fixes.
+  * Update German Spanish translation. 
+  * Fix handling of years older than current year in call forwarding time sets.
+
+ -- Andrew Pogrebennyk <apogrebennyk@sipwise.com>  Thu, 07 Feb 2013 13:55:37 +0100
+
 ngcp-www-csc (3.5.0) unstable; urgency=low
 
   [ dtiefnig ]
