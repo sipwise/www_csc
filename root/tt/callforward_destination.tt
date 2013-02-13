@@ -19,57 +19,48 @@
     <div class="spalte1">
         
         [% FOREACH dset IN destination_sets %]
-            <div id="dset-[% dset.id %]" class="set-container">
-            <a name="dset-[% dset.id %]">&nbsp;</a>
-            <div class="set-item">
-                [% IF dset_id == dset.id %]
-                    [% PROCESS set action = 'edit' %]
-                [% ELSE %]
-                    [% PROCESS set action = 'view' %]
-                [% END %]
-                &nbsp;
-            </div> <!--set-item" -->
+            <div id="dset-[% dset.id %]" class="set-container span-15 last">
+              <div class="set-item span-15 last">
+                  [% IF dset_id == dset.id %]
+                      [% PROCESS set action = 'edit' %]
+                  [% ELSE %]
+                      [% PROCESS set action = 'view' %]
+                  [% END %]
+              </div>
  
-            [% priority = 0 %]
-            <div>
-            [% FOREACH dest IN dset.destinations %]
+              [% priority = 0 %]
+              [% FOREACH dest IN dset.destinations %]
 
-                <div id="dest-[% dest.id %]" class="sub-container">
-                <a name="dest-[% dest.id %]">&nbsp;</a>
-                
-                [% IF (dest.id == -1) %]
-                    [% PROCESS target action = 'add' %]
-                [% ELSIF dtarget_id == dest.id %]
-                    [% PROCESS target action = 'edit' %]
-                <br clear="all" />
-                [% ELSE %]
-                    [% PROCESS target action = 'view' %]
-                [% END %]
+               <div id="dest-[% dest.id %]" class="sub-container span-15 last">
+               [% IF (dest.id == -1) %]
+                  [% PROCESS target action = 'add' %]
+               [% ELSIF dtarget_id == dest.id %]
+                  [% PROCESS target action = 'edit' %]
+               [% ELSE %]
+                  [% PROCESS target action = 'view' %]
+               [% END %]
 
                 [% priority = priority + 1 %]
                 </div> <!-- dest-item -->
-            [% END %]
+              [% END %]
 
-            </div>
+              [%# dest is still available. this is expected behaviour 
+                  see: http://template-toolkit.org/docs/manual/Directives.html#section_FOREACH %]
 
-            [%# dest is still available. this is expected behaviour 
-                see: http://template-toolkit.org/docs/manual/Directives.html#section_FOREACH %]
-
-            [% IF priority == 0 or dset_id == dset.id %] [%# either editing set or nothing here so far, offer empty one %]
-                [% dest = undef %] [%# dest still holds the last one %]
-                <div class="sub-container">
-                    [% PROCESS target action = 'add' %]
-                </div>
-            [% END %]
+              [% IF priority == 0 or dset_id == dset.id %] [%# either editing set or nothing here so far, offer empty one %]
+                  [% dest = undef %] [%# dest still holds the last one %]
+                  <div class="sub-container span-15 last">
+                      [% PROCESS target action = 'add' %]
+                  </div>
+              [% END %]
 
             </div> <!-- set-container -->
             <br clear="all" />
         [% END %]
 
-        <div class="set-container">&nbsp;
-        <div class="set-item">
+        <div class="set-container span-15 last">
+        <div class="set-item span-15 last">
             [% PROCESS set action = 'add' %]
-            &nbsp;
         </div></div>
 
         </div> <!-- spalte1 -->
@@ -89,17 +80,17 @@
     [% IF action == 'edit' or action == 'add' %]
         <form action="/callforward/destination/set/save" method="post">
         [% IF action == 'edit' %]
-            <div class="prepend-1 span-8"> <input type="text" size="20" name="dsetname" value="[% dset.name %]"/> </div>
+            <div class="span-8"> <input type="text" size="20" name="dsetname" value="[% dset.name %]"/> </div>
             [% FOREACH dest IN dset.destinations %]
-                <input type="hidden" name="priority-[% dest.id %]" value="[% dest.priority %]"/>
+                <input type="hidden" name="priority-[% dest.id %]" value="[% dest.priority.defined ? dest.priority : "0" %]"/>
             [% END %]
             <input type="hidden" name="priority_changed" value="0"/>
         [% ELSE %]
-            <div class="prepend-1 span-8"> <input type="text" size="20" name="dsetname" value=""/> </div>
+            <div class="span-8"> <input type="text" size="20" name="dsetname" value=""/> </div>
         [% END %]
     [% ELSE %]
         <form action="/callforward/destination/set/delete" method="post">
-        <div class="prepend-1 span-8">[% dset.name %]</div>
+        <div class="span-8">[% dset.name %]</div>
     [% END %]
     
     <input type="hidden" name="subscriber_id" value="[% subscriber.subscriber_id %]"/>
@@ -109,7 +100,7 @@
     [% END %]
 
     [% IF action == 'edit' %]
-        <div class="prepend-1 span-1">
+        <div class="span-2">
             <p class="link_button">
                 <label for="save_dset_[% dset.id %]">[% Catalyst.loc('Save') %]</label>
                 <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_dset_[% dset.id %]">
@@ -120,14 +111,14 @@
         </div>
     [% ELSIF action == 'add' %]
         <div class="span-1"></div>
-        <div class="prepend-1 span-3">
+        <div class="span-3">
             <p class="link_button">
                 <label for="add_dset_[% dset.id %]">[% Catalyst.loc('Add destinationset') %]</label>
                 <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="add_dset_[% dset.id %]">
             </p>
         </div>
     [% ELSIF action == 'view' %]
-        <div class="prepend-1 span-1"><a class="link" href="/callforward/destination/set/[% dset.id %]/edit#dset-[% dset.id %]"><span class="button-edit">[% Catalyst.loc('Edit') %]</span></a></div>
+        <div class="span-2"><a class="link" href="/callforward/destination/set/[% dset.id %]/edit#dset-[% dset.id %]"><span class="button-edit">[% Catalyst.loc('Edit') %]</span></a></div>
         <div class="span-4">
             [% IF mapped.${dset.id} %]
                 <p>[% mapped.${dset.id} %] [% Catalyst.loc('times(s) mapped') %]</p>
@@ -162,7 +153,8 @@
     [% END %]          
 
     [% IF action == 'edit' or action == 'add' %] 
-        <div class="span-12">
+        <div class="span-1">&nbsp;</div>
+        <div class="span-10">
             [% IF Catalyst.config.voicemail_features %]
                 <input type="radio" id="dest_voicebox" value="voicebox" name="dest_target" class="radio" 
                     [% IF dest.destination == "voicebox" %] checked="checked"[% END %]/>
@@ -210,36 +202,34 @@
         </div>
 
         [% IF action == 'edit' %]
-            <div class="span-1">
+            <div class="span-2">
                 <p class="link_button">
                     <label for="save_dest_[% dest.id %]">[% Catalyst.loc('Save') %]</label>
                     <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="save_dest_[% dest.id %]">
                 </p>
             </div>
-            <div class="span-1">
+            <div class="span-1 last">
                 <a class="link" href="/callforward/destination"><span class="button-cancel">[% Catalyst.loc('Cancel') %]</span></a>
             </div>
         [% ELSIF action == 'add' %]
-            <div class="span-1">
+            <div class="span-2 last">
                 <p class="link_button">
                     <label for="add_dest_[% dset.id %]">[% Catalyst.loc('Add destination') %]</label>
                     <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="add_dest_[% dset.id %]">
                 </p>
             </div>
-            <div></div>
         [% END %]
     
     [% ELSIF action == 'view' %]
-        [% IF dset.id == dset_id %]
             <div class="span-1">
+            [% IF dset.id == dset_id %]
                 <a href="javascript:void(0)" onclick="move_up('dest-' + [% dest.id %])">&uarr;</a>
                 <a href="javascript:void(0)" onclick="move_down('dest-' + [% dest.id %])">&darr;</a>
+            [% ELSE %]&nbsp;
+            [% END %]
             </div>
-        [% ELSE %]
-            <div class="span-1"></div>
-        [% END %]
 
-        <div class="span-12">
+        <div class="span-10">
             [% IF Catalyst.config.voicemail_features and dest.destination == "voicebox" %]
                 [% Catalyst.loc('Voicebox') %]
             [% ELSIF Catalyst.config.fax_features and dest.destination == "fax2mail" %]
@@ -250,8 +240,8 @@
                 [% dest.destination %] [% Catalyst.loc('for') %] [% dest.timeout %]<span>&nbsp;[% Catalyst.loc('seconds') %]</span>
             [% END %]
         </div>
-        <div class="prepand-9 span-1"><a class="link" href="/callforward/destination/target/[% dest.id %]/edit#dest-[% dest.id %]"><span class="button-edit">[% Catalyst.loc('Edit') %]</span></a></div>
-        <div class="span-1">
+        <div class="span-2"><a class="link" href="/callforward/destination/target/[% dest.id %]/edit#dest-[% dest.id %]"><span class="button-edit">[% Catalyst.loc('Edit') %]</span></a></div>
+        <div class="span-1 last">
             <p class="link_button">
                 <label for="delete_dtarget_[% dest.id %]">[% Catalyst.loc('Delete') %]</label>
                 <input type="image" class="hidden" src="/grafik/dot_trans.gif" alt="" id="delete_dtarget_[% dest.id %]">
