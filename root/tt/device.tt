@@ -126,7 +126,7 @@
 							</tr>
 						[% END %]
 					</table>
-					<form action="/device/spa">
+					<form action="/device/spa" method="post">
 						<button type="submit" name="confspa" value="1">Ändern</button>
 					</form>
 				[% END %]
@@ -184,7 +184,7 @@
 								</tr>
 								[% END %]
 							</table>
-							<form action="/device/phone">
+							<form action="/device/phone" method="post">
 								<button type="submit" name="confphone" value="[% phone.ext %]">Ändern</button>
 							</form>
 						[% ELSE %]
