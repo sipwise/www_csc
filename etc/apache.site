@@ -1,5 +1,5 @@
 [% TAGS [- -] %]
-[% IF www_csc.apache.port != 443 %]
+[% IF www_csc.apache.port != 443 && www_csc.apache.port != 80 %]
 Listen [% www_csc.apache.port %]
 [% END %]
 
@@ -17,9 +17,11 @@ PerlSwitches -I/usr/share/ngcp-www-csc/lib
 <VirtualHost *:[% www_csc.apache.port %]>
         ServerAdmin [% www_csc.apache.serveradmin %]
         ServerName [% www_csc.apache.servername %]
+	[% IF www_csc.apache.ssl_enable == "yes" %]
         SSLEngine on
         SSLCertificateFile [% www_csc.apache.sslcertfile %]
         SSLCertificateKeyFile [% www_csc.apache.sslcertkeyfile %]
+	[% END %]
 
         PerlModule Apache2::RequestUtil csc
 
