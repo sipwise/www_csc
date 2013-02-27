@@ -18,7 +18,7 @@
 
       <div class="spalte1">
 
-         <form id="anmelden" action="/login/do_login">
+         <form method="post" id="anmelden" action="/login/do_login">
            <fieldset>
              <span>
                <label id="lbenutzer" for="benutzer">[% Catalyst.loc('username:') %]</label>
