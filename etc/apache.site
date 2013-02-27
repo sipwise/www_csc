@@ -1,5 +1,5 @@
 [% TAGS [- -] %]
-[% IF www_csc.apache.port != 443 %]
+[% IF www_csc.apache.port != 443 && www_csc.apache.port != 80 %]
 Listen [% www_csc.apache.port %]
 [% END %]
 
