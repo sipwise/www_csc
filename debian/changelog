@@ -1,3 +1,9 @@
+ngcp-www-csc (3.6.0) unstable; urgency=low
+
+  * Align call lists to modified ossbss functions.
+
+ -- Andreas Granig <agranig@sipwise.com>  Wed, 27 Mar 2013 10:33:44 +0100
+
 ngcp-www-csc (3.5.2) unstable; urgency=low
 
   * Use post methods for all forms.
