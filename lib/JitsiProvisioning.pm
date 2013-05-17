@@ -12,6 +12,7 @@ use XML::Simple;
 use Log::Log4perl;
 Log::Log4perl::init('/etc/ngcp-ossbss/logging.conf');
 my $log = Log::Log4perl->get_logger('csc');
+$log->info('jitsiprov starting up');
 
 my $cfg_file = '/etc/ngcp-www-csc/csc.conf';
 
@@ -23,7 +24,6 @@ sub handler {
 	my $req = Apache2::Request->new($r);
 	$r->content_type('text/plain');
 
-	$log->info('jitsiprov got request with params user=' . $req->param("user") . ' and pass=' . $req->param("pass") . ' and uuid=' . $req->param("uuid"));
 	my $uri = $req->param("user") || '';
 	my ($user, $domain) = split /\@/, $uri;
 	my $pass = $req->param("pass");
@@ -34,11 +34,13 @@ sub handler {
 		$r->custom_response(Apache2::Const::NOT_FOUND, "invalid credentials");
 		return Apache2::Const::NOT_FOUND;
 	}
+	$log->info("jitsiprov generating config for user='$user', domain='$domain', uuid='$uuid'");
 
 	my $sipacc = 'accsipngcp'.$user.$domain;
 	my $xmppacc = 'accxmppngcp'.$user.$domain;
 	$sipacc =~ s/[^a-zA-Z0-9]//g;
 	$xmppacc =~ s/[^a-zA-Z0-9]//g;
+	my $provserver = $r->hostname;
 	my $server_ip = $cfg->{uaprovisioning}->{sip}->{host};
 	my $server_port;
 	my $server_proto;
@@ -56,6 +58,7 @@ sub handler {
 	$log->info("jitsiprov gathered required information, sipacc=$sipacc, xmppacc=$xmppacc");
 
 	my $config = <<"EOF";
+net.java.sip.communicator.plugin.provisioning.URL=https\://$provserver/jitsi?user\=\${username}&pass\=\${password}&uuid\=\${uuid}
 net.java.sip.communicator.impl.protocol.sip.$sipacc=$sipacc
 net.java.sip.communicator.impl.protocol.sip.$sipacc.ACCOUNT_UID=SIP\:$user\@$domain
 net.java.sip.communicator.impl.protocol.sip.$sipacc.DEFAULT_ENCRYPTION=true
