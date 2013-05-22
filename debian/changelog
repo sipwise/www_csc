@@ -1,3 +1,9 @@
+ngcp-www-csc (3.6.1) unstable; urgency=low
+
+  * Fix XCAP auto-provisioning URL.
+
+ -- Andreas Granig <agranig@sipwise.com>  Wed, 22 May 2013 13:15:20 +0200
+
 ngcp-www-csc (3.6.0) unstable; urgency=low
 
   * Align call lists to modified ossbss functions.
