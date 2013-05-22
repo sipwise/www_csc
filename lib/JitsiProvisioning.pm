@@ -42,7 +42,7 @@ sub handler {
 		$server_proto = 'UDP';
 	}
 	my $xcap_proto = $cfg->{uaprovisioning}->{xcap}->{proto};
-	my $xcap_ip = $cfg->{uaprovisioning}->{xcap}->{host};
+	my $xcap_ip = $domain;
 	my $xcap_port = $cfg->{uaprovisioning}->{xcap}->{port};
 
 	my $config = <<"EOF";
