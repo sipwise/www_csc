@@ -52,6 +52,10 @@ Depends: apache2,
          libapache2-mod-perl2,
          libapache2-request-perl,
          libdata-validate-ip-perl,
+         libnet-dns-perl,
+         liblog-log4perl-perl,
+         liblog-dispatch-perl,
+         libapache2-mod-apreq2,
          ${misc:Depends},
          ${shlibs:Depends}
 Description: redirector for Jitsi auto-provisioning

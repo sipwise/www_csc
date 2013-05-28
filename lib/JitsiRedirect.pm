@@ -27,7 +27,6 @@ use Apache2::Request;
 use Apache2::RequestRec;
 use Apache2::RequestIO;
 use Apache2::Const;
-use XML::Simple;
 use Net::DNS;
 use Data::Validate::IP qw(is_ipv4 is_ipv6);
 
