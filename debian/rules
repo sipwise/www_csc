@@ -102,7 +102,8 @@ ngcp-templates-pro-www-csc:
 binary-all: build install
 
 binary-indep: build install ngcp-www-csc \
-	ngcp-templates-ce-www-csc ngcp-templates-pro-www-csc
+	ngcp-templates-ce-www-csc ngcp-templates-pro-www-csc \
+	ngcp-jitsi-redirect
 
 binary: binary-indep binary-arch
 .PHONY: build clean binary-indep binary-arch binary install
