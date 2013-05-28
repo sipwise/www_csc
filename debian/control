@@ -2,13 +2,15 @@ Source: ngcp-www-csc
 Section: admin
 Priority: extra
 Maintainer: Sipwise Development Team <support@sipwise.com>
-Build-Depends: debhelper (>= 5), libtemplate-perl
+Build-Depends: debhelper (>= 5),
+               libtemplate-perl
 Standards-Version: 3.9.3
 Homepage: http://sipwise.com/
 
 Package: ngcp-templates-ce-www-csc
 Architecture: all
-Depends: ${misc:Depends}, ${shlibs:Depends}
+Depends: ${misc:Depends},
+         ${shlibs:Depends}
 Conflicts: ngcp-templates-pro-www-csc
 Provides: ngcp-templates-www-csc
 Description: Configuration templates for the web-based CSC interface
@@ -17,7 +19,8 @@ Description: Configuration templates for the web-based CSC interface
 
 Package: ngcp-templates-pro-www-csc
 Architecture: all
-Depends: ${misc:Depends}, ${shlibs:Depends}
+Depends: ${misc:Depends},
+         ${shlibs:Depends}
 Conflicts: ngcp-templates-ce-www-csc
 Provides: ngcp-templates-www-csc
 Description: Configuration templates for the web-based CSC interface
@@ -27,12 +30,12 @@ Description: Configuration templates for the web-based CSC interface
 Package: ngcp-www-csc
 Architecture: all
 Depends: gettext,
+         libapache2-request-perl,
          libcatalyst-engine-apache-perl,
          libcatalyst-modules-perl,
          libcatalyst-perl,
          liblocale-maketext-lexicon-perl,
          librpc-xml-perl,
-         libapache2-request-perl,
          ngcp-ossbss-billing (>= 2.0.2),
          ngcp-ossbss-voip (>= 3.0.0),
          ngcp-templates-www-csc,
@@ -41,3 +44,16 @@ Depends: gettext,
 Description: frontend for endusers to configure their accounts on the Sipwise NGCP
   The CSC framework is used by endusers to configure their accounts on the
   Sipwise NGCP.
+
+Package: ngcp-jitsi-redirect
+Architecture: all
+Depends: apache2,
+         gettext,
+         libapache2-mod-perl2,
+         libapache2-request-perl,
+         libdata-validate-ip-perl,
+         ${misc:Depends},
+         ${shlibs:Depends}
+Description: redirector for Jitsi auto-provisioning
+  The Jitsi Redirect module points the Sipwise-branded Jitsi to the real
+  provisioning server defined by the domain part of the SIP URI.

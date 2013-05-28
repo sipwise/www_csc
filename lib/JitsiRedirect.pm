@@ -32,14 +32,9 @@ use Net::DNS;
 use Data::Validate::IP qw(is_ipv4 is_ipv6);
 
 use Log::Log4perl;
-Log::Log4perl::init('/etc/ngcp-ossbss/logging.conf');
-my $log = Log::Log4perl->get_logger('csc');
+Log::Log4perl::init('/etc/ngcp-jitsi-redirect/logging.conf');
+my $log = Log::Log4perl->get_logger('jitsi');
 $log->info('jitsiredir starting up');
-
-my $cfg_file = '/etc/ngcp-www-csc/csc.conf';
-
-my $cfg = XML::Simple->new()->XMLin($cfg_file)
-	or die "Failed to read config file '$cfg_file'";
 
 my $res = Net::DNS::Resolver->new;
 my $srv_prefix = '_sip._udp.';
