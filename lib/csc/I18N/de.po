@@ -122,7 +122,7 @@ msgstr "Anrufsperre f&uuml;r eingehende und ausgehende Anrufe."
 
 #: root/layout/header:32
 msgid "Call forward"
-msgstr "Anrufweiterleitung"
+msgstr "Weiterleitung"
 
 #: root/tt/calllist.tt:19
 msgid "Call list"
@@ -491,7 +491,7 @@ msgstr "Anrufbeantworter"
 
 #: root/layout/header:26
 msgid "Voicemails"
-msgstr "Sprachnachrichten"
+msgstr "Nachrichten"
 
 #: root/tt/voicebox.tt:148
 msgid "Voicemails by month"
