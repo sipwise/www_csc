@@ -15,8 +15,6 @@ case "$1" in
   ;;
 esac
 
-. /usr/share/debconf/confmodule
-
 # enable required modules
 a2enmod ssl perl apreq
 
@@ -24,14 +22,16 @@ a2enmod ssl perl apreq
 a2enmod dump_io || echo "Missing some optional Apache module(s), ignoring."
 
 # disable debian's default Apache site
-a2dissite default
+if [ -e /etc/apache2/sites-enabled/default ]; then
+	a2dissite default
+fi
 
 # enable mod_rewrite for port 80 redirection
 a2enmod rewrite
 
 # reload perl and/or apache modules
 if [ -x /etc/init.d/apache2 ] ; then
-  invoke-rc.d apache2 reload
+  /etc/init.d/apache2 restart || true
 fi
 
 exit 0

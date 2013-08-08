@@ -1,2 +1,2 @@
 [% TAGS [- -] %]
-/etc/init.d/apache2 reload
+/etc/init.d/apache2 restart || true
