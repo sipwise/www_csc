@@ -1,3 +1,9 @@
+ngcp-www-csc (3.7.0) unstable; urgency=low
+
+  * Start changelog for NGCP 3.0 release.
+
+ -- Andrew Pogrebennyk <apogrebennyk@sipwise.com>  Thu, 08 Aug 2013 10:53:01 +0200
+
 ngcp-www-csc (3.6.2) unstable; urgency=low
 
   * Shorten german top level menu entries.
