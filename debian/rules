@@ -18,14 +18,14 @@ build-stamp:
 	dh_testdir
 	egrep -q "VERSION = 'UNRELEASED'" lib/csc.pm || \
                           (echo "Wrong version in lib/csc.pm" && exit 2)
-	mkdir -p pro/etc/ngcp-www-csc pro/etc/apache2/sites-available
-	mkdir -p ce/etc/ngcp-www-csc ce/etc/apache2/sites-available
+	mkdir -p pro/etc/ngcp-www-csc pro/etc/nginx/sites-available
+	mkdir -p ce/etc/ngcp-www-csc ce/etc/nginx/sites-available
 	tpage --define PRO=true   etc/csc.conf > pro/etc/ngcp-www-csc/csc.conf.tt2
 	tpage                     etc/csc.conf > ce/etc/ngcp-www-csc/csc.conf.tt2
 	tpage --define PRO=true   etc/csc.conf.services > pro/etc/ngcp-www-csc/csc.conf.services
 	tpage                     etc/csc.conf.services > ce/etc/ngcp-www-csc/csc.conf.services
-	tpage --define PRO=true   etc/apache.site > pro/etc/apache2/sites-available/ngcp-www-csc.tt2
-	tpage                     etc/apache.site > ce/etc/apache2/sites-available/ngcp-www-csc.tt2
+	tpage --define PRO=true   etc/nginx.site > pro/etc/nginx/sites-available/ngcp-www-csc.tt2
+	tpage                     etc/nginx.site > ce/etc/nginx/sites-available/ngcp-www-csc.tt2
 	touch $@
 
 clean: 
@@ -50,6 +50,7 @@ ngcp-www-csc:
 	sed -i -e "s/VERSION = 'UNRELEASED'/VERSION = '$(VERSION)'/" $(b)/$@/usr/share/ngcp-www-csc/lib/csc.pm
 	dh_installexamples   -p$@ -P$(b)/$@
 	dh_installman        -p$@ -P$(b)/$@
+	dh_installinit       -p$@ -P$(b)/$@
 	dh_link              -p$@ -P$(b)/$@
 	dh_strip             -p$@ -P$(b)/$@
 	dh_compress          -p$@ -P$(b)/$@
@@ -99,32 +100,10 @@ ngcp-templates-pro-www-csc:
 	dh_md5sums           -p$@ -P$(b)/$@
 	dh_builddeb          -p$@ -P$(b)/$@
 
-ngcp-jitsi-redirect:
-	@echo "--- Building: $@"
-	dh_installdirs       -p$@ -P$(b)/$@
-	dh_installdocs       -p$@ -P$(b)/$@
-	dh_installchangelogs -p$@ -P$(b)/$@
-	dh_install           -p$@ -P$(b)/$@
-	dh_installexamples   -p$@ -P$(b)/$@
-	dh_installman        -p$@ -P$(b)/$@
-	dh_link              -p$@ -P$(b)/$@
-	dh_strip             -p$@ -P$(b)/$@
-	dh_compress          -p$@ -P$(b)/$@
-	dh_fixperms          -p$@ -P$(b)/$@
-	#dh_perl              -p$@ -P$(b)/$@
-	dh_makeshlibs        -p$@ -P$(b)/$@ -V
-	dh_installdeb        -p$@ -P$(b)/$@
-	dh_shlibdeps         -p$@ -P$(b)/$@
-	dh_installdebconf    -p$@ -P$(b)/$@
-	dh_gencontrol        -p$@ -P$(b)/$@
-	dh_md5sums           -p$@ -P$(b)/$@
-	dh_builddeb          -p$@ -P$(b)/$@
-
 binary-all: build install
 
 binary-indep: build install ngcp-www-csc \
-	ngcp-templates-ce-www-csc ngcp-templates-pro-www-csc \
-	ngcp-jitsi-redirect
+	ngcp-templates-ce-www-csc ngcp-templates-pro-www-csc
 
 binary: binary-indep binary-arch
 .PHONY: build clean binary-indep binary-arch binary install

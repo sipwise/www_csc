@@ -29,11 +29,11 @@ Description: Configuration templates for the web-based CSC interface
 
 Package: ngcp-www-csc
 Architecture: all
+Pre-Depends: nginx-common
 Depends: gettext,
-         libapache2-request-perl,
-         libcatalyst-engine-apache-perl,
          libcatalyst-modules-perl,
          libcatalyst-perl,
+         libfcgi-procmanager-perl,
          liblocale-maketext-lexicon-perl,
          librpc-xml-perl,
          ngcp-ossbss-billing (>= 2.0.2),
@@ -44,20 +44,3 @@ Depends: gettext,
 Description: frontend for endusers to configure their accounts on the Sipwise NGCP
   The CSC framework is used by endusers to configure their accounts on the
   Sipwise NGCP.
-
-Package: ngcp-jitsi-redirect
-Architecture: all
-Depends: apache2,
-         gettext,
-         libapache2-mod-perl2,
-         libapache2-request-perl,
-         libdata-validate-ip-perl,
-         libnet-dns-perl,
-         liblog-log4perl-perl,
-         liblog-dispatch-perl,
-         libapache2-mod-apreq2,
-         ${misc:Depends},
-         ${shlibs:Depends}
-Description: redirector for Jitsi auto-provisioning
-  The Jitsi Redirect module points the Sipwise-branded Jitsi to the real
-  provisioning server defined by the domain part of the SIP URI.

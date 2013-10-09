@@ -1,0 +1,39 @@
+[% TAGS [- -] -%]
+
+[% IF www_csc.apache.port != 80 && www_admin.apache.port != 80 && ossbss.apache.port != 80 %]
+server {
+    listen   [::]:80;
+
+    server_name [% www_csc.apache.servername %];
+
+    return 301 https://$server_name$request_uri;
+}
+[% END %]
+
+server {
+        listen [::]:[% www_csc.apache.port %];
+        [% IF www_csc.apache.ssl_enable == "yes" %]
+        ssl on;
+        ssl_certificate      [% www_csc.apache.sslcertfile %];
+        ssl_certificate_key  [% www_csc.apache.sslcertkeyfile %];
+        [% END %]
+        server_name [% www_csc.apache.servername %];
+
+        location /favicon.ico {
+                alias  /usr/share/ngcp-www-csc/lib/csc/root/favicon.ico;
+        }
+
+        location /(css|grafik|js) {
+                root  /usr/share/ngcp-www-csc/lib/csc/root;
+        }
+
+        location / {
+                include /etc/nginx/fastcgi_params;
+                # Catalyst requires setting PATH_INFO (instead of SCRIPT_NAME) to $fastcgi_script_name
+                fastcgi_param  SCRIPT_NAME '';
+                fastcgi_param  PATH_INFO $fastcgi_script_name;
+                fastcgi_param   HTTPS on;
+                # TODO: configs for fastcgi process
+                fastcgi_pass  unix:/var/run/ngcp-www-csc.sock;
+        }
+}
