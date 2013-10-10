@@ -14,8 +14,6 @@ use XML::Simple;
 # Static::Simple: will serve static files from the application's root 
 #                 directory
 
-use Catalyst::Log::Log4perl;
-
 use Catalyst qw/ConfigLoader Static::Simple Unicode I18N
                 Authentication Authentication::Store::Minimal Authentication::Credential::Password
                 Session Session::Store::FastMmap Session::State::Cookie
@@ -49,8 +47,10 @@ __PACKAGE__->config( 'Plugin::Authentication' => {
         },
 });
 
+use Log::Log4perl::Catalyst qw();
+
 if(__PACKAGE__->config->{log4perlconf}) {
-  __PACKAGE__->log( Catalyst::Log::Log4perl->new(
+  __PACKAGE__->log(Log::Log4perl::Catalyst->new(
       __PACKAGE__->config->{log4perlconf}
   ));
 }
