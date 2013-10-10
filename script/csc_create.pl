@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-
+use lib "/usr/share/ngcp-www-csc/lib";
 use Catalyst::ScriptRunner;
 Catalyst::ScriptRunner->run('csc', 'Create');
 

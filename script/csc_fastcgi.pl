@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-
+use lib "/usr/share/ngcp-www-csc/lib";
 use Catalyst::ScriptRunner;
 Catalyst::ScriptRunner->run('csc', 'FastCGI');
 

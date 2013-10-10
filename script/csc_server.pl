@@ -3,7 +3,7 @@
 BEGIN {
     $ENV{CATALYST_SCRIPT_GEN} = 40;
 }
-
+use lib "/usr/share/ngcp-www-csc/lib";
 use Catalyst::ScriptRunner;
 Catalyst::ScriptRunner->run('csc', 'Server');
 
