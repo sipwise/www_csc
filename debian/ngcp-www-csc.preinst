@@ -26,6 +26,17 @@ case "$1" in
     	rm /etc/apache2/sites-enabled/ngcp-www-csc
         FLAG=1
     fi
+    if grep '^[[:space:]]*Listen 443' &> /dev/null \
+        ||  grep '^[[:space:]]*Listen 80' &> /dev/null; then
+        echo "Apache must not listen on 80 or 443 ports"
+        echo "Commenting 80/443 ports from /etc/apache2/ports.conf"
+        # don't listen on 80 or 443
+        sed -e 's/^[[:space:]]*Listen 443/#Listen 443/' \
+            -e 's/^[[:space:]]*Listen 80/#Listen 80/' \
+            -e 's/^[[:space:]]*NameVirtualHost \*:80/#NameVirtualHost \*:80/' \
+            -i /etc/apache2/ports.conf
+        FLAG=1
+    fi
     if dpkg-maintscript-helper supports rm_conffile 2>/dev/null; then
         dpkg-maintscript-helper rm_conffile \
         /etc/ngcp-config/templates/etc/apache2/sites-available/ngcp-www-csc.tt2 \
@@ -43,16 +54,6 @@ case "$1" in
 esac
 
 if [ -n "$FLAG" ]; then
-    if grep '^[[:space:]]*Listen 443' &> /dev/null \
-        ||  grep '^[[:space:]]*Listen 80' &> /dev/null; then
-        echo "Apache must not listen on 80 or 443 ports"
-        echo "Commenting 80/443 ports from /etc/apache2/ports.conf"
-        # don't listen on 80 or 443
-        sed -e 's/^[[:space:]]*Listen 443/#Listen 443/' \
-            -e 's/^[[:space:]]*Listen 80/#Listen 80/' \
-            -e 's/^[[:space:]]*NameVirtualHost \*:80/#NameVirtualHost \*:80/' \
-            -i /etc/apache2/ports.conf
-    fi
     # restart apache
     if [ -x /etc/init.d/apache2 ]; then
       if [ -x "`which invoke-rc.d 2>/dev/null`" ]; then
