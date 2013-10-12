@@ -1,10 +1,18 @@
 #!/bin/sh
+[% TAGS [- -] %]
 ### BEGIN INIT INFO
-# Provides:          ngcp-www-csc
-# Required-Start:    $syslog $network $local_fs $remote_fs $time
+# Provides:          ngcp-panel
+[-- IF PRO -]
+# Required-Start:       $syslog $network $local_fs $remote_fs $time
+[-- ELSE -]
+# Required-Start:       $syslog $network $local_fs $remote_fs $time mysql
+[-- END -]
 # Required-Stop:     $syslog $network $local_fs $remote_fs
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
+[-- IF PRO -]
+# Should-Start:       mysql
+[-- END -]
 # Short-Description: Start the ngcp-www-csc webapp
 # Description:       Start the ngcp-www-csc webapp
 ### END INIT INFO
