@@ -29,8 +29,7 @@ Description: Configuration templates for the web-based CSC interface
 
 Package: ngcp-www-csc
 Architecture: all
-Pre-Depends: apache2.2-common,
-             nginx-common
+Pre-Depends: nginx-common
 Depends: gettext,
          libcatalyst-modules-perl,
          libcatalyst-perl,
