@@ -29,6 +29,8 @@ fi
 
 if [ ! -e /etc/nginx/sites-enabled/ngcp-www-csc ]; then
   echo "enabling ngcp-www-csc site"
+  # on a 3.0 system there is no such dir
+  mkdir -p /etc/nginx/sites-enabled
   ln -s /etc/nginx/sites-available/ngcp-www-csc /etc/nginx/sites-enabled/
   # reload nginx
   if [ -x /etc/init.d/nginx ]; then
