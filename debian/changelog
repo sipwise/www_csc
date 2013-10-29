@@ -1,3 +1,15 @@
+ngcp-www-csc (3.8.0) unstable; urgency=low
+
+  * [1bb4c31] MT#4361 Add default file to ngcp-www-csc daemon.
+  * [2f2adc6] MT#4121 force apache to stop listen on 80 or 443
+  * [5d9c03e] MT#4121 force apache to stop listen on 80 or 443. Check always
+  * [6a1771a] MT#4121 create the link to enable fastcgi daemon on nginx
+  * [b312a07] MT#4361 we need to predepend on apache to be sure the ports.conf is there
+  * [90e89c9] MT#4361 MT#4121 revert b312a07a. Check if ports.conf is there first.
+  * [025aa51] MT#4449 fix upgrade from 3.0
+
+ -- Victor Seva <vseva@sipwise.com>  Tue, 29 Oct 2013 17:45:49 +0100
+
 ngcp-www-csc (3.7.2) unstable; urgency=low
 
   * [164c4ee] MT#3823 Extended user/pass fields to 200px.
