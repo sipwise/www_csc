@@ -34,6 +34,6 @@ server {
                 fastcgi_param  PATH_INFO $fastcgi_script_name;
                 fastcgi_param   HTTPS on;
                 # TODO: configs for fastcgi process
-                fastcgi_pass  unix:/var/run/ngcp-www-csc.sock;
+                fastcgi_pass  unix:/var/run/fastcgi/ngcp-www-csc.sock;
         }
 }
