@@ -46,6 +46,11 @@ case "$1" in
         /etc/ngcp-config/templates/etc/apache2/sites-available/ngcp-www-csc.tt2 \
          -- "$@"
     fi
+    # fix tmp perms
+    if [ -d /tmp/csc ]; then
+        echo "fixing /tmp/csc dir perms"
+        chown -R www-data:www-data /tmp/csc
+    fi
     ;;
 
     abort-upgrade)

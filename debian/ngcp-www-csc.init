@@ -12,6 +12,7 @@
 . /lib/lsb/init-functions
 
 HOMEDIR=/usr/share/ngcp-www-csc
+HOMERUN=/var/run/fastcgi
 DAEMON=$HOMEDIR/script/csc_fastcgi.pl
 PIDFILE=/var/run/ngcp-www-csc.pid
 USER=www-data
@@ -19,7 +20,7 @@ GROUP=www-data
 NAME="ngcp-www-csc"
 DESC="NGCP-CSC Webapp"
 DEFAULTS=/etc/default/$NAME
-USOCKET=/var/run/ngcp-www-csc.sock
+USOCKET=$HOMERUN/ngcp-www-csc.sock
 LOGERR=/var/log/ngcp/ngcp-www-csc.log
 NPROC=1
 
@@ -41,7 +42,7 @@ _start() {
   start-stop-daemon --start --quiet \
         --pidfile $PIDFILE \
         --exec $DAEMON --chdir $HOMEDIR \
-        --user $USER --group $GROUP \
+        --user $USER --group $GROUP --chuid $USER:$GROUP \
         -- $OPTIONS || log_failure_msg "error"
   sleep 1
   if check_running ; then
@@ -85,6 +86,11 @@ if [ "$RUN_DAEMON" != "yes" ]; then
     log_failure_msg "$NAME not yet configured. Edit /etc/default/$NAME first."
     log_end_msg 0
     exit 0
+fi
+
+if [ ! -d $HOMERUN ]; then
+  mkdir -p $HOMERUN
+  chown -R $USER:$GROUP
 fi
 
 case "$1" in
