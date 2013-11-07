@@ -14,7 +14,7 @@
 HOMEDIR=/usr/share/ngcp-www-csc
 HOMERUN=/var/run/fastcgi
 DAEMON=$HOMEDIR/script/csc_fastcgi.pl
-PIDFILE=/var/run/ngcp-www-csc.pid
+PIDFILE=$HOMERUN/ngcp-www-csc.pid
 USER=www-data
 GROUP=www-data
 NAME="ngcp-www-csc"
@@ -88,10 +88,8 @@ if [ "$RUN_DAEMON" != "yes" ]; then
     exit 0
 fi
 
-if [ ! -d $HOMERUN ]; then
-  mkdir -p $HOMERUN
-  chown -R $USER:$GROUP $HOMERUN
-fi
+# $HOMERUN perms
+mkdir -p $HOMERUN && chown -R $USER:$GROUP $HOMERUN
 
 case "$1" in
   start)
