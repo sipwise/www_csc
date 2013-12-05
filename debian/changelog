@@ -1,3 +1,10 @@
+ngcp-www-csc (3.8.2) unstable; urgency=low
+
+  * [f86310e] MT#5291 install init scripts templates in the right dir
+  * [d6b01fe] MT#5287 increase number of workers
+
+ -- Victor Seva <vseva@sipwise.com>  Thu, 05 Dec 2013 15:53:24 +0100
+
 ngcp-www-csc (3.8.1) unstable; urgency=low
 
   * [de902b2..25917ee] MT#4895 drop root privileages
