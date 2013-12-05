@@ -30,7 +30,7 @@ DESC="NGCP-CSC Webapp"
 DEFAULTS=/etc/default/$NAME
 USOCKET=$HOMERUN/ngcp-www-csc.sock
 LOGERR=/var/log/ngcp/ngcp-www-csc.log
-NPROC=1
+NPROC=5
 
 OPTIONS="--listen $USOCKET --daemon --pidfile $PIDFILE --nproc $NPROC"
 
