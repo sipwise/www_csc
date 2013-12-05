@@ -45,6 +45,12 @@ case "$1" in
         dpkg-maintscript-helper rm_conffile \
         /etc/ngcp-config/templates/etc/apache2/sites-available/ngcp-www-csc.tt2 \
          -- "$@"
+        dpkg-maintscript-helper rm_conffile \
+        /etc/ngcp-config/templates/etc/lsb_scripts/ngcp-www-csc.tt2 \
+         -- "$@"
+        dpkg-maintscript-helper rm_conffile \
+        /etc/ngcp-config/templates/etc/lsb_scripts/ngcp-www-csc.services \
+         -- "$@"
     fi
     # fix tmp perms
     if [ -d /tmp/csc ]; then

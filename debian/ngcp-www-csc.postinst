@@ -20,6 +20,20 @@ if dpkg-maintscript-helper supports rm_conffile 2>/dev/null; then
     dpkg-maintscript-helper rm_conffile \
     /etc/ngcp-config/templates/etc/apache2/sites-available/ngcp-www-csc.tt2 \
      -- "$@"
+    dpkg-maintscript-helper rm_conffile \
+    /etc/ngcp-config/templates/etc/lsb_scripts/ngcp-www-csc.tt2 \
+     -- "$@"
+    dpkg-maintscript-helper rm_conffile \
+    /etc/ngcp-config/templates/etc/lsb_scripts/ngcp-www-csc.services \
+     -- "$@"
+fi
+
+if [ -d /etc/ngcp-config/templates/etc/lsb_scripts ]; then
+  rm -rf /etc/ngcp-config/templates/etc/lsb_scripts
+fi
+
+if [ -d /etc/lsb_scripts ]; then
+  rm -rf /etc/lsb_scripts
 fi
 
 # remove default debian site

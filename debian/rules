@@ -19,9 +19,9 @@ build-stamp:
 	egrep -q "VERSION = 'UNRELEASED'" lib/csc.pm || \
                           (echo "Wrong version in lib/csc.pm" && exit 2)
 	mkdir -p pro/etc/default pro/etc/ngcp-www-csc pro/etc/nginx/sites-available \
-	  pro/etc/lsb_scripts
+	  pro/etc/init.d
 	mkdir -p ce/etc/default ce/etc/ngcp-www-csc ce/etc/nginx/sites-available \
-	  ce/etc/lsb_scripts
+	  ce/etc/init.d
 	tpage --define PRO=true   etc/csc.conf > pro/etc/ngcp-www-csc/csc.conf.tt2
 	tpage                     etc/csc.conf > ce/etc/ngcp-www-csc/csc.conf.tt2
 	tpage --define PRO=true   etc/csc.conf.services > pro/etc/ngcp-www-csc/csc.conf.services
@@ -30,10 +30,10 @@ build-stamp:
 	tpage                     etc/nginx.site > ce/etc/nginx/sites-available/ngcp-www-csc.tt2
 	tpage --define PRO=true   etc/default > pro/etc/default/ngcp-www-csc.tt2
 	tpage                     etc/default > ce/etc/default/ngcp-www-csc.tt2
-	tpage --define PRO=true   etc/ngcp-www-csc > pro/etc/lsb_scripts/ngcp-www-csc.tt2
-	tpage                     etc/ngcp-www-csc > ce/etc/lsb_scripts/ngcp-www-csc.tt2
-	tpage --define PRO=true   etc/ngcp-www-csc.services > pro/etc/lsb_scripts/ngcp-www-csc.services
-	tpage                     etc/ngcp-www-csc.services > ce/etc/lsb_scripts/ngcp-www-csc.services
+	tpage --define PRO=true   etc/ngcp-www-csc > pro/etc/init.d/ngcp-www-csc.tt2
+	tpage                     etc/ngcp-www-csc > ce/etc/init.d/ngcp-www-csc.tt2
+	tpage --define PRO=true   etc/ngcp-www-csc.services > pro/etc/init.d/ngcp-www-csc.services
+	tpage                     etc/ngcp-www-csc.services > ce/etc/init.d/ngcp-www-csc.services
 	touch $@
 
 clean: 
