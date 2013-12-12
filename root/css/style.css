@@ -183,6 +183,9 @@ body.hp {
 	color: #8B949A;
 	text-transform: uppercase;
 }
+#menu.language_fr li a {
+	font-size: 10px;
+}
 #menu li a {
 	color: #8B949A;
 	float: left;
