@@ -183,7 +183,7 @@ body.hp {
 	color: #8B949A;
 	text-transform: uppercase;
 }
-#menu.language_fr li a {
+#menu.language_fr li a, #menu.language_es li a {
 	font-size: 10px;
 }
 #menu li a {
