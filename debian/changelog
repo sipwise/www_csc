@@ -1,3 +1,10 @@
+ngcp-www-csc (3.6.3) unstable; urgency=low
+
+  [ Gerhard Jungwirth ]
+  * [42f9b6e] MT#4909 Fix french menu style
+
+ -- Gerhard Jungwirth <gjungwirth@sipwise.com>  Thu, 12 Dec 2013 11:32:43 +0100
+
 ngcp-www-csc (3.6.2) unstable; urgency=low
 
   * Shorten german top level menu entries.
