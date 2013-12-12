@@ -15,7 +15,7 @@
       </ul>
 
 [% IF subscriber.username %]
-      <ul id="menu">
+      <ul id="menu" class="language_[% Catalyst.language %]">
       [% IF Catalyst.config.main_menu.desktop %]
         <li [% 'class="on"' IF template.title == 'Desktop' %]><a href="/desktop">[% Catalyst.loc('Desktop') %]</a></li>
       [% END %]
