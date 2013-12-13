@@ -1,3 +1,10 @@
+ngcp-www-csc (3.8.4) unstable; urgency=low
+
+  * [044096f] MT#4909 Fix french menu style
+  * [c2e79bb] MT#4909 Fix spanish menu style
+
+ -- Gerhard Jungwirth <gjungwirth@sipwise.com>  Fri, 13 Dec 2013 11:53:24 +0100
+
 ngcp-www-csc (3.8.3) unstable; urgency=low
 
   * [c391589] MT#5343 fix provides service name on template
