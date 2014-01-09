@@ -4,9 +4,7 @@
 server {
     listen   [::]:80;
 
-    server_name [% www_csc.apache.servername %];
-
-    return 301 https://$server_name$request_uri;
+    return 301 https://$host:[% www_csc.apache.port %]$request_uri;;
 }
 [% END %]
 
