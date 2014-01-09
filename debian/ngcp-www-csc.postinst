@@ -15,27 +15,6 @@ case "$1" in
   ;;
 esac
 
-# removing old config files
-if dpkg-maintscript-helper supports rm_conffile 2>/dev/null; then
-    dpkg-maintscript-helper rm_conffile \
-    /etc/ngcp-config/templates/etc/apache2/sites-available/ngcp-www-csc.tt2 \
-     -- "$@"
-    dpkg-maintscript-helper rm_conffile \
-    /etc/ngcp-config/templates/etc/lsb_scripts/ngcp-www-csc.tt2 \
-     -- "$@"
-    dpkg-maintscript-helper rm_conffile \
-    /etc/ngcp-config/templates/etc/lsb_scripts/ngcp-www-csc.services \
-     -- "$@"
-fi
-
-if [ -d /etc/ngcp-config/templates/etc/lsb_scripts ]; then
-  rm -rf /etc/ngcp-config/templates/etc/lsb_scripts
-fi
-
-if [ -d /etc/lsb_scripts ]; then
-  rm -rf /etc/lsb_scripts
-fi
-
 # remove default debian site
 if [ -e /etc/nginx/sites-enabled/default ]; then
     rm /etc/nginx/sites-enabled/default
@@ -46,14 +25,6 @@ if [ ! -e /etc/nginx/sites-enabled/ngcp-www-csc ]; then
   # on a 3.0 system there is no such dir
   mkdir -p /etc/nginx/sites-enabled
   ln -s /etc/nginx/sites-available/ngcp-www-csc /etc/nginx/sites-enabled/
-  # reload nginx
-  if [ -x /etc/init.d/nginx ]; then
-    if [ -x "`which invoke-rc.d 2>/dev/null`" ]; then
-      invoke-rc.d nginx restart || true
-    else
-      /etc/init.d/nginx restart || true
-    fi
-  fi
 fi
 
 # dh_installdeb will replace this with shell code automatically
