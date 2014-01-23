@@ -4,9 +4,13 @@
 server {
     listen   [::]:80;
 
-    server_name [% www_csc.apache.servername %];
+    location /handbook {
+        return 301 http://$host:[% www_admin.apache.port %]$request_uri;
+    }
 
-    return 301 https://$server_name$request_uri;
+    location / {
+        return 301 https://$host:[% www_csc.apache.port %]$request_uri;
+    }
 }
 [% END %]
 
@@ -36,4 +40,9 @@ server {
                 # TODO: configs for fastcgi process
                 fastcgi_pass  unix:/var/run/fastcgi/ngcp-www-csc.sock;
         }
+[% IF www_csc.apache.port == 80 %]
+        location /handbook {
+            return 301 http://$host:[% www_admin.apache.port %]$request_uri;
+        }
+[% END %]
 }
