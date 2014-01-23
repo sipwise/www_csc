@@ -1,3 +1,9 @@
+ngcp-www-csc (3.8.5) unstable; urgency=medium
+
+  * [e7e5287] MT5747 redirect querys to the handbook to ngcp-panel (port 80)
+
+ -- Victor Seva <vseva@sipwise.com>  Thu, 23 Jan 2014 11:21:35 +0100
+
 ngcp-www-csc (3.8.4) unstable; urgency=low
 
   * [044096f] MT#4909 Fix french menu style
