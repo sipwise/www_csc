@@ -1,8 +1,19 @@
-ngcp-www-csc (3.9.0) UNRELEASED; urgency=medium
+ngcp-www-csc (3.9.0+0~mr3.2.1) unstable; urgency=medium
 
+  [ Victor Seva ]
   * [272f118] MT#5587 remove old commands for previous fixes and migrations
+  * [3f0b753] MT#5587 create the enable nginx link with .links
+  * [b7c199d] MT#5417 Add missing nginx template service file to debian package
+  * [5f55983] MT#5417 fix typo
+  * [25adf73] MT#5417 fix template
+  * [1f1fd78] MT5747 redirect querys to the handbook to ngcp-panel (port 80)
 
- -- Victor Seva <vseva@sipwise.com>  Thu, 09 Jan 2014 11:33:24 +0100
+  [ Alexander Lutay ]
+  * [2862f94] MT#5417 Fix non-SSL redirect to SSL port for CSC
+
+  [ Sipwise Jenkins Builder ]
+
+ -- Sipwise Jenkins Builder <jenkins@sipwise.com>  Sat, 01 Feb 2014 19:30:40 +0100
 
 ngcp-www-csc (3.8.4) unstable; urgency=low
 
