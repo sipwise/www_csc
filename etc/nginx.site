@@ -2,7 +2,7 @@
 
 [% IF www_csc.apache.port != 80 && www_admin.apache.port != 80 && ossbss.apache.port != 80 %]
 server {
-    listen   [::]:80;
+    listen   [::]:80 ipv6only=off;
 
     location /handbook {
         return 301 http://$host:[% www_admin.apache.port %]$request_uri;
@@ -15,7 +15,7 @@ server {
 [% END %]
 
 server {
-        listen [::]:[% www_csc.apache.port %];
+        listen [::]:[% www_csc.apache.port %] ipv6only=off;
         [% IF www_csc.apache.ssl_enable == "yes" %]
         ssl on;
         ssl_certificate      [% www_csc.apache.sslcertfile %];
