@@ -1,4 +1,4 @@
-package Sipwise::JitsiRedirect;
+package Sipwise::JitsiRedirectPlain;
 
 # This is a package meant to be run on some central place where
 # Jitsi is hardcodedly configured to get its provisioning from.
@@ -49,10 +49,9 @@ sub handler {
 	my $uri = $req->param("user") || '';
 	my ($user, $domain) = split /\@/, $uri;
 	my $uuid = $req->param("uuid");
-	my $pass = $req->param("pass");
 
-	unless(defined $user && defined $domain && defined $uuid && defined $pass) {
-		$log->error("jitsiredir invalid credentials for user='$user', domain='$domain', uuid='$uuid', pass='$pass'");
+	unless(defined $user && defined $domain && defined $uuid) {
+		$log->error("jitsiredir invalid credentials for user='$user', domain='$domain', uuid='$uuid'");
 		$r->custom_response(Apache2::Const::NOT_FOUND, "invalid parameters");
 		return Apache2::Const::NOT_FOUND;
 	}
@@ -98,7 +97,8 @@ sub handler {
 		$provserver= "[$provserver]";
 	}
 
-	my $location = "https://$provserver:1443/device/autoprov/static/jitsi?user=$user\@$domain&pass=$pass&uuid=$uuid";
+	#my $location = "https://$provserver:1443/device/autoprov/static/jitsi?user=$user\@$domain&pass=".'${password}'."&uuid=$uuid";
+	my $location = "https://$provserver:1443/device/autoprov/static/jitsi";
 	
 	$log->info("redirecting user '$user\@$domain' to provserver '$location'");
 	$r->headers_out->set('Location' => $location);
