@@ -1,3 +1,12 @@
+ngcp-www-csc (3.9.1.0+0~mr3.2.2.0) unstable; urgency=low
+
+  [ Victor Seva ]
+  * [16f107e] MT#5911 nginx > 1.3.4 changes the default ipv6only value of listen option.
+
+  [ Sipwise Jenkins Builder ]
+
+ -- Sipwise Jenkins Builder <jenkins@sipwise.com>  Fri, 21 Mar 2014 17:16:51 +0100
+
 ngcp-www-csc (3.9.0+0~mr3.2.1) unstable; urgency=medium
 
   [ Victor Seva ]
