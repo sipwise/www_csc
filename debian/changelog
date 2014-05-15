@@ -1,3 +1,12 @@
+ngcp-www-csc (3.9.1.2+0~mr3.2.2.2) unstable; urgency=low
+
+  [ Victor Seva ]
+  * [041eb82] MT#7065 Add jquery source
+
+  [ Sipwise Jenkins Builder ]
+
+ -- Sipwise Jenkins Builder <jenkins@sipwise.com>  Thu, 15 May 2014 13:46:23 +0200
+
 ngcp-www-csc (3.9.1.1+0~mr3.2.2.1) unstable; urgency=low
 
   * New release.
