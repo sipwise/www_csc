@@ -1,2 +1,1 @@
 RUN_DAEMON="no"
-NPROC=[% www_csc.fastcgi_workers %]
