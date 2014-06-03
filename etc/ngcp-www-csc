@@ -32,8 +32,6 @@ USOCKET=$HOMERUN/ngcp-www-csc.sock
 LOGERR=/var/log/ngcp/ngcp-www-csc.log
 NPROC=5
 
-OPTIONS="--listen $USOCKET --daemon --pidfile $PIDFILE --nproc $NPROC"
-
 check_running() {
   if [ -s $PIDFILE ]; then
     kill -0 $(cat $PIDFILE) >/dev/null 2>&1
@@ -96,6 +94,7 @@ if [ "$RUN_DAEMON" != "yes" ]; then
     exit 0
 fi
 
+OPTIONS="--listen $USOCKET --daemon --pidfile $PIDFILE --nproc $NPROC"
 # $HOMERUN perms
 mkdir -p $HOMERUN && chown -R $USER:$GROUP $HOMERUN
 

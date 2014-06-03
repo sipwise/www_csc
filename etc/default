@@ -1,1 +1,3 @@
+[% TAGS [- -] -%]
 RUN_DAEMON="yes"
+NPROC=[% www_csc.fastcgi_workers %]
