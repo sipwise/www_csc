@@ -32,6 +32,8 @@ build-stamp:
 	tpage                     etc/nginx.site.services > ce/etc/nginx/sites-available/ngcp-www-csc.services
 	tpage --define PRO=true   etc/default > pro/etc/default/ngcp-www-csc.tt2
 	tpage                     etc/default > ce/etc/default/ngcp-www-csc.tt2
+	tpage --define PRO=true   etc/default.services > pro/etc/default/ngcp-www-csc.services
+	tpage                     etc/default.services > ce/etc/default/ngcp-www-csc.services
 	tpage --define PRO=true   etc/ngcp-www-csc > pro/etc/init.d/ngcp-www-csc.tt2
 	tpage                     etc/ngcp-www-csc > ce/etc/init.d/ngcp-www-csc.tt2
 	tpage --define PRO=true   etc/ngcp-www-csc.services > pro/etc/init.d/ngcp-www-csc.services
