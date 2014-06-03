@@ -1,0 +1,8 @@
+[% TAGS [- -] -%]
+#!/bin/sh
+
+[- IF PRO -]
+monit restart ngcp-www-csc
+[- ELSE -]
+/etc/init.d/ngcp-www-csc restart
+[- END -]
