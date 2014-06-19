@@ -1,3 +1,15 @@
+ngcp-www-csc (3.10.2.0+0~mr3.3.2.0) unstable; urgency=low
+
+  [ Andrew Pogrebennyk ]
+  * [090f1cf] MT#7275 ngcp-www-csc: switch NPROC for to config.yml
+  * [49b532d] Revert "MT#7275 ngcp-www-csc: switch NPROC for to config.yml"
+  * [b027261] MT#7275 www_csc: allow OPTIONS to take NPROC value from defaults file.
+  * [f486b3b] MT#7275 www_csc: add defaults.services file
+
+  [ Sipwise Jenkins Builder ]
+
+ -- Sipwise Jenkins Builder <jenkins@sipwise.com>  Thu, 19 Jun 2014 07:41:38 +0200
+
 ngcp-www-csc (3.10.1.0+0~mr3.3.1.0) unstable; urgency=low
 
   [ Michael Prokop ]
