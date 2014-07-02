@@ -55,32 +55,6 @@ if(__PACKAGE__->config->{log4perlconf}) {
   ));
 }
 
-# this is called once for every request unless overidden by a
-# more specific "begin" in our Controllers
-sub begin : Private {
-    my ( $self, $c ) = @_;
-
-    $c->response->headers->push_header( 'Vary' => 'Accept-Language' );  # hmm vary and param?
-
-    # set default language
-    $c->session->{lang} = $c->config->{site_config}{default_language} unless $c->session->{lang};
-
-    if(defined $c->request->params->{lang} and $c->request->params->{lang} =~ /^\w+$/) {
-        $c->languages([$c->request->params->{lang}]);
-        if($c->language eq 'i_default') {
-            $c->languages([$c->session->{lang}]);
-        } else {
-            $c->session->{lang} = $c->language;
-        }
-    } else {
-        $c->languages([$c->session->{lang}]);
-    }
-
-    $c->log->debug('***csc::begin final language: '. $c->language);
-
-    return;
-}
-
 sub debug {
   return __PACKAGE__->config->{debugging} ? 1 : 0;
 }
