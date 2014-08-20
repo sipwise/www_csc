@@ -5,15 +5,16 @@
 # Required-Stop:     $syslog $network $local_fs $remote_fs
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
+# Should-Start:      sshd
 # Short-Description: Start the ngcp-www-csc webapp
 # Description:       Start the ngcp-www-csc webapp
 ### END INIT INFO
 
 . /lib/lsb/init-functions
 
+DAEMON=/usr/share/ngcp-www-csc/script/csc_fastcgi.pl
 HOMEDIR=/usr/share/ngcp-www-csc
 HOMERUN=/var/run/fastcgi
-DAEMON=$HOMEDIR/script/csc_fastcgi.pl
 PIDFILE=$HOMERUN/ngcp-www-csc.pid
 USER=www-data
 GROUP=www-data
@@ -40,6 +41,33 @@ check_running() {
   fi
 }
 
+# this is a workaround for slow startup of ngcp-www_csc and generation of its pidfile
+check_for_ongoing_startup() {
+  # if no other www_csc init script is running store our PID
+  if ! [ -r "${PIDFILE}.startup" ] ; then
+    echo "$$" > "${PIDFILE}.startup"
+    return 0
+  fi
+
+  # another init script started up but didn't log a PID?
+  local startup_pid="$(cat ${PIDFILE}.startup)"
+  if [ -z "$startup_pid" ] ; then
+    log_progress_msg "starting up with invalid PID, forcing start"
+    echo "$$" > "${PIDFILE}.startup"
+    return 0
+  fi
+
+  # another init script started but was interrupted?
+  if ! ps -o pid "$startup_pid" | grep -q -- "$startup_pid" ; then
+    log_progress_msg "interrupted during startup, forcing start"
+    echo "$$" > "${PIDFILE}.startup"
+    return 0
+  fi
+
+  log_progress_msg "is already starting up, ignored"
+  return 1
+}
+
 _start() {
   if [ "$RUN_DAEMON" != "yes" ]; then
     log_failure_msg "$NAME not yet configured. Edit /etc/default/$NAME first."
@@ -47,11 +75,13 @@ _start() {
     exit 0
   fi
   rm -f $PIDFILE 2>/dev/null
+  check_for_ongoing_startup || return 0
   start-stop-daemon --start --quiet \
         --pidfile $PIDFILE \
         --exec $DAEMON --chdir $HOMEDIR \
         --user $USER --group $GROUP --chuid $USER:$GROUP \
-        -- $OPTIONS || log_failure_msg "error"
+        -- $OPTIONS >/dev/null || log_failure_msg "error"
+  rm -f "${PIDFILE}.startup"
   sleep 1
   if check_running ; then
   	return 0
@@ -97,7 +127,7 @@ mkdir -p $HOMERUN && chown -R $USER:$GROUP $HOMERUN
 
 case "$1" in
   start)
-        log_daemon_msg "Starting $DESC: $NAME"
+        log_daemon_msg "Starting $DESC"
         if check_running; then
             log_progress_msg "already running"
             log_end_msg 0
@@ -123,11 +153,11 @@ case "$1" in
         exit $status
         ;;
   status)
-        log_daemon_msg "Status of $DESC: "
+        log_action_msg "Status of $DESC: "
         if [ -s $PIDFILE ]; then
-          status_of_proc -p$PIDFILE $DAEMON $NAME
+          status_of_proc -p$PIDFILE $DAEMON $NAME ; exit $?
         else
-          status_of_proc $DAEMON $NAME
+          status_of_proc $DAEMON $NAME; exit $?
         fi
         ;;
   *)
