@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+
+dpkg-maintscript-helper rm_conffile \
+        /etc/ngcp-config/templates/etc/init.d/ngcp-www-csc.tt2 -- "$@"
+dpkg-maintscript-helper rm_conffile \
+        /etc/ngcp-config/templates/etc/init.d/ngcp-www-csc.services -- "$@"
+
+#DEBHELPER#
+
+exit 0
