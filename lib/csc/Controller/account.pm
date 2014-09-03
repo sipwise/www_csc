@@ -109,29 +109,14 @@ sub savepass : Local {
         return;
     }
 
-    my %messages;
-
-    my $oldpass = $c->request->params->{oldpass};
-    my $passwd1 = $c->request->params->{newpass1};
-    my $passwd2 = $c->request->params->{newpass2};
-
 #    $c->stash->{refill}{oldpass} = $oldpass;
 #    $c->stash->{refill}{passwd1} = $passwd1;
 #    $c->stash->{refill}{passwd2} = $passwd2;
 
-    if(!defined $oldpass or length $oldpass == 0) {
-        $messages{msgoldpass} = 'Client.Voip.MissingOldPass';
-    }
-    if(!defined $passwd1 or length $passwd1 == 0) {
-        $messages{msgpasswd} = 'Client.Voip.MissingPass';
-    } elsif(length $passwd1 < 6) {
-        $messages{msgpasswd} = 'Client.Voip.PassLength';
-    } elsif(!defined $passwd2 or length $passwd2 == 0) {
-        $messages{msgpasswd} = 'Client.Voip.MissingPass2';
-    } elsif($passwd1 ne $passwd2) {
-        $messages{msgpasswd} = 'Client.Voip.PassNoMatch';
-    }
-
+    my ($passwd1,$passwd2,$oldpass) = @{$c->request->params}{qw/newpass1 newpass2 oldpass/};
+    my %messages = %{ csc::Utils::validate_password($c, {}, $passwd1, $passwd2, $oldpass) };
+    use Data::Dumper;
+    $c->log->debug(Dumper \%messages);
     unless(keys %messages) {
         unless($c->model('Provisioning')->call_prov($c, 'voip', 'authenticate_webuser',
                                                     { webusername => $c->session->{user}{webusername},
@@ -875,17 +860,19 @@ sub doaddsubscriber : Local {
     }
     $settings{sipuri} = $sipuri;
 
-    my $passwd1 = $c->request->params->{fpasswort1};
-    my $passwd2 = $c->request->params->{fpasswort2};
-    if(!defined $passwd1 or length $passwd1 == 0) {
-        $messages{msgpasswd} = 'Client.Voip.MissingPass';
-    } elsif(length $passwd1 < 6) {
-        $messages{msgpasswd} = 'Client.Voip.PassLength';
-    } elsif(!defined $passwd2) {
-        $messages{msgpasswd} = 'Client.Voip.MissingPass2';
-    } elsif($passwd1 ne $passwd2) {
-        $messages{msgpasswd} = 'Client.Voip.PassNoMatch';
-    }
+    my ($passwd1,$passwd2) = @{$c->request->params}{qw/fpasswort1 fpasswort2/};
+    my $messages_pass = csc::Utils::validate_password($c, { no_old => 1 }, $passwd1, $passwd2);
+    %messages = (%messages,%$messages_pass);
+
+    #if(!defined $passwd1 or length $passwd1 == 0) {
+    #    $messages{msgpasswd} = 'Client.Voip.MissingPass';
+    #} elsif(length $passwd1 < 6) {
+    #    $messages{msgpasswd} = 'Client.Voip.PassLength';
+    #} elsif(!defined $passwd2) {
+    #    $messages{msgpasswd} = 'Client.Voip.MissingPass2';
+    #} elsif($passwd1 ne $passwd2) {
+    #    $messages{msgpasswd} = 'Client.Voip.PassNoMatch';
+    #}
 
     unless(keys %messages) {
         my %create_settings = %settings;
@@ -985,17 +972,20 @@ sub doaddextension : Local {
     }
     $settings{sipuri} = $sipuri;
 
-    my $passwd1 = $c->request->params->{fpasswort1};
-    my $passwd2 = $c->request->params->{fpasswort2};
-    if(!defined $passwd1 or length $passwd1 == 0) {
-        $messages{msgpasswd} = 'Client.Voip.MissingPass';
-    } elsif(length $passwd1 < 6) {
-        $messages{msgpasswd} = 'Client.Voip.PassLength';
-    } elsif(!defined $passwd2) {
-        $messages{msgpasswd} = 'Client.Voip.MissingPass2';
-    } elsif($passwd1 ne $passwd2) {
-        $messages{msgpasswd} = 'Client.Voip.PassNoMatch';
-    }
+    my ($passwd1,$passwd2) = @{$c->request->params}{qw/fpasswort1 fpasswort2/};
+    my $messages_pass = csc::Utils::validate_password($c, { no_old => 1 }, $passwd1, $passwd2);
+    %messages = (%messages,%$messages_pass);
+    #my $passwd1 = $c->request->params->{fpasswort1};
+    #my $passwd2 = $c->request->params->{fpasswort2};
+    #if(!defined $passwd1 or length $passwd1 == 0) {
+    #    $messages{msgpasswd} = 'Client.Voip.MissingPass';
+    #} elsif(length $passwd1 < 6) {
+    #    $messages{msgpasswd} = 'Client.Voip.PassLength';
+    #} elsif(!defined $passwd2) {
+    #    $messages{msgpasswd} = 'Client.Voip.MissingPass2';
+    #} elsif($passwd1 ne $passwd2) {
+    #    $messages{msgpasswd} = 'Client.Voip.PassNoMatch';
+    #}
 
     unless(keys %messages) {
         my %create_settings = %settings;

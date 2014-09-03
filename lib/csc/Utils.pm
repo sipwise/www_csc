@@ -230,6 +230,80 @@ sub normalize_blockentry_for_subscriber {
 
     return $entry;
 }
+sub validate_password{
+    my ($c, $opt, $passwd1, $passwd2, $oldpasswd) = @_;
+    use Data::Dumper;
+    $c->log->debug(Dumper [caller()]);
+    $c->log->debug(Dumper [$opt, $passwd1, $passwd2, $oldpasswd]);
+    #$opt - possible keys are: no_old, no_second, messages_unified. All three are boolean and default undef.
+    #foreach(qw/no_old no_second messages_oldasnew messages_newasold/){
+    #    $opt->{$_} //= 0;
+    #}
+    $opt->{messages_newasold} //= 1;
+    my $messages = {
+        msgoldpass => [],
+        msgpasswd => [],
+    };
+    my $cfg_passwd = $c->config->{security};
+    
+    if(!$opt->{no_old} && ( !defined $oldpasswd or length $oldpasswd == 0 ) ) {
+        push @{$messages->{msgoldpass}}, 'MissingOldPass';
+    }    
 
+    if($cfg_passwd->{password_min_length} && length($passwd1) < $cfg_passwd->{password_min_length}) {
+        #Use old  messages where is possible, if other not requested explicitly 
+        if( !$opt->{messages_oldasnew} ) {
+            if( !defined $passwd1 or length $passwd1 == 0 ) {
+                push @{$messages->{msgpasswd}}, 'MissingPass';
+            } else {
+                push @{$messages->{msgpasswd}}, 'PassLength';
+            }
+        } else {
+            push @{$messages->{msgpasswd}},'password_min_length';
+        }
+    }
+    
+    #save old priority of the checking
+    if(!$opt->{no_second}) {
+        if(!defined $passwd2 or length $passwd2 == 0) {
+            push @{$messages->{msgpasswd}}, 'MissingPass2';
+        } elsif($passwd1 ne $passwd2) {
+            push @{$messages->{msgpasswd}}, 'PassNoMatch';
+        }    
+    }
+    
+    if($cfg_passwd->{password_max_length} && length($passwd1) > $cfg_passwd->{password_max_length}) {
+        push @{$messages->{msgpasswd}},'password_max_length';
+    }
+    
+    if($cfg_passwd->{password_musthave_lowercase} && $passwd1 !~ /[a-z]/) {
+        push @{$messages->{msgpasswd}},'password_musthave_lowercase';
+    }
+    if($cfg_passwd->{password_musthave_uppercase} && $passwd1 !~ /[A-Z]/) {
+        push @{$messages->{msgpasswd}},'password_musthave_uppercase';
+    }
+    if($cfg_passwd->{password_musthave_digit} && $passwd1 !~ /[0-9]/) {
+        push @{$messages->{msgpasswd}},'password_musthave_digit';
+    }
+    if($cfg_passwd->{password_musthave_specialchar} && $passwd1 !~ /[^0-9a-zA-Z]/) {
+        push @{$messages->{msgpasswd}},'password_musthave_specialchar';
+    }
+    $c->log->debug( Dumper ['messages 1=', $messages] );
+
+    my %messages = map {
+        if(@{$messages->{$_}}) {
+            my $msg = $messages->{$_}->[0];
+            if($opt->{messages_newasold}) {
+                $msg =~s/[_\.]+([a-z])/'\.'.uc($1)/gei;
+                $msg = ucfirst($msg);
+            }
+            $_ => 'Client.Voip.'.$msg;
+        }else{
+            ();
+        }
+    } keys %$messages;
+    $c->log->debug( Dumper ['messages 2=', $messages] );
+    return \%messages;
+}
 # finito, l'amore
 1;
