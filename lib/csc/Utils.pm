@@ -294,7 +294,7 @@ sub validate_password{
         if(@{$messages->{$_}}) {
             my $msg = $messages->{$_}->[0];
             if($opt->{messages_newasold}) {
-                $msg =~s/[_\.]+([a-z])/'\.'.uc($1)/gei;
+                $msg =~s/_+([a-z])/uc($1)/gei;
                 $msg = ucfirst($msg);
             }
             $_ => 'Client.Voip.'.$msg;
