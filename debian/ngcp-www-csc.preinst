@@ -20,6 +20,7 @@ case "$1" in
     if [ -d /tmp/csc ]; then
         echo "fixing /tmp/csc dir perms"
         chown -R www-data:www-data /tmp/csc
+        chmod 0755 /tmp/csc
     fi
     ;;
 
