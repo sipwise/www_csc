@@ -1,3 +1,24 @@
+ngcp-www-csc (3.12.1.0+0~mr3.5.1.0) unstable; urgency=low
+
+  [ Victor Seva ]
+  * [36cf2f5] MT#8125 set default RUN_DAEMON to no if not mgmt role
+  * [a853e58] MT#8125 we need to stop the process after setting the default even if was active before
+  * [42cb48a] MT#8715 don't exec twice
+  * [7e56f52] MT#8715 remove init.d templates
+  * [bb619dc] MT#8715 remove old template files too
+  * [58a2e47] MT#8715 init.d: move mysql to Should-Start
+  * [93410c9] MT#7505 Add .gitreview file
+  * [4557d51] MT#8125 template.services: do not restart if not mgmt role is detected
+  * [28821a4] MT#9425 init: set umask and perms on HOMERUN. Set perms on /tmp/csc
+
+  [ Irka ]
+  * [bb5cd0b] MT#8437 Changes into config, validation method and example of the call
+  * [74e1afe] MT#8437 Fix message key for password policy.
+
+  [ Sipwise Jenkins Builder ]
+
+ -- Sipwise Jenkins Builder <jenkins@sipwise.com>  Thu, 09 Oct 2014 17:03:32 +0200
+
 ngcp-www-csc (3.12.0.0+0~mr3.5.0.0) unstable; urgency=low
 
   [ Andrew Pogrebennyk ]
