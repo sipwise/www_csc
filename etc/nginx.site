@@ -1,6 +1,6 @@
 [% TAGS [- -] -%]
 
-[% IF www_csc.apache.port != 80 && www_admin.apache.port != 80 && ossbss.apache.port != 80 %]
+[% IF www_csc.apache.port != 80 && www_admin.apache.port != 80 && ossbss.apache.port != 80 -%]
 server {
     listen   [::]:80 ipv6only=off;
 
@@ -12,37 +12,38 @@ server {
         return 301 https://$host:[% www_csc.apache.port %]$request_uri;
     }
 }
-[% END %]
+[% END -%]
 
 server {
-        listen [::]:[% www_csc.apache.port %] ipv6only=off;
-        [% IF www_csc.apache.ssl_enable == "yes" %]
-        ssl on;
-        ssl_certificate      [% www_csc.apache.sslcertfile %];
-        ssl_certificate_key  [% www_csc.apache.sslcertkeyfile %];
-        [% END %]
-        server_name [% www_csc.apache.servername %];
+    listen [::]:[% www_csc.apache.port %] ipv6only=off;
+    [% IF www_csc.apache.ssl_enable == "yes" -%]
+    ssl_certificate      [% www_csc.apache.sslcertfile %];
+    ssl_certificate_key  [% www_csc.apache.sslcertkeyfile %];
+    include /etc/nginx/ssl_params;
+    [% END -%]
+    server_name [% www_csc.apache.servername %];
 
-        location /favicon.ico {
-                alias  /usr/share/ngcp-www-csc/lib/csc/root/favicon.ico;
-        }
+    location /favicon.ico {
+        alias  /usr/share/ngcp-www-csc/lib/csc/root/favicon.ico;
+    }
 
-        location /(css|grafik|js) {
-                root  /usr/share/ngcp-www-csc/lib/csc/root;
-        }
+    location /(css|grafik|js) {
+        root  /usr/share/ngcp-www-csc/lib/csc/root;
+    }
 
-        location / {
-                include /etc/nginx/fastcgi_params;
-                # Catalyst requires setting PATH_INFO (instead of SCRIPT_NAME) to $fastcgi_script_name
-                fastcgi_param  SCRIPT_NAME '';
-                fastcgi_param  PATH_INFO $fastcgi_script_name;
-                fastcgi_param   HTTPS on;
-                # TODO: configs for fastcgi process
-                fastcgi_pass  unix:/var/run/fastcgi/ngcp-www-csc.sock;
-        }
-[% IF www_csc.apache.port == 80 %]
-        location /handbook {
-            return 301 http://$host:[% www_admin.apache.port %]$request_uri;
-        }
-[% END %]
+    location / {
+        include /etc/nginx/fastcgi_params;
+        # Catalyst requires setting PATH_INFO (instead of SCRIPT_NAME) to $fastcgi_script_name
+        fastcgi_param  SCRIPT_NAME '';
+        fastcgi_param  PATH_INFO $fastcgi_script_name;
+        fastcgi_param   HTTPS on;
+        # TODO: configs for fastcgi process
+        fastcgi_pass  unix:/var/run/fastcgi/ngcp-www-csc.sock;
+    }
+[% IF www_csc.apache.port == 80 -%]
+
+    location /handbook {
+        return 301 http://$host:[% www_admin.apache.port %]$request_uri;
+    }
+[% END -%]
 }
