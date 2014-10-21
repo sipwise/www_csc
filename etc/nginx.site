@@ -1,5 +1,5 @@
 [% TAGS [- -] -%]
-
+[% IF www_csc.enable == 'yes' -%]
 [% IF www_csc.apache.port != 80 && www_admin.apache.port != 80 && ossbss.apache.port != 80 -%]
 server {
     listen   [::]:80 ipv6only=off;
@@ -47,3 +47,4 @@ server {
     }
 [% END -%]
 }
+[% END -%]
