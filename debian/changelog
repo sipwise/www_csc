@@ -1,3 +1,18 @@
+ngcp-www-csc (3.13.1.0+0~mr3.6.1.0) unstable; urgency=low
+
+  [ Victor Seva ]
+  * [3114b09] MT#9597 nginx template: add ssl extended options
+  * [54b4d83] MT#9567 templates: use www_csc.enable config
+  * [3a2980f] MT#9869 fix bashism at init script
+  * [dc1ec36] MT#9869 fix bashism at ngcp-www-csc init script
+
+  [ Alexander Lutay ]
+  * [36827da] MT#9675 Replace failure to warning is www_csc is disabled in config
+
+  [ Sipwise Jenkins Builder ]
+
+ -- Sipwise Jenkins Builder <jenkins@sipwise.com>  Thu, 30 Oct 2014 17:36:12 +0100
+
 ngcp-www-csc (3.13.0.0+0~mr3.6.0.0) unstable; urgency=low
 
   [ Victor Seva ]
