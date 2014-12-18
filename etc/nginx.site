@@ -1,5 +1,24 @@
 [% TAGS [- -] -%]
-[% IF www_csc.enable == 'yes' -%]
+[% PROCESS '/usr/lib/ngcp-ngcpcfg/get_hostname'; hostname = out -%]
+[% argv.host=hostname; argv.role='mgmt';
+   PROCESS '/usr/lib/ngcp-ngcpcfg/has_role';
+   is_mgmt = out
+-%]
+[% IF is_mgmt && www_csc.enable == 'yes' -%]
+[% argv.host=hostname; argv.type='web_ext';
+   PROCESS '/usr/lib/ngcp-ngcpcfg/get_all_shared_ips_for_host';
+   web_ext_ips = out;
+   PROCESS '/usr/lib/ngcp-ngcpcfg/get_all_shared_v6ips_for_host';
+   web_ext_v6ips = out
+-%]
+[% argv.host=hostname; argv.type='web_ext';
+   PROCESS '/usr/lib/ngcp-ngcpcfg/get_all_ips_for_host';
+   web_ext_ips = out.merge(web_ext_ips);
+-%]
+[% argv.host=hostname; argv.type='web_ext';
+   PROCESS '/usr/lib/ngcp-ngcpcfg/get_all_v6ips_for_host';
+   web_ext_v6ips = out.merge(web_ext_v6ips);
+-%]
 [% IF www_csc.apache.port != 80 && www_admin.apache.port != 80 && ossbss.apache.port != 80 -%]
 server {
     listen   [::]:80 ipv6only=off;
@@ -15,7 +34,16 @@ server {
 [% END -%]
 
 server {
-    listen [::]:[% www_csc.apache.port %] ipv6only=off;
+[% FOREACH ip IN web_ext_ips -%]
+[% IF ip -%]
+    listen [% ip %]:[% www_csc.apache.port %];
+[% END -%]
+[% END -%]
+[% FOREACH ip IN web_ext_v6ips -%]
+[% IF ip -%]
+    listen [[% ip %]]:[% www_csc.apache.port %];
+[% END -%]
+[% END -%]
     [% IF www_csc.apache.ssl_enable == "yes" -%]
     ssl_certificate      [% www_csc.apache.sslcertfile %];
     ssl_certificate_key  [% www_csc.apache.sslcertkeyfile %];
