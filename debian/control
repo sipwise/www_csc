@@ -29,7 +29,6 @@ Description: Configuration templates for the web-based CSC interface
 
 Package: ngcp-www-csc
 Architecture: all
-Pre-Depends: nginx-common
 Depends: gettext,
          libcatalyst-modules-perl,
          libcatalyst-perl,
@@ -39,6 +38,7 @@ Depends: gettext,
          ngcp-ossbss-billing (>= 2.0.2),
          ngcp-ossbss-voip (>= 3.0.0),
          ngcp-templates-www-csc,
+         nginx-common,
          ${misc:Depends},
          ${shlibs:Depends}
 Description: frontend for endusers to configure their accounts on the Sipwise NGCP
