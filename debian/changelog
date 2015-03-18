@@ -1,3 +1,17 @@
+ngcp-www-csc (3.16.0.0+0~mr4.0.0.0) unstable; urgency=low
+
+  [ Michael Prokop ]
+  * [b2f6523] MT#10837 Drop deprecated debian/ngcp-jitsi-redirect.install file
+  * [e2b776a] MT#11387 Switch from Pre-Depends on nginx-common to Depends
+  * [2eeed57] MT#9127 Bump Standards-Version to 3.9.6
+
+  [ Victor Seva ]
+  * [d35c4e7] MT#10665 MT#9567 nginx config only on mgmt nodes
+
+  [ Sipwise Jenkins Builder ]
+
+ -- Sipwise Jenkins Builder <jenkins@sipwise.com>  Wed, 18 Mar 2015 14:22:33 +0100
+
 ngcp-www-csc (3.15.0.0+0~mr3.8.0.0) unstable; urgency=low
 
   * New release.
