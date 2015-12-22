@@ -10,7 +10,7 @@ use Apache2::Const;
 use XML::Simple;
 
 use Log::Log4perl;
-Log::Log4perl::init('/etc/ngcp-ossbss/logging.conf');
+Log::Log4perl::init('/etc/ngcp-panel/logging.conf');
 my $log = Log::Log4perl->get_logger('csc');
 $log->info('jitsiprov starting up');
 
