@@ -1,14 +1,25 @@
 [% TAGS [- -] -%]
 #!/bin/sh
+
+if [ -e /etc/default/ngcp-www-csc ] ; then
+  . /etc/default/ngcp-www-csc
+else
+  RUN_DAEMON='no'
+fi
+
 [- IF PRO --]
 if [ -e /etc/default/ngcp-roles ]; then
 . /etc/default/ngcp-roles
 else
   NGCP_IS_MGMT='yes'
 fi
-if [ "${NGCP_IS_MGMT}" = "yes" ]; then
+
+if [ "${NGCP_IS_MGMT}" = "yes" ] && [ "${RUN_DAEMON}" = "yes" ] ; then
   monit restart ngcp-www-csc
-fi
 [- ELSE --]
-/etc/init.d/ngcp-www-csc restart
+if [ "${RUN_DAEMON}" = "yes" ] ; then
+  /etc/init.d/ngcp-www-csc restart
 [- END --]
+else
+  echo "Note: action skipped because ngcp-www-csc disabled in config.yml"
+fi
