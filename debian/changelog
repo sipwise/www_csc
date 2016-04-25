@@ -1,3 +1,12 @@
+ngcp-www-csc (3.15.6.1+0~mr3.8.6.1) unstable; urgency=medium
+
+  [ Victor Seva ]
+  * [b8e6777] MT#17807 *.services: read RUN_DAEMON config from defaults to skip restart www_csc if it is not enabled
+
+  [ Sipwise Jenkins Builder ]
+
+ -- Sipwise Jenkins Builder <jenkins@sipwise.com>  Mon, 25 Apr 2016 14:18:21 +0200
+
 ngcp-www-csc (3.15.6.0+0~mr3.8.6.0) unstable; urgency=medium
 
   * New release.
