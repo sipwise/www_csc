@@ -1,4 +1,0 @@
-<div id="headimg">
-    <img src="/grafik/area.jpg" width="869" height="69" alt="" />
-</div>
-<div id="headtxt">[% Catalyst.loc('Your personal callforwards.') %]</div> 

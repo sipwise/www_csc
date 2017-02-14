@@ -1,8 +1,0 @@
-csc.yml     usr/share/ngcp-www-csc/lib/csc/
-lib/JitsiProvisioning.pm      usr/share/perl5/Sipwise/
-lib/csc     usr/share/ngcp-www-csc/lib/
-lib/csc.pm  usr/share/ngcp-www-csc/lib/
-root        usr/share/ngcp-www-csc/lib/csc/
-script/csc_cgi.pl      usr/share/ngcp-www-csc/script/
-script/csc_fastcgi.pl  usr/share/ngcp-www-csc/script/
-script/csc_server.pl   usr/share/ngcp-www-csc/script/

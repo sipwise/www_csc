@@ -1,8 +1,0 @@
-  <div id="container">
-
-[% PROCESS layout/header %]
-[% content %]
-[% PROCESS layout/footer %]
-
-  </div>
-

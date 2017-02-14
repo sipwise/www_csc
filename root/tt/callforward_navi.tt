@@ -1,5 +1,0 @@
-<a class="link" href="/callforward/mapping"><span class="button-transfer">[% Catalyst.loc('Mapping') %]</span></a>
-<br>
-<a class="link" href="/callforward/destination"><span class="button-transfer">[% Catalyst.loc('Destination sets') %]</span></a>
-<br>
-<a class="link" href="/callforward/time"><span class="button-clock">[% Catalyst.loc('Time sets') %]</span></a>
